@@ -1,0 +1,12 @@
+{
+    "name": "zendframework/zend-coding-standard",
+    "description": "Zend Framework coding standard",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf",
+        "coding standard"
+    ],
+    "require": {
+        "squizlabs/php_codesniffer": "^2.7"
+    }
+}
