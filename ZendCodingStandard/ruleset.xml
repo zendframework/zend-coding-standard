@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<ruleset name="Zend Framework Coding Standard">
+    <description>Zend Framework Coding Standard</description>
+
+    <!-- display progress -->
+    <arg value="p"/>
+    <arg name="colors"/>
+
+    <!-- PSR-2 base -->
+    <rule ref="PSR2"/>
+
+    <!-- Generic Rules -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Generic.Formatting.SpaceAfterCast"/>
+    <rule ref="Generic.Formatting.SpaceAfterNot"/>
+    <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
+    <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <rule ref="Generic.PHP.ForbiddenFunctions"/>
+    <rule ref="Generic.Files.OneTraitPerFile"/>
+    <rule ref="Generic.Strings.UnnecessaryStringConcat">
+        <properties>
+            <property name="allowMultiline" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Squiz Rules -->
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+    <rule ref="Squiz.Strings.ConcatenationSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+        <message>Variable "%s" not allowed in double quoted string; use sprintf() instead.</message>
+    </rule>
+    <rule ref="Squiz.Strings.EchoedStrings"/>
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+        <properties>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+
+    <!-- Slevomat Rules -->
+    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Namespaces/AlphabeticallySortedUsesSniff.php"/>
+    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Namespaces/UseDoesNotStartWithBackslashSniff.php"/>
+
+    <!-- ZendCodingStandard Rules -->
+    <rule ref="ZendCodingStandard.Commenting.VariableComment">
+        <exclude name="ZendCodingStandard.Commenting.VariableComment.Missing"/>
+        <exclude name="ZendCodingStandard.Commenting.VariableComment.VarOrder"/>
+    </rule>
+    <rule ref="ZendCodingStandard.Commenting.FunctionComment">
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.EmptyThrows"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.Missing"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.MissingReturn"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.ParamCommentFullStop"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.SpacingAfterParamName"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.SpacingAfterParamType"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.ThrowsNoFullStop"/>
+        <exclude name="ZendCodingStandard.Commenting.FunctionComment.ThrowsNotCapital"/>
+    </rule>
+</ruleset>
