@@ -3,4 +3,6 @@
     <rule ref="ZendCodingStandard/ruleset.xml"/>
 
     <file>ZendCodingStandard</file>
+
+    <exclude-pattern>*/Tests/*.inc</exclude-pattern>
 </ruleset>
