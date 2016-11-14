@@ -70,8 +70,8 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
         }
 
         if ($return !== null) {
-            $content = $tokens[($return + 2)]['content'];
-            if (empty($content) || $tokens[($return + 2)]['code'] !== T_DOC_COMMENT_STRING) {
+            $content = $tokens[$return + 2]['content'];
+            if (empty($content) || $tokens[$return + 2]['code'] !== T_DOC_COMMENT_STRING) {
                 $error = 'Return type missing for @return tag in function comment';
                 $phpcsFile->addError($error, $return, 'MissingReturnType');
             } else {
@@ -185,9 +185,9 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
 
             $exception = null;
             $comment = null;
-            if ($tokens[($tag + 2)]['code'] === T_DOC_COMMENT_STRING) {
+            if ($tokens[$tag + 2]['code'] === T_DOC_COMMENT_STRING) {
                 $matches = [];
-                preg_match('/([^\s]+)(?:\s+(.*))?/', $tokens[($tag + 2)]['content'], $matches);
+                preg_match('/([^\s]+)(?:\s+(.*))?/', $tokens[$tag + 2]['content'], $matches);
                 $exception = $matches[1];
                 if (isset($matches[2]) && trim($matches[2]) !== '') {
                     $comment = $matches[2];
@@ -265,11 +265,11 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
             $varSpace = 0;
             $comment = '';
             $commentLines = [];
-            if ($tokens[($tag + 2)]['code'] === T_DOC_COMMENT_STRING) {
+            if ($tokens[$tag + 2]['code'] === T_DOC_COMMENT_STRING) {
                 $matches = [];
                 preg_match(
                     '/([^$&.]+)(?:((?:\.\.\.)?(?:\$|&)[^\s]+)(?:(\s+)(.*))?)?/',
-                    $tokens[($tag + 2)]['content'],
+                    $tokens[$tag + 2]['content'],
                     $matches
                 );
 
@@ -300,8 +300,8 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                         ];
 
                         // Any strings until the next tag belong to this comment.
-                        if (isset($tokens[$commentStart]['comment_tags'][($pos + 1)])) {
-                            $end = $tokens[$commentStart]['comment_tags'][($pos + 1)];
+                        if (isset($tokens[$commentStart]['comment_tags'][$pos + 1])) {
+                            $end = $tokens[$commentStart]['comment_tags'][$pos + 1];
                         } else {
                             $end = $tokens[$commentStart]['comment_closer'];
                         }
@@ -310,7 +310,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                             if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
                                 $indent = 0;
                                 if ($tokens[$i - 1]['code'] === T_DOC_COMMENT_WHITESPACE) {
-                                    $indent = strlen($tokens[($i - 1)]['content']);
+                                    $indent = strlen($tokens[$i - 1]['content']);
                                 }
 
                                 $comment .= ' ' . $tokens[$i]['content'];

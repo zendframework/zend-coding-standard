@@ -111,7 +111,7 @@ class VariableCommentSniff extends PHP_CodeSniffer_Standards_AbstractVariableSni
             return;
         }
 
-        $varType = $tokens[($foundVar + 2)]['content'];
+        $varType = $tokens[$foundVar + 2]['content'];
         // changed to use bool and int instead of boolean and integer accordingly
         $suggestedType = CodingStandard::suggestType($varType);
         if ($varType !== $suggestedType) {
