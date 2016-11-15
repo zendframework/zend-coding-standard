@@ -39,7 +39,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             }
 
             $path = $file->getPathname();
-            // if (substr($path, 9, strlen($testFileBase)) === $testFileBase)
             if ($path !== $testFileBase . 'php' && substr($path, -5) !== 'fixed') {
                 $testFiles[] = $path;
             }
@@ -137,12 +136,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             throw new PHP_CodeSniffer_Exception('getWarningList() must return an array');
         }
 
-        /*
-            We merge errors and warnings together to make it easier
-            to iterate over them and produce the errors string. In this way,
-            we can report on errors and warnings in the same line even though
-            it's not really structured to allow that.
-        */
+        // We merge errors and warnings together to make it easier
+        // to iterate over them and produce the errors string. In this way,
+        // we can report on errors and warnings in the same line even though
+        // it's not really structured to allow that.
 
         $allProblems = [];
         $failureMessages = [];
