@@ -49,7 +49,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             return;
         }
 
-        if ($tokens[$commentEnd + 1]['content'] !== "\n") {
+        if ($tokens[$commentEnd + 1]['content'] !== $phpcsFile->eolChar) {
             $error = 'The close comment tag must be the only content on the line.';
             $fix = $phpcsFile->addFixableError($error, $commentEnd);
 
@@ -61,7 +61,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
 
         $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE], $commentEnd - 1, null, true);
-        if ($tokens[$prev]['content'] !== "\n"
+        if ($tokens[$prev]['content'] !== $phpcsFile->eolChar
             && $tokens[$prev]['line'] === $tokens[$commentEnd]['line']
         ) {
             $error = 'The close comment tag must be the only content on the line.';
@@ -72,11 +72,11 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             }
         }
 
-        if ($tokens[$commentEnd + 2]['content'] === "\n") {
+        if ($tokens[$commentEnd + 2]['content'] === $phpcsFile->eolChar) {
             // There is empty line after doc block.
             $before = $tokens[$commentStart - 1];
 
-            $indent = $before['code'] == T_OPEN_TAG || $before['content'] == "\n"
+            $indent = $before['code'] == T_OPEN_TAG || $before['content'] == $phpcsFile->eolChar
                 ? 0
                 : strlen($before['content']);
         } elseif ($tokens[$commentEnd + 2]['code'] == T_WHITESPACE) {
@@ -88,7 +88,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         // First line of the doc comment.
         $spaces = $tokens[$commentStart - 1];
         if ($spaces['code'] === T_WHITESPACE
-            && $spaces['content'] !== "\n"
+            && $spaces['content'] !== $phpcsFile->eolChar
             && strlen($spaces['content']) !== $indent
         ) {
             $error = 'Invalid doc comment indent. Expected %d spaces; %d found';
@@ -102,7 +102,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
                 $phpcsFile->fixer->replaceToken($commentStart - 1, str_repeat(' ', $indent));
             }
         } elseif ($spaces['code'] === T_WHITESPACE
-            && $spaces['content'] === "\n"
+            && $spaces['content'] === $phpcsFile->eolChar
             && $indent > 0
         ) {
             $error = 'Invalid doc comment indent. Expected %d spaces; %d found';
@@ -113,7 +113,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             $fix = $phpcsFile->addFixableError($error, $commentStart, null, $data);
 
             if ($fix) {
-                $phpcsFile->fixer->replaceToken($commentStart - 1, "\n" . str_repeat(' ', $indent));
+                $phpcsFile->fixer->replaceToken($commentStart - 1, $phpcsFile->eolChar . str_repeat(' ', $indent));
             }
         }
 
@@ -123,7 +123,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         while ($next = $phpcsFile->findNext($search, $from + 1, $commentEnd + 1)) {
             $spaces = $tokens[$next - 1];
 
-            if ($spaces['content'] == "\n") {
+            if ($spaces['content'] === $phpcsFile->eolChar) {
                 $error = 'Invalid doc comment indent. Expected %d spaces; %d found';
                 $data = [
                     $indent + 1,
@@ -132,7 +132,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
                 $fix = $phpcsFile->addFixableError($error, $next, null, $data);
 
                 if ($fix) {
-                    $phpcsFile->fixer->replaceToken($next - 1, "\n" . ' ');
+                    $phpcsFile->fixer->replaceToken($next - 1, $phpcsFile->eolChar . ' ');
                 }
             } elseif ($spaces['code'] == T_DOC_COMMENT_WHITESPACE
                 && strlen($spaces['content']) !== $indent + 1

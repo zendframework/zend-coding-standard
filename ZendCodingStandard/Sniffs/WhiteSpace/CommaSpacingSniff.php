@@ -75,7 +75,7 @@ class CommaSpacingSniff implements PHP_CodeSniffer_Sniff
             // Check if this is not before a comment at the end of the line
             if ($tokens[$stackPtr + 2]['code'] !== T_COMMENT
                 && $tokens[$stackPtr + 3]['code'] !== T_WHITESPACE
-                && $tokens[$stackPtr + 3]['content'] !== "\n"
+                && $tokens[$stackPtr + 3]['content'] !== $phpcsFile->eolChar
             ) {
                 if ($tokens[$stackPtr + 2]['code'] === T_DOC_COMMENT_OPEN_TAG) {
                     $phpcsFile->addError(
