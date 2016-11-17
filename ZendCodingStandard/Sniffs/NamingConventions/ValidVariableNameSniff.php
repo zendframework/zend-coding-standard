@@ -41,7 +41,7 @@ class ValidVariableNameSniff extends PHP_CodeSniffer_Standards_AbstractVariableS
             return;
         }
 
-        $objOperator = $phpcsFile->findPrevious([T_WHITESPACE], ($stackPtr - 1), null, true);
+        $objOperator = $phpcsFile->findPrevious([T_WHITESPACE], $stackPtr - 1, null, true);
         if ($tokens[$objOperator]['code'] === T_DOUBLE_COLON) {
             return; // skip MyClass::$variable, there might be no control over the declaration
         }

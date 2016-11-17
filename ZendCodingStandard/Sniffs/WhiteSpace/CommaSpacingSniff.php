@@ -41,7 +41,7 @@ class CommaSpacingSniff implements PHP_CodeSniffer_Sniff
         if (isset(PHP_CodeSniffer_Tokens::$emptyTokens[$prevType])) {
             $nonSpace = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 2, null, true);
             $expected = $tokens[$nonSpace]['content'] . ',';
-            $found = $phpcsFile->getTokensAsString($nonSpace, ($stackPtr - $nonSpace)) . ',';
+            $found = $phpcsFile->getTokensAsString($nonSpace, $stackPtr - $nonSpace) . ',';
             $error = 'Space found before comma; expected "%s" but found "%s"';
             $data = [
                 $expected,

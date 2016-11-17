@@ -95,7 +95,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                     $fix = $phpcsFile->addFixableError($error, $return, 'InvalidReturn', $data);
 
                     if ($fix) {
-                        $phpcsFile->fixer->replaceToken(($return + 2), $suggestedType);
+                        $phpcsFile->fixer->replaceToken($return + 2, $suggestedType);
                     }
                 }
 
@@ -125,7 +125,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                         if ($returnToken !== $endToken) {
                             // If the function is not returning anything, just
                             // exiting, then there is no problem.
-                            $semicolon = $phpcsFile->findNext(T_WHITESPACE, ($returnToken + 1), null, true);
+                            $semicolon = $phpcsFile->findNext(T_WHITESPACE, $returnToken + 1, null, true);
                             if ($tokens[$semicolon]['code'] !== T_SEMICOLON) {
                                 $error = 'Function return type is void, but function contains return statement';
                                 $phpcsFile->addError($error, $return, 'InvalidReturnVoid');
@@ -148,7 +148,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                             $error = 'Function return type is not void, but function has no return statement';
                             $phpcsFile->addError($error, $return, 'InvalidNoReturn');
                         } else {
-                            $semicolon = $phpcsFile->findNext(T_WHITESPACE, ($returnToken + 1), null, true);
+                            $semicolon = $phpcsFile->findNext(T_WHITESPACE, $returnToken + 1, null, true);
                             if ($tokens[$semicolon]['code'] === T_SEMICOLON) {
                                 $error = 'Function return type is not void, but function is returning void here';
                                 $phpcsFile->addError($error, $returnToken, 'InvalidReturnNotVoid');
@@ -218,13 +218,13 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                 $firstChar = $comment{0};
                 if (strtoupper($firstChar) !== $firstChar) {
                     $error = '@throws tag comment must start with a capital letter';
-                    $phpcsFile->addError($error, ($tag + 2), 'ThrowsNotCapital');
+                    $phpcsFile->addError($error, $tag + 2, 'ThrowsNotCapital');
                 }
 
                 $lastChar = substr($comment, -1);
                 if ($lastChar !== '.') {
                     $error = '@throws tag comment must end with a full stop';
-                    $phpcsFile->addError($error, ($tag + 2), 'ThrowsNoFullStop');
+                    $phpcsFile->addError($error, $tag + 2, 'ThrowsNoFullStop');
                 }
             }
         }
@@ -276,7 +276,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                 if (! empty($matches)) {
                     $typeLen = strlen($matches[1]);
                     $type = trim($matches[1]);
-                    $typeSpace = ($typeLen - strlen($type));
+                    $typeSpace = $typeLen - strlen($type);
                     $typeLen = strlen($type);
                     if ($typeLen > $maxType) {
                         $maxType = $typeLen;
@@ -295,7 +295,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
                         $comment = $matches[4];
                         $commentLines[] = [
                             'comment' => $comment,
-                            'token' => ($tag + 2),
+                            'token' => $tag + 2,
                             'indent' => $varSpace,
                         ];
 
@@ -458,7 +458,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
             $foundParams[] = $param['var'];
 
             // Check number of spaces after the type.
-            $spaces = ($maxType - strlen($param['type']) + 1);
+            $spaces = $maxType - strlen($param['type']) + 1;
             if ($param['type_space'] !== $spaces) {
                 $error = 'Expected %s spaces after parameter type; %s found';
                 $data = [
@@ -527,7 +527,7 @@ class FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
             }
 
             // Check number of spaces after the var name.
-            $spaces = ($maxVar - strlen($param['var']) + 1);
+            $spaces = $maxVar - strlen($param['var']) + 1;
             if ($param['var_space'] !== $spaces) {
                 $error = 'Expected %s spaces after parameter name; %s found';
                 $data = [

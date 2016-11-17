@@ -22,7 +22,6 @@ use PHP_CodeSniffer_Tokens;
  * @link          http://pear.php.net/package/PHP_CodeSniffer_CakePHP
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 /**
  * Asserts that type casts are in the short form:
  * - bool instead of boolean
@@ -59,7 +58,7 @@ class TypeCastingSniff implements PHP_CodeSniffer_Sniff
 
         // Process !! casts
         if ($tokens[$stackPtr]['code'] == T_BOOLEAN_NOT) {
-            $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+            $nextToken = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
             if (! $nextToken) {
                 return;
             }

@@ -57,7 +57,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
 
         $classPtr = $phpcsFile->findPrevious(
             PHP_CodeSniffer_Tokens::$emptyTokens,
-            ($semiColon - 1),
+            $semiColon - 1,
             null,
             true
         );
@@ -69,7 +69,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
         // Search where the class name is used. PHP treats class names case
         // insensitive, that's why we cannot search for the exact class name string
         // and need to iterate over all T_STRING tokens in the file.
-        $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING], ($classPtr + 1));
+        $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING], $classPtr + 1);
         $className = $tokens[$classPtr]['content'];
         $lowerClassName = strtolower($className);
 
@@ -79,7 +79,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
 
         // Check if the use statement does aliasing with the "as" keyword. Aliasing
         // is allowed even in the same namespace.
-        $aliasUsed = $phpcsFile->findPrevious(T_AS, ($classPtr - 1), $stackPtr);
+        $aliasUsed = $phpcsFile->findPrevious(T_AS, $classPtr - 1, $stackPtr);
 
         if ($namespacePtr !== false && $aliasUsed === false) {
             $nsEnd = $phpcsFile->findNext(
@@ -89,26 +89,26 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
                     T_DOC_COMMENT_STRING,
                     T_WHITESPACE,
                 ],
-                ($namespacePtr + 1),
+                $namespacePtr + 1,
                 null,
                 true
             );
-            $namespace = trim($phpcsFile->getTokensAsString(($namespacePtr + 1), ($nsEnd - $namespacePtr - 1)));
+            $namespace = trim($phpcsFile->getTokensAsString($namespacePtr + 1, $nsEnd - $namespacePtr - 1));
 
-            $useNamespacePtr = $phpcsFile->findNext([T_STRING], ($stackPtr + 1));
+            $useNamespacePtr = $phpcsFile->findNext([T_STRING], $stackPtr + 1);
             $useNamespaceEnd = $phpcsFile->findNext(
                 [
                     T_NS_SEPARATOR,
                     T_STRING,
                 ],
-                ($useNamespacePtr + 1),
+                $useNamespacePtr + 1,
                 null,
                 true
             );
             $useNamespace = rtrim(
                 $phpcsFile->getTokensAsString(
                     $useNamespacePtr,
-                    ($useNamespaceEnd - $useNamespacePtr - 1)
+                    $useNamespaceEnd - $useNamespacePtr - 1
                 ),
                 '\\'
             );
@@ -133,7 +133,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
             ) {
                 $beforeUsage = $phpcsFile->findPrevious(
                     $emptyTokens,
-                    ($classUsed - 1),
+                    $classUsed - 1,
                     null,
                     true
                 );
@@ -165,7 +165,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
                 }
             }
 
-            $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING], ($classUsed + 1));
+            $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING], $classUsed + 1);
         }
 
         $warning = 'Unused use statement: ' . $className;

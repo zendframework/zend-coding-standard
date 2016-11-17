@@ -46,7 +46,7 @@ class VariableCommentSniff extends PHP_CodeSniffer_Standards_AbstractVariableSni
             T_WHITESPACE,
         ];
 
-        $commentEnd = $phpcsFile->findPrevious($ignore, ($stackPtr - 1), null, true);
+        $commentEnd = $phpcsFile->findPrevious($ignore, $stackPtr - 1, null, true);
         if ($commentEnd === false
             || ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG
                 && $tokens[$commentEnd]['code'] !== T_COMMENT)
@@ -120,10 +120,10 @@ class VariableCommentSniff extends PHP_CodeSniffer_Standards_AbstractVariableSni
                 $suggestedType,
                 $varType,
             ];
-            $fix = $phpcsFile->addFixableError($error, ($foundVar + 2), 'IncorrectVarType', $data);
+            $fix = $phpcsFile->addFixableError($error, $foundVar + 2, 'IncorrectVarType', $data);
 
             if ($fix) {
-                $phpcsFile->fixer->replaceToken(($foundVar + 2), $suggestedType);
+                $phpcsFile->fixer->replaceToken($foundVar + 2, $suggestedType);
             }
         }
     }
