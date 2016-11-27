@@ -1,0 +1,17 @@
+<?php
+/** @licence
+ */
+
+namespace MyApp\MyNamespace;
+
+class AfterOpen
+{
+    /** Method description.
+     */
+    protected function after()
+    {
+        /** @var null $after
+         */
+        $after = null;
+    }
+}

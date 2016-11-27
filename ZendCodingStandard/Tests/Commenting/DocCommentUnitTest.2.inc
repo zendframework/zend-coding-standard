@@ -1,0 +1,23 @@
+<?php
+/**
+ *@licence
+ */
+
+namespace MyApp\MyNamespace;
+
+/**
+ *   Class SpacesAfterStar
+ */
+class SpacesAfterStar
+{
+    /**
+     *     Method description.
+     */
+    protected function spaces()
+    {
+        /**
+         *@var null $spaces
+         */
+        $spaces = null;
+    }
+}

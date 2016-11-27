@@ -21,8 +21,7 @@ use PHP_CodeSniffer_Tokens;
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://pear.php.net/package/PHP_CodeSniffer_CakePHP
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
-/**
+ *
  * Asserts that type casts are in the short form:
  * - bool instead of boolean
  * - int instead of integer
