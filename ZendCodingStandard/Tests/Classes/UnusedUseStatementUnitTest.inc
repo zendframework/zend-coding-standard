@@ -19,7 +19,15 @@ use Bar\Baz\Used9 as AliasUsed9;
 use Bar\Baz\Unused3;
 use Bar\Baz\Unused4 as AliasUnused4;
 use FooBar\Unused5;
+use Used10;
+use Used11;
+use FooBar\Used12 as AliasUsed12;
 
+/**
+ * @Used10
+ * @Used11\Table
+ * @AliasUsed12(...)
+ */
 class Foo
 {
     use Traits\MyTrait;

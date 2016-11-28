@@ -13,7 +13,15 @@ use MyApp\Used6;
 use Used7 as AliasUsed7;
 use Bar\Baz\Used8;
 use Bar\Baz\Used9 as AliasUsed9;
+use Used10;
+use Used11;
+use FooBar\Used12 as AliasUsed12;
 
+/**
+ * @Used10
+ * @Used11\Table
+ * @AliasUsed12(...)
+ */
 class Foo
 {
     use Traits\MyTrait;

@@ -4,6 +4,8 @@
  * @see http://jdon.at/1h0wb
  * @see https://github.com/squizlabs/PHP_CodeSniffer/pull/1106
  *
+ * - added checks in annotations
+ *
  * @todo remove once merged to squizlabs/PHP_CodeSniffer (?)
  */
 namespace ZendCodingStandard\Sniffs\Classes;
@@ -69,7 +71,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
         // Search where the class name is used. PHP treats class names case
         // insensitive, that's why we cannot search for the exact class name string
         // and need to iterate over all T_STRING tokens in the file.
-        $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING], $classPtr + 1);
+        $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], $classPtr + 1);
         $className = $tokens[$classPtr]['content'];
         $lowerClassName = strtolower($className);
 
@@ -121,13 +123,17 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
         $emptyTokens = PHP_CodeSniffer_Tokens::$emptyTokens;
         unset($emptyTokens[T_DOC_COMMENT_TAG]);
 
-
         while ($classUsed !== false) {
             if (($tokens[$classUsed]['code'] == T_STRING
                     && strtolower($tokens[$classUsed]['content']) === $lowerClassName)
                 || ($tokens[$classUsed]['code'] == T_DOC_COMMENT_STRING
                     && preg_match(
                         '/(\s|\||^)' . preg_quote($lowerClassName) . '(\s|\||$|\[\])/i',
+                        $tokens[$classUsed]['content']
+                    ))
+                || ($tokens[$classUsed]['code'] == T_DOC_COMMENT_TAG
+                    && preg_match(
+                        '/@' . preg_quote($lowerClassName) . '(\(|\\\\|$)/i',
                         $tokens[$classUsed]['content']
                     ))
             ) {
@@ -153,22 +159,22 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
                     ) {
                         return;
                     }
+                } elseif ($tokens[$beforeUsage]['code'] === T_DOC_COMMENT_TAG &&
+                    in_array(
+                        $tokens[$beforeUsage]['content'],
+                        ['@var', '@param', '@return', '@throws', '@method']
+                    )
+                ) {
+                    return;
                 } else {
-                    if ($tokens[$beforeUsage]['code'] === T_DOC_COMMENT_TAG &&
-                        in_array(
-                            $tokens[$beforeUsage]['content'],
-                            ['@var', '@param', '@return', '@throws', '@method']
-                        )
-                    ) {
-                        return;
-                    }
+                    return;
                 }
             }
 
-            $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING], $classUsed + 1);
+            $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], $classUsed + 1);
         }
 
-        $warning = 'Unused use statement: ' . $className;
+        $warning = sprintf('Unused use statement "%s"', $className);
         $fix = $phpcsFile->addFixableWarning($warning, $stackPtr, 'UnusedUse');
 
         if ($fix) {
