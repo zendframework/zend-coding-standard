@@ -17,6 +17,7 @@
     <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
     <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <rule ref="Generic.NamingConventions.ConstructorName"/>
     <rule ref="Generic.PHP.ForbiddenFunctions"/>
     <rule ref="Generic.Files.OneTraitPerFile"/>
     <rule ref="Generic.Strings.UnnecessaryStringConcat">
@@ -26,6 +27,7 @@
     </rule>
 
     <!-- Squiz Rules -->
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
     <rule ref="Squiz.PHP.NonExecutableCode"/>
     <rule ref="Squiz.Scope.StaticThisUsage"/>
@@ -35,7 +37,6 @@
             <property name="ignoreNewlines" value="true"/>
         </properties>
     </rule>
-    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
     <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
     <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
         <message>Variable "%s" not allowed in double quoted string; use sprintf() instead.</message>
