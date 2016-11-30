@@ -40,6 +40,7 @@
         <message>Variable "%s" not allowed in double quoted string; use sprintf() instead.</message>
     </rule>
     <rule ref="Squiz.Strings.EchoedStrings"/>
+    <rule ref="Squiz.WhiteSpace.CastSpacing.ContainsWhiteSpace"/>
     <rule ref="Squiz.WhiteSpace.OperatorSpacing">
         <properties>
             <property name="ignoreNewlines" value="true"/>
@@ -59,6 +60,7 @@
     <!-- ZendCodingStandard Rules -->
     <rule ref="ZendCodingStandard.Commenting.VariableComment">
         <exclude name="ZendCodingStandard.Commenting.VariableComment.Missing"/>
+        <exclude name="ZendCodingStandard.Commenting.VariableComment.TagNotAllowed"/>
         <exclude name="ZendCodingStandard.Commenting.VariableComment.VarOrder"/>
     </rule>
     <rule ref="ZendCodingStandard.Commenting.FunctionComment">
