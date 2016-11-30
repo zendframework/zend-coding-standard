@@ -1,0 +1,49 @@
+<?php
+
+(bool)$var;
+
+(bool)  $var;
+
+(bool)$var;
+(int)$var;
+(object)$var;
+(array)$var;
+(int)$var;
+(bool)$var;
+(string)$var;
+(double)$var;
+(float)$var;
+(real)$var;
+(unset)$var;
+
+(bool)  $var;
+(int)  $var;
+(object)   $var;
+(array)    $var;
+(int)      $var;
+(bool)     $var;
+(string)   $var;
+(double)   $var;
+(float)    $var;
+(real)     $var;
+(unset)    $var;
+
+(bool) $var;
+(bool) $var;
+(bool) $var;
+
+(int)$var;
+(int)$var;
+(int)$var;
+
+(bool)  $var;
+(int)  $var;
+(object)   $var;
+(array)    $var;
+(int)      $var;
+(bool)     $var;
+(string)   $var;
+(double)   $var;
+(float)    $var;
+(real)     $var;
+(UNSET)    $var;

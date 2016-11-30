@@ -2,6 +2,10 @@
 /**
  * Copied from:
  * @see https://github.com/dereuromark/codesniffer-standards/blob/master/CakePHP/Sniffs/PHP/TypeCastingSniff.php
+ *
+ * Changes:
+ * - disallow (unset) cast
+ * - omit white chars in casting
  */
 
 namespace ZendCodingStandard\Sniffs\PHP;
@@ -58,9 +62,6 @@ class TypeCastingSniff implements PHP_CodeSniffer_Sniff
         // Process !! casts
         if ($tokens[$stackPtr]['code'] == T_BOOLEAN_NOT) {
             $nextToken = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
-            if (! $nextToken) {
-                return;
-            }
             if ($tokens[$nextToken]['code'] != T_BOOLEAN_NOT) {
                 return;
             }
@@ -77,39 +78,32 @@ class TypeCastingSniff implements PHP_CodeSniffer_Sniff
             return;
         }
 
+        if ($tokens[$stackPtr]['code'] == T_UNSET_CAST) {
+            $phpcsFile->addError('(unset) casting is not allowed.', $stackPtr, 'UnsetCast');
+            return;
+        }
+
         // Only allow short forms if both short and long forms are possible
         $matching = [
             '(boolean)' => '(bool)',
             '(integer)' => '(int)',
         ];
         $content = $tokens[$stackPtr]['content'];
-        $key = strtolower($content);
-        if (isset($matching[$key])) {
+        $key = preg_replace('/\s/', '', strtolower($content));
+        if (isset($matching[$key]) || $content !== $key) {
             $error = 'Please use %s instead of %s.';
+            $expected = isset($matching[$key]) ? $matching[$key] : $key;
             $data = [
-                $matching[$key],
+                $expected,
                 $content,
             ];
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NotAllowed', $data);
 
             if ($fix) {
-                $phpcsFile->fixer->replaceToken($stackPtr, $matching[$key]);
+                $phpcsFile->fixer->replaceToken($stackPtr, $expected);
             }
 
             return;
-        }
-
-        if ($content !== $key) {
-            $error = 'Please use %s instead of %s.';
-            $data = [
-                $key,
-                $content,
-            ];
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NotAllowed', $data);
-
-            if ($fix) {
-                $phpcsFile->fixer->replaceToken($stackPtr, $key);
-            }
         }
     }
 }
