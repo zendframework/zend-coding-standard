@@ -1,0 +1,49 @@
+<?php
+
+function ($x,$y) {};
+
+echo $x,PHP_EOL;
+
+echo $x, $y,$z,
+    PHP_EOL, $foo;
+
+new ArrayObject($a,$b,$c);
+
+new ArrayObject($a,   $b, $c);
+
+$array = [$x,$y,    $z];
+
+$arr = [
+    [1,    3423, 342, 4324],
+    [4432, 43,   4,   32],
+    [22,   3432, 23,  4],
+];
+
+abstract class MyClass {
+    public function method($x,$y,    $z){}
+
+    abstract public function absMethod($foo,$bar,   $baz);
+}
+
+trait MyTrait {
+    protected function method($a,$b,    $c){}
+}
+
+interface MyInterface {
+    public function method($x,$y,  $z);
+}
+
+echo $x /* some comment here */ ,
+    $y;
+
+echo $x,// comment here
+    $y;
+
+echo $foo /** @var $bar */
+    ,$bar;
+
+echo $foo, /** @var $bar */
+    $bar;
+
+$arr = [[1,   2,   3]];
+$arr = array_unique([1,  2],  [3,  4]);
