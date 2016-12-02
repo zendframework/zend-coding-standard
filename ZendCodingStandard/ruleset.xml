@@ -7,7 +7,12 @@
     <arg name="colors"/>
 
     <!-- PSR-2 base -->
-    <rule ref="PSR2"/>
+    <rule ref="PSR2">
+        <!-- Below 3 rules are covered by ZendCodingStandard.PHP.LowerCaseKeywordSniff -->
+        <exclude name="Generic.PHP.LowerCaseKeyword"/>
+        <exclude name="Squiz.ControlStructures.LowercaseDeclaration"/>
+        <exclude name="Squiz.Functions.LowercaseFunctionKeywords"/>
+    </rule>
 
     <!-- Generic Rules -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
