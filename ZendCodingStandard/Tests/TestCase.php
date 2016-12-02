@@ -39,7 +39,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             }
 
             $path = $file->getPathname();
-            if ($path !== $testFileBase . 'php' && substr($path, -5) !== 'fixed') {
+            if (substr($path, 0, strlen($testFileBase)) === $testFileBase
+                && $path !== $testFileBase . 'php'
+                && substr($path, -5) !== 'fixed'
+            ) {
                 $testFiles[] = $path;
             }
         }
