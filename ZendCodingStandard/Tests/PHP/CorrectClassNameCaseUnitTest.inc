@@ -48,8 +48,10 @@ class MyClass
         throw new Invalidargumentexception;
     }
 
-    public function fromNamespace()
+    public function fromNamespace($foo)
     {
+        $closure = function () use ($foo) {};
+
         return new CorrectclassnamecaseUnitTest();
     }
 }

@@ -7,6 +7,8 @@ use PHP_CodeSniffer_Sniff;
 /**
  * TODO: Better results for this sniff we will have if the parsed class is imported.
  * We can "include" the file on process, but probably it is not the best solution.
+ *
+ * TODO: Checks T_STRING (classes in doc comments?)
  */
 class CorrectClassNameCaseSniff implements PHP_CodeSniffer_Sniff
 {
@@ -137,6 +139,12 @@ class CorrectClassNameCaseSniff implements PHP_CodeSniffer_Sniff
     private function checkUse(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+
+        // Ignore USE keywords inside closures.
+        $next = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
+        if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
+            return;
+        }
 
         $nextToken = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
 
