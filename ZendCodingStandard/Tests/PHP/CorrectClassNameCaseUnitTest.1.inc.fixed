@@ -1,0 +1,11 @@
+<?php
+
+use ArrayObject as AO;
+
+new DateTime;
+
+new AO;
+new AO;
+new \ArrayObject();
+
+DateTime::createFromFormat();
