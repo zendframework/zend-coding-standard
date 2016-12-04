@@ -6,11 +6,19 @@ use PHP_CodeSniffer_Sniff;
 
 class DocCommentSniff implements PHP_CodeSniffer_Sniff
 {
+    /**
+     * @return array
+     */
     public function register()
     {
         return [T_DOC_COMMENT_OPEN_TAG];
     }
 
+    /**
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
+     * @return void
+     */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
@@ -39,6 +47,14 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         $this->checkBlankLinesInComment($phpcsFile, $commentStart, $commentEnd);
     }
 
+    /**
+     * Checks if doc comment is empty.
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @param int $commentEnd
+     * @return bool
+     */
     private function checkIfEmpty(PHP_CodeSniffer_File $phpcsFile, $commentStart, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
@@ -85,7 +101,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             ) {
                 $phpcsFile->fixer->replaceToken($commentStart - 1, '');
             } elseif ($tokens[$commentStart - 1]['code'] === T_OPEN_TAG
-                && ($next = $phpcsFile->findNext([T_WHITESPACE], $commentEnd + 1, null, true))
+                && ($next = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true))
                 && $tokens[$next]['line'] > $tokens[$commentEnd]['line'] + 1
             ) {
                 $phpcsFile->fixer->replaceToken($commentEnd + 1, '');
@@ -96,22 +112,31 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         return true;
     }
 
+    /**
+     * Checks if there is no any other content before doc comment opening tag,
+     * and if there is blank line before doc comment (for multiline doc comment).
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @return void
+     */
     private function checkBeforeOpen(PHP_CodeSniffer_File $phpcsFile, $commentStart)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $previous = $phpcsFile->findPrevious([T_WHITESPACE], $commentStart - 1, null, true);
+        $previous = $phpcsFile->findPrevious(T_WHITESPACE, $commentStart - 1, null, true);
         if ($tokens[$previous]['line'] === $tokens[$commentStart]['line']) {
             $error = 'The open comment tag must be the only content on the line.';
             $fix = $phpcsFile->addFixableError($error, $commentStart);
 
             if ($fix) {
-                $nonEmpty = $phpcsFile->findPrevious([T_WHITESPACE], $commentStart - 1, null, true);
+                $nonEmpty = $phpcsFile->findPrevious(T_WHITESPACE, $commentStart - 1, null, true);
                 $phpcsFile->fixer->beginChangeset();
                 $prev = $commentStart;
-                while ($prev = $phpcsFile->findPrevious([T_WHITESPACE], $prev - 1, $nonEmpty)) {
+                while ($prev = $phpcsFile->findPrevious(T_WHITESPACE, $prev - 1, $nonEmpty)) {
                     $phpcsFile->fixer->replaceToken($prev, '');
                 }
+                $phpcsFile->fixer->replaceToken($nonEmpty, trim($tokens[$nonEmpty]['content']));
                 $phpcsFile->fixer->addNewline($commentStart - 1);
                 $phpcsFile->fixer->endChangeset();
             }
@@ -123,20 +148,23 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             $fix = $phpcsFile->addFixableError($error, $commentStart);
 
             if ($fix) {
-//                if ($tokens[$commentStart - 1]['code'] === T_WHITESPACE) {
-                $phpcsFile->fixer->addNewlineBefore($commentStart - 1);
-//                } else {
-//                    $phpcsFile->fixer->addNewlineBefore($commentStart);
-//                }
+                $phpcsFile->fixer->addNewlineBefore($commentStart);
             }
         }
     }
 
+    /**
+     * Checks if there is no any other content after doc comment opening tag (for multiline doc comment).
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @return void
+     */
     private function checkAfterOpen(PHP_CodeSniffer_File $phpcsFile, $commentStart)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $next = $phpcsFile->findNext([T_DOC_COMMENT_WHITESPACE], $commentStart + 1, null, true);
+        $next = $phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $commentStart + 1, null, true);
         if ($tokens[$next]['line'] === $tokens[$commentStart]['line']) {
             $error = 'The open comment tag must be the only content on the line.';
             $fix = $phpcsFile->addFixableError($error, $commentStart);
@@ -164,11 +192,18 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
     }
 
+    /**
+     * Checks if there is no any other content before doc comment closing tag (for multiline doc comment).
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentEnd
+     * @return void
+     */
     private function checkBeforeClose(PHP_CodeSniffer_File $phpcsFile, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $previous = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE], $commentEnd - 1, null, true);
+        $previous = $phpcsFile->findPrevious(T_DOC_COMMENT_WHITESPACE, $commentEnd - 1, null, true);
         if ($tokens[$previous]['line'] === $tokens[$commentEnd]['line']) {
             $error = 'The close comment tag must be the only content on the line.';
             $fix = $phpcsFile->addFixableError($error, $commentEnd);
@@ -185,6 +220,14 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
     }
 
+    /**
+     * Checks if there is no any other content after doc comment closing tag (for multiline doc comment).
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @param int $commentEnd
+     * @return void
+     */
     private function checkAfterClose(PHP_CodeSniffer_File $phpcsFile, $commentStart, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
@@ -194,7 +237,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             T_USE,
         ];
 
-        $next = $phpcsFile->findNext([T_WHITESPACE], $commentEnd + 1, null, true);
+        $next = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
 
         if (! $next) {
             $error = 'Doc comment is not allowed at the end of the file.';
@@ -236,6 +279,15 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
     }
 
+    /**
+     * Checks if there is exactly one space after doc comment opening tag,
+     * and exactly one space before closing tag (for single line doc comment).
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @param int $commentEnd
+     * @return void
+     */
     private function checkSpacesInOneLineComment(PHP_CodeSniffer_File $phpcsFile, $commentStart, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
@@ -273,6 +325,17 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
     }
 
+    /**
+     * Checks if there is one space after star in multiline doc comment.
+     * More than one space is allowed, unless the line contains tag.
+     *
+     * TODO: needs to check with doctrine annotations
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @param int $commentEnd
+     * @return void
+     */
     private function checkSpacesAfterStar(PHP_CodeSniffer_File $phpcsFile, $commentStart, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
@@ -307,6 +370,15 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
     }
 
+    /**
+     * Doc comment cannot have empty line on the beginning of the comment, at the end of the comment,
+     * and there is allowed only one empty line between two comment sections.
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @param int $commentEnd
+     * @return void
+     */
     private function checkBlankLinesInComment(PHP_CodeSniffer_File $phpcsFile, $commentStart, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
@@ -362,7 +434,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             if ($tokens[$next]['line'] > $tokens[$from]['line'] + 2) {
                 $error = 'More than one blank line between parts of doc block.';
                 $i = 0;
-                while ($token = $phpcsFile->findNext([T_DOC_COMMENT_STAR], $from + 1, $next - 2)) {
+                while ($token = $phpcsFile->findNext(T_DOC_COMMENT_STAR, $from + 1, $next - 2)) {
                     if ($i++ > 0) {
                         $fix = $phpcsFile->addFixableError($error, $token);
 
@@ -382,6 +454,14 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
     }
 
+    /**
+     * Checks indents of the comment (opening tag, lines with star, closing tag).
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $commentStart
+     * @param int $commentEnd
+     * @return void
+     */
     private function checkCommentIndents(PHP_CodeSniffer_File $phpcsFile, $commentStart, $commentEnd)
     {
         $tokens = $phpcsFile->getTokens();
@@ -391,7 +471,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
             T_USE,
         ];
 
-        $next = $phpcsFile->findNext([T_WHITESPACE], $commentEnd + 1, null, true);
+        $next = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
 
         // There is something exactly in the next line.
         if ($next && $tokens[$next]['line'] === $tokens[$commentEnd]['line'] + 1) {
@@ -413,7 +493,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
         }
 
         // The open tag is alone in the line.
-        $previous = $phpcsFile->findPrevious([T_WHITESPACE], $commentStart - 1, null, true);
+        $previous = $phpcsFile->findPrevious(T_WHITESPACE, $commentStart - 1, null, true);
         if ($tokens[$previous]['line'] < $tokens[$commentStart]['line']) {
             // Check if comment starts with the same indent.
             $spaces = $tokens[$commentStart - 1];
