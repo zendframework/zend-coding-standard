@@ -22,6 +22,7 @@ use FooBar\Unused5;
 use Used10;
 use Used11;
 use FooBar\Used12 as AliasUsed12;
+use FooBar\Used13;
 
 /**
  * @Used10
@@ -65,6 +66,9 @@ class Foo
         AliasUsed9::create();
 
         // @var Unused5 $x
+        $x = $y;
+
+        /** @var Used13\MyType $x */
         $x = $y;
     }
 }
