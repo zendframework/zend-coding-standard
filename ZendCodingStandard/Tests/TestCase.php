@@ -83,7 +83,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                 ));
             }
 
-
             $failures = $this->generateFailureMessages($phpcsFile);
             $failureMessages = array_merge($failureMessages, $failures);
 
