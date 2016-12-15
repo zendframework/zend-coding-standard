@@ -19,6 +19,8 @@ class InstantiatingParenthesisUnitTest extends TestCase
             27 => 1,
             29 => 1,
             30 => 1,
+            32 => 1,
+            33 => 1,
         ];
     }
 

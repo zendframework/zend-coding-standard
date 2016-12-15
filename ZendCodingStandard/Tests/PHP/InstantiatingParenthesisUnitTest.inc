@@ -28,3 +28,6 @@ new $var;
 
 [new DateTime];
 array(new DateTime);
+
+$anonymousClass = new class{};
+$anonymousClass = new class {};

@@ -26,10 +26,12 @@ class InstantiatingParenthesisSniff implements PHP_CodeSniffer_Sniff
 
         $end = $phpcsFile->findNext(
             array_merge(PHP_CodeSniffer_Tokens::$emptyTokens, [
+                T_ANON_CLASS,
                 T_NS_SEPARATOR,
+                T_SELF, // currently not used, @see https://github.com/squizlabs/PHP_CodeSniffer/issues/1245
+                T_STATIC,
                 T_STRING,
                 T_VARIABLE,
-                T_STATIC,
             ]),
             $stackPtr + 1,
             null,
@@ -37,11 +39,18 @@ class InstantiatingParenthesisSniff implements PHP_CodeSniffer_Sniff
         );
 
         if ($tokens[$end]['code'] !== T_OPEN_PARENTHESIS) {
+            $last = $phpcsFile->findPrevious(
+                PHP_CodeSniffer_Tokens::$emptyTokens,
+                $end - 1,
+                $stackPtr + 1,
+                true
+            );
+
             $error = 'Missing parenthesis on instantiating a new class.';
             $fix = $phpcsFile->addFixableError($error, $stackPtr);
 
             if ($fix) {
-                $phpcsFile->fixer->addContentBefore($end, '()');
+                $phpcsFile->fixer->addContent($last, '()');
             }
         }
     }
