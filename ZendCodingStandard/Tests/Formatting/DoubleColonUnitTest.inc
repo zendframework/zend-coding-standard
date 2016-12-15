@@ -1,0 +1,33 @@
+<?php
+
+\DateTime
+::
+createFromFormat('Y-m-d', '2016-01-01');
+
+\DateTime :: createFromFormat('Y-m-d', '2016-01-01');
+
+\DateTime
+    ::
+    createFromFormat('Y-m-d', '2016-01-01');
+
+\DateTime
+    /* comment */::// comment
+    createFromFormat('Y-m-d', '2016-01-01');
+
+\DateTime
+    :: // comment
+    createFromFormat('Y-m-d', '2016-01-01');
+
+$class = \DateTime::class;
+$var = 'createFromFormat';
+
+$class :: $var('Y-m-d', '2016-01-01');
+
+class MyDateTime extends \DateTime
+{
+    public function __construct($time = 'now', DateTimeZone $timezone = null)
+    {
+        parent
+            :: __construct($time, $timezone);
+    }
+}
