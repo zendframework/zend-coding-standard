@@ -29,7 +29,7 @@ class RedundantSemicolonSniff implements PHP_CodeSniffer_Sniff
         }
 
         $scopeCondition = $tokens[$stackPtr]['scope_condition'];
-        if (in_array($tokens[$scopeCondition]['code'], [T_ANON_CLASS, T_CLOSURE])) {
+        if (in_array($tokens[$scopeCondition]['code'], [T_ANON_CLASS, T_CLOSURE], true)) {
             return;
         }
 

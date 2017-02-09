@@ -209,7 +209,7 @@ class CorrectClassNameCaseSniff implements PHP_CodeSniffer_Sniff
     private function checkClass(PHP_CodeSniffer_File $phpcsFile, $start, $end, $isGlobalUse = false)
     {
         $class = trim($phpcsFile->getTokensAsString($start, $end - $start));
-        if ($class[0] == '\\') {
+        if ($class[0] === '\\') {
             $result = $this->hasDifferentCase(ltrim($class, '\\'));
             if ($result) {
                 $this->error($phpcsFile, $start, $end, '\\' . $result, $class);

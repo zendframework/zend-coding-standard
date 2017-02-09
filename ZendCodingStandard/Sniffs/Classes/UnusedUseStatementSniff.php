@@ -156,10 +156,11 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
                     ) {
                         return;
                     }
-                } elseif ($tokens[$beforeUsage]['code'] === T_DOC_COMMENT_TAG &&
-                    in_array(
+                } elseif ($tokens[$beforeUsage]['code'] === T_DOC_COMMENT_TAG
+                    && in_array(
                         $tokens[$beforeUsage]['content'],
-                        ['@var', '@param', '@return', '@throws', '@method']
+                        ['@var', '@param', '@return', '@throws', '@method'],
+                        true
                     )
                 ) {
                     return;

@@ -484,8 +484,8 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
                 $indent = 0;
             }
         } elseif (! $next
-            || $tokens[$next]['line'] > $tokens[$commentEnd]['line'] + 1
-            && in_array($tokens[$next]['code'], $allowEmptyLineBefore)
+            || ($tokens[$next]['line'] > $tokens[$commentEnd]['line'] + 1
+                && in_array($tokens[$next]['code'], $allowEmptyLineBefore, true))
         ) {
             $indent = 0;
         } else {
@@ -554,7 +554,7 @@ class DocCommentSniff implements PHP_CodeSniffer_Sniff
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($next - 1, $phpcsFile->eolChar . ' ');
                     }
-                } elseif ($spaces['code'] == T_DOC_COMMENT_WHITESPACE
+                } elseif ($spaces['code'] === T_DOC_COMMENT_WHITESPACE
                     && strlen($spaces['content']) !== $indent + 1
                 ) {
                     $error = 'Invalid doc comment indent. Expected %d spaces; %d found';

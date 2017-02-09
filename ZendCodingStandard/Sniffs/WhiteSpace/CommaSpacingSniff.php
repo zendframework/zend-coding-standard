@@ -56,7 +56,7 @@ class CommaSpacingSniff implements PHP_CodeSniffer_Sniff
             if ($fix) {
                 $phpcsFile->fixer->addContent($stackPtr, ' ');
             }
-        } elseif ($nextToken['content'] != ' ') {
+        } elseif ($nextToken['content'] !== ' ') {
             // There is more than one space after comma.
 
             $nonSpace = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
