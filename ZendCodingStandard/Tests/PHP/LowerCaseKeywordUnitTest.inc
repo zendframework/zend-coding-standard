@@ -14,6 +14,8 @@ ABSTRACT CLASS MyClass
     {
         PARENT::method();
         NEW \DateTime();
+        NEW SELF();
+        NEW STATIC();
 
         STATIC::method();
         SELF::method();

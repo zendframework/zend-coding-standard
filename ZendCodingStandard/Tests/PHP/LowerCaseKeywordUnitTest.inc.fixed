@@ -14,6 +14,8 @@ abstract class MyClass
     {
         parent::method();
         new \DateTime();
+        new self();
+        new static();
 
         static::method();
         self::method();
