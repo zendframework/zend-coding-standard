@@ -17,6 +17,7 @@ use Used10;
 use Used11;
 use FooBar\Used12 as AliasUsed12;
 use FooBar\Used13;
+use Unused6, Unused7;
 
 /**
  * @Used10
