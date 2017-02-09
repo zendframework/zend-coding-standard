@@ -8,7 +8,7 @@ use PHP_CodeSniffer_Tokens;
 class RedundantSemicolonSniff implements PHP_CodeSniffer_Sniff
 {
     /**
-     * @return array
+     * @return int[]
      */
     public function register()
     {

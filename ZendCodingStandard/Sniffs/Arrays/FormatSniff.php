@@ -14,7 +14,7 @@ class FormatSniff implements PHP_CodeSniffer_Sniff
     public $indent = 4;
 
     /**
-     * @return array
+     * @return int[]
      */
     public function register()
     {
@@ -119,7 +119,7 @@ class FormatSniff implements PHP_CodeSniffer_Sniff
 
                 $expected = $indent + $this->indent;
 
-                // Checks array element indent.
+                // Check array element indent.
                 if ($firstOnLine = $phpcsFile->findFirstOnLine(T_WHITESPACE, $next)) {
                     $found = strlen($tokens[$firstOnLine]['content']);
                     if ($found !== $expected) {

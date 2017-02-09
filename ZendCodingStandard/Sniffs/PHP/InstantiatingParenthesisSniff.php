@@ -28,7 +28,7 @@ class InstantiatingParenthesisSniff implements PHP_CodeSniffer_Sniff
             array_merge(PHP_CodeSniffer_Tokens::$emptyTokens, [
                 T_ANON_CLASS,
                 T_NS_SEPARATOR,
-                T_SELF, // currently not used, @see https://github.com/squizlabs/PHP_CodeSniffer/issues/1245
+                T_SELF,
                 T_STATIC,
                 T_STRING,
                 T_VARIABLE,

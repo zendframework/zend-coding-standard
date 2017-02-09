@@ -26,9 +26,7 @@ use ZendCodingStandard\CodingStandard;
 class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
 {
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
+     * @return int[]
      */
     public function register()
     {
@@ -36,11 +34,8 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token in
-     *                      the stack passed in $tokens.
+     * @param PHP_CodeSniffer_File $phpcsFile The
+     * @param int $stackPtr
      * @return void
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -53,6 +48,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
         }
 
         // Seek to the end of the statement and get the string before the semi colon.
+        // It works only with one USE keyword per declaration.
         $semiColon = $phpcsFile->findEndOfStatement($stackPtr);
         if ($tokens[$semiColon]['code'] !== T_SEMICOLON) {
             return;

@@ -7,7 +7,7 @@ use PHP_CodeSniffer_Sniff;
 class BlankLineSniff implements PHP_CodeSniffer_Sniff
 {
     /**
-     * @return array
+     * @return int[]
      */
     public function register()
     {

@@ -14,6 +14,12 @@ class LineAfterSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff
         parent::__construct([T_CLASS, T_INTERFACE, T_TRAIT], [T_FUNCTION]);
     }
 
+    /**
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
+     * @param int $currScope
+     * @return void
+     */
     protected function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope)
     {
         $tokens = $phpcsFile->getTokens();

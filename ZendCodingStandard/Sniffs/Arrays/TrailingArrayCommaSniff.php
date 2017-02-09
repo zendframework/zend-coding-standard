@@ -10,17 +10,17 @@ use PHP_CodeSniffer_Sniff;
 
 class TrailingArrayCommaSniff implements PHP_CodeSniffer_Sniff
 {
+    /**
+     * @return int[]
+     */
     public function register()
     {
         return [T_OPEN_SHORT_ARRAY];
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token in
-     *                      the stack passed in $tokens.
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
      * @return void
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
