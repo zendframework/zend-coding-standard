@@ -1,0 +1,27 @@
+<?php
+
+namespace Foo {
+    use A;
+use B;
+use function X;
+use function Y;
+use const C;
+use const D;
+
+    $foo = 1;
+    $closure = function ($x) use ($foo) {
+    };
+}
+
+namespace Bar {
+    use A;
+use D;
+use function B;
+use function E;
+use const C;
+use const F;
+
+    class J {
+        use MyTrait;
+    }
+}

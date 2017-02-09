@@ -1,0 +1,7 @@
+<?php
+
+use const E_ALL as E;
+use function array_merge as am;
+use ZendCodingStandard\CodingStandard;
+use const E_ERROR as EE;
+use function \array_diff as ad;

@@ -59,10 +59,6 @@
     </rule>
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
 
-    <!-- Slevomat Rules -->
-    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Namespaces/AlphabeticallySortedUsesSniff.php"/>
-    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Namespaces/UseDoesNotStartWithBackslashSniff.php"/>
-
     <!-- ZendCodingStandard Rules -->
     <rule ref="ZendCodingStandard.Commenting.VariableComment">
         <exclude name="ZendCodingStandard.Commenting.VariableComment.Missing"/>

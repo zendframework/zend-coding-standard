@@ -1,0 +1,17 @@
+<?php
+namespace Foo;
+
+use \DateTime;
+use const \E_COMPILE_ERROR as ECE;
+use FUNCTION\array_combine as ac;
+
+class Bar
+{
+    use MyTrait;
+
+    public function __construct($foo)
+    {
+        $closure = function ($x) use ($foo) {
+        };
+    }
+}
