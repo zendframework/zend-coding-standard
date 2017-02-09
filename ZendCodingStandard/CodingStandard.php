@@ -1,6 +1,10 @@
 <?php
 namespace ZendCodingStandard;
 
+use PHP_CodeSniffer;
+use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Tokens;
+
 class CodingStandard
 {
     public static $allowedTypes = [
@@ -59,6 +63,29 @@ class CodingStandard
             return 'array';
         }
 
-        return \PHP_CodeSniffer::suggestType($varType);
+        return PHP_CodeSniffer::suggestType($varType);
+    }
+
+    /**
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
+     * @return bool
+     */
+    public static function isTraitUse(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // Ignore USE keywords inside closures.
+        $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
+            return false;
+        }
+
+        // Ignore global USE keywords.
+        if (! $phpcsFile->hasCondition($stackPtr, [T_CLASS, T_TRAIT, T_ANON_CLASS])) {
+            return false;
+        }
+
+        return true;
     }
 }

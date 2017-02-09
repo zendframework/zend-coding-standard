@@ -1,0 +1,40 @@
+<?php
+namespace MyApp\MyNamespace;
+
+use Foo\BazTrait;
+use MyProject\HelloWorld;
+
+class Foo
+{
+    use BazTrait,
+        \MyTrait;
+use Hello { sayHello as private myPrivateHello; }
+use HelloWorld
+    { sayHello as protected;}
+use    TooManySpaces;
+use XTrait  , YTrait
+        ;
+use \A, \B {
+        \B::smallTalk insteadof \A;
+      \A::bigTalk insteadof \B;
+    }
+use \AnotherTrait    {
+        \AnotherTrait::method as methodAlias;
+    }
+use \BarTrait    ;
+use\Foo\ ATrait;
+
+
+    /**
+     * @param mixed $x
+     */
+    public function __construct($x)
+    {
+        $anonymousClass = new class {
+            use ATrait;
+use BTrait;
+        };
+
+        $closure = function () use ($x) {};
+    }
+}
