@@ -8,7 +8,7 @@
  *
  * @todo remove once merged to squizlabs/PHP_CodeSniffer (?)
  */
-namespace ZendCodingStandard\Sniffs\Classes;
+namespace ZendCodingStandard\Sniffs\Namespaces;
 
 use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Sniff;

@@ -1,5 +1,5 @@
 <?php
-namespace ZendCodingStandard\Tests\Classes;
+namespace ZendCodingStandard\Tests\Namespaces;
 
 use ZendCodingStandard\Tests\TestCase;
 
