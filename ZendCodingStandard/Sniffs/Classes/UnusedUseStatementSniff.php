@@ -13,6 +13,7 @@ namespace ZendCodingStandard\Sniffs\Classes;
 use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Sniff;
 use PHP_CodeSniffer_Tokens;
+use ZendCodingStandard\CodingStandard;
 
 /**
  * Checks for "use" statements that are not needed in a file.
@@ -47,7 +48,7 @@ class UnusedUseStatementSniff implements PHP_CodeSniffer_Sniff
         $tokens = $phpcsFile->getTokens();
 
         // Only check use statements in the global scope.
-        if (! empty($tokens[$stackPtr]['conditions'])) {
+        if (! CodingStandard::isGlobalUse($phpcsFile, $stackPtr)) {
             return;
         }
 

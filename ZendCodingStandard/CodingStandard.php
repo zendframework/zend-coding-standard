@@ -88,4 +88,27 @@ class CodingStandard
 
         return true;
     }
+
+    /**
+     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
+     * @return bool
+     */
+    public static function isGlobalUse(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // Ignore USE keywords inside closures.
+        $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
+            return false;
+        }
+
+        // Ignore USE keywords for traits.
+        if ($phpcsFile->hasCondition($stackPtr, [T_CLASS, T_TRAIT, T_ANON_CLASS])) {
+            return false;
+        }
+
+        return true;
+    }
 }
