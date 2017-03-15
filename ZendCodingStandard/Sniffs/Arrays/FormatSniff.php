@@ -107,7 +107,10 @@ class FormatSniff implements PHP_CodeSniffer_Sniff
                     }
                 }
             } else {
-                if ($previousLine < $tokens[$next]['line'] - 1) {
+                if ($previousLine < $tokens[$next]['line'] - 1
+                    && (! empty($tokens[$stackPtr]['conditions'])
+                        || $previousLine === $tokens[$bracketOpener]['line'])
+                ) {
                     $firstOnLine = $phpcsFile->findFirstOnLine([], $next, true);
 
                     $fix = $phpcsFile->addFixableError('Empty line is not allowed here.', $firstOnLine - 1);

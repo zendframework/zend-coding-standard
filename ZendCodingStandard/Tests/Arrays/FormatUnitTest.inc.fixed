@@ -3,11 +3,13 @@ $a1 = ['foo', 'bar'];
 $a2 = [
     'foo',
     'bar',
+
     function() {
 
   },
     'elem',
     new \DateTime(),
+
     // comment
     ['a', 'b', 'c'],
     /* comment */ 'val',
