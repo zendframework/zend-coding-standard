@@ -7,6 +7,12 @@ cache:
     - $HOME/.composer/cache
     - vendor
 
+env:
+  global:
+    - COMPOSER_ARGS="--no-interaction"
+    - COVERAGE_DEPS="satooshi/php-coveralls"
+    - LEGACY_DEPS="phpunit/phpunit"
+
 matrix:
   include:
     - php: 5.6
