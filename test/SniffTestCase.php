@@ -7,15 +7,17 @@
 
 namespace ZendTest\CodingStandard;
 
-use PHPUnit\Framework\Constraint\IsEqual;
+use PHP_CodeSniffer;
+use PHP_CodeSniffer_File as File;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\InvalidArgumentHelper;
+use ReflectionProperty;
 
 class SniffTestCase extends TestCase
 {
     public function processAsset($asset)
     {
-        $phpcs = new \PHP_CodeSniffer();
+        $phpcs = new PHP_CodeSniffer();
 
         $standard = 'src/ZendCodingStandard/ruleset.xml';
         $options = array_merge($phpcs->cli->getDefaults(), [
@@ -25,7 +27,7 @@ class SniffTestCase extends TestCase
             'showSources' => true,
         ]);
 
-        $reflection = new \ReflectionProperty($phpcs->cli, 'values');
+        $reflection = new ReflectionProperty($phpcs->cli, 'values');
         $reflection->setAccessible(true);
         $reflection->setValue($phpcs->cli, $options);
 
@@ -35,9 +37,9 @@ class SniffTestCase extends TestCase
         return $phpcs->processFile($asset);
     }
 
-    public function assertErrorCount($expectedCount, \PHP_CodeSniffer_File $file)
+    public function assertErrorCount($expectedCount, File $file)
     {
-        if (! \is_int($expectedCount)) {
+        if (! is_int($expectedCount)) {
             throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
@@ -46,21 +48,16 @@ class SniffTestCase extends TestCase
             str_replace(__DIR__, 'test', $file->getFilename()),
             $expectedCount
         );
-
-        static::assertThat(
-            $file->getErrorCount(),
-            new IsEqual($expectedCount),
-            $message
-        );
+        $this->assertEquals($expectedCount, $file->getErrorCount(), $message);
     }
 
-    public function assertHasError($expectedError, \PHP_CodeSniffer_File $file)
+    public function assertHasError($expectedError, File $file)
     {
         foreach ($file->getErrors() as $line => $lineErrors) {
             foreach ($lineErrors as $column => $errors) {
                 foreach ($errors as $error) {
                     if (isset($error['source']) && $error['source'] === $expectedError) {
-                        static::assertThat(true, static::isTrue());
+                        $this->assertTrue(true);
 
                         return;
                     }
@@ -73,13 +70,12 @@ class SniffTestCase extends TestCase
             str_replace(__DIR__, 'test', $file->getFilename()),
             $expectedError
         );
-
-        static::assertThat(false, static::isTrue(), $message);
+        $this->assertTrue(false, $message);
     }
 
-    public function assertWarningCount($expectedCount, \PHP_CodeSniffer_File $file)
+    public function assertWarningCount($expectedCount, File $file)
     {
-        if (! \is_int($expectedCount)) {
+        if (! is_int($expectedCount)) {
             throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
@@ -88,21 +84,16 @@ class SniffTestCase extends TestCase
             str_replace(__DIR__, 'test', $file->getFilename()),
             $expectedCount
         );
-
-        static::assertThat(
-            $file->getWarningCount(),
-            new IsEqual($expectedCount),
-            $message
-        );
+        $this->assertEquals($expectedCount, $file->getWarningCount(), $message);
     }
 
-    public function assertHasWarning($expectedError, \PHP_CodeSniffer_File $file)
+    public function assertHasWarning($expectedError, File $file)
     {
         foreach ($file->getWarnings() as $line => $lineErrors) {
             foreach ($lineErrors as $column => $errors) {
                 foreach ($errors as $error) {
                     if (isset($error['source']) && $error['source'] === $expectedError) {
-                        static::assertThat(true, static::isTrue());
+                        $this->assertTrue(true);
 
                         return;
                     }
@@ -115,11 +106,10 @@ class SniffTestCase extends TestCase
             str_replace(__DIR__, 'test', $file->getFilename()),
             $expectedError
         );
-
-        static::assertThat(false, static::isTrue(), $message);
+        $this->assertTrue(false, $message);
     }
 
-    public function assertAssetCanBeFixed($fixed, \PHP_CodeSniffer_File $file)
+    public function assertAssetCanBeFixed($fixed, File $file)
     {
         if ($fixed === null) {
             $message = sprintf(
