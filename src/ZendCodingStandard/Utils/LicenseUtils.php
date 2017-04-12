@@ -9,6 +9,9 @@ namespace Zend\CodingStandard\Utils;
 
 use SplFileInfo;
 
+/**
+ * License Utility class
+ */
 class LicenseUtils
 {
     public static $copyrightLine = 'Copyright (c) %s, Zend Technologies USA, Inc.';
@@ -52,11 +55,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 EOF;
 
+    /**
+     * Get COPYING.md as an object
+     *
+     * @return SplFileInfo
+     */
     public static function getCopyrightFile()
     {
         return new SplFileInfo('COPYING.md');
     }
 
+    /**
+     * Create a new copyright file if it does not exist
+     *
+     * @param SplFileInfo|null $file
+     */
     public static function createCopyrightFile(SplFileInfo $file = null)
     {
         if ($file === null) {
@@ -73,11 +86,21 @@ EOF;
         $file->fwrite(sprintf(self::$copyright, gmdate('Y')));
     }
 
+    /**
+     * Get COPYING.md as an object
+     *
+     * @return SplFileInfo
+     */
     public static function getLicenseFile()
     {
         return new SplFileInfo('LICENSE.md');
     }
 
+    /**
+     * Create a new license file if it does not exist
+     *
+     * @param SplFileInfo|null $file
+     */
     public static function createLicenseFile(SplFileInfo $file = null)
     {
         if ($file === null) {
@@ -94,6 +117,12 @@ EOF;
         $file->fwrite(sprintf(self::$license, gmdate('Y')));
     }
 
+    /**
+     * Update the copyright line
+     * The copyright line must be the first one in the file.
+     *
+     * @param SplFileInfo|null $file
+     */
     public static function updateCopyright(SplFileInfo $file, $firstYear, $lastYear = null)
     {
         if ($lastYear === null) {
@@ -111,22 +140,12 @@ EOF;
         file_put_contents($file->getRealPath(), $content);
     }
 
-    public static function getCopyrightFirstYear(SplFileInfo $file)
-    {
-        if (! $file->getRealPath()) {
-            return null;
-        }
-
-        $content = file($file->getRealPath());
-        $matches = [];
-        preg_match('|(?<start>[\d]{4})(-(?<end>[\d]{4}))?|', $content[0], $matches);
-
-        $licenseFirstYear = isset($matches['start']) ? $matches['start'] : null;
-        $licenseLastYear = isset($matches['end']) ? $matches['end'] : null;
-
-        return $licenseFirstYear;
-    }
-
+    /**
+     * Detect the copyright date range from the first line in a file
+     *
+     * @param SplFileInfo $file
+     * @return array[string|null,string|null]
+     */
     public static function getCopyrightDate(SplFileInfo $file)
     {
         if (! $file->getRealPath()) {

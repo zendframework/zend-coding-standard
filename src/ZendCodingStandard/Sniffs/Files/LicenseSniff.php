@@ -5,10 +5,21 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
+use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer_Sniff as Sniff;
 use Zend\CodingStandard\Utils\LicenseUtils;
 
-class ZendCodingStandard_Sniffs_Files_LicenseSniff implements \PHP_CodeSniffer_Sniff
+/**
+ * LICENSE.md Sniff
+ *
+ * - Checks and creates LICENSE.md in the project root dir
+ * - Checks and fixes copyright in LICENSE.md; it should be the current year
+ */
+class ZendCodingStandard_Sniffs_Files_LicenseSniff implements Sniff
 {
+    /**
+     * @var SplFileInfo
+     */
     private $licenseFile;
 
     public function __construct()
@@ -20,7 +31,6 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements \PHP_CodeSniffer_S
      * Registers the tokens that this sniff wants to listen for.
      *
      * @return int[]
-     * @see    Tokens.php
      */
     public function register()
     {
@@ -31,18 +41,14 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements \PHP_CodeSniffer_S
      * Called when one of the token types that this sniff is listening for is
      * found.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where the
-     *                                        token was found.
-     * @param int                  $stackPtr  The position in the PHP_CodeSniffer
-     *                                        file's token stack where the token
-     *                                        was found.
-     *
+     * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+     * @param int $stackPtr The position in the PHP_CodeSniffer file's token stack
+     *                      where the token was found.
      * @return int Optionally returns a stack pointer. The sniff will not be
-     *                  called again on the current file until the returned stack
-     *                  pointer is reached. Return (count($tokens) + 1) to skip
-     *                  the rest of the file.
+     *             called again on the current file until the returned stack
+     *             pointer is reached.
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         // Skip all files except the license file
         if (substr($phpcsFile->getFilename(), -10) !== $this->licenseFile->getFilename()) {

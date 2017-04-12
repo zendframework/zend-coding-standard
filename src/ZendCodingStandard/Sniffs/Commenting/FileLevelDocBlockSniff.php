@@ -5,38 +5,86 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
+use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer_Sniff as Sniff;
 use Zend\CodingStandard\Utils\LicenseUtils;
 
-class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements \PHP_CodeSniffer_Sniff
+/**
+ * FileLevelDocBlock Sniff
+ *
+ * - Checks if a file has a valid file-level docblock
+ * - Checks for missing/invalid see tag
+ * - Checks for missing/invalid copyright tag
+ * - Checks for missing/invalid license tag
+ * - Checks order of see, copyright and license tags
+ */
+class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sniff
 {
+    /**
+     * @var string
+     */
     private $repo;
 
+    /**
+     * @var string
+     */
     private $licenseFirstYear;
 
+    /**
+     * @var string
+     */
     private $licenseLastYear;
 
-    private $copyrightChanged;
+    /**
+     * @var boolean
+     */
+    private $copyrightChanged = false;
 
-    private $fix;
+    /**
+     * @var boolean
+     */
+    private $fix = false;
+
+    const IGNORE = [
+        T_CLASS,
+        T_INTERFACE,
+        T_TRAIT,
+        T_FUNCTION,
+        T_CLOSURE,
+        T_PUBLIC,
+        T_PRIVATE,
+        T_PROTECTED,
+        T_FINAL,
+        T_STATIC,
+        T_ABSTRACT,
+        T_CONST,
+        T_PROPERTY,
+        T_INCLUDE,
+        T_INCLUDE_ONCE,
+        T_REQUIRE,
+        T_REQUIRE_ONCE,
+    ];
 
     public function __construct()
     {
         $this->licenseFirstYear = gmdate('Y');
         $this->licenseLastYear = gmdate('Y');
 
-        $year = LicenseUtils::getCopyrightFirstYear(LicenseUtils::getCopyrightFile());
-        if ($year !== null && $year < $this->licenseFirstYear) {
-            $this->licenseFirstYear = $year;
+        // Detect copyright year in copying file
+        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate(LicenseUtils::getCopyrightFile());
+        if ($firstYear !== null && $firstYear < $this->licenseFirstYear) {
+            $this->licenseFirstYear = $firstYear;
         }
 
-        $year = LicenseUtils::getCopyrightFirstYear(LicenseUtils::getLicenseFile());
-        if ($year !== null && $year < $this->licenseFirstYear) {
-            $this->licenseFirstYear = $year;
+        // Detect copyright year in license file
+        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate(LicenseUtils::getLicenseFile());
+        if ($firstYear !== null && $firstYear < $this->licenseFirstYear) {
+            $this->licenseFirstYear = $firstYear;
         }
 
+        // Get current repo name from composer.json
         $content = file_get_contents('composer.json');
         $content = json_decode($content, true);
-
         $this->repo = $content['name'];
     }
 
@@ -44,7 +92,6 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements \PH
      * Registers the tokens that this sniff wants to listen for.
      *
      * @return int[]
-     * @see    Tokens.php
      */
     public function register()
     {
@@ -55,18 +102,15 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements \PH
      * Called when one of the token types that this sniff is listening for is
      * found.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where the
-     *                                        token was found.
-     * @param int                  $stackPtr  The position in the PHP_CodeSniffer
-     *                                        file's token stack where the token
-     *                                        was found.
+     * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
+     * @param int $stackPtr The position in the PHP_CodeSniffer file's token
+     *                      stack where the token was found.
      *
      * @return int Optionally returns a stack pointer. The sniff will not be
-     *                  called again on the current file until the returned stack
-     *                  pointer is reached. Return (count($tokens) + 1) to skip
-     *                  the rest of the file.
+     *             called again on the current file until the returned stack
+     *             pointer is reached.
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         // Skip license file
         if (in_array(substr($phpcsFile->getFilename(), -10), ['LICENSE.md', 'COPYING.md'])) {
@@ -103,27 +147,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements \PH
             true
         );
 
-        $ignore = [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_FUNCTION,
-            T_CLOSURE,
-            T_PUBLIC,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_FINAL,
-            T_STATIC,
-            T_ABSTRACT,
-            T_CONST,
-            T_PROPERTY,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-        ];
-
-        if (in_array($tokens[$nextToken]['code'], $ignore) === true) {
+        if (in_array($tokens[$nextToken]['code'], self::IGNORE) === true) {
             $phpcsFile->addError('Missing file-level DocBlock', $stackPtr, 'Missing');
             $phpcsFile->recordMetric($stackPtr, 'File has file-level DocBlock', 'no');
 
@@ -251,31 +275,23 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements \PH
         }
 
         if ($this->copyrightChanged === true && $this->fix === true) {
-            // Make sure the files exist
-            LicenseUtils::createCopyrightFile();
-            LicenseUtils::createLicenseFile();
-
-            // Update copyright file
-            LicenseUtils::updateCopyright(
+            $this->updateCopyrightLines(
                 LicenseUtils::getCopyrightFile(),
-                $this->licenseFirstYear,
-                $this->licenseLastYear
+                LicenseUtils::getLicenseFile()
             );
-
-            // Update license file
-            LicenseUtils::updateCopyright(
-                LicenseUtils::getLicenseFile(),
-                $this->licenseFirstYear,
-                $this->licenseLastYear
-            );
-
-            $this->copyrightChanged = false;
         }
 
         // Ignore the rest of the file.
         return ($phpcsFile->numTokens + 1);
     }
 
+    /**
+     * Parse copyright line
+     *
+     * Detect year range and update the current first and last years if needed.
+     *
+     * @param $string
+     */
     private function parseCopyrightDate($string)
     {
         $matches = [];
@@ -291,5 +307,28 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements \PH
             $this->licenseLastYear = $licenseLastYear;
             $this->copyrightChanged = true;
         }
+    }
+
+    private function updateCopyrightLines(SplFileInfo $copyrightFile, SplFileInfo $licenseFile)
+    {
+        // Make sure the files exist
+        LicenseUtils::createCopyrightFile($copyrightFile);
+        LicenseUtils::createLicenseFile($licenseFile);
+
+        // Update copyright file
+        LicenseUtils::updateCopyright(
+            $copyrightFile,
+            $this->licenseFirstYear,
+            $this->licenseLastYear
+        );
+
+        // Update license file
+        LicenseUtils::updateCopyright(
+            $licenseFile,
+            $this->licenseFirstYear,
+            $this->licenseLastYear
+        );
+
+        $this->copyrightChanged = false;
     }
 }

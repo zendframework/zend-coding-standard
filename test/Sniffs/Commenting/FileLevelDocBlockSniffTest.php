@@ -35,7 +35,7 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
     public function assetsProvider()
     {
         return [
-            'FileLevelDocBlockPass'                   => [
+            'FileLevelDocBlockPass' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockPass.php',
                 'fixed'        => null,
                 'errorCount'   => 0,
@@ -43,7 +43,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
-            'FileLevelDocBlockMissing'                => [
+
+            'FileLevelDocBlockMissing' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockMissing.php',
                 'fixed'        => null,
                 'errorCount'   => 1,
@@ -53,7 +54,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
-            'FileLevelDocBlockSpacingAfterOpen'       => [
+
+            'FileLevelDocBlockSpacingAfterOpen' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockSpacingAfterOpen.php',
                 'fixed'        => null,
                 'errorCount'   => 1,
@@ -63,7 +65,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
-            'FileLevelDocBlockIncorrectSourceLink'    => [
+
+            'FileLevelDocBlockIncorrectSourceLink' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectSourceLink.php',
                 'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectSourceLink.fixed.php',
                 'errorCount'   => 1,
@@ -73,6 +76,7 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
+
             'FileLevelDocBlockIncorrectCopyrightLink' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectCopyrightLink.php',
                 'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectCopyrightLink.fixed.php',
@@ -83,7 +87,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
-            'FileLevelDocBlockIncorrectLicenseLink'   => [
+
+            'FileLevelDocBlockIncorrectLicenseLink' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectLicenseLink.php',
                 'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectLicenseLink.fixed.php',
                 'errorCount'   => 1,
@@ -93,7 +98,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
-            'FileLevelDocBlockEmptyTags'              => [
+
+            'FileLevelDocBlockEmptyTags' => [
                 'asset'        => __DIR__ . '/Assets/FileLevelDocBlockEmptyTags.php',
                 'fixed'        => null,
                 'errorCount'   => 3,
