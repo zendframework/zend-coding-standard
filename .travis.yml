@@ -52,8 +52,7 @@ install:
 
 script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
-  - vendor/bin/phpcs -s
-  - vendor/bin/phpunit
+  - composer cs-check
 
 after_script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer upload-coverage ; fi

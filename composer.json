@@ -7,11 +7,11 @@
     "coding standard"
   ],
   "require": {
-    "squizlabs/php_codesniffer": "^2.7"
+    "squizlabs/php_codesniffer": "^2.8"
   },
   "require-dev": {
     "mikey179/vfsStream": "^1.6",
-    "phpunit/phpunit": "^6.1"
+    "phpunit/phpunit": "^6.1 || ^5.7.15"
   },
   "autoload": {
     "psr-4": {
@@ -22,5 +22,16 @@
     "psr-4": {
       "ZendTest\\CodingStandard\\": "test/"
     }
+  },
+  "scripts": {
+    "check": [
+      "@cs-check",
+      "@test"
+    ],
+    "cs-check": "phpcs -s",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --coverage-clover clover.xml",
+    "upload-coverage": "coveralls -v"
   }
 }
