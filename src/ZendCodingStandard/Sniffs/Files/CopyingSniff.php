@@ -32,10 +32,10 @@ class ZendCodingStandard_Sniffs_Files_CopyingSniff implements \PHP_CodeSniffer_S
      * found.
      *
      * @param \PHP_CodeSniffer_File $phpcsFile The PHP_CodeSniffer file where the
-     *                                        token was found.
-     * @param int                  $stackPtr  The position in the PHP_CodeSniffer
-     *                                        file's token stack where the token
-     *                                        was found.
+     *                                         token was found.
+     * @param int                   $stackPtr  The position in the PHP_CodeSniffer
+     *                                         file's token stack where the token
+     *                                         was found.
      *
      * @return int Optionally returns a stack pointer. The sniff will not be
      *                  called again on the current file until the returned stack
@@ -55,9 +55,25 @@ class ZendCodingStandard_Sniffs_Files_CopyingSniff implements \PHP_CodeSniffer_S
             if ($fix === true) {
                 LicenseUtils::createCopyrightFile();
             }
+
+            // Ignore the rest of the file.
+            return ($phpcsFile->numTokens + 1);
         }
 
-        // TODO: Check copyright year
+        // Get copyright year
+        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate($this->copyrightFile);
+        if (! $lastYear) {
+            $lastYear = $firstYear;
+        }
+
+        // Check copyright year
+        if ($lastYear !== gmdate('Y')) {
+            $error = 'Invalid copyright date in COPYING.md';
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidCopyrightDate');
+            if ($fix === true) {
+                LicenseUtils::updateCopyright($this->copyrightFile, $firstYear);
+            }
+        }
 
         // Ignore the rest of the file.
         return ($phpcsFile->numTokens + 1);

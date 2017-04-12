@@ -55,9 +55,25 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements \PHP_CodeSniffer_S
             if ($fix === true) {
                 LicenseUtils::createLicenseFile();
             }
+
+            // Ignore the rest of the file.
+            return ($phpcsFile->numTokens + 1);
         }
 
-        // TODO: Check copyright year
+        // Get copyright year
+        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate($this->licenseFile);
+        if (! $lastYear) {
+            $lastYear = $firstYear;
+        }
+
+        // Check copyright year
+        if ($lastYear !== gmdate('Y')) {
+            $error = 'Invalid copyright date in COPYING.md';
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidCopyrightDate');
+            if ($fix === true) {
+                LicenseUtils::updateCopyright($this->licenseFile, $firstYear);
+            }
+        }
 
         // Ignore the rest of the file.
         return ($phpcsFile->numTokens + 1);

@@ -126,4 +126,20 @@ EOF;
 
         return $licenseFirstYear;
     }
+
+    public static function getCopyrightDate(SplFileInfo $file)
+    {
+        if (! $file->getRealPath()) {
+            return [null, null];
+        }
+
+        $content = file($file->getRealPath());
+        $matches = [];
+        preg_match('|(?<start>[\d]{4})(-(?<end>[\d]{4}))?|', $content[0], $matches);
+
+        $licenseFirstYear = isset($matches['start']) ? $matches['start'] : null;
+        $licenseLastYear = isset($matches['end']) ? $matches['end'] : null;
+
+        return [$licenseFirstYear, $licenseLastYear];
+    }
 }
