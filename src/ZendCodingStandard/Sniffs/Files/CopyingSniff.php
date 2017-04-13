@@ -60,25 +60,29 @@ class ZendCodingStandard_Sniffs_Files_CopyingSniff implements Sniff
             $error = 'Missing COPYING.md file in the component root dir';
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MissingLicense');
             if ($fix === true) {
-                LicenseUtils::createCopyrightFile();
+                LicenseUtils::buildFiles();
             }
 
             // Ignore the rest of the file.
             return ($phpcsFile->numTokens + 1);
         }
 
-        // Get copyright year
-        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate($this->copyrightFile);
-        if (! $lastYear) {
-            $lastYear = $firstYear;
-        }
+        // Get copyright dates
+        list($firstYear, $lastYear) = LicenseUtils::detectDateRange(
+            file_get_contents($this->copyrightFile->getRealPath())
+        );
 
         // Check copyright year
-        if ($lastYear !== gmdate('Y')) {
-            $error = 'Invalid copyright date in COPYING.md';
+        if (($lastYear === null && $firstYear !== gmdate('Y'))
+            || ($lastYear !== null && $lastYear !== gmdate('Y'))
+        ) {
+            $error = sprintf(
+                'Expected "Copyright (c) %s" in COPYING.md',
+                LicenseUtils::formatDateRange($firstYear, gmdate('Y'))
+            );
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidCopyrightDate');
             if ($fix === true) {
-                LicenseUtils::updateCopyright($this->copyrightFile, $firstYear);
+                LicenseUtils::buildFiles($firstYear, $lastYear);
             }
         }
 

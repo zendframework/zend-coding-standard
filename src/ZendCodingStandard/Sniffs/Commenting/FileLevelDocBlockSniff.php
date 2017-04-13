@@ -25,26 +25,6 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
      */
     private $repo;
 
-    /**
-     * @var string
-     */
-    private $licenseFirstYear;
-
-    /**
-     * @var string
-     */
-    private $licenseLastYear;
-
-    /**
-     * @var boolean
-     */
-    private $copyrightChanged = false;
-
-    /**
-     * @var boolean
-     */
-    private $fix = false;
-
     const IGNORE = [
         T_CLASS,
         T_INTERFACE,
@@ -67,21 +47,6 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
 
     public function __construct()
     {
-        $this->licenseFirstYear = gmdate('Y');
-        $this->licenseLastYear = gmdate('Y');
-
-        // Detect copyright year in copying file
-        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate(LicenseUtils::getCopyrightFile());
-        if ($firstYear !== null && $firstYear < $this->licenseFirstYear) {
-            $this->licenseFirstYear = $firstYear;
-        }
-
-        // Detect copyright year in license file
-        list($firstYear, $lastYear) = LicenseUtils::getCopyrightDate(LicenseUtils::getLicenseFile());
-        if ($firstYear !== null && $firstYear < $this->licenseFirstYear) {
-            $this->licenseFirstYear = $firstYear;
-        }
-
         // Get current repo name from composer.json
         $content = file_get_contents('composer.json');
         $content = json_decode($content, true);
@@ -207,7 +172,6 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                     $error = 'Expected "%s" for @see tag';
                     $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectSourceLink', [$expected]);
                     if ($fix === true) {
-                        $this->fix = true;
                         $phpcsFile->fixer->replaceToken($string, $expected);
                     }
                 }
@@ -215,16 +179,18 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
             }
 
             if ($name === '@copyright') {
-                // Grab license date range
-                $this->parseCopyrightDate($tokens[$string]['content']);
+                // Grab copyright date range
+                list($firstYear, $lastYear) = LicenseUtils::detectDateRange($tokens[$string]['content']);
 
                 $expected = sprintf('https://github.com/%s/blob/master/COPYING.md Copyright', $this->repo);
                 if (preg_match('|^' . $expected . '$|', $tokens[$string]['content']) === 0) {
                     $error = 'Expected "%s" for @copyright tag';
                     $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectCopyrightLink', [$expected]);
                     if ($fix === true) {
-                        $this->fix = true;
                         $phpcsFile->fixer->replaceToken($string, $expected);
+                        if ($firstYear !== null) {
+                            LicenseUtils::buildFiles($firstYear, $lastYear);
+                        }
                     }
                 }
                 continue;
@@ -236,7 +202,6 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                     $error = 'Expected "%s" for @license tag';
                     $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectLicenseLink', [$expected]);
                     if ($fix === true) {
-                        $this->fix = true;
                         $phpcsFile->fixer->replaceToken($string, $expected);
                     }
                 }
@@ -274,61 +239,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
             $pos++;
         }
 
-        if ($this->copyrightChanged === true && $this->fix === true) {
-            $this->updateCopyrightLines(
-                LicenseUtils::getCopyrightFile(),
-                LicenseUtils::getLicenseFile()
-            );
-        }
-
         // Ignore the rest of the file.
         return ($phpcsFile->numTokens + 1);
-    }
-
-    /**
-     * Parse copyright line
-     *
-     * Detect year range and update the current first and last years if needed.
-     *
-     * @param $string
-     */
-    private function parseCopyrightDate($string)
-    {
-        $matches = [];
-        preg_match('|(?<start>[\d]{4})(-(?<end>[\d]{4}))?|', $string, $matches);
-
-        $licenseFirstYear = isset($matches['start']) ? $matches['start'] : null;
-        $licenseLastYear = isset($matches['end']) ? $matches['end'] : null;
-        if ($licenseFirstYear !== null && $this->licenseFirstYear > $licenseFirstYear) {
-            $this->licenseFirstYear = $licenseFirstYear;
-            $this->copyrightChanged = true;
-        }
-        if ($licenseLastYear !== null && $this->licenseLastYear < $licenseLastYear) {
-            $this->licenseLastYear = $licenseLastYear;
-            $this->copyrightChanged = true;
-        }
-    }
-
-    private function updateCopyrightLines(SplFileInfo $copyrightFile, SplFileInfo $licenseFile)
-    {
-        // Make sure the files exist
-        LicenseUtils::createCopyrightFile($copyrightFile);
-        LicenseUtils::createLicenseFile($licenseFile);
-
-        // Update copyright file
-        LicenseUtils::updateCopyright(
-            $copyrightFile,
-            $this->licenseFirstYear,
-            $this->licenseLastYear
-        );
-
-        // Update license file
-        LicenseUtils::updateCopyright(
-            $licenseFile,
-            $this->licenseFirstYear,
-            $this->licenseLastYear
-        );
-
-        $this->copyrightChanged = false;
     }
 }

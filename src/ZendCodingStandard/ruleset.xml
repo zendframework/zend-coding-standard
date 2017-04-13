@@ -5,8 +5,8 @@
     <!-- display progress -->
     <arg value="p"/>
     <arg name="colors"/>
-    <file>Sniffs/Files/LICENSE.md</file>
     <file>Sniffs/Files/COPYING.md</file>
+    <file>Sniffs/Files/LICENSE.md</file>
 
     <!-- inherit rules from: -->
     <rule ref="PSR2"/>

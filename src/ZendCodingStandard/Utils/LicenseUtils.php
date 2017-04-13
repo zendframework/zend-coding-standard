@@ -66,27 +66,6 @@ EOF;
     }
 
     /**
-     * Create a new copyright file if it does not exist
-     *
-     * @param SplFileInfo|null $file
-     */
-    public static function createCopyrightFile(SplFileInfo $file = null)
-    {
-        if ($file === null) {
-            $file = self::getCopyrightFile();
-        }
-
-        if ($file->getRealPath()) {
-            // File already exists
-            return;
-        }
-
-        // Create new file
-        $file = $file->openFile('x');
-        $file->fwrite(sprintf(self::$copyright, gmdate('Y')));
-    }
-
-    /**
      * Get COPYING.md as an object
      *
      * @return SplFileInfo
@@ -97,68 +76,114 @@ EOF;
     }
 
     /**
-     * Create a new license file if it does not exist
+     * Detect and match date range
      *
-     * @param SplFileInfo|null $file
-     */
-    public static function createLicenseFile(SplFileInfo $file = null)
-    {
-        if ($file === null) {
-            $file = self::getLicenseFile();
-        }
-
-        if ($file->getRealPath()) {
-            // File already exists
-            return;
-        }
-
-        // Create new file
-        $file = $file->openFile('x');
-        $file->fwrite(sprintf(self::$license, gmdate('Y')));
-    }
-
-    /**
-     * Update the copyright line
-     * The copyright line must be the first one in the file.
+     * It detects the copyright dates in a string and compares those to the
+     * given values. It returns the lowest detected first year and highest
+     * detected last year.
      *
-     * @param SplFileInfo|null $file
+     * @param string $string
+     * @param string|null $firstYear
+     * @param string|null $lastYear
+     * @return array
      */
-    public static function updateCopyright(SplFileInfo $file, $firstYear, $lastYear = null)
+    public static function detectDateRange($string, $firstYear = null, $lastYear = null)
     {
-        if ($lastYear === null) {
-            $lastYear = gmdate('Y');
-        }
-
-        $copyrightDateRange = $lastYear;
-        if ($firstYear !== $lastYear) {
-            $copyrightDateRange = sprintf('%s-%s', $firstYear, $lastYear);
-        }
-
-        // Update copyright line; first line in the file
-        $content = file($file->getRealPath());
-        $content[0] = sprintf(self::$copyrightLine . PHP_EOL, $copyrightDateRange);
-        file_put_contents($file->getRealPath(), $content);
-    }
-
-    /**
-     * Detect the copyright date range from the first line in a file
-     *
-     * @param SplFileInfo $file
-     * @return array[string|null,string|null]
-     */
-    public static function getCopyrightDate(SplFileInfo $file)
-    {
-        if (! $file->getRealPath()) {
-            return [null, null];
-        }
-
-        $content = file($file->getRealPath());
         $matches = [];
-        preg_match('|(?<start>[\d]{4})(-(?<end>[\d]{4}))?|', $content[0], $matches);
+        preg_match('|(?<start>[\d]{4})(-(?<end>[\d]{4}))?|', $string, $matches);
 
-        $licenseFirstYear = isset($matches['start']) ? $matches['start'] : null;
-        $licenseLastYear = isset($matches['end']) ? $matches['end'] : null;
+        $detectedFirstYear = isset($matches['start']) ? $matches['start'] : null;
+        $detectedLastYear = isset($matches['end']) ? $matches['end'] : null;
 
-        return [$licenseFirstYear, $licenseLastYear];
+        if ($firstYear === null || $detectedFirstYear < $firstYear) {
+            $firstYear = $detectedFirstYear;
+        }
+
+        if ($lastYear === null || $detectedLastYear > $lastYear) {
+            $lastYear = $detectedLastYear;
+        }
+
+        return [$firstYear, $lastYear];
+    }
+
+    /**
+     * Format date range
+     *
+     * Returns a formatted date range from a given first and last year. If the
+     * last year is not set or the same as the first year it returns a single
+     * year. Otherwise it returns `<first_year>-<last_year>`.
+     *
+     * @param string|null $firstYear
+     * @param string|null $lastYear
+     * @return string
+     */
+    public static function formatDateRange($firstYear = null, $lastYear = null)
+    {
+        $currentYear = gmdate('Y');
+        if ($lastYear === null || $lastYear > $currentYear) {
+            $lastYear = $currentYear;
+        }
+
+        $dateRange = $lastYear;
+        if ($firstYear !== null && $firstYear < $lastYear) {
+            $dateRange = sprintf('%s-%s', $firstYear, $lastYear);
+        }
+
+        return $dateRange;
+    }
+
+    /**
+     * Build copying and license files
+     *
+     * This detects the current date range if any of the two files exist. And
+     * updates their content in case of any detected changes.
+     *
+     * @param null $firstYear
+     * @param null $lastYear
+     * @param SplFileInfo|null $copyrightFile
+     * @param SplFileInfo|null $licenseFile
+     */
+    public static function buildFiles(
+        $firstYear = null,
+        $lastYear = null,
+        SplFileInfo $copyrightFile = null,
+        SplFileInfo $licenseFile = null
+    ) {
+        if ($copyrightFile === null) {
+            $copyrightFile = self::getCopyrightFile();
+        }
+
+        if ($licenseFile === null) {
+            $licenseFile = self::getLicenseFile();
+        }
+
+        // Get copyright dates
+        $oldCopyright = null;
+        if ($copyrightFile->isReadable()) {
+            $oldCopyright = file_get_contents($copyrightFile->getPathname());
+            list($firstYear, $lastYear) = self::detectDateRange($oldCopyright, $firstYear, $lastYear);
+        }
+
+        // Get license dates
+        $oldLicense = null;
+        if ($licenseFile->isReadable()) {
+            $oldLicense = file_get_contents($licenseFile->getPathname());
+            list($firstYear, $lastYear) = self::detectDateRange($oldLicense, $firstYear, $lastYear);
+        }
+
+        // Format date range, enforce current year
+        $copyrightDateRange = self::formatDateRange($firstYear, gmdate('Y'));
+
+        // Save new copyright content if it's updated
+        $newCopyright = sprintf(self::$copyright, $copyrightDateRange);
+        if ($oldCopyright === null || $oldCopyright !== $newCopyright) {
+            file_put_contents($copyrightFile->getPathname(), $newCopyright);
+        }
+
+        // Save new license if it's updated
+        $newLicense = sprintf(self::$license, $copyrightDateRange);
+        if ($oldLicense === null || $oldLicense !== $newLicense) {
+            file_put_contents($licenseFile->getPathname(), $newLicense);
+        }
     }
 }

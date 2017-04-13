@@ -10,8 +10,8 @@ namespace ZendTest\CodingStandard\Util;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
-use Zend\CodingStandard\Utils\LicenseUtils;
 use SplFileInfo;
+use Zend\CodingStandard\Utils\LicenseUtils;
 
 class LicenseUtilTest extends TestCase
 {
@@ -25,29 +25,101 @@ class LicenseUtilTest extends TestCase
         $this->root = vfsStream::setup('tmp');
     }
 
-    public function testCopyrightFileIsCreated()
+    /**
+     * @dataProvider dateRangeDetectionProvider
+     */
+    public function testDateRangeDetection($string, $firstYear, $lastYear, $expectedFirstYear, $expectedLastYear)
     {
-        LicenseUtils::createCopyrightFile(
-            new SplFileInfo($this->root->url() . '/COPYING.tmp.md')
+        list($actualFirstYear, $actualLastYear) = LicenseUtils::detectDateRange($string, $firstYear, $lastYear);
+
+        $this->assertEquals($expectedFirstYear, $actualFirstYear);
+        $this->assertEquals($expectedLastYear, $actualLastYear);
+    }
+
+    public function dateRangeDetectionProvider()
+    {
+        return [
+            'empty'          => ['Copyright (c) Foo', null, null, null, null],
+            '2014'           => ['(c) 2014 Foo', null, null, 2014, null],
+            '2015-2016'      => ['(c) 2015-2016 Bar', null, null, 2015, 2016],
+            '2016-current'   => [sprintf('(c) 2016-%s', gmdate('Y')), null, null, 2016, gmdate('Y')],
+            'current'        => [sprintf('(c) %s', gmdate('Y')), null, null, gmdate('Y'), null],
+            'o2012'          => ['(c) 2014 Foo', 2012, null, 2012, null],
+            'o2016'          => ['(c) 2014 Foo', 2016, null, 2014, null],
+            'o2012-o2015'    => ['(c) 2014 Foo', 2012, 2015, 2012, 2015],
+            'o2012-o2016'    => ['(c) 2014-2015', 2012, 2016, 2012, 2016],
+            'o2016-oCurrent' => [sprintf('(c) 2016-%s', gmdate('Y')), 2012, 2016, 2012, gmdate('Y')],
+            'oCurrent'       => [sprintf('(c) %s', gmdate('Y')), 2012, 2014, 2012, 2014],
+        ];
+    }
+
+    /**
+     * @dataProvider dateRangeFormatProvider
+     */
+    public function testFormatDateRange($firstYear, $lastYear, $expected)
+    {
+        $this->assertEquals($expected, LicenseUtils::formatDateRange($firstYear, $lastYear));
+    }
+
+    public function dateRangeFormatProvider()
+    {
+        return [
+            '2014'         => ['2014', null, '2014-' . gmdate('Y')],
+            '2015-2016'    => ['2015', '2016', '2015-2016'],
+            '2016-current' => ['2016', gmdate('Y'), '2016-' . gmdate('Y')],
+            'current'      => [gmdate('Y'), null, gmdate('Y')],
+        ];
+    }
+
+    public function testBuildNewFiles()
+    {
+        $firstYear = null;
+        $lastYear = null;
+        $copyrightFile = new SplFileInfo($this->root->url() . '/COPYING.tmp');
+        $licenseFile = new SplFileInfo($this->root->url() . '/LICENSE.tmp');
+
+        LicenseUtils::buildFiles($firstYear, $lastYear, $copyrightFile, $licenseFile);
+
+        $this->assertTrue($this->root->hasChild('COPYING.tmp'));
+        $this->assertEquals(
+            sprintf(LicenseUtils::$copyright, LicenseUtils::formatDateRange(gmdate('Y'))),
+            $this->root->getChild('COPYING.tmp')->getContent()
         );
 
-        $this->assertTrue($this->root->hasChild('COPYING.tmp.md'));
+        $this->assertTrue($this->root->hasChild('LICENSE.tmp'));
         $this->assertEquals(
-            sprintf(LicenseUtils::$copyright, gmdate('Y')),
-            $this->root->getChild('COPYING.tmp.md')->getContent()
+            sprintf(LicenseUtils::$license, LicenseUtils::formatDateRange(gmdate('Y'))),
+            $this->root->getChild('LICENSE.tmp')->getContent()
         );
     }
 
-    public function testLicenseFileIsCreated()
+    public function testUpdateBothFilesWithSameDates()
     {
-        LicenseUtils::createLicenseFile(
-            new SplFileInfo($this->root->url() . '/LICENSE.tmp.md')
+        $copyrightFile = new SplFileInfo($this->root->url() . '/COPYING.tmp');
+        $licenseFile = new SplFileInfo($this->root->url() . '/LICENSE.tmp');
+
+        file_put_contents(
+            $copyrightFile->getPathname(),
+            sprintf(LicenseUtils::$copyright, LicenseUtils::formatDateRange('2015'))
         );
 
-        $this->assertTrue($this->root->hasChild('LICENSE.tmp.md'));
+        file_put_contents(
+            $licenseFile->getPathname(),
+            sprintf(LicenseUtils::$license, LicenseUtils::formatDateRange('2016-2017'))
+        );
+
+        LicenseUtils::buildFiles('2016', '2016', $copyrightFile, $licenseFile);
+
+        $this->assertTrue($this->root->hasChild('COPYING.tmp'));
         $this->assertEquals(
-            sprintf(LicenseUtils::$license, gmdate('Y')),
-            $this->root->getChild('LICENSE.tmp.md')->getContent()
+            sprintf(LicenseUtils::$copyright, LicenseUtils::formatDateRange('2015', gmdate('Y'))),
+            $this->root->getChild('COPYING.tmp')->getContent()
+        );
+
+        $this->assertTrue($this->root->hasChild('LICENSE.tmp'));
+        $this->assertEquals(
+            sprintf(LicenseUtils::$license, LicenseUtils::formatDateRange('2015', gmdate('Y'))),
+            $this->root->getChild('LICENSE.tmp')->getContent()
         );
     }
 }
