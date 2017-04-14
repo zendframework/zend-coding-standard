@@ -9,7 +9,7 @@
     <file>Sniffs/Files/LICENSE.md</file>
 
     <!-- Exclude test assets -->
-    <exclude-pattern>*/TestAsset/*</exclude-pattern>
+    <!--exclude-pattern>*/TestAsset/*</exclude-pattern-->
 
     <!-- inherit rules from: -->
     <rule ref="PSR2"/>

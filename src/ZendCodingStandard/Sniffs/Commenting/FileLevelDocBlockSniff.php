@@ -77,7 +77,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Skip license file
+        // Skip license and copying file
         if (in_array(substr($phpcsFile->getFilename(), -10), ['LICENSE.md', 'COPYING.md'])) {
             return ($phpcsFile->numTokens + 1);
         }
@@ -85,17 +85,19 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
         $tokens = $phpcsFile->getTokens();
         $commentStart = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
 
+        // Valid file-level DocBlock style
         if ($tokens[$commentStart]['code'] === T_COMMENT) {
             $phpcsFile->addError(
                 'You must use "/**" style comments for a file-level DocBlock',
                 $commentStart,
                 'WrongStyle'
             );
-            $phpcsFile->recordMetric($stackPtr, 'File has doc comment', 'yes');
+            $phpcsFile->recordMetric($stackPtr, 'File has file-level DocBlock', 'yes');
 
             return ($phpcsFile->numTokens + 1);
         }
 
+        // File-level DocBlock exists, part 1
         if ($commentStart === false || $tokens[$commentStart]['code'] !== T_DOC_COMMENT_OPEN_TAG) {
             $phpcsFile->addError('Missing file-level DocBlock', $stackPtr, 'Missing');
             $phpcsFile->recordMetric($stackPtr, 'File has file-level DocBlock', 'no');
@@ -104,14 +106,9 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
         }
 
         $commentEnd = $tokens[$commentStart]['comment_closer'];
+        $nextToken = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
 
-        $nextToken = $phpcsFile->findNext(
-            T_WHITESPACE,
-            $commentEnd + 1,
-            null,
-            true
-        );
-
+        // File-level DocBlock exists, part 2
         if (in_array($tokens[$nextToken]['code'], self::IGNORE) === true) {
             $phpcsFile->addError('Missing file-level DocBlock', $stackPtr, 'Missing');
             $phpcsFile->recordMetric($stackPtr, 'File has file-level DocBlock', 'no');
@@ -119,6 +116,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
             return ($phpcsFile->numTokens + 1);
         }
 
+        // File-level DocBlock does exist
         $phpcsFile->recordMetric($stackPtr, 'File has file-level DocBlock', 'yes');
 
         // No blank line between the open tag and the file comment.
@@ -127,11 +125,14 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
             $phpcsFile->addError($error, $stackPtr, 'SpacingAfterOpen');
         }
 
-        // Exactly one blank line after the file comment.
+        // Exactly one blank line after the file-level DocBlock
         $next = $phpcsFile->findNext(T_WHITESPACE, ($commentEnd + 1), null, true);
         if ($tokens[$next]['line'] !== ($tokens[$commentEnd]['line'] + 2)) {
             $error = 'There must be exactly one blank line after the file-level DocBlock';
-            $phpcsFile->addError($error, $commentEnd, 'SpacingAfterComment');
+            $fix = $phpcsFile->addFixableError($error, $commentEnd, 'SpacingAfterComment');
+            if ($fix === true) {
+                $phpcsFile->fixer->addNewline($commentEnd);
+            }
         }
 
         // Required tags in correct order.

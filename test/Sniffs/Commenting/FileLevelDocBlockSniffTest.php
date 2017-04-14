@@ -55,12 +55,73 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warnings'     => [],
             ],
 
+            'FileLevelDocBlockMissingSeeTag' => [
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockMissingSeeTag.php',
+                'fixed'        => null,
+                'errorCount'   => 1,
+                'errors'       => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.MissingSeeTag',
+                ],
+                'warningCount' => 1,
+                'warnings'     => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.SeeTagOrder',
+                ],
+            ],
+
+            'FileLevelDocBlockMissingCopyrightTag' => [
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockMissingCopyrightTag.php',
+                'fixed'        => null,
+                'errorCount'   => 1,
+                'errors'       => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.MissingCopyrightTag',
+                ],
+                'warningCount' => 1,
+                'warnings'     => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.CopyrightTagOrder',
+                ],
+            ],
+
+            'FileLevelDocBlockMissingLicenseTag' => [
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockMissingLicenseTag.php',
+                'fixed'        => null,
+                'errorCount'   => 1,
+                'errors'       => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.MissingLicenseTag',
+                ],
+                'warningCount' => 1,
+                'warnings'     => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.LicenseTagOrder',
+                ],
+            ],
+
+            'FileLevelDocBlockWrongStyle' => [
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockWrongStyle.php',
+                'fixed'        => null,
+                'errorCount'   => 1,
+                'errors'       => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.WrongStyle',
+                ],
+                'warningCount' => 0,
+                'warnings'     => [],
+            ],
+
             'FileLevelDocBlockSpacingAfterOpen' => [
                 'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockSpacingAfterOpen.php',
                 'fixed'        => null,
                 'errorCount'   => 1,
                 'errors'       => [
                     'ZendCodingStandard.Commenting.FileLevelDocBlock.SpacingAfterOpen',
+                ],
+                'warningCount' => 0,
+                'warnings'     => [],
+            ],
+
+            'FileLevelDocBlockSpacingAfterComment' => [
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockSpacingAfterComment.php',
+                'fixed'        => __DIR__ . '/TestAsset/FileLevelDocBlockSpacingAfterComment.fixed.php',
+                'errorCount'   => 1,
+                'errors'       => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.SpacingAfterComment',
                 ],
                 'warningCount' => 0,
                 'warnings'     => [],
