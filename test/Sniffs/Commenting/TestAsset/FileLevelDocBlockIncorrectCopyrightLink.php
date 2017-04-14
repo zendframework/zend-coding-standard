@@ -1,12 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-coding-standard for the canonical source repository
- * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYING.md Copyright
+ * @copyright Copyright (c) 2016-2017 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\CodingStandard\Sniffs\Commenting\Assets;
+namespace ZendTest\CodingStandard\Sniffs\Commenting\TestAsset;
 
-class FileLevelDocBlockIncorrectLicenseLink
+class FileLevelDocBlockIncorrectCopyrightLink
 {
 }

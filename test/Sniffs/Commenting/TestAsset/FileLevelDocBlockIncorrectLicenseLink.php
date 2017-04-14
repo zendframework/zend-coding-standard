@@ -5,7 +5,7 @@
  * @license   New BSD License
  */
 
-namespace ZendTest\CodingStandard\Sniffs\Commenting\Assets;
+namespace ZendTest\CodingStandard\Sniffs\Commenting\TestAsset;
 
 class FileLevelDocBlockIncorrectLicenseLink
 {

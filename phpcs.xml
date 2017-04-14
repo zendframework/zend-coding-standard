@@ -6,9 +6,6 @@
     <file>src</file>
     <file>test</file>
 
-    <!-- Exclude test assets -->
-    <exclude-pattern>*/Assets/*</exclude-pattern>
-
     <!-- Exclude sniffs until version 3 -->
     <rule ref="PSR1">
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>

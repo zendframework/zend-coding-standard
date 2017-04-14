@@ -36,7 +36,7 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
     {
         return [
             'FileLevelDocBlockPass' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockPass.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockPass.php',
                 'fixed'        => null,
                 'errorCount'   => 0,
                 'errors'       => [],
@@ -45,7 +45,7 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockMissing' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockMissing.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockMissing.php',
                 'fixed'        => null,
                 'errorCount'   => 1,
                 'errors'       => [
@@ -56,7 +56,7 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockSpacingAfterOpen' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockSpacingAfterOpen.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockSpacingAfterOpen.php',
                 'fixed'        => null,
                 'errorCount'   => 1,
                 'errors'       => [
@@ -67,8 +67,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockIncorrectSourceLink' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectSourceLink.php',
-                'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectSourceLink.fixed.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockIncorrectSourceLink.php',
+                'fixed'        => __DIR__ . '/TestAsset/FileLevelDocBlockIncorrectSourceLink.fixed.php',
                 'errorCount'   => 1,
                 'errors'       => [
                     'ZendCodingStandard.Commenting.FileLevelDocBlock.IncorrectSourceLink',
@@ -78,8 +78,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockIncorrectCopyrightLink' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectCopyrightLink.php',
-                'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectCopyrightLink.fixed.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockIncorrectCopyrightLink.php',
+                'fixed'        => __DIR__ . '/TestAsset/FileLevelDocBlockIncorrectCopyrightLink.fixed.php',
                 'errorCount'   => 1,
                 'errors'       => [
                     'ZendCodingStandard.Commenting.FileLevelDocBlock.IncorrectCopyrightLink',
@@ -89,8 +89,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockIncorrectLicenseLink' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectLicenseLink.php',
-                'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockIncorrectLicenseLink.fixed.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockIncorrectLicenseLink.php',
+                'fixed'        => __DIR__ . '/TestAsset/FileLevelDocBlockIncorrectLicenseLink.fixed.php',
                 'errorCount'   => 1,
                 'errors'       => [
                     'ZendCodingStandard.Commenting.FileLevelDocBlock.IncorrectLicenseLink',
@@ -100,7 +100,7 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockEmptyTags' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockEmptyTags.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockEmptyTags.php',
                 'fixed'        => null,
                 'errorCount'   => 3,
                 'errors'       => [
@@ -113,8 +113,8 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
             ],
 
             'FileLevelDocBlockDeprecatedLinkTag' => [
-                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockDeprecatedLinkTag.php',
-                'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockDeprecatedLinkTag.fixed.php',
+                'asset'        => __DIR__ . '/TestAsset/FileLevelDocBlockDeprecatedLinkTag.php',
+                'fixed'        => __DIR__ . '/TestAsset/FileLevelDocBlockDeprecatedLinkTag.fixed.php',
                 'errorCount'   => 2,
                 'errors'       => [
                     'ZendCodingStandard.Commenting.FileLevelDocBlock.DeprecatedLinkTag',
