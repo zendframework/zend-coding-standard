@@ -111,6 +111,18 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
                 'warningCount' => 0,
                 'warnings'     => [],
             ],
+
+            'FileLevelDocBlockDeprecatedLinkTag' => [
+                'asset'        => __DIR__ . '/Assets/FileLevelDocBlockDeprecatedLinkTag.php',
+                'fixed'        => __DIR__ . '/Assets/FileLevelDocBlockDeprecatedLinkTag.fixed.php',
+                'errorCount'   => 2,
+                'errors'       => [
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.DeprecatedLinkTag',
+                    'ZendCodingStandard.Commenting.FileLevelDocBlock.IncorrectSourceLink',
+                ],
+                'warningCount' => 0,
+                'warnings'     => [],
+            ],
         ];
     }
 }

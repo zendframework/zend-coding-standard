@@ -154,7 +154,15 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
 
             $foundTags[] = $name;
 
-            if ($isRequired === false) {
+            if ($name === '@link') {
+                $error = 'Deprecated @link tag is used, use @see tag instead';
+                $fix = $phpcsFile->addFixableError($error, $tag, 'DeprecatedLinkTag');
+                if ($fix === true) {
+                    $phpcsFile->fixer->replaceToken($tag, '@see ');
+                }
+            }
+
+            if ($isRequired === false && $name !== '@link') {
                 continue;
             }
 
@@ -166,11 +174,11 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                 continue;
             }
 
-            if ($name === '@see') {
+            if ($name === '@see' || $name === '@link') {
                 $expected = sprintf('https://github.com/%s for the canonical source repository', $this->repo);
                 if (preg_match('|^' . $expected . '$|', $tokens[$string]['content']) === 0) {
-                    $error = 'Expected "%s" for @see tag';
-                    $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectSourceLink', [$expected]);
+                    $error = 'Expected "%s" for %s tag';
+                    $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectSourceLink', [$expected, $name]);
                     if ($fix === true) {
                         $phpcsFile->fixer->replaceToken($string, $expected);
                     }
@@ -207,6 +215,13 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                 }
                 continue;
             }
+        }
+
+        // If a @link tag was detected, it already triggered errors at this
+        // point. Treat @link as @see to suppress even more errors and warnings
+        // which should have been fixed by renaming the tag.
+        if ($foundTags[0] === '@link') {
+            $foundTags[0] = '@see';
         }
 
         // Check if the tags are in the correct position.
