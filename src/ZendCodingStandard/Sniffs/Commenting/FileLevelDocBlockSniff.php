@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-coding-standard for the canonical source repository
- * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYING.md Copyright
+ * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYRIGHT.md Copyright
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
@@ -77,8 +77,8 @@ class FileLevelDocBlockSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Skip license and copying file
-        if (in_array(substr($phpcsFile->getFilename(), -10), ['LICENSE.md', 'COPYING.md'])) {
+        // Skip license and copyright file
+        if (in_array(substr($phpcsFile->getFilename(), -10), ['LICENSE.md', 'COPYRIGHT.md'])) {
             return ($phpcsFile->numTokens + 1);
         }
 
@@ -191,7 +191,7 @@ class FileLevelDocBlockSniff implements Sniff
                 // Grab copyright date range
                 list($firstYear, $lastYear) = LicenseUtils::detectDateRange($tokens[$string]['content']);
 
-                $expected = sprintf('https://github.com/%s/blob/master/COPYING.md Copyright', $this->repo);
+                $expected = sprintf('https://github.com/%s/blob/master/COPYRIGHT.md Copyright', $this->repo);
                 if (preg_match('|^' . $expected . '$|', $tokens[$string]['content']) === 0) {
                     $error = 'Expected "%s" for @copyright tag';
                     $fix   = $phpcsFile->addFixableError($error, $tag, 'IncorrectCopyrightLink', [$expected]);

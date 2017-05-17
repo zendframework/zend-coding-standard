@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-coding-standard for the canonical source repository
- * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYING.md Copyright
+ * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYRIGHT.md Copyright
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
@@ -75,15 +75,15 @@ class LicenseUtilTest extends TestCase
     {
         $firstYear = null;
         $lastYear = null;
-        $copyrightFile = new SplFileInfo($this->root->url() . '/COPYING.tmp');
+        $copyrightFile = new SplFileInfo($this->root->url() . '/COPYRIGHT.tmp');
         $licenseFile = new SplFileInfo($this->root->url() . '/LICENSE.tmp');
 
         LicenseUtils::buildFiles($firstYear, $lastYear, $copyrightFile, $licenseFile);
 
-        $this->assertTrue($this->root->hasChild('COPYING.tmp'));
+        $this->assertTrue($this->root->hasChild('COPYRIGHT.tmp'));
         $this->assertEquals(
             sprintf(LicenseUtils::$copyright, LicenseUtils::formatDateRange(gmdate('Y'))),
-            $this->root->getChild('COPYING.tmp')->getContent()
+            $this->root->getChild('COPYRIGHT.tmp')->getContent()
         );
 
         $this->assertTrue($this->root->hasChild('LICENSE.tmp'));
@@ -95,7 +95,7 @@ class LicenseUtilTest extends TestCase
 
     public function testUpdateBothFilesWithSameDates()
     {
-        $copyrightFile = new SplFileInfo($this->root->url() . '/COPYING.tmp');
+        $copyrightFile = new SplFileInfo($this->root->url() . '/COPYRIGHT.tmp');
         $licenseFile = new SplFileInfo($this->root->url() . '/LICENSE.tmp');
 
         file_put_contents(
@@ -110,10 +110,10 @@ class LicenseUtilTest extends TestCase
 
         LicenseUtils::buildFiles('2016', '2016', $copyrightFile, $licenseFile);
 
-        $this->assertTrue($this->root->hasChild('COPYING.tmp'));
+        $this->assertTrue($this->root->hasChild('COPYRIGHT.tmp'));
         $this->assertEquals(
             sprintf(LicenseUtils::$copyright, LicenseUtils::formatDateRange('2015', gmdate('Y'))),
-            $this->root->getChild('COPYING.tmp')->getContent()
+            $this->root->getChild('COPYRIGHT.tmp')->getContent()
         );
 
         $this->assertTrue($this->root->hasChild('LICENSE.tmp'));

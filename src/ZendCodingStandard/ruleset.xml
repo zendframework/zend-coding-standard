@@ -29,7 +29,7 @@
     </rule>
 
     <!-- ZendCodingStandard rules -->
-    <rule ref="ZendCodingStandard.Files.Copying">
+    <rule ref="ZendCodingStandard.Files.Copyright">
         <include-pattern>*.md</include-pattern>
     </rule>
     <rule ref="ZendCodingStandard.Files.License">

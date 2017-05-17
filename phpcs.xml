@@ -5,7 +5,7 @@
     <arg value="ps"/>
 
     <!-- Paths to check -->
-    <file>./COPYING.md</file>
+    <file>./COPYRIGHT.md</file>
     <file>./LICENSE.md</file>
     <file>./src</file>
     <file>./test</file>

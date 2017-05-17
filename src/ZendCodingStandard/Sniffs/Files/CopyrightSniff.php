@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-coding-standard for the canonical source repository
- * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYING.md Copyright
+ * @copyright https://github.com/zendframework/zend-coding-standard/blob/master/COPYRIGHT.md Copyright
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
@@ -13,12 +13,12 @@ use SplFileInfo;
 use ZendCodingStandard\Utils\LicenseUtils;
 
 /**
- * COPYING.md Sniff
+ * COPYRIGHT.md Sniff
  *
- * - Checks and creates COPYING.md in the project root dir
- * - Checks and fixes copyright in COPYING.md; it should be the current year
+ * - Checks and creates COPYRIGHT.md in the project root dir
+ * - Checks and fixes copyright in COPYRIGHT.md; it should be the current year
  */
-class CopyingSniff implements Sniff
+class CopyrightSniff implements Sniff
 {
     /**
      * @var SplFileInfo
@@ -52,13 +52,13 @@ class CopyingSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // Skip all files except the copying file
-        if (substr($phpcsFile->getFilename(), -10) !== 'COPYING.md') {
+        // Skip all files except the copyright file
+        if (substr($phpcsFile->getFilename(), -10) !== 'COPYRIGHT.md') {
             return ($phpcsFile->numTokens + 1);
         }
 
         if (! $this->copyrightFile->getRealPath()) {
-            $error = 'Missing COPYING.md file in the component root dir';
+            $error = 'Missing COPYRIGHT.md file in the component root dir';
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'MissingLicense');
             if ($fix === true) {
                 LicenseUtils::buildFiles();
@@ -78,7 +78,7 @@ class CopyingSniff implements Sniff
             || ($lastYear !== null && $lastYear !== gmdate('Y'))
         ) {
             $error = sprintf(
-                'Expected "Copyright (c) %s" in COPYING.md',
+                'Expected "Copyright (c) %s" in COPYRIGHT.md',
                 LicenseUtils::formatDateRange($firstYear, gmdate('Y'))
             );
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidCopyrightDate');
