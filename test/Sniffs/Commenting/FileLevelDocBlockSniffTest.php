@@ -5,9 +5,9 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\CodingStandard\Sniffs\Commenting;
+namespace ZendCodingStandard\Test\Sniffs\Commenting;
 
-use ZendTest\CodingStandard\SniffTestCase;
+use ZendCodingStandard\Test\SniffTestCase;
 
 class FileLevelDocBlockSniffTest extends SniffTestCase
 {

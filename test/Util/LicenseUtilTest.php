@@ -5,13 +5,13 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\CodingStandard\Util;
+namespace ZendCodingStandard\Test\Util;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
-use Zend\CodingStandard\Utils\LicenseUtils;
+use ZendCodingStandard\Utils\LicenseUtils;
 
 class LicenseUtilTest extends TestCase
 {

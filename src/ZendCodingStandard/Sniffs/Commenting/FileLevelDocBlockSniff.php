@@ -5,9 +5,11 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Sniff as Sniff;
-use Zend\CodingStandard\Utils\LicenseUtils;
+namespace ZendCodingStandard\Sniffs\Commenting;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use ZendCodingStandard\Utils\LicenseUtils;
 
 /**
  * FileLevelDocBlock Sniff
@@ -18,7 +20,7 @@ use Zend\CodingStandard\Utils\LicenseUtils;
  * - Checks for missing/invalid license tag
  * - Checks order of see, copyright and license tags
  */
-class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sniff
+class FileLevelDocBlockSniff implements Sniff
 {
     /**
      * @var string
@@ -48,8 +50,8 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
     public function __construct()
     {
         // Get current repo name from composer.json
-        $content = file_get_contents('composer.json');
-        $content = json_decode($content, true);
+        $content    = file_get_contents('composer.json');
+        $content    = json_decode($content, true);
         $this->repo = $content['name'];
     }
 
@@ -68,12 +70,10 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
      * found.
      *
      * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-     * @param int $stackPtr The position in the PHP_CodeSniffer file's token
-     *                      stack where the token was found.
+     * @param int $stackPtr The position in the PHP_CodeSniffer file's token stack where the token was found.
      *
-     * @return int Optionally returns a stack pointer. The sniff will not be
-     *             called again on the current file until the returned stack
-     *             pointer is reached.
+     * @return int Optionally returns a stack pointer. The sniff will not be called again on the current file until the
+     *     returned stack pointer is reached.
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -82,7 +82,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
             return ($phpcsFile->numTokens + 1);
         }
 
-        $tokens = $phpcsFile->getTokens();
+        $tokens       = $phpcsFile->getTokens();
         $commentStart = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
 
         // Valid file-level DocBlock style
@@ -106,7 +106,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
         }
 
         $commentEnd = $tokens[$commentStart]['comment_closer'];
-        $nextToken = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
+        $nextToken  = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
 
         // File-level DocBlock exists, part 2
         if (in_array($tokens[$nextToken]['code'], self::IGNORE) === true) {
@@ -129,7 +129,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
         $next = $phpcsFile->findNext(T_WHITESPACE, ($commentEnd + 1), null, true);
         if ($tokens[$next]['line'] !== ($tokens[$commentEnd]['line'] + 2)) {
             $error = 'There must be exactly one blank line after the file-level DocBlock';
-            $fix = $phpcsFile->addFixableError($error, $commentEnd, 'SpacingAfterComment');
+            $fix   = $phpcsFile->addFixableError($error, $commentEnd, 'SpacingAfterComment');
             if ($fix === true) {
                 $phpcsFile->fixer->addNewline($commentEnd);
             }
@@ -144,12 +144,12 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
 
         $foundTags = [];
         foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
-            $name = $tokens[$tag]['content'];
+            $name       = $tokens[$tag]['content'];
             $isRequired = isset($required[$name]);
 
             if ($isRequired === true && in_array($name, $foundTags) === true) {
                 $error = 'Only one %s tag is allowed in a file-level DocBlock';
-                $data = [$name];
+                $data  = [$name];
                 $phpcsFile->addError($error, $tag, 'Duplicate' . ucfirst(substr($name, 1)) . 'Tag', $data);
             }
 
@@ -157,7 +157,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
 
             if ($name === '@link') {
                 $error = 'Deprecated @link tag is used, use @see tag instead';
-                $fix = $phpcsFile->addFixableError($error, $tag, 'DeprecatedLinkTag');
+                $fix   = $phpcsFile->addFixableError($error, $tag, 'DeprecatedLinkTag');
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken($tag, '@see ');
                 }
@@ -170,7 +170,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
             $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
             if ($string === false || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
                 $error = 'Content missing for %s tag in file-level DocBlock';
-                $data = [$name];
+                $data  = [$name];
                 $phpcsFile->addError($error, $tag, 'Empty' . ucfirst(substr($name, 1)) . 'Tag', $data);
                 continue;
             }
@@ -179,7 +179,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                 $expected = sprintf('https://github.com/%s for the canonical source repository', $this->repo);
                 if (preg_match('|^' . $expected . '$|', $tokens[$string]['content']) === 0) {
                     $error = 'Expected "%s" for %s tag';
-                    $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectSourceLink', [$expected, $name]);
+                    $fix   = $phpcsFile->addFixableError($error, $tag, 'IncorrectSourceLink', [$expected, $name]);
                     if ($fix === true) {
                         $phpcsFile->fixer->replaceToken($string, $expected);
                     }
@@ -194,7 +194,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                 $expected = sprintf('https://github.com/%s/blob/master/COPYING.md Copyright', $this->repo);
                 if (preg_match('|^' . $expected . '$|', $tokens[$string]['content']) === 0) {
                     $error = 'Expected "%s" for @copyright tag';
-                    $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectCopyrightLink', [$expected]);
+                    $fix   = $phpcsFile->addFixableError($error, $tag, 'IncorrectCopyrightLink', [$expected]);
                     if ($fix === true) {
                         $phpcsFile->fixer->replaceToken($string, $expected);
                         if ($firstYear !== null) {
@@ -209,7 +209,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
                 $expected = sprintf('https://github.com/%s/blob/master/LICENSE.md New BSD License', $this->repo);
                 if (preg_match('|^' . $expected . '$|', $tokens[$string]['content']) === 0) {
                     $error = 'Expected "%s" for @license tag';
-                    $fix = $phpcsFile->addFixableError($error, $tag, 'IncorrectLicenseLink', [$expected]);
+                    $fix   = $phpcsFile->addFixableError($error, $tag, 'IncorrectLicenseLink', [$expected]);
                     if ($fix === true) {
                         $phpcsFile->fixer->replaceToken($string, $expected);
                     }
@@ -230,7 +230,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
         foreach ($required as $tag => $true) {
             if (in_array($tag, $foundTags) === false) {
                 $error = 'Missing %s tag in file-level DocBlock';
-                $data = [$tag];
+                $data  = [$tag];
                 $phpcsFile->addError($error, $commentEnd, 'Missing' . ucfirst(substr($tag, 1)) . 'Tag', $data);
             }
 
@@ -240,7 +240,7 @@ class ZendCodingStandard_Sniffs_Commenting_FileLevelDocBlockSniff implements Sni
 
             if ($foundTags[$pos] !== $tag) {
                 $error = 'The file-level DocBlock tag in position %s should be the %s tag';
-                $data = [
+                $data  = [
                     ($pos + 1),
                     $tag,
                 ];

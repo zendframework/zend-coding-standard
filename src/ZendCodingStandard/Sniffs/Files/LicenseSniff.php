@@ -5,9 +5,12 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-use PHP_CodeSniffer_File as File;
-use PHP_CodeSniffer_Sniff as Sniff;
-use Zend\CodingStandard\Utils\LicenseUtils;
+namespace ZendCodingStandard\Sniffs\Files;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use SplFileInfo;
+use ZendCodingStandard\Utils\LicenseUtils;
 
 /**
  * LICENSE.md Sniff
@@ -15,7 +18,7 @@ use Zend\CodingStandard\Utils\LicenseUtils;
  * - Checks and creates LICENSE.md in the project root dir
  * - Checks and fixes copyright in LICENSE.md; it should be the current year
  */
-class ZendCodingStandard_Sniffs_Files_LicenseSniff implements Sniff
+class LicenseSniff implements Sniff
 {
     /**
      * @var SplFileInfo
@@ -34,7 +37,7 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements Sniff
      */
     public function register()
     {
-        return [T_OPEN_TAG];
+        return [T_INLINE_HTML];
     }
 
     /**
@@ -42,11 +45,10 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements Sniff
      * found.
      *
      * @param File $phpcsFile The PHP_CodeSniffer file where the token was found.
-     * @param int $stackPtr The position in the PHP_CodeSniffer file's token stack
-     *                      where the token was found.
-     * @return int Optionally returns a stack pointer. The sniff will not be
-     *             called again on the current file until the returned stack
-     *             pointer is reached.
+     * @param int $stackPtr The position in the PHP_CodeSniffer file's token stack where the token was found.
+     *
+     * @return int Optionally returns a stack pointer. The sniff will not be called again on the current file until the
+     *     returned stack pointer is reached.
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -57,7 +59,7 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements Sniff
 
         if (! $this->licenseFile->getRealPath()) {
             $error = 'Missing LICENSE.md file in the component root dir';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MissingLicense');
+            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'MissingLicense');
             if ($fix === true) {
                 LicenseUtils::buildFiles();
             }
@@ -79,7 +81,7 @@ class ZendCodingStandard_Sniffs_Files_LicenseSniff implements Sniff
                 'Expected "Copyright (c) %s" in LICENSE.md',
                 LicenseUtils::formatDateRange($firstYear, gmdate('Y'))
             );
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidCopyrightDate');
+            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidCopyrightDate');
             if ($fix === true) {
                 LicenseUtils::buildFiles($firstYear, $lastYear);
             }

@@ -2,14 +2,11 @@
 <ruleset name="ZendCodingStandard">
     <description>Zend Framework Coding Standard</description>
 
-    <!-- display progress -->
+    <!-- include md extensions for license checking -->
+    <arg name="extensions" value="php,md"/>
+    <!-- show progress and colors -->
     <arg value="p"/>
     <arg name="colors"/>
-    <file>Sniffs/Files/COPYING.md</file>
-    <file>Sniffs/Files/LICENSE.md</file>
-
-    <!-- Exclude test assets -->
-    <exclude-pattern>*/TestAsset/*</exclude-pattern>
 
     <!-- inherit rules from: -->
     <rule ref="PSR2"/>
@@ -26,8 +23,17 @@
         </properties>
     </rule>
 
+    <!-- ignore NoCodeFound warning for the md files -->
+    <rule ref="Internal.NoCodeFound">
+        <exclude-pattern>*.md</exclude-pattern>
+    </rule>
+
     <!-- ZendCodingStandard rules -->
-    <rule ref="ZendCodingStandard.Files.Copying"/>
-    <rule ref="ZendCodingStandard.Files.License"/>
+    <rule ref="ZendCodingStandard.Files.Copying">
+        <include-pattern>*.md</include-pattern>
+    </rule>
+    <rule ref="ZendCodingStandard.Files.License">
+        <include-pattern>*.md</include-pattern>
+    </rule>
     <rule ref="ZendCodingStandard.Commenting.FileLevelDocBlock"/>
 </ruleset>

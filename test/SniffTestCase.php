@@ -5,10 +5,10 @@
  * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\CodingStandard;
+namespace ZendCodingStandard\Test;
 
 use PHP_CodeSniffer;
-use PHP_CodeSniffer_File as File;
+use PHP_CodeSniffer\Files\File;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\InvalidArgumentHelper;
 use ReflectionProperty;

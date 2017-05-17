@@ -1,6 +1,6 @@
 <?php
 
-namespace ZendTest\CodingStandard\Sniffs\Commenting\TestAsset;
+namespace ZendCodingStandard\Test\Sniffs\Commenting\TestAsset;
 
 class FileLevelDocBlockMissing
 {

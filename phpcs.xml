@@ -2,16 +2,14 @@
 <ruleset name="Zend Framework Coding Standard">
     <rule ref="./src/ZendCodingStandard/ruleset.xml"/>
 
+    <arg value="ps"/>
+
     <!-- Paths to check -->
-    <file>src</file>
-    <file>test</file>
+    <file>./COPYING.md</file>
+    <file>./LICENSE.md</file>
+    <file>./src</file>
+    <file>./test</file>
 
     <!-- Exclude test assets -->
     <exclude-pattern>*/TestAsset/*</exclude-pattern>
-
-    <!-- Exclude sniffs until version 3 -->
-    <rule ref="PSR1">
-        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
-        <exclude name="Squiz.Classes.ValidClassName"/>
-    </rule>
 </ruleset>

@@ -5,7 +5,7 @@
  * @foo       https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\CodingStandard\Sniffs\Commenting\TestAsset;
+namespace ZendCodingStandard\Test\Sniffs\Commenting\TestAsset;
 
 class FileLevelDocBlockMissingLicenseTag
 {
