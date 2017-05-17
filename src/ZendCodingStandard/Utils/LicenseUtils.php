@@ -19,8 +19,6 @@ class LicenseUtils
     public static $copyright = <<<EOF
 Copyright (c) %s, Zend Technologies USA, Inc.
 
-All rights reserved.
-
 EOF;
 
     public static $license = <<<EOF
