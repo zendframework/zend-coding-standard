@@ -5,7 +5,7 @@
  * @license
  */
 
-namespace ZendCodingStandard\Test\Sniffs\Commenting\TestAsset;
+namespace ZendCodingStandardTest\Sniffs\Commenting\TestAsset;
 
 class FileLevelDocBlockEmptyTags
 {

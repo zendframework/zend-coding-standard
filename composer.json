@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ZendCodingStandard\\Test\\": "test/",
+            "ZendCodingStandardTest\\": "test/",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src/"
         },
         "files": [
