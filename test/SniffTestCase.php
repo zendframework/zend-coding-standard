@@ -7,34 +7,57 @@
 
 namespace ZendCodingStandard\Test;
 
-use PHP_CodeSniffer;
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Files\LocalFile;
+use PHP_CodeSniffer\Ruleset;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\InvalidArgumentHelper;
-use ReflectionProperty;
 
 class SniffTestCase extends TestCase
 {
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        // Init PHP_CodeSniffer
+        if (defined('PHP_CODESNIFFER_IN_TESTS') === false) {
+            define('PHP_CODESNIFFER_IN_TESTS', false);
+        }
+        if (defined('PHP_CODESNIFFER_CBF') === false) {
+            define('PHP_CODESNIFFER_CBF', false);
+        }
+        if (defined('PHP_CODESNIFFER_VERBOSITY') === false) {
+            define('PHP_CODESNIFFER_VERBOSITY', 0);
+        }
+
+        // Define tokens
+        new Tokens();
+
+        // Setup config
+        $this->config = new Config();
+
+        // Don't cache files
+        $this->config->cache       = false;
+
+        // Set ruleset
+        $this->config->standards   = ['src/ZendCodingStandard/ruleset.xml'];
+    }
+
     public function processAsset($asset)
     {
-        $phpcs = new PHP_CodeSniffer();
+        $ruleset = new Ruleset($this->config);
 
-        $standard = 'src/ZendCodingStandard/ruleset.xml';
-        $options = array_merge($phpcs->cli->getDefaults(), [
-            'encoding'    => 'utf-8',
-            'files'       => [$asset],
-            'standard'    => $standard,
-            'showSources' => true,
-        ]);
+        $file = new LocalFile($asset, $ruleset, $this->config);
+        $file->process();
 
-        $reflection = new ReflectionProperty($phpcs->cli, 'values');
-        $reflection->setAccessible(true);
-        $reflection->setValue($phpcs->cli, $options);
-
-        $phpcs->initStandard($standard, ['ZendCodingStandard.Commenting.FileLevelDocBlock']);
-        $phpcs->setIgnorePatterns([]);
-
-        return $phpcs->processFile($asset);
+        return $file;
     }
 
     public function assertErrorCount($expectedCount, File $file)

@@ -16,20 +16,20 @@ class FileLevelDocBlockSniffTest extends SniffTestCase
      */
     public function testAssets($asset, $fixed, $errorCount, array $errors, $warningCount, array $warnings)
     {
-        $result = $this->processAsset($asset);
+        $file = $this->processAsset($asset);
 
-        $this->assertErrorCount($errorCount, $result);
-        $this->assertWarningCount($warningCount, $result);
+        $this->assertErrorCount($errorCount, $file);
+        $this->assertWarningCount($warningCount, $file);
 
         foreach ($errors as $error) {
-            $this->assertHasError($error, $result);
+            $this->assertHasError($error, $file);
         }
 
         foreach ($warnings as $warning) {
-            $this->assertHasWarning($warning, $result);
+            $this->assertHasWarning($warning, $file);
         }
 
-        $this->assertAssetCanBeFixed($fixed, $result);
+        $this->assertAssetCanBeFixed($fixed, $file);
     }
 
     public function assetsProvider()

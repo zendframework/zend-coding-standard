@@ -1,38 +1,42 @@
 {
-  "name": "zendframework/zend-coding-standard",
-  "description": "Zend Framework coding standard",
-  "license": "BSD-3-Clause",
-  "keywords": [
-    "zf",
-    "coding standard"
-  ],
-  "require": {
-    "php": "^5.6 || ^7.0",
-    "squizlabs/php_codesniffer": "^3.0"
-  },
-  "require-dev": {
-    "mikey179/vfsStream": "^1.6",
-    "phpunit/phpunit": "^6.1 || ^5.7.15"
-  },
-  "autoload": {
-    "psr-4": {
-      "ZendCodingStandard\\": "src/ZendCodingStandard/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "ZendCodingStandard\\Test\\": "test/"
-    }
-  },
-  "scripts": {
-    "check": [
-      "@cs-check",
-      "@test"
+    "name": "zendframework/zend-coding-standard",
+    "description": "Zend Framework coding standard",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf",
+        "coding standard"
     ],
-    "cs-check": "phpcs -s",
-    "cs-fix": "phpcbf",
-    "test": "phpunit --colors=always",
-    "test-coverage": "phpunit --coverage-clover clover.xml",
-    "upload-coverage": "coveralls -v"
-  }
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "require-dev": {
+        "mikey179/vfsStream": "^1.6",
+        "phpunit/phpunit": "^6.1 || ^5.7.15"
+    },
+    "autoload": {
+        "psr-4": {
+            "ZendCodingStandard\\": "src/ZendCodingStandard/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ZendCodingStandard\\Test\\": "test/",
+            "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src/"
+        },
+        "files": [
+            "vendor/squizlabs/php_codesniffer/autoload.php"
+        ]
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cs-check": "phpcs -s",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --coverage-clover clover.xml",
+        "upload-coverage": "coveralls -v"
+    }
 }
