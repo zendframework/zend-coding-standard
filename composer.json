@@ -21,12 +21,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ZendCodingStandardTest\\": "test/",
-            "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src/"
-        },
-        "files": [
-            "vendor/squizlabs/php_codesniffer/autoload.php"
-        ]
+            "ZendCodingStandardTest\\": "test/"
+        }
     },
     "scripts": {
         "check": [
