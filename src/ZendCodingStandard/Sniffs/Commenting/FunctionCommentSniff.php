@@ -384,7 +384,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             $content .= $param['commentLines'][0]['comment'];
                         }
 
-                        $phpcsFile->fixer->replaceToken(($param['tag'] + 2), $content);
+                        $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
                     }
                 } elseif (count($typeNames) === 1) {
                     // Check type hint for array and custom type.
@@ -475,7 +475,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     $content .= $param['var'];
                     $content .= str_repeat(' ', $param['var_space']);
                     $content .= $param['commentLines'][0]['comment'];
-                    $phpcsFile->fixer->replaceToken(($param['tag'] + 2), $content);
+                    $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
 
                     // Fix up the indent of additional comment lines.
                     foreach ($param['commentLines'] as $lineNum => $line) {
@@ -487,7 +487,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                         $newIndent = ($param['commentLines'][$lineNum]['indent'] + $spaces - $param['type_space']);
                         $phpcsFile->fixer->replaceToken(
-                            ($param['commentLines'][$lineNum]['token'] - 1),
+                            $param['commentLines'][$lineNum]['token'] - 1,
                             str_repeat(' ', $newIndent)
                         );
                     }
@@ -544,7 +544,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     $content .= $param['var'];
                     $content .= str_repeat(' ', $spaces);
                     $content .= $param['commentLines'][0]['comment'];
-                    $phpcsFile->fixer->replaceToken(($param['tag'] + 2), $content);
+                    $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
 
                     // Fix up the indent of additional comment lines.
                     foreach ($param['commentLines'] as $lineNum => $line) {
@@ -556,7 +556,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                         $newIndent = ($param['commentLines'][$lineNum]['indent'] + $spaces - $param['var_space']);
                         $phpcsFile->fixer->replaceToken(
-                            ($param['commentLines'][$lineNum]['token'] - 1),
+                            $param['commentLines'][$lineNum]['token'] - 1,
                             str_repeat(' ', $newIndent)
                         );
                     }
