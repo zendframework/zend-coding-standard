@@ -2,15 +2,12 @@
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="ZendCodingStandard Test Suite">
-            <directory>./ZendCodingStandard/Tests</directory>
+            <directory>./test</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>./ZendCodingStandard</directory>
-            <exclude>
-                <directory>./ZendCodingStandard/Tests</directory>
-            </exclude>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>
