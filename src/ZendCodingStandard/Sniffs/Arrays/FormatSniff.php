@@ -148,8 +148,8 @@ class FormatSniff implements Sniff
             }
 
             if ($tokens[$next]['code'] === T_COMMENT
-                && (substr($tokens[$next]['content'], 0, 2) === '//'
-                    || substr($tokens[$next]['content'], 0, 1) === '#')
+                && (strpos($tokens[$next]['content'], '//') === 0
+                    || strpos($tokens[$next]['content'], '#') === 0)
             ) {
                 $end = $next;
             } else {
