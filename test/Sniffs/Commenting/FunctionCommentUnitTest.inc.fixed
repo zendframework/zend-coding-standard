@@ -1,0 +1,24 @@
+<?php
+namespace MyApp\MyNamespace;
+
+use Bar;
+use DateTime;
+
+class Foo extends Bar
+{
+    /**
+     * @inheritDoc
+     */
+    protected function test1(DateTime $x, $y)
+    {
+    }
+
+    /**
+     * Comment.
+     *
+     * {@inheritDoc}
+     */
+    protected function test2()
+    {
+    }
+}

@@ -1,11 +1,4 @@
 <?php
-/**
- * Copied from Squiz_Sniffs_Commenting_FunctionCommentSniff
- * with modifications:
- *  - check if "void" is one of the return type (if method has more than one)
- *  - use suggested types from ZendCodingStandard\CodingStandard
- */
-
 namespace ZendCodingStandard\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Config;
@@ -13,18 +6,6 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\PEAR\Sniffs\Commenting\FunctionCommentSniff as PEARFunctionCommentSniff;
 use ZendCodingStandard\CodingStandard;
 
-/**
- * Parses and verifies the doc comments for functions.
- *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
- * @author    Marc McIntyre <mmcintyre@squiz.net>
- * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
- * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @version   Release: @package_version@
- * @link      http://pear.php.net/package/PHP_CodeSniffer
- */
 class FunctionCommentSniff extends PEARFunctionCommentSniff
 {
     /**
@@ -35,13 +16,19 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     private $phpVersion;
 
     /**
+     * If function comment contains @inheritDoc tag.
+     *
+     * @var int[]
+     */
+    private $hasInheritDoc = [];
+
+    /**
      * Process the return comment of this function comment.
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token
      *                      in the stack passed in $tokens.
      * @param int $commentStart The position in the stack where the comment started.
-     *
      * @return void
      */
     protected function processReturn(File $phpcsFile, $stackPtr, $commentStart)
@@ -80,7 +67,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $suggestedNames = [];
                 foreach ($typeNames as $i => $typeName) {
                     $suggestedName = CodingStandard::suggestType($typeName);
-                    if (in_array($suggestedName, $suggestedNames) === false) {
+                    if (! in_array($suggestedName, $suggestedNames)) {
                         $suggestedNames[] = $suggestedName;
                     }
                 }
@@ -131,7 +118,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                                 $phpcsFile->addError($error, $return, 'InvalidReturnVoid');
                             }
                         }
-                    }//end if
+                    }
                 } elseif ($returnType !== 'mixed') {
                     $returnTypes = explode('|', $returnType);
 
@@ -157,7 +144,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     }
                 }
             }
-        } else {
+        } elseif (! $this->hasInheritDocTag($phpcsFile, $stackPtr, $commentStart)) {
             $error = 'Missing @return tag in function comment';
             $phpcsFile->addError($error, $tokens[$commentStart]['comment_closer'], 'MissingReturn');
         }
@@ -170,7 +157,6 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      * @param int $stackPtr The position of the current token
      *                      in the stack passed in $tokens.
      * @param int $commentStart The position in the stack where the comment started.
-     *
      * @return void
      */
     protected function processThrows(File $phpcsFile, $stackPtr, $commentStart)
@@ -231,13 +217,75 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     }
 
     /**
+     * Checks if function comment contains @inheritDoc tag.
+     * Methods should run only once.
+     *
+     * @param File $phpcsFile The file being scanned.
+     * @param int $stackPtr The position of the current token
+     *                      in the stack passed in $tokens.
+     * @param int $commentStart The position in the stack where the comment started.
+     * @return bool
+     */
+    protected function hasInheritDocTag(File $phpcsFile, $stackPtr, $commentStart)
+    {
+        if (isset($this->hasInheritDoc[$stackPtr])) {
+            return $this->hasInheritDoc[$stackPtr];
+        }
+
+        $tokens = $phpcsFile->getTokens();
+
+        $commentEnd = $tokens[$commentStart]['comment_closer'];
+        $commentContent = $phpcsFile->getTokensAsString($commentStart + 1, $commentEnd - $commentStart - 1);
+
+        if (preg_match('/\*.*\{(@inheritDoc)\}/i', $commentContent, $m)) {
+            if ($m[1] !== '@inheritDoc') {
+                $data = ['@inheritDoc', $m[1]];
+                $error = 'Expected {%s}, found {%s}.';
+                $fix = $phpcsFile->addFixableError($error, $commentStart, 'InheritDocCase', $data);
+
+                if ($fix) {
+                    $newCommentContent = str_replace('{' . $m[1] . '}', '{@inheritDoc}', $commentContent);
+                    $phpcsFile->fixer->beginChangeset();
+                    for ($i = $commentStart + 1; $i < $commentEnd; ++$i) {
+                        $phpcsFile->fixer->replaceToken($i, '');
+                    }
+                    $phpcsFile->fixer->addContent($commentStart + 1, $newCommentContent);
+                    $phpcsFile->fixer->endChangeset();
+                }
+            }
+
+            $this->hasInheritDoc[$stackPtr] = true;
+            return $this->hasInheritDoc[$stackPtr];
+        }
+
+        foreach ($tokens[$commentStart]['comment_tags'] as $pos => $tag) {
+            if (strtolower($tokens[$tag]['content']) === '@inheritdoc') {
+                if ($tokens[$tag]['content'] !== '@inheritDoc') {
+                    $data = ['@inheritDoc', $tokens[$tag]['content']];
+                    $error = 'Expected %s, found %s.';
+                    $fix = $phpcsFile->addFixableError($error, $tag, 'InheritDocCase', $data);
+
+                    if ($fix) {
+                        $phpcsFile->fixer->replaceToken($tag, '@inheritDoc');
+                    }
+                }
+
+                $this->hasInheritDoc[$stackPtr] = true;
+                return $this->hasInheritDoc[$stackPtr];
+            }
+        }
+
+        $this->hasInheritDoc[$stackPtr] = false;
+        return $this->hasInheritDoc[$stackPtr];
+    }
+
+    /**
      * Process the function parameter comments.
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token
      *                      in the stack passed in $tokens.
      * @param int $commentStart The position in the stack where the comment started.
-     *
      * @return void
      */
     protected function processParams(File $phpcsFile, $stackPtr, $commentStart)
@@ -436,7 +484,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                                 $param['var'],
                             ];
                             $phpcsFile->addError($error, $stackPtr, 'IncorrectTypeHint', $data);
-                        }//end if
+                        }
                     } elseif ($suggestedTypeHint === '' && isset($realParams[$pos])) {
                         $typeHint = $realParams[$pos]['type_hint'];
                         if ($typeHint !== '') {
@@ -576,6 +624,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $error = 'Parameter comment must end with a full stop';
                 $phpcsFile->addError($error, $param['tag'], 'ParamCommentFullStop');
             }
+        }
+
+        if ($this->hasInheritDocTag($phpcsFile, $stackPtr, $commentStart)) {
+            return;
         }
 
         $realNames = [];
