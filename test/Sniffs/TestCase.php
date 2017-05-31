@@ -97,7 +97,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $config = new Config();
         $config->cache = false;
-        $config->standards = [sprintf('src/%s', $standardName)];
+        $config->standards = [sprintf('%s/%s', $this->standardsDir, $standardName)];
         $config->sniffs = [$sniffCode];
         $config->ignored = [];
 
