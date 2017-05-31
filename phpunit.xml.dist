@@ -10,4 +10,9 @@
             <directory>./src</directory>
         </whitelist>
     </filter>
+    <php>
+        <const name="PHP_CODESNIFFER_IN_TESTS" value="1"/>
+        <const name="PHP_CODESNIFFER_CBF" value="0"/>
+        <const name="PHP_CODESNIFFER_VERBOSITY" value="0"/>
+    </php>
 </phpunit>
