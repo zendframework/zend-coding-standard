@@ -6,6 +6,9 @@
     <arg value="p"/>
     <arg name="colors"/>
 
+    <!-- PHP 5.6 compatibility checks -->
+    <config name="php_version" value="50630"/>
+
     <!-- PSR-2 base -->
     <rule ref="PSR2">
         <!-- Below 3 rules are covered by ZendCodingStandard.PHP.LowerCaseKeywordSniff -->
