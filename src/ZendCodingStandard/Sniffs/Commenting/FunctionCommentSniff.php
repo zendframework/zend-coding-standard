@@ -280,6 +280,173 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     }
 
     /**
+     * Process the @dataProvider tag of test's functions.
+     *
+     * @param File $phpcsFile The file being scanned.
+     * @param int $stackPtr The position of the current token
+     *                      in the stack passed in $tokens.
+     * @param int $commentStart The position in the stack where the comment started.
+     * @return void
+     */
+    protected function processDataProvider(File $phpcsFile, $stackPtr, $commentStart)
+    {
+        $tokens = $phpcsFile->getTokens();
+        $tags = $tokens[$commentStart]['comment_tags'];
+
+        // Checks @dataProvider tags
+        foreach ($tags as $pos => $tag) {
+            if (strtolower($tokens[$tag]['content']) !== '@dataprovider') {
+                continue;
+            }
+
+            // Check if method name starts from "test".
+            $functionPtr = $phpcsFile->findNext(T_FUNCTION, $tag + 1);
+            $namePtr = $phpcsFile->findNext(T_STRING, $functionPtr + 1);
+            $functionName = $tokens[$namePtr]['content'];
+
+            if (strpos($functionName, 'test') !== 0) {
+                $error = 'Tag @dataProvider is allowed only for test* methods.';
+                $phpcsFile->addError($error, $tag, 'DataProviderTestMethod');
+            }
+
+            // Check if data provider name is given and does not have "Provider" suffix.
+            if ($tokens[$tag + 1]['code'] !== T_DOC_COMMENT_WHITESPACE
+                || $tokens[$tag + 2]['code'] !== T_DOC_COMMENT_STRING
+            ) {
+                $error = 'Missing data provider name.';
+                $phpcsFile->addError($error, $tag, 'DataProviderMissing');
+            } else {
+                $providerName = $tokens[$tag + 2]['content'];
+
+                if (preg_match('/Provider$/', $providerName)) {
+                    $error = 'Data provider name should have "Provider" suffix.';
+                    $phpcsFile->addError($error, $tag, 'DataProviderInvalidName');
+                }
+            }
+
+            // Check if @dataProvider tag is first tag.
+            for ($i = $pos - 1; $i >= 0; --$i) {
+                $prevTag = $tags[$i];
+                if (strtolower($tokens[$prevTag]['content']) !== '@dataprovider') {
+                    $error = 'Tag @dataProvider must be first tag in function comment.';
+                    $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderNotFirstTag');
+
+                    if ($fix) {
+                        $first = $last = $tag;
+                        while ($tokens[$first]['line'] === $tokens[$tag]['line']) {
+                            --$first;
+                        }
+                        while ($tokens[$last]['line'] === $tokens[$tag]['line']) {
+                            ++$last;
+                        }
+                        $content = $phpcsFile->getTokensAsString($first + 1, $last - $first - 1);
+
+                        $prevLine = $prevTag;
+                        while ($tokens[$prevLine]['line'] === $tokens[$prevTag]['line']) {
+                            --$prevLine;
+                        }
+
+                        $phpcsFile->fixer->beginChangeset();
+                        for ($j = $first + 1; $j < $last; ++$j) {
+                            $phpcsFile->fixer->replaceToken($j, '');
+                        }
+                        $phpcsFile->fixer->addContent($prevLine, $content);
+                        $phpcsFile->fixer->endChangeset();
+                    }
+
+                    continue 2;
+                }
+            }
+
+            if ($tokens[$tag]['content'] !== '@dataProvider') {
+                $data = ['@dataProvider', $tokens[$tag]['content']];
+                $error = 'Expected %s, found %s';
+                $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderInvalidCase', $data);
+
+                if ($fix) {
+                    $phpcsFile->fixer->replaceToken($tag, '@dataProvider');
+                }
+            }
+
+            $star = $phpcsFile->findPrevious(T_DOC_COMMENT_STAR, $tag - 1);
+            $indent = '';
+            $prevLine = $star;
+            while ($tokens[$prevLine]['line'] === $tokens[$tag]['line']) {
+                if ($tokens[$prevLine]['code'] === T_DOC_COMMENT_WHITESPACE) {
+                    $indent = $tokens[$prevLine]['content'];
+                    break;
+                }
+                --$prevLine;
+            }
+
+            // Find non-empty token before @dataProvider tag.
+            $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE, T_DOC_COMMENT_STAR], $tag - 1, null, true);
+            if ($tokens[$prev]['code'] !== T_DOC_COMMENT_OPEN_TAG
+                && $tokens[$prev]['line'] === $tokens[$tag]['line'] - 1
+            ) {
+                if (! isset($tags[$pos - 1])
+                    || strtolower($tokens[$tags[$pos - 1]]['content']) !== '@dataprovider'
+                ) {
+                    $error = 'Missing blank line before @dataProvider tag.';
+                    $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderBlankLineBefore');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+                        $phpcsFile->fixer->addNewline($prev);
+                        $phpcsFile->fixer->addContent($prev, $indent . '*');
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                }
+            } elseif ($tokens[$prev]['line'] < $tokens[$tag]['line'] - 1
+                && isset($tags[$pos - 1])
+                && strtolower($tokens[$tags[$pos - 1]]['content']) === '@dataprovider'
+            ) {
+                $error = 'Empty line between @dataProvider tags is not allowed.';
+                $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderNoEmptyLineBetween');
+
+                if ($fix) {
+                    $phpcsFile->fixer->beginChangeset();
+                    for ($i = $tag; $i > $prev + 1; --$i) {
+                        if ($tokens[$i]['line'] === $tokens[$tag]['line']) {
+                            continue;
+                        }
+
+                        $phpcsFile->fixer->replaceToken($i, '');
+                    }
+                    $phpcsFile->fixer->endChangeset();
+                }
+            }
+
+            // Find first token in next line.
+            $nextLine = $tag;
+            while ($tokens[$nextLine]['line'] === $tokens[$tag]['line']) {
+                ++$nextLine;
+            }
+
+            // Find non-empty token starting from next line.
+            $next = $phpcsFile->findNext([T_DOC_COMMENT_WHITESPACE, T_DOC_COMMENT_STAR], $nextLine, null, true);
+            if ($tokens[$next]['line'] === $tokens[$tag]['line'] + 1
+                && $tokens[$next]['code'] !== T_DOC_COMMENT_CLOSE_TAG
+            ) {
+                if (! isset($tags[$pos + 1])
+                    || $next !== $tags[$pos + 1]
+                    || strtolower($tokens[$next]['content']) !== '@dataprovider'
+                ) {
+                    $error = 'Missing blank line after @dataProvider tag.';
+                    $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderBlankLineAfter');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+                        $phpcsFile->fixer->addNewlineBefore($nextLine);
+                        $phpcsFile->fixer->addContent($nextLine - 1, $indent . '*');
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Process the function parameter comments.
      *
      * @param File $phpcsFile The file being scanned.
@@ -297,6 +464,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
             }
         }
 
+        $this->processDataProvider($phpcsFile, $stackPtr, $commentStart);
         $tokens = $phpcsFile->getTokens();
 
         $params = [];

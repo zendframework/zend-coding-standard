@@ -1,0 +1,75 @@
+<?php
+namespace MyApp\MyNamespace;
+
+use DateTime;
+
+class Foo extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @dataProvider dataProvider1
+     */
+    public function test1(DateTime $x, $y)
+    {
+    }
+
+    /**
+     * Comment.
+     *
+     * @dataProvider dataProvider2
+     *
+     * @param string $x
+     */
+    public function test2($x)
+    {
+    }
+
+    /**
+     * @dataProvider dataProvider3
+     *
+     * @param string $x
+     */
+    public function test3($x)
+    {
+    }
+
+    /**
+     * @dataProvider
+     * @dataProvider dataProvider5
+     *
+     * @param string $x
+     * @small
+     */
+    public function test4($x)
+    {
+    }
+
+    /**
+     * @dataProvider dataProvider6
+     * @dataProvider dataProvider7
+     *
+     * @small
+     * @param string $x This is description
+     *                  of the first param
+     * @return void
+     * @param int|null $y
+     */
+    public function test5($x, $y = null)
+    {
+    }
+
+    /**
+     * @dataProvider myProvider
+     *
+     * @param string $x
+     */
+    public function test6($x)
+    {
+    }
+
+    /**
+     * @dataProvider month
+     */
+    public function method()
+    {
+    }
+}
