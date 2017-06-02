@@ -95,7 +95,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         // Get a list of all test files to check.
         $testFiles = $this->getTestFiles($testFileBase);
 
-        $config = new Config();
+        $config = new Config([], false);
         $config->cache = false;
         $config->standards = [sprintf('%s/%s', $this->standardsDir, $standardName)];
         $config->sniffs = [$sniffCode];
