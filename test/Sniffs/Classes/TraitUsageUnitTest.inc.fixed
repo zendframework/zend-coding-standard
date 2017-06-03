@@ -19,8 +19,8 @@ use YTrait
         ;
     use \A;
 use \B {
-        \B::smallTalk insteadof \A;
-      \A::bigTalk insteadof \B;
+        \A::bigTalk insteadof \B;
+      \B::smallTalk insteadof \A;
     }
     use HelloWorld {
 sayHello as protected;

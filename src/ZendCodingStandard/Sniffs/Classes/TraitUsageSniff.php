@@ -173,6 +173,42 @@ class TraitUsageSniff implements Sniff
                     $phpcsFile->fixer->endChangeset();
                 }
             }
+
+            // Detect all statements inside curly brackets.
+            $statements = [];
+            $begin = $phpcsFile->findNext(Tokens::$emptyTokens, $scopeOpener + 1, null, true);
+            while ($end = $phpcsFile->findNext([T_SEMICOLON], $begin + 1, $scopeCloser)) {
+                $statements[] = [
+                    'begin'   => $begin,
+                    'end'     => $end,
+                    'content' => $phpcsFile->getTokensAsString($begin, $end - $begin + 1),
+                ];
+                $begin = $phpcsFile->findNext(Tokens::$emptyTokens, $end + 1, null, true);
+            }
+
+            $lastStatement = null;
+            foreach ($statements as $statement) {
+                if (! $lastStatement) {
+                    $lastStatement = $statement;
+                    continue;
+                }
+
+                $order = strnatcasecmp($statement['content'], $lastStatement['content']);
+
+                if ($order < 0) {
+                    $error = 'Statements in trait are incorrectly ordered. The first wrong is %s';
+                    $data = [$statement['content']];
+                    $fix = $phpcsFile->addFixableError($error, $statement['begin'], 'TraitStatementsOrder', $data);
+
+                    if ($fix) {
+                        $this->fixAlphabeticalOrder($phpcsFile, $statements);
+                    }
+
+                    break;
+                }
+
+                $lastStatement = $statement;
+            }
         } else {
             $scopeCloser = $scopeOpener;
         }
@@ -192,8 +228,6 @@ class TraitUsageSniff implements Sniff
         if ($nextUse !== false) {
             return;
         }
-
-        // todo: check order of statements in curly brackets
 
         // Find next (after traits) non-whitespace token.
         $next = $phpcsFile->findNext(T_WHITESPACE, $scopeCloser + 1, null, true);
@@ -223,5 +257,35 @@ class TraitUsageSniff implements Sniff
                 }
             }
         }
+    }
+
+    /**
+     * Fix order of statements inside trait's curly brackets.
+     *
+     * @param File $phpcsFile
+     * @param array $statements
+     * @return void
+     */
+    private function fixAlphabeticalOrder(File $phpcsFile, array $statements)
+    {
+        $phpcsFile->fixer->beginChangeset();
+        foreach ($statements as $statement) {
+            for ($i = $statement['begin']; $i <= $statement['end']; ++$i) {
+                $phpcsFile->fixer->replaceToken($i, '');
+            }
+        }
+
+        usort($statements, function (array $a, array $b) {
+            return strnatcasecmp($a['content'], $b['content']);
+        });
+
+        $begins = array_column($statements, 'begin');
+        sort($begins);
+
+        foreach ($begins as $k => $begin) {
+            $phpcsFile->fixer->addContent($begin, $statements[$k]['content']);
+        }
+
+        $phpcsFile->fixer->endChangeset();
     }
 }
