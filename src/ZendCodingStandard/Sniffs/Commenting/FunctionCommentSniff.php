@@ -324,12 +324,12 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 }
             }
 
-            // Check if @dataProvider tag is first tag.
+            // Check if @dataProvider tag is above @param tag(s).
             for ($i = $pos - 1; $i >= 0; --$i) {
                 $prevTag = $tags[$i];
-                if (strtolower($tokens[$prevTag]['content']) !== '@dataprovider') {
-                    $error = 'Tag @dataProvider must be first tag in function comment.';
-                    $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderNotFirstTag');
+                if (strtolower($tokens[$prevTag]['content']) === '@param') {
+                    $error = 'Tag @dataProvider must be above @param tag(s).';
+                    $fix = $phpcsFile->addFixableError($error, $tag, 'DataProviderNotAboveParams');
 
                     if ($fix) {
                         $first = $last = $tag;

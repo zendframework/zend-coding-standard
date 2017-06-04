@@ -44,10 +44,11 @@ class Foo extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @small
+     *
      * @dataProvider dataProvider6
      * @dataProvider dataProvider7
      *
-     * @small
      * @param string $x This is description
      *                  of the first param
      * @return void
