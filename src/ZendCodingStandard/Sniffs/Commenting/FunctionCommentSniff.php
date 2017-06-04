@@ -644,7 +644,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             }
 
                             $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
-                        } elseif ($typeHint !== substr($suggestedTypeHint, (strlen($typeHint) * -1))) {
+                        } elseif ($typeHint !== substr($suggestedTypeHint, strlen($typeHint) * -1)) {
                             $error = 'Expected type hint "%s"; found "%s" for %s';
                             $data = [
                                 $suggestedTypeHint,
@@ -701,7 +701,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             continue;
                         }
 
-                        $newIndent = ($param['commentLines'][$lineNum]['indent'] + $spaces - $param['type_space']);
+                        $newIndent = $param['commentLines'][$lineNum]['indent'] + $spaces - $param['type_space'];
                         $phpcsFile->fixer->replaceToken(
                             $param['commentLines'][$lineNum]['token'] - 1,
                             str_repeat(' ', $newIndent)
@@ -770,7 +770,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             continue;
                         }
 
-                        $newIndent = ($param['commentLines'][$lineNum]['indent'] + $spaces - $param['var_space']);
+                        $newIndent = $param['commentLines'][$lineNum]['indent'] + $spaces - $param['var_space'];
                         $phpcsFile->fixer->replaceToken(
                             $param['commentLines'][$lineNum]['token'] - 1,
                             str_repeat(' ', $newIndent)
