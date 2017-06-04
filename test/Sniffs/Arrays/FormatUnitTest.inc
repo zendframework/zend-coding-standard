@@ -75,3 +75,8 @@ $arr = [
     'elem', 'elem',
 
 ];
+
+$a = array_merge([
+    ['a' => 'b'],
+    ['c' => 'd'],
+     ]);

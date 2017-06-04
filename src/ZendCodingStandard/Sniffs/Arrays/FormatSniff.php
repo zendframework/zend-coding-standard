@@ -176,6 +176,17 @@ class FormatSniff implements Sniff
                     $phpcsFile->fixer->addNewlineBefore($bracketCloser);
                     $phpcsFile->fixer->endChangeset();
                 }
+            } elseif ($first === $bracketCloser - 1
+                && $tokens[$first]['code'] === T_WHITESPACE
+                && strlen($tokens[$first]['content']) !== $indent
+            ) {
+                $error = 'Expected %d spaces; found %d';
+                $data = [$indent, strlen($tokens[$first]['content'])];
+                $fix = $phpcsFile->addFixableError($error, $first, 'CloseBracketIndent', $data);
+
+                if ($fix) {
+                    $phpcsFile->fixer->replaceToken($first, str_repeat(' ', $indent));
+                }
             }
         }
     }

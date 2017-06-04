@@ -39,6 +39,7 @@ class FormatUnitTest extends TestCase
             74 => 1,
             75 => 1,
             76 => 1,
+            82 => 1,
         ];
     }
 
