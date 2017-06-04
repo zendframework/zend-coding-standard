@@ -215,8 +215,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      */
     protected function hasInheritDocTag(File $phpcsFile, $stackPtr, $commentStart)
     {
-        if (isset($this->hasInheritDoc[$stackPtr])) {
-            return $this->hasInheritDoc[$stackPtr];
+        $id = spl_object_hash($phpcsFile) . ':' . $stackPtr;
+
+        if (isset($this->hasInheritDoc[$id])) {
+            return $this->hasInheritDoc[$id];
         }
 
         $tokens = $phpcsFile->getTokens();
@@ -241,8 +243,8 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 }
             }
 
-            $this->hasInheritDoc[$stackPtr] = true;
-            return $this->hasInheritDoc[$stackPtr];
+            $this->hasInheritDoc[$id] = true;
+            return $this->hasInheritDoc[$id];
         }
 
         foreach ($tokens[$commentStart]['comment_tags'] as $pos => $tag) {
@@ -257,13 +259,13 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     }
                 }
 
-                $this->hasInheritDoc[$stackPtr] = true;
-                return $this->hasInheritDoc[$stackPtr];
+                $this->hasInheritDoc[$id] = true;
+                return $this->hasInheritDoc[$id];
             }
         }
 
-        $this->hasInheritDoc[$stackPtr] = false;
-        return $this->hasInheritDoc[$stackPtr];
+        $this->hasInheritDoc[$id] = false;
+        return $this->hasInheritDoc[$id];
     }
 
     /**
