@@ -14,33 +14,10 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-/**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://pear.php.net/package/PHP_CodeSniffer_CakePHP
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- *
- * Asserts that type casts are in the short form:
- * - bool instead of boolean
- * - int instead of integer
- */
 class TypeCastingSniff implements Sniff
 {
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * Note, that this sniff only checks the value and casing of a cast.
-     * It does not check for whitespace issues regarding casts, as
-     * - Squiz.WhiteSpace.CastSpacing.ContainsWhiteSpace checks for whitespace in the cast
-     * - Generic.Formatting.NoSpaceAfterCast.SpaceFound checks for whitespace after the cast
-     *
-     * @return array
+     * @inheritDoc
      */
     public function register()
     {
@@ -48,12 +25,7 @@ class TypeCastingSniff implements Sniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token in the
-     *                      stack passed in $tokens.
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

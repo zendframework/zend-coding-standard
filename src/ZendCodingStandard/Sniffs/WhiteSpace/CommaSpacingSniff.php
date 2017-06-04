@@ -21,7 +21,7 @@ use PHP_CodeSniffer\Util\Tokens;
 class CommaSpacingSniff implements Sniff
 {
     /**
-     * @return int[]
+     * @inheritDoc
      */
     public function register()
     {
@@ -29,9 +29,7 @@ class CommaSpacingSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

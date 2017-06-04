@@ -7,7 +7,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class DoubleColonSniff implements Sniff
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register()
     {
@@ -15,9 +15,7 @@ class DoubleColonSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

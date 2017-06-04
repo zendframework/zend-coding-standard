@@ -15,18 +15,10 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\CodingStandard;
 
-/**
- * Checks for "use" statements that are not needed in a file.
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @author    Jesse Donat <donatj@gmail.com>
- * @copyright 2016 Capstone Digital
- */
 class UnusedUseStatementSniff implements Sniff
 {
     /**
-     * @return int[]
+     * @inheritDoc
      */
     public function register()
     {
@@ -34,9 +26,7 @@ class UnusedUseStatementSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile The
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

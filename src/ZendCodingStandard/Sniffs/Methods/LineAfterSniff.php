@@ -1,7 +1,4 @@
 <?php
-/**
- * Check if between methods of the class is exactly one blank line.
- */
 namespace ZendCodingStandard\Sniffs\Methods;
 
 use PHP_CodeSniffer\Files\File;
@@ -9,16 +6,16 @@ use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 class LineAfterSniff extends AbstractScopeSniff
 {
+    /**
+     * @inheritDoc
+     */
     public function __construct()
     {
         parent::__construct([T_CLASS, T_INTERFACE, T_TRAIT], [T_FUNCTION]);
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @param int $currScope
-     * @return void
+     * @inheritDoc
      */
     protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
@@ -55,13 +52,7 @@ class LineAfterSniff extends AbstractScopeSniff
     }
 
     /**
-     * Processes a token that is found outside the scope that this test is
-     * listening to.
-     *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int $stackPtr The position in the stack where this
-     *                      token was found.
-     * @return void
+     * @inheritDoc
      */
     protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {

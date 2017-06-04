@@ -28,8 +28,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     ];
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr Position of the double quoted string.
+     * @inheritDoc
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
@@ -54,8 +53,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr Position of the double quoted string.
+     * @inheritDoc
      */
     protected function processMemberVar(File $phpcsFile, $stackPtr)
     {
@@ -63,8 +61,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr Position of the double quoted string.
+     * @inheritDoc
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {

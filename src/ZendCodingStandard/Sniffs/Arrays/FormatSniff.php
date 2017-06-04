@@ -14,7 +14,7 @@ class FormatSniff implements Sniff
     public $indent = 4;
 
     /**
-     * @return int[]
+     * @inheritDoc
      */
     public function register()
     {
@@ -22,9 +22,7 @@ class FormatSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

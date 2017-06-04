@@ -7,7 +7,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class NewKeywordSniff implements Sniff
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register()
     {
@@ -15,9 +15,7 @@ class NewKeywordSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

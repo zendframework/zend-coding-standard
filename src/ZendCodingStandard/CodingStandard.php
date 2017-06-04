@@ -19,6 +19,15 @@ class CodingStandard
         'callable',
     ];
 
+    /**
+     * Returns a valid variable type for param/var tag.
+     *
+     * If type is not one of the standard type, it must be a custom type.
+     * Returns the correct type name suggestion if type name is invalid.
+     *
+     * @param string $varType The variable type to process.
+     * @return string
+     */
     public static function suggestType($varType)
     {
         $lowerVarType = strtolower($varType);

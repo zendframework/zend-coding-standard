@@ -8,7 +8,7 @@ use PHP_CodeSniffer\Util\Tokens;
 class InstantiatingParenthesisSniff implements Sniff
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register()
     {
@@ -16,9 +16,7 @@ class InstantiatingParenthesisSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

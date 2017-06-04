@@ -11,28 +11,10 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use ZendCodingStandard\CodingStandard;
 
-/**
- * Parses and verifies the variable doc comment.
- *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
- * @author    Marc McIntyre <mmcintyre@squiz.net>
- * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
- * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @version   Release: @package_version@
- * @link      http://pear.php.net/package/PHP_CodeSniffer
- */
 class VariableCommentSniff extends AbstractVariableSniff
 {
     /**
-     * Called to process class member vars.
-     *
-     * @param File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token
-     *                      in the stack passed in $tokens.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function processMemberVar(File $phpcsFile, $stackPtr)
     {
@@ -129,30 +111,14 @@ class VariableCommentSniff extends AbstractVariableSniff
     }
 
     /**
-     * Called to process a normal variable.
-     *
-     * Not required for this sniff.
-     *
-     * @param File $phpcsFile The PHP_CodeSniffer file where this token was found.
-     * @param int $stackPtr The position where the double quoted
-     *                      string was found.
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
     }
 
     /**
-     * Called to process variables found in double quoted strings.
-     *
-     * Not required for this sniff.
-     *
-     * @param File $phpcsFile The PHP_CodeSniffer file where this token was found.
-     * @param int $stackPtr The position where the double quoted
-     *                      string was found.
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {

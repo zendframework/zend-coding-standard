@@ -23,13 +23,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     private $hasInheritDoc = [];
 
     /**
-     * Process the return comment of this function comment.
-     *
-     * @param File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token
-     *                      in the stack passed in $tokens.
-     * @param int $commentStart The position in the stack where the comment started.
-     * @return void
+     * @inheritDoc
      */
     protected function processReturn(File $phpcsFile, $stackPtr, $commentStart)
     {
@@ -151,13 +145,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     }
 
     /**
-     * Process any throw tags that this function comment has.
-     *
-     * @param File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token
-     *                      in the stack passed in $tokens.
-     * @param int $commentStart The position in the stack where the comment started.
-     * @return void
+     * @inheritDoc
      */
     protected function processThrows(File $phpcsFile, $stackPtr, $commentStart)
     {
@@ -447,13 +435,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     }
 
     /**
-     * Process the function parameter comments.
-     *
-     * @param File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token
-     *                      in the stack passed in $tokens.
-     * @param int $commentStart The position in the stack where the comment started.
-     * @return void
+     * @inheritDoc
      */
     protected function processParams(File $phpcsFile, $stackPtr, $commentStart)
     {

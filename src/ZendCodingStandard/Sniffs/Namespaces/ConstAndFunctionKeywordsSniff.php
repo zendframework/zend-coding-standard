@@ -9,7 +9,7 @@ use ZendCodingStandard\CodingStandard;
 class ConstAndFunctionKeywordsSniff implements Sniff
 {
     /**
-     * @return int[]
+     * @inheritDoc
      */
     public function register()
     {
@@ -17,9 +17,7 @@ class ConstAndFunctionKeywordsSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

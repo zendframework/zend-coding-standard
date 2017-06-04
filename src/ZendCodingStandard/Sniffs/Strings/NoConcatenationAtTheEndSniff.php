@@ -6,11 +6,17 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class NoConcatenationAtTheEndSniff implements Sniff
 {
+    /**
+     * @inheritDoc
+     */
     public function register()
     {
         return [T_STRING_CONCAT];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();

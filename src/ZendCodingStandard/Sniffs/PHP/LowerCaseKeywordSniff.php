@@ -5,6 +5,9 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\LowerCaseKeywordSniff as Generi
 
 class LowerCaseKeywordSniff extends GenericLowerCaseKeywordSniff
 {
+    /**
+     * @inheritDoc
+     */
     public function register()
     {
         return array_merge(
