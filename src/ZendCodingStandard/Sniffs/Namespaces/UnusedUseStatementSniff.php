@@ -107,14 +107,14 @@ class UnusedUseStatementSniff implements Sniff
         unset($emptyTokens[T_DOC_COMMENT_TAG]);
 
         while ($classUsed !== false) {
-            if (($tokens[$classUsed]['code'] == T_STRING
+            if (($tokens[$classUsed]['code'] === T_STRING
                     && strtolower($tokens[$classUsed]['content']) === $lowerClassName)
-                || ($tokens[$classUsed]['code'] == T_DOC_COMMENT_STRING
+                || ($tokens[$classUsed]['code'] === T_DOC_COMMENT_STRING
                     && preg_match(
                         '/(\s|\||^)' . preg_quote($lowerClassName) . '(\s|\||\\\\|$|\[\])/i',
                         $tokens[$classUsed]['content']
                     ))
-                || ($tokens[$classUsed]['code'] == T_DOC_COMMENT_TAG
+                || ($tokens[$classUsed]['code'] === T_DOC_COMMENT_TAG
                     && preg_match(
                         '/@' . preg_quote($lowerClassName) . '(\(|\\\\|$)/i',
                         $tokens[$classUsed]['content']
@@ -127,7 +127,7 @@ class UnusedUseStatementSniff implements Sniff
                     true
                 );
 
-                if ($tokens[$classUsed]['code'] == T_STRING) {
+                if ($tokens[$classUsed]['code'] === T_STRING) {
                     // If a backslash is used before the class name then this is some other
                     // use statement.
                     if ($tokens[$beforeUsage]['code'] !== T_USE

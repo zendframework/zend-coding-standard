@@ -32,9 +32,9 @@ class TypeCastingSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         // Process !! casts
-        if ($tokens[$stackPtr]['code'] == T_BOOLEAN_NOT) {
+        if ($tokens[$stackPtr]['code'] === T_BOOLEAN_NOT) {
             $nextToken = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
-            if ($tokens[$nextToken]['code'] != T_BOOLEAN_NOT) {
+            if ($tokens[$nextToken]['code'] !== T_BOOLEAN_NOT) {
                 return;
             }
             $error = 'Usage of !! cast is not allowed. Please use (bool) to cast.';
@@ -50,7 +50,7 @@ class TypeCastingSniff implements Sniff
             return;
         }
 
-        if ($tokens[$stackPtr]['code'] == T_UNSET_CAST) {
+        if ($tokens[$stackPtr]['code'] === T_UNSET_CAST) {
             $phpcsFile->addError('(unset) casting is not allowed.', $stackPtr, 'UnsetCast');
             return;
         }
