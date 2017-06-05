@@ -1,6 +1,7 @@
 <?php
 /**
  * Copied from:
+ *
  * @see https://github.com/consistence/coding-standard/blob/master/Consistence/Sniffs/NamingConventions/ValidVariableNameSniff.php
  */
 

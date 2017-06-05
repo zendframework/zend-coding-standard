@@ -1,6 +1,7 @@
 <?php
 /**
  * Copied from:
+ *
  * @see https://github.com/dereuromark/codesniffer-standards/blob/master/CakePHP/Sniffs/PHP/TypeCastingSniff.php
  *
  * Changes:

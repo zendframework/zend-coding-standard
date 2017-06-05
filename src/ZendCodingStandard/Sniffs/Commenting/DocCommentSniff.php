@@ -585,7 +585,7 @@ class DocCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        if (!$tokens[$commentStart]['comment_tags']) {
+        if (! $tokens[$commentStart]['comment_tags']) {
             return;
         }
 

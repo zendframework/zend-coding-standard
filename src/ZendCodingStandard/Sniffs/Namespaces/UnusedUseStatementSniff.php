@@ -1,6 +1,7 @@
 <?php
 /**
  * Below class is mixture of:
+ *
  * @see http://jdon.at/1h0wb
  * @see https://github.com/squizlabs/PHP_CodeSniffer/pull/1106
  *
