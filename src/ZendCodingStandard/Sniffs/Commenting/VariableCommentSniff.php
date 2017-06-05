@@ -3,6 +3,7 @@
  * Copied from Squiz_Sniffs_Commenting_VariableCommentSniff
  * with modifications:
  *  - use suggested types from ZendCodingStandard\CodingStandard
+ *  - skip normal comments if there is one blank line after the comment
  */
 
 namespace ZendCodingStandard\Sniffs\Commenting;
@@ -38,11 +39,10 @@ class VariableCommentSniff extends AbstractVariableSniff
         }
 
         if ($tokens[$commentEnd]['code'] === T_COMMENT) {
-            $phpcsFile->addError(
-                'You must use "/**" style comments for a member variable comment',
-                $stackPtr,
-                'WrongStyle'
-            );
+            if ($tokens[$commentEnd]['line'] === $tokens[$stackPtr]['line'] - 1) {
+                $error = 'You must use "/**" style comments for a member variable comment';
+                $phpcsFile->addError($error, $stackPtr, 'WrongStyle');
+            }
 
             return;
         }
