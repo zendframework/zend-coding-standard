@@ -81,7 +81,8 @@ class CommaSpacingSniff implements Sniff
             );
 
             if ($tokens[$openArray]['line'] !== $tokens[$closeArray]['line']
-                || $tokens[$beforeOpening]['line'] === $tokens[$openArray]['line']
+                || ($tokens[$beforeOpening]['line'] === $tokens[$openArray]['line']
+                    && $tokens[$beforeOpening]['code'] !== T_DOUBLE_ARROW)
                 || $tokens[$afterClosing]['line'] === $tokens[$closeArray]['line']
             ) {
                 $error = 'Expected 1 space after comma; found %d';
