@@ -95,6 +95,7 @@ class DocCommentUnitTest extends TestCase
         return [
             3 => 1,
             8 => 1,
+            10 => 1,
             11 => 1,
             12 => 1,
             13 => 1,
@@ -131,6 +132,8 @@ class DocCommentUnitTest extends TestCase
             104 => 1,
             110 => 1,
             111 => 1,
+            127 => 1,
+            133 => 1,
         ];
     }
 

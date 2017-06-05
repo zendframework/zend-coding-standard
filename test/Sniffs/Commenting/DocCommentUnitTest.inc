@@ -6,10 +6,10 @@
 namespace MyApp\MyNamespace;
 
 /** Class foo
- * @package MyApp\MyNamespace
  * Description of the class
    *   - OK
    * Indents
+ * @package MyApp\MyNamespace
 */
 class Foo
 {
@@ -120,5 +120,18 @@ class Foo
 
         /** This is another description */
         $b = 1;
+    }
+
+    /**
+     * Description
+     * @return void
+     */
+    public function test5()
+    {
+        /**
+         * Long information about the variable.
+         * @var string $x
+         */
+        $x = 'something';
     }
 }

@@ -43,6 +43,8 @@ class DocCommentSniff implements Sniff
 
         $this->checkSpacesAfterStar($phpcsFile, $commentStart, $commentEnd);
         $this->checkBlankLinesInComment($phpcsFile, $commentStart, $commentEnd);
+
+        $this->checkBlankLineBeforeTags($phpcsFile, $commentStart);
     }
 
     /**
@@ -569,6 +571,46 @@ class DocCommentSniff implements Sniff
             }
 
             $from = $next;
+        }
+    }
+
+    /**
+     * Check if there is one blank line before comment tags.
+     *
+     * @param File $phpcsFile
+     * @param int $commentStart
+     * @return void
+     */
+    private function checkBlankLineBeforeTags(File $phpcsFile, $commentStart)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        if (!$tokens[$commentStart]['comment_tags']) {
+            return;
+        }
+
+        $tag = $tokens[$commentStart]['comment_tags'][0];
+        $beforeTag = $phpcsFile->findPrevious(
+            [T_DOC_COMMENT_WHITESPACE, T_DOC_COMMENT_STAR],
+            $tag - 1,
+            null,
+            true
+        );
+
+        if ($tokens[$beforeTag]['code'] === T_DOC_COMMENT_STRING
+            && $tokens[$beforeTag]['line'] === $tokens[$tag]['line'] - 1
+        ) {
+            $firstOnLine = $phpcsFile->findFirstOnLine([], $tag, true);
+
+            $error = 'Missing blank line before comment tags.';
+            $fix = $phpcsFile->addFixableError($error, $firstOnLine, 'MissingBlankLine');
+
+            if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->addNewlineBefore($firstOnLine);
+                $phpcsFile->fixer->addContentBefore($firstOnLine, '*');
+                $phpcsFile->fixer->endChangeset();
+            }
         }
     }
 }
