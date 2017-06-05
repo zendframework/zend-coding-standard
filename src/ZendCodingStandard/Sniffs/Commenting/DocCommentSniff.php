@@ -260,14 +260,14 @@ class DocCommentSniff implements Sniff
                 $phpcsFile->fixer->addNewline($newLine);
                 $phpcsFile->fixer->endChangeset();
             }
-        } elseif ($tokens[$prev]['code'] === T_OPEN_TAG
-            && $tokens[$next]['line'] === $tokens[$commentEnd]['line'] + 1
-        ) {
-            $error = 'Missing blank line after file doc comment.';
-            $fix = $phpcsFile->addFixableError($error, $commentEnd, 'MissingBlankLineAfter');
+        } elseif ($tokens[$prev]['code'] === T_OPEN_TAG) {
+            if ($tokens[$next]['line'] === $tokens[$commentEnd]['line'] + 1) {
+                $error = 'Missing blank line after file doc comment.';
+                $fix = $phpcsFile->addFixableError($error, $commentEnd, 'MissingBlankLineAfter');
 
-            if ($fix) {
-                $phpcsFile->fixer->addNewline($commentEnd);
+                if ($fix) {
+                    $phpcsFile->fixer->addNewline($commentEnd);
+                }
             }
         } elseif ($tokens[$next]['line'] > $tokens[$commentEnd]['line'] + 1
             && ! in_array($tokens[$next]['code'], $allowEmptyLineBefore, true)
