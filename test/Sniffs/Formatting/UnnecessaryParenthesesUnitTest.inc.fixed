@@ -143,6 +143,7 @@ class UnnecessaryParentheses
     public function method10($a, $b, $c)
     {
         if (($a || $z = strpos($b, $c)) === false) {
+            $z = clone $a;
         }
     }
 }

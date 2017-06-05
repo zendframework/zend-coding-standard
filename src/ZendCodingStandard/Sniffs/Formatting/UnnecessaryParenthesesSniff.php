@@ -39,6 +39,7 @@ class UnnecessaryParenthesesSniff implements Sniff
     ];
 
     private $spaceTokens = [
+        T_CLONE,
         T_ECHO,
         T_RETURN,
         T_INCLUDE,
