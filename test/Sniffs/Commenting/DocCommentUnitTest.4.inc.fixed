@@ -2,6 +2,7 @@
 /**
  * @licence
  */
+
 namespace MyApp\MyNamespace;
 
 class AfterClose

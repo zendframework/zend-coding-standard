@@ -2,7 +2,6 @@
 /**
 * @licence
 */
-
 namespace MyApp\MyNamespace;
 
 class CommentIndent

@@ -237,6 +237,7 @@ class DocCommentSniff implements Sniff
             T_USE,
         ];
 
+        $prev = $phpcsFile->findPrevious(T_WHITESPACE, $commentStart - 1, null, true);
         $next = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
 
         if (! $next) {
@@ -247,7 +248,7 @@ class DocCommentSniff implements Sniff
 
         if ($tokens[$commentEnd]['line'] === $tokens[$next]['line']) {
             $error = 'The close comment tag must be the only content on the line.';
-            $fix = $phpcsFile->addFixableError($error, $commentEnd, '');
+            $fix = $phpcsFile->addFixableError($error, $commentEnd, 'ContentAfterClosingTag');
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -259,8 +260,17 @@ class DocCommentSniff implements Sniff
                 $phpcsFile->fixer->addNewline($newLine);
                 $phpcsFile->fixer->endChangeset();
             }
+        } elseif ($tokens[$prev]['code'] === T_OPEN_TAG
+            && $tokens[$next]['line'] === $tokens[$commentEnd]['line'] + 1
+        ) {
+            $error = 'Missing blank line after file doc comment.';
+            $fix = $phpcsFile->addFixableError($error, $commentEnd, 'MissingBlankLineAfter');
+
+            if ($fix) {
+                $phpcsFile->fixer->addNewline($commentEnd);
+            }
         } elseif ($tokens[$next]['line'] > $tokens[$commentEnd]['line'] + 1
-            && ! in_array($tokens[$next]['code'], $allowEmptyLineBefore)
+            && ! in_array($tokens[$next]['code'], $allowEmptyLineBefore, true)
         ) {
             $error = 'Additional blank lines found after doc comment.';
             $fix = $phpcsFile->addFixableError($error, $commentEnd + 2, 'BlankLinesAfter');

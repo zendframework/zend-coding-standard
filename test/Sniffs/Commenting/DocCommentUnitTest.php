@@ -50,13 +50,13 @@ class DocCommentUnitTest extends TestCase
             case 'DocCommentUnitTest.5.inc':
                 return [
                     3 => 1,
-                    4 => 1,
-                    10 => 1,
-                    12 => 1,
+                    4 => 2,
+                    9 => 1,
+                    11 => 1,
+                    14 => 1,
                     15 => 1,
                     16 => 1,
-                    17 => 1,
-                    20 => 1,
+                    19 => 1,
                 ];
             case 'DocCommentUnitTest.6.inc':
                 return [
