@@ -9,6 +9,7 @@
  *
  * @todo remove once merged to squizlabs/PHP_CodeSniffer (?)
  */
+
 namespace ZendCodingStandard\Sniffs\Namespaces;
 
 use PHP_CodeSniffer\Files\File;

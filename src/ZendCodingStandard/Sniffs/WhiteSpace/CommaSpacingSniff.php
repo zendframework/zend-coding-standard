@@ -12,6 +12,7 @@
  *   [22,   3432, 23,  4],
  * ]
  */
+
 namespace ZendCodingStandard\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;

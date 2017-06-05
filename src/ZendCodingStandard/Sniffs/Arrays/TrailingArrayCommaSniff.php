@@ -3,6 +3,7 @@
  * Copied from SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff
  * with fix: comma shouldn't be added after "[" for empty arrays "[]".
  */
+
 namespace ZendCodingStandard\Sniffs\Arrays;
 
 use PHP_CodeSniffer\Files\File;
