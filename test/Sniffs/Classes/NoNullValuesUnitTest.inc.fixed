@@ -1,0 +1,23 @@
+<?php
+namespace MyApp\MyNamespace;
+
+class NoNullValues
+{
+    public $v1;
+    protected $v2;
+    private $v3;
+
+    public static $v4;
+
+    /**
+     * @param mixed $x
+     */
+    public function __construct($x = null)
+    {
+        $var = null;
+
+        $class = new class() {
+            private $s1 = null;
+        };
+    }
+}
