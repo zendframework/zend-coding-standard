@@ -1,0 +1,22 @@
+<?php
+
+$abstractClass = new class() {
+    public function __construct()
+    {
+    }
+    public function method1()
+    {
+    }
+
+
+    public function method2()
+    {
+    }
+
+
+
+
+    public function method3(){}
+    public function method4(){} public function method5(){}
+    public function method6(){}private function method7(){}
+};

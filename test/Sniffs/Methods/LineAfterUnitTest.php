@@ -26,6 +26,15 @@ class LineAfterUnitTest extends TestCase
                     22 => 1,
                     24 => 1,
                 ];
+            case 'LineAfterUnitTest.3.inc':
+                return [
+                    6 => 1,
+                    9 => 1,
+                    14 => 1,
+                    19 => 1,
+                    20 => 2,
+                    21 => 1,
+                ];
         }
 
         return [
