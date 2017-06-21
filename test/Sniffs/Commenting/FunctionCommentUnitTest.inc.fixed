@@ -21,4 +21,36 @@ class Foo extends Bar
     protected function test2()
     {
     }
+
+    /**
+     * @return array(int => bool)
+     */
+    private function returnsIntBoolArray()
+    {
+        return [1 => true];
+    }
+
+    /**
+     * @return int[]
+     */
+    private function returnsIntArray()
+    {
+        return [0, 1];
+    }
+
+    /**
+     * @return bool[]
+     */
+    private function returnsBoolArray()
+    {
+        return [true, false];
+    }
+
+    /**
+     * @return array
+     */
+    private function returnsArray()
+    {
+        return [];
+    }
 }

@@ -66,7 +66,9 @@ class CodingStandard
                     $type2 = ' => ' . $type2;
                 }
 
-                return sprintf('array(%s%s)', $type1, $type2);
+                if ($type1 || $type2) {
+                    return sprintf('array(%s%s)', $type1, $type2);
+                }
             }
 
             return 'array';
