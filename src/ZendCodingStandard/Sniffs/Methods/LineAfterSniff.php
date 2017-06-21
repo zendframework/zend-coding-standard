@@ -35,7 +35,8 @@ class LineAfterSniff extends AbstractScopeSniff
         ) {
             $error = 'Expected 1 blank line after method; %d found';
             $found = max($tokens[$contentAfter]['line'] - $tokens[$closer]['line'] - 1, 0);
-            $fix = $phpcsFile->addFixableError($error, $closer, '', [$found]);
+            $data = [$found];
+            $fix = $phpcsFile->addFixableError($error, $closer, 'BlankLinesAfter', $data);
 
             if ($fix) {
                 if ($found) {

@@ -48,7 +48,7 @@ class UseDoesNotStartWithBackslashSniff implements Sniff
                 && $tokens[$classPtr]['content'] === '\\')
         ) {
             $error = 'Use statement cannot start with a backslash';
-            $fix = $phpcsFile->addFixableError($error, $classPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $classPtr, 'BackslashAtStart');
 
             if ($fix) {
                 if ($tokens[$classPtr - 1]['code'] !== T_WHITESPACE) {

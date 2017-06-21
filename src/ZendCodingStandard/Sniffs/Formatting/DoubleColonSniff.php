@@ -23,7 +23,7 @@ class DoubleColonSniff implements Sniff
 
         if ($tokens[$stackPtr - 1]['code'] === T_WHITESPACE) {
             $error = 'A double colon must not be preceded by a whitespace.';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceBefore');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr - 1, '');
@@ -32,7 +32,7 @@ class DoubleColonSniff implements Sniff
 
         if ($tokens[$stackPtr + 1]['code'] === T_WHITESPACE) {
             $error = 'A double colon must not be followed by a whitespace.';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfter');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr + 1, '');

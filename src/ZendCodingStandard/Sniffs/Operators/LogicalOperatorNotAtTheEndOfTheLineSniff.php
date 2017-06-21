@@ -38,7 +38,8 @@ class LogicalOperatorNotAtTheEndOfTheLineSniff implements Sniff
         if ($tokens[$prev]['line'] === $tokens[$stackPtr]['line']
             && $tokens[$next]['line'] !== $tokens[$stackPtr]['line']
         ) {
-            $fix = $phpcsFile->addFixableError('Logical operator cannot be at the end of the line.', $stackPtr, '');
+            $error = 'Logical operator cannot be at the end of the line.';
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'OperatorAtTheEnd');
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();

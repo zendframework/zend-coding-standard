@@ -31,7 +31,7 @@ class TraitUsageSniff implements Sniff
         $prev = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if ($tokens[$prev]['line'] + 1 !== $tokens[$stackPtr]['line']) {
             $error = 'Blank line is not allowed before trait declaration';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'BlankLineBeforeTraits');
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -66,7 +66,7 @@ class TraitUsageSniff implements Sniff
         $comma = $phpcsFile->findNext(T_COMMA, $stackPtr + 1, $scopeOpener - 1);
         if ($comma) {
             $error = 'There must be one USE per declaration.';
-            $fix = $phpcsFile->addFixableError($error, $comma, '');
+            $fix = $phpcsFile->addFixableError($error, $comma, 'OneUsePerDeclaration');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($comma, ';' . $phpcsFile->eolChar . 'use ');
@@ -96,7 +96,7 @@ class TraitUsageSniff implements Sniff
             if ($emptyInName) {
                 $error = 'Empty token %s is not allowed in trait name.';
                 $data = [$tokens[$emptyInName]['type']];
-                $fix = $phpcsFile->addFixableError($error, $emptyInName, '', $data);
+                $fix = $phpcsFile->addFixableError($error, $emptyInName, 'EmptyToken', $data);
 
                 if ($fix) {
                     $phpcsFile->fixer->replaceToken($emptyInName, '');
@@ -139,7 +139,7 @@ class TraitUsageSniff implements Sniff
             $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $scopeOpener + 1, null, true);
             if ($tokens[$nextNonEmpty]['line'] !== $tokens[$scopeOpener]['line'] + 1) {
                 $error = 'Content must be in next line after opening curly bracket.';
-                $fix = $phpcsFile->addFixableError($error, $scopeOpener, '');
+                $fix = $phpcsFile->addFixableError($error, $scopeOpener, 'OpeningCurlyBracket');
 
                 if ($fix) {
                     $phpcsFile->fixer->beginChangeset();
@@ -160,7 +160,7 @@ class TraitUsageSniff implements Sniff
             );
             if ($tokens[$prevNonEmpty]['line'] + 1 !== $tokens[$scopeCloser]['line']) {
                 $error = 'Close curly bracket must be in next line after content.';
-                $fix = $phpcsFile->addFixableError($error, $scopeCloser, '');
+                $fix = $phpcsFile->addFixableError($error, $scopeCloser, 'ClosingCurlyBracket');
 
                 if ($fix) {
                     $phpcsFile->fixer->beginChangeset();

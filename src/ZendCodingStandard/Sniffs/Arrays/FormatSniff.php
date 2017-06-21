@@ -56,7 +56,7 @@ class FormatSniff implements Sniff
         $firstContent = $phpcsFile->findNext(T_WHITESPACE, $bracketOpener + 1, null, true);
         if ($tokens[$firstContent]['code'] === T_CLOSE_SHORT_ARRAY) {
             $error = 'Empty array must be in one line.';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'EmptyArrayInOneLine');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($bracketOpener + 1, '');
@@ -68,7 +68,7 @@ class FormatSniff implements Sniff
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, $bracketCloser - 1, null, true);
         if ($tokens[$bracketCloser]['line'] > $tokens[$lastContent]['line'] + 1) {
             $error = 'Blank line found at the end of array';
-            $fix = $phpcsFile->addFixableError($error, $bracketCloser - 1, '');
+            $fix = $phpcsFile->addFixableError($error, $bracketCloser - 1, 'BlankLineAtTheEnd');
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -93,7 +93,7 @@ class FormatSniff implements Sniff
             if ($previousLine === $tokens[$next]['line']) {
                 if ($tokens[$next]['code'] !== T_COMMENT) {
                     $error = 'There must be one array element per line.';
-                    $fix = $phpcsFile->addFixableError($error, $next, '');
+                    $fix = $phpcsFile->addFixableError($error, $next, 'OneElementPerLine');
 
                     if ($fix) {
                         $phpcsFile->fixer->beginChangeset();
@@ -111,7 +111,8 @@ class FormatSniff implements Sniff
                 ) {
                     $firstOnLine = $phpcsFile->findFirstOnLine([], $next, true);
 
-                    $fix = $phpcsFile->addFixableError('Empty line is not allowed here.', $firstOnLine - 1, '');
+                    $error = 'Blank line is not allowed here.';
+                    $fix = $phpcsFile->addFixableError($error, $firstOnLine - 1, 'BlankLine');
 
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($firstOnLine - 1, '');
@@ -137,7 +138,8 @@ class FormatSniff implements Sniff
                     }
                 } else {
                     $error = 'Invalid array element indent - expected %d spaces; 0 found';
-                    $fix = $phpcsFile->addFixableError($error, $next, 'ElementIndent', [$expected]);
+                    $data = [$expected];
+                    $fix = $phpcsFile->addFixableError($error, $next, 'ElementIndent', $data);
 
                     if ($fix) {
                         $phpcsFile->fixer->addContentBefore($next, str_repeat(' ', $expected));
@@ -164,7 +166,7 @@ class FormatSniff implements Sniff
         if ($first = $phpcsFile->findFirstOnLine([], $bracketCloser, true)) {
             if ($first < $bracketCloser - 1) {
                 $error = 'Array closing bracket should be in new line.';
-                $fix = $phpcsFile->addFixableError($error, $bracketCloser, '');
+                $fix = $phpcsFile->addFixableError($error, $bracketCloser, 'ClosingBracketInNewLine');
 
                 if ($fix) {
                     $phpcsFile->fixer->beginChangeset();
@@ -204,12 +206,9 @@ class FormatSniff implements Sniff
 
         // Single-line array - spaces before first element
         if ($tokens[$bracketOpener + 1]['code'] === T_WHITESPACE) {
-            $error = sprintf(
-                'Expected 0 spaces after array bracket opener; %d found',
-                strlen($tokens[$bracketOpener + 1]['content'])
-            );
-
-            $fix = $phpcsFile->addFixableError($error, $bracketOpener + 1, '');
+            $error = 'Expected 0 spaces after array bracket opener; %d found';
+            $data = [strlen($tokens[$bracketOpener + 1]['content'])];
+            $fix = $phpcsFile->addFixableError($error, $bracketOpener + 1, 'SingleLineSpaceBefore', $data);
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($bracketOpener + 1, '');
@@ -218,12 +217,9 @@ class FormatSniff implements Sniff
 
         // Single-line array - spaces before last element
         if ($tokens[$bracketCloser - 1]['code'] === T_WHITESPACE) {
-            $error = sprintf(
-                'Expected 0 spaces before array bracket closer; %d found',
-                strlen($tokens[$bracketCloser - 1]['content'])
-            );
-
-            $fix = $phpcsFile->addFixableError($error, $bracketCloser - 1, '');
+            $error = 'Expected 0 spaces before array bracket closer; %d found';
+            $data = [strlen($tokens[$bracketCloser - 1]['content'])];
+            $fix = $phpcsFile->addFixableError($error, $bracketCloser - 1, 'SingleLineSpaceAfter', $data);
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($bracketCloser - 1, '');

@@ -23,14 +23,14 @@ class NewKeywordSniff implements Sniff
 
         if ($tokens[$stackPtr + 1]['code'] !== T_WHITESPACE) {
             $error = 'A "new" keyword must be followed by a single space.';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MissingSpace');
 
             if ($fix) {
                 $phpcsFile->fixer->addContent($stackPtr, ' ');
             }
         } elseif ($tokens[$stackPtr + 1]['content'] !== ' ') {
             $error = 'A "new" keyword must be followed by a single space.';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'TooManySpaces');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr + 1, ' ');

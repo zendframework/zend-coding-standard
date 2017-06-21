@@ -28,7 +28,7 @@ class NoConcatenationAtTheEndSniff implements Sniff
         }
 
         $error = 'String concatenation character is not allowed at the end of the line.';
-        $fix = $phpcsFile->addFixableError($error, $stackPtr, '');
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'ConcatenationAtTheEnd');
 
         if ($fix) {
             $phpcsFile->fixer->beginChangeset();

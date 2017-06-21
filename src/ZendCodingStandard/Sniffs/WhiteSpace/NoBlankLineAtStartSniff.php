@@ -37,8 +37,9 @@ class NoBlankLineAtStartSniff implements Sniff
         $firstContent = $phpcsFile->findNext(T_WHITESPACE, $scopeOpener + 1, null, true);
 
         if ($tokens[$firstContent]['line'] > $tokens[$scopeOpener]['line'] + 1) {
-            $error = sprintf('Blank line found at start of %s', $token['content']);
-            $fix = $phpcsFile->addFixableError($error, $scopeOpener + 1, '');
+            $error = 'Blank line found at start of %s';
+            $data = [$token['content']];
+            $fix = $phpcsFile->addFixableError($error, $scopeOpener + 1, 'BlankLine', $data);
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();

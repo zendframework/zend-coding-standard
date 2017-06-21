@@ -127,7 +127,7 @@ class DocCommentSniff implements Sniff
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, $commentStart - 1, null, true);
         if ($tokens[$previous]['line'] === $tokens[$commentStart]['line']) {
             $error = 'The open comment tag must be the only content on the line.';
-            $fix = $phpcsFile->addFixableError($error, $commentStart, '');
+            $fix = $phpcsFile->addFixableError($error, $commentStart, 'ContentBeforeOpeningTag');
 
             if ($fix) {
                 $nonEmpty = $phpcsFile->findPrevious(T_WHITESPACE, $commentStart - 1, null, true);
@@ -145,7 +145,7 @@ class DocCommentSniff implements Sniff
             && $tokens[$previous]['code'] !== T_OPEN_CURLY_BRACKET
         ) {
             $error = 'Missing blank line before doc comment.';
-            $fix = $phpcsFile->addFixableError($error, $commentStart, '');
+            $fix = $phpcsFile->addFixableError($error, $commentStart, 'MissingBlankLine');
 
             if ($fix) {
                 $phpcsFile->fixer->addNewlineBefore($commentStart);
@@ -167,7 +167,7 @@ class DocCommentSniff implements Sniff
         $next = $phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $commentStart + 1, null, true);
         if ($tokens[$next]['line'] === $tokens[$commentStart]['line']) {
             $error = 'The open comment tag must be the only content on the line.';
-            $fix = $phpcsFile->addFixableError($error, $commentStart, '');
+            $fix = $phpcsFile->addFixableError($error, $commentStart, 'ContentAfterOpeningTag');
 
             if ($fix) {
                 $indentToken = $tokens[$commentStart - 1];
@@ -206,7 +206,7 @@ class DocCommentSniff implements Sniff
         $previous = $phpcsFile->findPrevious(T_DOC_COMMENT_WHITESPACE, $commentEnd - 1, null, true);
         if ($tokens[$previous]['line'] === $tokens[$commentEnd]['line']) {
             $error = 'The close comment tag must be the only content on the line.';
-            $fix = $phpcsFile->addFixableError($error, $commentEnd, '');
+            $fix = $phpcsFile->addFixableError($error, $commentEnd, 'ContentBeforeClosingTag');
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -242,7 +242,7 @@ class DocCommentSniff implements Sniff
 
         if (! $next) {
             $error = 'Doc comment is not allowed at the end of the file.';
-            $phpcsFile->addError($error, $commentStart, '');
+            $phpcsFile->addError($error, $commentStart, 'DocCommentAtTheEndOfTheFile');
             return;
         }
 
@@ -307,7 +307,7 @@ class DocCommentSniff implements Sniff
             && $tokens[$commentStart + 1]['content'] !== ' '
         ) {
             $error = 'Expected 1 space after opening tag of one line doc block comment.';
-            $fix = $phpcsFile->addFixableError($error, $commentStart + 1, '');
+            $fix = $phpcsFile->addFixableError($error, $commentStart + 1, 'InvalidSpacing');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($commentStart + 1, ' ');
@@ -316,7 +316,7 @@ class DocCommentSniff implements Sniff
             // This case is currently not supported.
             // Comment /**@var null $name; */ is not recognized as doc-block comment.
             $error = 'Expected 1 space after opening tag of one line doc block comment.';
-            $fix = $phpcsFile->addFixableError($error, $commentStart, '');
+            $fix = $phpcsFile->addFixableError($error, $commentStart, 'InvalidSpacing');
 
             if ($fix) {
                 $phpcsFile->fixer->addContent($commentStart, ' ');
@@ -327,7 +327,7 @@ class DocCommentSniff implements Sniff
         $content = $tokens[$commentEnd - 1]['content'];
         if (trim($content) . ' ' !== $content) {
             $error = 'Expected 1 space before closing tag of one line doc block comment.';
-            $fix = $phpcsFile->addFixableError($error, $commentEnd - 1, '');
+            $fix = $phpcsFile->addFixableError($error, $commentEnd - 1, 'InvalidSpacing');
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($commentEnd - 1, trim($content) . ' ');
@@ -360,7 +360,7 @@ class DocCommentSniff implements Sniff
             ) {
                 if ($tokens[$next + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
                     $error = 'There must be exactly one space between star and comment.';
-                    $fix = $phpcsFile->addFixableError($error, $next, '');
+                    $fix = $phpcsFile->addFixableError($error, $next, 'NoSpaceAfterStar');
 
                     if ($fix) {
                         $phpcsFile->fixer->addContent($next, ' ');
@@ -370,7 +370,7 @@ class DocCommentSniff implements Sniff
                         || $tokens[$next + 1]['line'] === $tokens[$commentStart]['line'] + 1)
                 ) {
                     $error = 'There must be exactly one space between star and comment.';
-                    $fix = $phpcsFile->addFixableError($error, $next + 1, '');
+                    $fix = $phpcsFile->addFixableError($error, $next + 1, 'TooManySpacesAfterStar');
 
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($next + 1, ' ');
@@ -446,7 +446,7 @@ class DocCommentSniff implements Sniff
                 $i = 0;
                 while ($token = $phpcsFile->findNext(T_DOC_COMMENT_STAR, $from + 1, $next - 2)) {
                     if ($i++ > 0) {
-                        $fix = $phpcsFile->addFixableError($error, $token, '');
+                        $fix = $phpcsFile->addFixableError($error, $token, 'MultipleBlankLines');
 
                         if ($fix) {
                             $firstOnLine = $phpcsFile->findFirstOnLine($empty, $token);
@@ -516,7 +516,7 @@ class DocCommentSniff implements Sniff
                     $indent,
                     strlen($spaces['content']),
                 ];
-                $fix = $phpcsFile->addFixableError($error, $commentStart, '', $data);
+                $fix = $phpcsFile->addFixableError($error, $commentStart, 'InvalidIndent', $data);
 
                 if ($fix) {
                     $phpcsFile->fixer->replaceToken($commentStart - 1, str_repeat(' ', $indent));
@@ -530,7 +530,7 @@ class DocCommentSniff implements Sniff
                     $indent,
                     0,
                 ];
-                $fix = $phpcsFile->addFixableError($error, $commentStart, '', $data);
+                $fix = $phpcsFile->addFixableError($error, $commentStart, 'InvalidIndent', $data);
 
                 if ($fix) {
                     $phpcsFile->fixer->replaceToken(
@@ -559,7 +559,7 @@ class DocCommentSniff implements Sniff
                         $indent + 1,
                         0,
                     ];
-                    $fix = $phpcsFile->addFixableError($error, $next, '', $data);
+                    $fix = $phpcsFile->addFixableError($error, $next, 'InvalidIndent', $data);
 
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($next - 1, $phpcsFile->eolChar . ' ');
@@ -572,7 +572,7 @@ class DocCommentSniff implements Sniff
                         $indent + 1,
                         strlen($spaces['content']),
                     ];
-                    $fix = $phpcsFile->addFixableError($error, $next, '', $data);
+                    $fix = $phpcsFile->addFixableError($error, $next, 'InvalidIndent', $data);
 
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($next - 1, str_repeat(' ', $indent + 1));

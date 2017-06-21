@@ -260,7 +260,7 @@ class CorrectClassNameCaseSniff implements Sniff
             $expected,
             $actual,
         ];
-        $fix = $phpcsFile->addFixableError($error, $start + 1, '', $data);
+        $fix = $phpcsFile->addFixableError($error, $start + 1, 'Invalid', $data);
 
         if ($fix) {
             $phpcsFile->fixer->beginChangeset();

@@ -40,10 +40,8 @@ class RedundantSemicolonSniff implements Sniff
 
         if ($tokens[$nextNonEmpty]['code'] === T_SEMICOLON) {
             $error = 'Redundant semicolon after control structure "%s".';
-            $data = [
-                strtolower($tokens[$scopeCondition]['content']),
-            ];
-            $fix = $phpcsFile->addFixableError($error, $nextNonEmpty, '', $data);
+            $data = [strtolower($tokens[$scopeCondition]['content'])];
+            $fix = $phpcsFile->addFixableError($error, $nextNonEmpty, 'SemicolonFound', $data);
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($nextNonEmpty, '');

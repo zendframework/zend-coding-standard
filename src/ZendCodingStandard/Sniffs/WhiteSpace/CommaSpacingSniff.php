@@ -40,7 +40,8 @@ class CommaSpacingSniff implements Sniff
         $prevToken = $tokens[$stackPtr - 1];
         if ($prevToken['code'] === T_WHITESPACE) {
             $error = 'Expected 0 spaces before comma; found %d';
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceBeforeComma', [strlen($prevToken['content'])]);
+            $data = [strlen($prevToken['content'])];
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceBeforeComma', $data);
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr - 1, '');
             }

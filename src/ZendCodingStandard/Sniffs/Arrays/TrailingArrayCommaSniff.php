@@ -57,11 +57,8 @@ class TrailingArrayCommaSniff implements Sniff
             && $previousToCloseParenthesisToken['code'] !== T_OPEN_SHORT_ARRAY
             && $closeParenthesisToken['line'] !== $previousToCloseParenthesisToken['line']
         ) {
-            $fix = $phpcsFile->addFixableError(
-                'Multiline arrays must have a trailing comma after the last element',
-                $previousToCloseParenthesisPointer,
-                ''
-            );
+            $error = 'Multiline arrays must have a trailing comma after the last element';
+            $fix = $phpcsFile->addFixableError($error, $previousToCloseParenthesisPointer, 'TrailingComma');
 
             if ($fix) {
                 $phpcsFile->fixer->addContent($previousToCloseParenthesisPointer, ',');

@@ -160,8 +160,9 @@ class UnusedUseStatementSniff implements Sniff
             $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], $classUsed + 1);
         }
 
-        $warning = sprintf('Unused use statement "%s"', $className);
-        $fix = $phpcsFile->addFixableWarning($warning, $stackPtr, 'UnusedUse');
+        $warning = 'Unused use statement "%s"';
+        $data = [$className];
+        $fix = $phpcsFile->addFixableWarning($warning, $stackPtr, 'UnusedUse', $data);
 
         if ($fix) {
             // Remove the whole use statement line.

@@ -34,7 +34,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
             if ($order < 0) {
                 $error = 'Traits are incorrectly ordered. The first wrong one is %s';
                 $data = [$use['name']];
-                $fix = $phpcsFile->addFixableError($error, $use['ptrUse'], '', $data);
+                $fix = $phpcsFile->addFixableError($error, $use['ptrUse'], 'IncorrectOrder', $data);
 
                 if ($fix) {
                     $this->fixAlphabeticalOrder($phpcsFile, $uses);
