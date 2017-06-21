@@ -51,12 +51,12 @@ class CodingStandard
             $pattern = '/^array\(\s*([^\s^=^>]*)(\s*=>\s*(.*))?\s*\)/i';
             if (preg_match($pattern, $varType, $matches) !== 0) {
                 $type1 = '';
-                if (isset($matches[1]) === true) {
+                if (isset($matches[1])) {
                     $type1 = $matches[1];
                 }
 
                 $type2 = '';
-                if (isset($matches[3]) === true) {
+                if (isset($matches[3])) {
                     $type2 = $matches[3];
                 }
 
