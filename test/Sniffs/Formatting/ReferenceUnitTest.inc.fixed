@@ -11,4 +11,5 @@ function (&$var) {
 }
 
 function ($x, &$y) {
+    $z = $x & $y;
 }

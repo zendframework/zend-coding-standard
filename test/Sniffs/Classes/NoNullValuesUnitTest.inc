@@ -10,6 +10,8 @@ class NoNullValues
 
     public static $v4 =null;
 
+    public $v5 = /* comment */ null;
+
     /**
      * @param mixed $x
      */
@@ -20,5 +22,7 @@ class NoNullValues
         $class = new class() {
             private $s1 = null;
         };
+
+        $string = "String $var = null";
     }
 }

@@ -145,5 +145,10 @@ class UnnecessaryParentheses
         if (($a || $z = strpos($b, $c)) === false) {
             $z = clone($a);
         }
+
+        $x = (int) ($a++);
+        $y = ! ($z instanceof DateTime);
+        $z = 'string ' . (--$a);
+        $w = 7 !== (++$b);
     }
 }

@@ -15,6 +15,7 @@ class LogicalOperatorNotAtTheEndOfTheLineUnitTest extends TestCase
             15 => 1,
             16 => 1,
             19 => 1,
+            27 => 1,
         ];
     }
 
