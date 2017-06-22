@@ -3,12 +3,11 @@ namespace ZendCodingStandard\Sniffs\PHP;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * TODO: Better results for this sniff we will have if the parsed class is imported.
  * We can "include" the file on process, but probably it is not the best solution.
- *
- * TODO: Checks T_STRING (classes in doc comments?)
  */
 class CorrectClassNameCaseSniff implements Sniff
 {
@@ -37,6 +36,13 @@ class CorrectClassNameCaseSniff implements Sniff
             T_DOUBLE_COLON,
             T_IMPLEMENTS,
             T_EXTENDS,
+            // params of function/closures
+            T_FUNCTION,
+            T_CLOSURE,
+            // return type (PHP 7)
+            T_RETURN_TYPE,
+            // PHPDocs tags
+            T_DOC_COMMENT_TAG,
         ];
     }
 
@@ -56,6 +62,16 @@ class CorrectClassNameCaseSniff implements Sniff
                 return;
             case T_USE:
                 $this->checkUse($phpcsFile, $stackPtr);
+                return;
+            case T_FUNCTION:
+            case T_CLOSURE:
+                $this->checkFunctionParams($phpcsFile, $stackPtr);
+                return;
+            case T_RETURN_TYPE:
+                $this->checkReturnType($phpcsFile, $stackPtr);
+                return;
+            case T_DOC_COMMENT_TAG:
+                $this->checkTag($phpcsFile, $stackPtr);
                 return;
         }
 
@@ -159,6 +175,133 @@ class CorrectClassNameCaseSniff implements Sniff
 
         // Traits.
         $this->checkClass($phpcsFile, $nextToken, $end);
+    }
+
+    /**
+     * Checks params type hints
+     *
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @return void
+     */
+    private function checkFunctionParams(File $phpcsFile, $stackPtr)
+    {
+        $params = $phpcsFile->getMethodParameters($stackPtr);
+
+        foreach ($params as $param) {
+            if (! $param['type_hint']) {
+                continue;
+            }
+
+            $end = $phpcsFile->findPrevious(Tokens::$emptyTokens, $param['token'] - 1, null, true);
+            $before = $phpcsFile->findPrevious([T_COMMA, T_OPEN_PARENTHESIS, T_WHITESPACE], $end - 1);
+            $first = $phpcsFile->findNext(Tokens::$emptyTokens, $before + 1, null, true);
+
+            $this->checkClass($phpcsFile, $first, $end + 1);
+        }
+    }
+
+    /**
+     * Checks return type (PHP 7)
+     *
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @return void
+     */
+    private function checkReturnType(File $phpcsFile, $stackPtr)
+    {
+        $before = $phpcsFile->findPrevious([T_COLON, T_NULLABLE], $stackPtr - 1);
+        $first = $phpcsFile->findNext(Tokens::$emptyTokens, $before + 1, null, true);
+
+        $this->checkClass($phpcsFile, $first, $stackPtr + 1);
+    }
+
+    /**
+     * Checks PHPDocs tags
+     *
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @return void
+     */
+    private function checkTag(File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        if (! in_array($tokens[$stackPtr]['content'], ['@var', '@param', '@return', '@throws'], true)
+            || $tokens[$stackPtr + 1]['code'] !== T_DOC_COMMENT_WHITESPACE
+            || $tokens[$stackPtr + 2]['code'] !== T_DOC_COMMENT_STRING
+        ) {
+            return;
+        }
+
+        $string = $tokens[$stackPtr + 2]['content'];
+        list($types) = explode(' ', $string);
+        $typesArr = explode('|', $types);
+
+        $newTypesArr = [];
+        foreach ($typesArr as $type) {
+            $expected = $this->getExcepctedName($phpcsFile, $type, $stackPtr + 2);
+
+            $newTypesArr[] = $expected;
+        }
+
+        $newTypes = implode('|', $newTypesArr);
+
+        if ($newTypes !== $types) {
+            $error = 'Invalid class name case: expected %s; found %s';
+            $data = [
+                $newTypes,
+                $types,
+            ];
+            $fix = $phpcsFile->addFixableError($error, $stackPtr + 2, 'InvalidInPhpDocs', $data);
+
+            if ($fix) {
+                $phpcsFile->fixer->replaceToken(
+                    $stackPtr + 2,
+                    preg_replace('/^' . preg_quote($types) . '/', $newTypes, $string)
+                );
+            }
+        }
+    }
+
+    /**
+     * Returns expected class name for given $class.
+     *
+     * @param File $phpcsFile
+     * @param string $class
+     * @param int $stackPtr
+     * @return string
+     */
+    private function getExcepctedName(File $phpcsFile, $class, $stackPtr)
+    {
+        if ($class[0] === '\\') {
+            $result = $this->hasDifferentCase(ltrim($class, '\\'));
+            if ($result) {
+                return '\\' . $result;
+            }
+
+            return $class;
+        }
+
+        $imports = $this->getGlobalUses($phpcsFile);
+
+        // Check if class is imported.
+        if (isset($imports[strtolower($class)])) {
+            if ($imports[strtolower($class)]['alias'] !== $class) {
+                return $imports[strtolower($class)]['alias'];
+            }
+        } else {
+            // Class from the same namespace.
+            $namespace = $this->getNamespace($phpcsFile, $stackPtr);
+            $fullClassName = ltrim($namespace . '\\' . $class, '\\');
+
+            $result = $this->hasDifferentCase(ltrim($fullClassName, '\\'));
+            if ($result) {
+                return ltrim(substr($result, strlen($namespace)), '\\');
+            }
+        }
+
+        return $class;
     }
 
     /**

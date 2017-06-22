@@ -54,4 +54,34 @@ class MyClass
 
         return new CorrectclassnamecaseUnitTest();
     }
+
+    public function method2(
+        datetime $a,
+        correctclassnamecaseunittest $b
+    ) : datEtimE {
+        /**
+         * @param Arrayobject $ao
+         * @return \arrayiterator
+         */
+        $f = function(arrayobject $ao) : \arrayiterator {
+        };
+    }
+
+    /**
+     * @see https://zendframework.com/
+     * @param int $a
+     * @param array|\TraverSable|\ArRAyObJeCt $b
+     * @param callable $c
+     * @param testCase|CorrectclassnamecaseUnitTest|null $testCase
+     * @return \zendcodingstandardtest\sniffs\testcase
+     * @throws \Rangeexception
+     */
+    public function method3(
+        int $a,
+        $b,
+        callable $c,
+        testcase $testCase = null
+    ) : \zendcodingstandardtest\sniffs\testcase {
+        throw new \RangeException;
+    }
 }
