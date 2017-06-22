@@ -150,5 +150,7 @@ class UnnecessaryParentheses
         $y = ! ($z instanceof DateTime);
         $z = 'string ' . (--$a);
         $w = 7 !== (++$b);
+
+        list($var) = explode(',', '1,2,3');
     }
 }

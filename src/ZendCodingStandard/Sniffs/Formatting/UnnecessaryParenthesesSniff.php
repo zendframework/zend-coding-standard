@@ -15,6 +15,7 @@ class UnnecessaryParenthesesSniff implements Sniff
         T_EVAL,
         T_EXIT,
         T_ISSET,
+        T_LIST,
         T_SELF,
         T_STATIC,
         T_STRING,
