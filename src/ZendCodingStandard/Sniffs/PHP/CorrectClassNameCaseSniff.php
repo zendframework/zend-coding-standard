@@ -105,8 +105,6 @@ class CorrectClassNameCaseSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // todo: check next character after new - should be exactly one space
-
         $nextToken = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
 
         // When "new static", "new self" or "new $var", skip.
