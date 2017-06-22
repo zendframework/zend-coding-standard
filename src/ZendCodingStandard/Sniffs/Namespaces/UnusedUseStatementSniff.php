@@ -6,6 +6,7 @@
  * @see https://github.com/squizlabs/PHP_CodeSniffer/pull/1106
  *
  * - added checks in annotations
+ * - added checks in return type (PHP 7.0+)
  *
  * @todo remove once merged to squizlabs/PHP_CodeSniffer (?)
  */
@@ -19,6 +20,16 @@ use ZendCodingStandard\CodingStandard;
 
 class UnusedUseStatementSniff implements Sniff
 {
+    /**
+     * @var array
+     */
+    private $checkInTokens = [
+        T_STRING,
+        T_RETURN_TYPE,
+        T_DOC_COMMENT_STRING,
+        T_DOC_COMMENT_TAG,
+    ];
+
     /**
      * @inheritDoc
      */
@@ -56,7 +67,7 @@ class UnusedUseStatementSniff implements Sniff
         // Search where the class name is used. PHP treats class names case
         // insensitive, that's why we cannot search for the exact class name string
         // and need to iterate over all T_STRING tokens in the file.
-        $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], $classPtr + 1);
+        $classUsed = $phpcsFile->findNext($this->checkInTokens, $classPtr + 1);
         $className = $tokens[$classPtr]['content'];
         $lowerClassName = strtolower($className);
 
@@ -109,7 +120,7 @@ class UnusedUseStatementSniff implements Sniff
         unset($emptyTokens[T_DOC_COMMENT_TAG]);
 
         while ($classUsed !== false) {
-            if (($tokens[$classUsed]['code'] === T_STRING
+            if ((in_array($tokens[$classUsed]['code'], [T_STRING, T_RETURN_TYPE], true)
                     && strtolower($tokens[$classUsed]['content']) === $lowerClassName)
                 || ($tokens[$classUsed]['code'] === T_DOC_COMMENT_STRING
                     && preg_match(
@@ -129,7 +140,7 @@ class UnusedUseStatementSniff implements Sniff
                     true
                 );
 
-                if ($tokens[$classUsed]['code'] === T_STRING) {
+                if (in_array($tokens[$classUsed]['code'], [T_STRING, T_RETURN_TYPE], true)) {
                     // If a backslash is used before the class name then this is some other
                     // use statement.
                     if ($tokens[$beforeUsage]['code'] !== T_USE
@@ -157,7 +168,7 @@ class UnusedUseStatementSniff implements Sniff
                 }
             }
 
-            $classUsed = $phpcsFile->findNext([T_STRING, T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], $classUsed + 1);
+            $classUsed = $phpcsFile->findNext($this->checkInTokens, $classUsed + 1);
         }
 
         $warning = 'Unused use statement "%s"';

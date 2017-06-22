@@ -18,6 +18,9 @@ use Used11;
 use FooBar\Used12 as AliasUsed12;
 use FooBar\Used13;
 use Unused6, Unused7;
+use Used14;
+use FooBar\Used15;
+use Used16 as AliasUsed16;
 
 /**
  * @Used10
@@ -65,5 +68,17 @@ class Foo
 
         /** @var Used13\MyType $x */
         $x = $y;
+    }
+
+    protected function test6() : Used14
+    {
+    }
+
+    protected function test7() : Used15\MyClass
+    {
+    }
+
+    protected function test8() : AliasUsed16
+    {
     }
 }
