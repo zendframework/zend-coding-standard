@@ -73,7 +73,7 @@ class UnusedUseStatementSniff implements Sniff
 
         // Check if the referenced class is in the same namespace as the current
         // file. If it is then the use statement is not necessary.
-        $namespacePtr = $phpcsFile->findPrevious([T_NAMESPACE], $stackPtr);
+        $namespacePtr = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr);
 
         // Check if the use statement does aliasing with the "as" keyword. Aliasing
         // is allowed even in the same namespace.
@@ -93,7 +93,7 @@ class UnusedUseStatementSniff implements Sniff
             );
             $namespace = trim($phpcsFile->getTokensAsString($namespacePtr + 1, $nsEnd - $namespacePtr - 1));
 
-            $useNamespacePtr = $phpcsFile->findNext([T_STRING], $stackPtr + 1);
+            $useNamespacePtr = $phpcsFile->findNext(T_STRING, $stackPtr + 1);
             $useNamespaceEnd = $phpcsFile->findNext(
                 [
                     T_NS_SEPARATOR,
