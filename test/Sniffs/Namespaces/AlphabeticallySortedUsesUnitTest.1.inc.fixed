@@ -1,0 +1,28 @@
+<?php
+
+namespace Foo;
+
+use A;
+use B;
+use function X;
+use function Y;
+use const C;
+use const D;
+
+class J {
+    use MyTrait;
+
+    public function closure($foo)
+    {
+        return function ($x) use ($foo) {
+            return $x <=> $foo;
+        };
+    }
+
+    public function anonym()
+    {
+        return new class() {
+            use AnotherTrait;
+        };
+    }
+}
