@@ -25,8 +25,9 @@ use FooBar\Used12 as AliasUsed12;
 use FooBar\Used13;
 use Unused6, Unused7;
 use Used14;
-use FooBar\Used15;
+use Unused5\Used15;
 use Used16 as AliasUsed16;
+use FooBar\Used17;
 
 /**
  * @Used10
@@ -37,6 +38,9 @@ class Foo
 {
     use Traits\MyTrait;
     use Traits\Used1;
+    use Used17;
+
+    private $unused2;
 
     protected function test1(Used1 $x, Used2 $y)
     {
@@ -86,5 +90,6 @@ class Foo
 
     protected function test8() : AliasUsed16
     {
+        $this->unused2 = new \Unused1();
     }
 }

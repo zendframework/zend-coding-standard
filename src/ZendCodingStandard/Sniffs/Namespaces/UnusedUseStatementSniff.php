@@ -145,6 +145,7 @@ class UnusedUseStatementSniff implements Sniff
                     // use statement.
                     if ($tokens[$beforeUsage]['code'] !== T_USE
                         && $tokens[$beforeUsage]['code'] !== T_NS_SEPARATOR
+                        && $tokens[$beforeUsage]['code'] !== T_OBJECT_OPERATOR
                     ) {
                         return;
                     }
