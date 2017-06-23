@@ -11,6 +11,8 @@ use function X;
 use A\TagManager;
 use A\Tag;
 use A\Tag\Tags;
+use C\Response as MyResponse;
+use C\Response\HtmlResponse;
 
 class J {
     use MyTrait;

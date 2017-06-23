@@ -191,7 +191,7 @@ class TraitUsageSniff implements Sniff
                     continue;
                 }
 
-                $order = strnatcasecmp($statement['content'], $lastStatement['content']);
+                $order = $this->compareStatements($statement, $lastStatement);
 
                 if ($order < 0) {
                     $error = 'Statements in trait are incorrectly ordered. The first wrong is %s';
@@ -273,9 +273,7 @@ class TraitUsageSniff implements Sniff
             }
         }
 
-        usort($statements, function (array $a, array $b) {
-            return strnatcasecmp($a['content'], $b['content']);
-        });
+        usort($statements, [$this, 'compareStatements']);
 
         $begins = array_column($statements, 'begin');
         sort($begins);
@@ -285,5 +283,29 @@ class TraitUsageSniff implements Sniff
         }
 
         $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @internal
+     *
+     * @param array $a
+     * @param array $b
+     * @return int
+     */
+    public function compareStatements(array $a, array $b)
+    {
+        return strcasecmp(
+            $this->clearName($a['content']),
+            $this->clearName($b['content'])
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function clearName($name)
+    {
+        return str_replace('\\', ':', $name);
     }
 }

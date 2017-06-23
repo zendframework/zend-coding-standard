@@ -115,7 +115,7 @@ class AlphabeticallySortedUsesSniff implements Sniff
     private function compareUseStatements(array $a, array $b)
     {
         if ($a['type'] === $b['type']) {
-            return strnatcasecmp(
+            return strcasecmp(
                 $this->clearName($a['name']),
                 $this->clearName($b['name'])
             );
