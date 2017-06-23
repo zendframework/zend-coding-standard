@@ -3,6 +3,9 @@
 namespace Foo;
 
 use A;
+use A\Tag;
+use A\Tag\Tags;
+use A\TagManager;
 use B;
 use function X;
 use function Y;

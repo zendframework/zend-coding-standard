@@ -8,6 +8,9 @@ use B;
 use A;
 use function Y;
 use function X;
+use A\TagManager;
+use A\Tag;
+use A\Tag\Tags;
 
 class J {
     use MyTrait;

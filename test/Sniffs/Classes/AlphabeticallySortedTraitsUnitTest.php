@@ -8,7 +8,7 @@ class AlphabeticallySortedTraitsUnitTest extends TestCase
     public function getErrorList()
     {
         return [
-            16 => 1,
+            12 => 1,
             36 => 1,
         ];
     }

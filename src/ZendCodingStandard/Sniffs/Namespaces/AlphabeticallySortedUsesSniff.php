@@ -115,7 +115,10 @@ class AlphabeticallySortedUsesSniff implements Sniff
     private function compareUseStatements(array $a, array $b)
     {
         if ($a['type'] === $b['type']) {
-            return strnatcasecmp($a['name'], $b['name']);
+            return strnatcasecmp(
+                $this->clearName($a['name']),
+                $this->clearName($b['name'])
+            );
         }
 
         if ($a['type'] === 'class'
@@ -125,6 +128,15 @@ class AlphabeticallySortedUsesSniff implements Sniff
         }
 
         return 1;
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function clearName($name)
+    {
+        return str_replace('\\', ':', $name);
     }
 
     /**

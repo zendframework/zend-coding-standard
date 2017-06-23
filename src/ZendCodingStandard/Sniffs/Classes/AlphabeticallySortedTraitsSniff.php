@@ -118,7 +118,19 @@ class AlphabeticallySortedTraitsSniff implements Sniff
      */
     private function compareUseStatements(array $a, array $b)
     {
-        return strnatcasecmp($a['name'], $b['name']);
+        return strnatcasecmp(
+            $this->clearName($a['name']),
+            $this->clearName($b['name'])
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function clearName($name)
+    {
+        return str_replace('\\', ':', $name);
     }
 
     /**

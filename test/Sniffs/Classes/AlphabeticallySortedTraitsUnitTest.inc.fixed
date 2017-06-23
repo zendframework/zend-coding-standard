@@ -6,15 +6,7 @@ use MyProject\HelloWorld;
 
 class Foo
 {
-    use BazTrait,
-        \MyTrait;
-use Hello { sayHello as private myPrivateHello; }
-use HelloWorld
-    { sayHello as protected;}
-use    TooManySpaces;
-use XTrait  , YTrait
-        ;
-use \A, \B {
+    use \A, \B {
         \B::smallTalk insteadof \A;
       \A::bigTalk insteadof \B;
     }
@@ -23,6 +15,14 @@ use \AnotherTrait    {
     }
 use \BarTrait    ;
 use\Foo\ ATrait;
+use BazTrait,
+        \MyTrait;
+use Hello { sayHello as private myPrivateHello; }
+use HelloWorld
+    { sayHello as protected;}
+use    TooManySpaces;
+use XTrait  , YTrait
+        ;
 
 
     /**
