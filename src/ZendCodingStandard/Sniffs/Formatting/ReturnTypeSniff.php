@@ -1,5 +1,5 @@
 <?php
-namespace ZendCodingStandard\Sniffs\WhiteSpace;
+namespace ZendCodingStandard\Sniffs\Formatting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -7,6 +7,9 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ReturnTypeSniff implements Sniff
 {
+    /**
+     * @var string[]
+     */
     private $simpleReturnTypes = [
         'void',
         'int',

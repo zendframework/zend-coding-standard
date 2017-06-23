@@ -1,5 +1,5 @@
 <?php
-namespace ZendCodingStandardTest\Sniffs\WhiteSpace;
+namespace ZendCodingStandardTest\Sniffs\Formatting;
 
 use ZendCodingStandardTest\Sniffs\TestCase;
 
