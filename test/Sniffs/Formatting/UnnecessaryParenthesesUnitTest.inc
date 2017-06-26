@@ -152,5 +152,7 @@ class UnnecessaryParentheses
         $w = 7 !== (++$b);
 
         list($var) = explode(',', '1,2,3');
+
+        $date = (new DateTime())->modify('+1 year');
     }
 }

@@ -75,6 +75,12 @@ class UnnecessaryParenthesesSniff implements Sniff
 
         $closePtr = $tokens[$stackPtr]['parenthesis_closer'];
 
+        // Skip when method call on new instance i.e.: (new DateTime())->modify(...)
+        $next = $phpcsFile->findNext(Tokens::$emptyTokens, $closePtr + 1, null, true);
+        if ($tokens[$next]['code'] === T_OBJECT_OPERATOR) {
+            return;
+        }
+
         $firstInside = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, $closePtr, true);
         $lastInside = $phpcsFile->findPrevious(Tokens::$emptyTokens, $closePtr - 1, $stackPtr + 1, true);
 
