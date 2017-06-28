@@ -3,7 +3,7 @@ namespace ZendCodingStandardTest\Sniffs\Operators;
 
 use ZendCodingStandardTest\Sniffs\TestCase;
 
-class LogicalOperatorNotAtTheEndOfTheLineUnitTest extends TestCase
+class BooleanOperatorUnitTest extends TestCase
 {
     public function getErrorList($testFile = '')
     {

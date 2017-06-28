@@ -5,14 +5,14 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class LogicalOperatorNotAtTheEndOfTheLineSniff implements Sniff
+class BooleanOperatorSniff implements Sniff
 {
     /**
      * @inheritDoc
      */
     public function register()
     {
-        return [T_BOOLEAN_AND, T_BOOLEAN_OR, T_LOGICAL_AND, T_LOGICAL_OR, T_LOGICAL_XOR];
+        return Tokens::$booleanOperators;
     }
 
     /**
