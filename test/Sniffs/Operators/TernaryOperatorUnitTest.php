@@ -16,6 +16,8 @@ class TernaryOperatorUnitTest extends TestCase
             19 => 1,
             24 => 1,
             31 => 1,
+            35 => 1,
+            37 => 1,
         ];
     }
 

@@ -30,3 +30,10 @@ $h = $foo
 $i = $foo
     ?
     : $bar;
+
+$j = $foo
+    ? $bar ?: $var : $tar;
+
+$k = $foo ?
+    $bar ?: $var
+    : $tar;
