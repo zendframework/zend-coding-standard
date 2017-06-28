@@ -68,6 +68,49 @@ if ($a
     return 12;
 }
 
+if (false === strpos(
+    'haystack',
+    'needle'
+)
+) {
+    echo 0;
+}
+
+if ($a
+!== $b
+    && $c
+instanceof \DateTime
+) {
+    echo 1;
+}
+
+if ('x' === trim(sprintf(
+    'a %s',
+    'b'
+)
+)
+) {
+    echo 2;
+}
+
+if (true === strpos(
+    'a',
+    'b'
+)  ) {
+    echo 3;
+}
+
+if ($a && ($b || $c
+)) {
+    echo 4;
+}
+
+if ($a && ($b
+    || $c
+)) {
+    echo 5;
+}
+
 $a = 'string';
 $v = $a{0};
 $z = $a->{$v};
