@@ -133,7 +133,6 @@ class MultilineBraceSniff implements Sniff
             $openerParenthesis = $tokens[$closerParenthesis]['parenthesis_opener'];
             $beforeOpener = $phpcsFile->findPrevious(Tokens::$emptyTokens, $openerParenthesis - 1, null, true);
 
-            // @todo: check if we have test for both - string and variable
             if ($tokens[$beforeOpener]['code'] !== T_STRING
                 && $tokens[$beforeOpener]['code'] !== T_VARIABLE
             ) {

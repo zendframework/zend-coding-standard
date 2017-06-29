@@ -76,6 +76,13 @@ if (false === strpos(
     echo 0;
 }
 
+if (false === $method(
+    'value'
+)
+) {
+    echo 1;
+}
+
 if ($a
 !== $b
     && $c
