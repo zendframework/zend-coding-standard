@@ -29,6 +29,11 @@ class MultilineBraceUnitTest extends TestCase
             111 => 1,
             116 => 1,
             117 => 1,
+            128 => 1,
+            136 => 1,
+            138 => 1,
+            146 => 1,
+            149 => 1,
         ];
     }
 

@@ -21,6 +21,16 @@ class MultilineBraceSniff implements Sniff
     ];
 
     /**
+     * @var array
+     */
+    private $functionCall = [
+        T_STRING,
+        T_VARIABLE,
+        T_CLOSE_CURLY_BRACKET,
+        T_CLOSE_PARENTHESIS,
+    ];
+
+    /**
      * @inheritDoc
      */
     public function register()
@@ -78,22 +88,68 @@ class MultilineBraceSniff implements Sniff
             return;
         }
 
-        $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $parenthesis - 1, null, true);
+        $token = $tokens[$parenthesis]['parenthesis_opener'];
+        while ($token = $phpcsFile->findNext(T_CLOSE_PARENTHESIS, $token + 1, $parenthesis)) {
+            $prevCloser = $phpcsFile->findPrevious(Tokens::$emptyTokens, $token - 1, null, true);
+            if ($tokens[$prevCloser]['line'] === $tokens[$token]['line']) {
+                continue;
+            }
+
+            $open = $tokens[$token]['parenthesis_opener'];
+            $prevOpener = $phpcsFile->findPrevious(Tokens::$emptyTokens, $open - 1, null, true);
+            $first = $phpcsFile->findFirstOnLine([], $open, true);
+
+            if (in_array($tokens[$prevOpener]['code'], $this->functionCall, true)) {
+                // It is a function call.
+                if ($tokens[$open]['line'] < $tokens[$token]['line']
+                    && $tokens[$token - 1]['line'] < $tokens[$token]['line']
+                    && $tokens[$first]['code'] === T_WHITESPACE
+                ) {
+                    $expectedIndentWidth = strlen($tokens[$first]['content']);
+                    $error = 'Multi-line function closing parenthesis not indented correctly;'
+                        . ' expected %d spaces but found 0';
+                    $data = [
+                        $expectedIndentWidth,
+                    ];
+                    $fix = $phpcsFile->addFixableError($error, $token, 'ClosingParenthesisMultiLineFunction', $data);
+
+                    if ($fix) {
+                        $phpcsFile->fixer->addContentBefore($token, str_repeat(' ', $expectedIndentWidth));
+                    }
+                }
+            } else {
+                $error = 'Invalid closing parenthesis position.';
+                $fix = $phpcsFile->addFixableError($error, $token, 'InvalidClosingParenthesisPosition');
+
+                if ($fix) {
+                    $phpcsFile->fixer->beginChangeset();
+                    $phpcsFile->fixer->addContent($prevCloser, $tokens[$token]['content']);
+                    $phpcsFile->fixer->replaceToken($token, '');
+                    $t = $token + 1;
+                    while ($tokens[$t]['code'] === T_WHITESPACE
+                        && $tokens[$t]['line'] === $tokens[$token]['line']
+                    ) {
+                        $phpcsFile->fixer->replaceToken($t, '');
+
+                        ++$t;
+                    }
+                    $phpcsFile->fixer->endChangeset();
+                }
+            }
+        }
+
+        $prev = $parenthesis;
         $squashClose = false;
-        while ($tokens[$prev]['code'] === T_CLOSE_PARENTHESIS
+        while (($prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $prev - 1, null, true))
+            && $tokens[$prev]['code'] === T_CLOSE_PARENTHESIS
             && $tokens[$prev]['line'] > $scopeCondition['line']
             && $tokens[$tokens[$prev]['parenthesis_opener']]['line'] === $scopeCondition['line']
-        ) {
-            $firstOnLine = $phpcsFile->findFirstOnLine(
+            && ! $phpcsFile->findFirstOnLine(
                 Tokens::$emptyTokens + [T_CLOSE_PARENTHESIS => T_CLOSE_PARENTHESIS],
                 $prev,
                 true
-            );
-
-            if ($firstOnLine) {
-                break;
-            }
-
+            )
+        ) {
             if ($tokens[$prev]['line'] <= $tokens[$parenthesis]['line'] - 1) {
                 $error = 'Invalid closing parenthesis position.';
                 $fix = $phpcsFile->addFixableError($error, $prev, 'InvalidClosingParenthesisPosition');
@@ -117,8 +173,6 @@ class MultilineBraceSniff implements Sniff
             }
 
             $squashClose = true;
-
-            $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $prev - 1, null, true);
         }
 
         // Find indent before control structure
@@ -128,34 +182,7 @@ class MultilineBraceSniff implements Sniff
             $indent = $tokens[$firstOnLine]['content'];
         }
 
-        if ($squashClose) {
-            $closerParenthesis = $phpcsFile->findFirstOnLine(T_CLOSE_PARENTHESIS, $parenthesis - 1);
-            $openerParenthesis = $tokens[$closerParenthesis]['parenthesis_opener'];
-            $beforeOpener = $phpcsFile->findPrevious(Tokens::$emptyTokens, $openerParenthesis - 1, null, true);
-
-            if ($tokens[$beforeOpener]['code'] !== T_STRING
-                && $tokens[$beforeOpener]['code'] !== T_VARIABLE
-            ) {
-                // Move closer parenthesis to line above
-                $error = 'Invalid position of closing parenthesis';
-                $fix = $phpcsFile->addFixableError($error, $closerParenthesis, 'InvalidClosingParenthesisPosition');
-
-                if ($fix) {
-                    $phpcsFile->fixer->beginChangeset();
-                    $i = $closerParenthesis;
-                    while (--$i) {
-                        if ($tokens[$i]['code'] === T_WHITESPACE) {
-                            $phpcsFile->fixer->replaceToken($i, '');
-                            if (strpos($tokens[$i]['content'], $phpcsFile->eolChar) !== false) {
-                                break;
-                            }
-                        }
-                    }
-                    $phpcsFile->fixer->addNewline($closerParenthesis);
-                    $phpcsFile->fixer->endChangeset();
-                }
-            }
-        } else {
+        if (! $squashClose) {
             if ($tokens[$prev]['line'] <= $tokens[$parenthesis]['line'] - 1) {
                 // Check indent
                 $whitespace = $phpcsFile->findFirstOnLine(T_WHITESPACE, $parenthesis);
@@ -198,9 +225,7 @@ class MultilineBraceSniff implements Sniff
             while ($tokens[$token]['line'] === $line) {
                 if ($tokens[$token]['code'] === T_OPEN_PARENTHESIS) {
                     $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $token - 1, null, true);
-                    if ($tokens[$prev]['code'] === T_STRING
-                        || $tokens[$prev]['code'] === T_VARIABLE
-                    ) {
+                    if (in_array($tokens[$prev]['code'], $this->functionCall, true)) {
                         $token = $tokens[$token]['parenthesis_closer'] + 1;
                         $line = $tokens[$token]['line'];
                         continue;
@@ -219,7 +244,9 @@ class MultilineBraceSniff implements Sniff
             }
 
             $first = $phpcsFile->findNext(Tokens::$emptyTokens, $token, null, true);
-            if (in_array(
+            if ($tokens[$first]['code'] === T_CLOSE_PARENTHESIS) {
+                continue;
+            } elseif (in_array(
                 $tokens[$first]['code'],
                 Tokens::$comparisonTokens + [T_INSTANCEOF => T_INSTANCEOF],
                 true
