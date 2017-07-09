@@ -25,3 +25,14 @@ namespace Bar {
         use MyTrait;
     }
 }
+
+namespace C {
+    use ArrayObject;
+
+    use DateTime;
+    use function array_keys;
+
+
+
+    use const PHP_EOL; use const PHP_VERSION_ID;
+}

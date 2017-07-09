@@ -16,7 +16,12 @@ class AlphabeticallySortedUsesUnitTest extends TestCase
 
         return [
             5 => 1,
+            18 => 1,
+            19 => 1,
             20 => 1,
+            32 => 1,
+            33 => 1,
+            37 => 2,
         ];
     }
 

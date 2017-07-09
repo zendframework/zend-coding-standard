@@ -21,6 +21,7 @@ class AlphabeticallySortedUsesSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $uses = $this->getUseStatements($phpcsFile, $stackPtr);
+        $tokens = $phpcsFile->getTokens();
 
         $lastUse = null;
         foreach ($uses as $use) {
@@ -42,6 +43,70 @@ class AlphabeticallySortedUsesSniff implements Sniff
                 }
 
                 return;
+            }
+
+            // Check empty lines between use statements.
+            // There must be exactly one empty line between use statements of different type
+            // and no empty lines between use statements of the same type.
+            $lineDiff = $tokens[$use['ptrUse']]['line'] - $tokens[$lastUse['ptrUse']]['line'];
+            if ($lastUse['type'] === $use['type']) {
+                if ($lineDiff > 1) {
+                    $error = 'There must not be any empty line between use statement of the same type';
+                    $fix = $phpcsFile->addFixableError($error, $use['ptrUse'], 'EmptyLine');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+                        for ($i = $lastUse['ptrEnd'] + 1; $i < $use['ptrUse']; ++$i) {
+                            if (strpos($tokens[$i]['content'], $phpcsFile->eolChar) !== false) {
+                                $phpcsFile->fixer->replaceToken($i, '');
+                                --$lineDiff;
+
+                                if ($lineDiff === 1) {
+                                    break;
+                                }
+                            }
+                        }
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                } elseif ($lineDiff === 0) {
+                    $error = 'Each use statement must be in new line';
+                    $fix = $phpcsFile->addFixableError($error, $use['ptrUse'], 'TheSameLine');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->addNewline($lastUse['ptrEnd']);
+                    }
+                }
+            } else {
+                if ($lineDiff > 2) {
+                    $error = 'There must be exactly one empty line between use statements of different type';
+                    $fix = $phpcsFile->addFixableError($error, $use['ptrUse'], 'TooManyEmptyLines');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+                        for ($i = $lastUse['ptrEnd'] + 1; $i < $use['ptrUse']; ++$i) {
+                            if (strpos($tokens[$i]['content'], $phpcsFile->eolChar) !== false) {
+                                $phpcsFile->fixer->replaceToken($i, '');
+                                --$lineDiff;
+
+                                if ($lineDiff === 2) {
+                                    break;
+                                }
+                            }
+                        }
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                } elseif ($lineDiff <= 1) {
+                    $error = 'There must be exactly one empty line between use statements of different type';
+                    $fix = $phpcsFile->addFixableError($error, $use['ptrUse'], 'MissingEmptyLine');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+                        for ($i = $lineDiff; $i < 2; ++$i) {
+                            $phpcsFile->fixer->addNewline($lastUse['ptrEnd']);
+                        }
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                }
             }
 
             $lastUse = $use;
@@ -159,10 +224,18 @@ class AlphabeticallySortedUsesSniff implements Sniff
             return $this->compareUseStatements($a, $b);
         });
 
-        $phpcsFile->fixer->addContent($first['ptrUse'], implode($phpcsFile->eolChar, array_map(function ($use) {
-            return $use['string'];
-        }, $uses)));
+        $lastType = reset($uses)['type'];
+        $content = [];
+        foreach ($uses as $use) {
+            if ($lastType !== $use['type']) {
+                $content[] = $phpcsFile->eolChar . $use['string'];
+                $lastType = $use['type'];
+            } else {
+                $content[] = $use['string'];
+            }
+        }
 
+        $phpcsFile->fixer->addContent($first['ptrUse'], implode($phpcsFile->eolChar, $content));
         $phpcsFile->fixer->endChangeset();
     }
 }

@@ -3,8 +3,10 @@
 namespace Foo {
     use A;
 use B;
+
 use function X;
 use function Y;
+
 use const C;
 use const D;
 
@@ -16,12 +18,24 @@ use const D;
 namespace Bar {
     use A;
 use D;
+
 use function B;
 use function E;
+
 use const C;
 use const F;
 
     class J {
         use MyTrait;
     }
+}
+
+namespace C {
+    use ArrayObject;
+    use DateTime;
+
+    use function array_keys;
+
+    use const PHP_EOL;
+ use const PHP_VERSION_ID;
 }
