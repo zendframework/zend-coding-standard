@@ -1,0 +1,59 @@
+<?php
+
+namespace A {
+use function range;
+use function count;
+
+    $arr = range(1, 10);
+    $count = Count($arr);
+}
+
+namespace B {
+    use function \range;
+use function count;
+
+    $arr = range(1, 10);
+    $count = count($arr);
+}
+
+namespace C {
+    use function Range;
+use function count;
+
+    $arr = range(1, 10);
+    $count = count($arr);
+}
+
+namespace D {
+    use function range;
+use function count;
+
+    $arr = Range(1, 10);
+    $count = Count($arr);
+}
+
+namespace E {
+    use function A\count;
+use function range;
+
+    $arr = range(1, 10);
+    $countA = count($arr);
+    $countFQN = \A\count($arr);
+    $countGlob = \count($arr);
+}
+
+namespace F {
+    use function array_keys as count;
+use function range;
+
+    $arr = range(1, 10);
+    $countImpoted = count($arr);
+    $countGlob = \count($arr);
+}
+
+namespace G {
+    use DateTime;
+use function range;
+
+    $arr = range(1, 10);
+}
