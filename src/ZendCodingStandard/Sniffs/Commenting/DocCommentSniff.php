@@ -4,6 +4,13 @@ namespace ZendCodingStandard\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use function in_array;
+use function preg_match;
+use function str_repeat;
+use function strlen;
+use function strpos;
+use function trim;
+
 class DocCommentSniff implements Sniff
 {
     /**

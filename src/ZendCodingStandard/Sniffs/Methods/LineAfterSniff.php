@@ -4,6 +4,8 @@ namespace ZendCodingStandard\Sniffs\Methods;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
+use function max;
+
 class LineAfterSniff extends AbstractScopeSniff
 {
     /**

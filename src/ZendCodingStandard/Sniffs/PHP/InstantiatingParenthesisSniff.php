@@ -5,6 +5,8 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function array_merge;
+
 class InstantiatingParenthesisSniff implements Sniff
 {
     /**

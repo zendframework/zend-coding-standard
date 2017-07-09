@@ -6,6 +6,22 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\PEAR\Sniffs\Commenting\FunctionCommentSniff as PEARFunctionCommentSniff;
 use ZendCodingStandard\CodingStandard;
 
+use function array_diff;
+use function count;
+use function explode;
+use function implode;
+use function in_array;
+use function preg_match;
+use function spl_object_hash;
+use function str_repeat;
+use function str_replace;
+use function strlen;
+use function strpos;
+use function strtolower;
+use function strtoupper;
+use function substr;
+use function trim;
+
 class FunctionCommentSniff extends PEARFunctionCommentSniff
 {
     /**

@@ -9,6 +9,23 @@ use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandardTest\Ruleset;
 
+use function array_merge;
+use function basename;
+use function count;
+use function explode;
+use function file_exists;
+use function get_class;
+use function implode;
+use function is_array;
+use function ksort;
+use function sort;
+use function sprintf;
+use function str_replace;
+use function strpos;
+use function strrpos;
+use function substr;
+use function trim;
+
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**

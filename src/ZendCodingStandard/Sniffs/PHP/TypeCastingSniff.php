@@ -15,6 +15,10 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function array_merge;
+use function preg_replace;
+use function strtolower;
+
 class TypeCastingSniff implements Sniff
 {
     /**

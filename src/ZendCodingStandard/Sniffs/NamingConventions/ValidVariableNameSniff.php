@@ -11,6 +11,9 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use PHP_CodeSniffer\Util\Common;
 
+use function in_array;
+use function ltrim;
+
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
     const CODE_CAMEL_CAPS = 'NotCamelCaps';

@@ -4,6 +4,10 @@ namespace ZendCodingStandard\Sniffs\Arrays;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use function str_repeat;
+use function strlen;
+use function strpos;
+
 class FormatSniff implements Sniff
 {
     /**

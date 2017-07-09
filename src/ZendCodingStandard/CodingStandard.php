@@ -5,6 +5,11 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function preg_match;
+use function sprintf;
+use function strpos;
+use function strtolower;
+
 class CodingStandard
 {
     public static $allowedTypes = [

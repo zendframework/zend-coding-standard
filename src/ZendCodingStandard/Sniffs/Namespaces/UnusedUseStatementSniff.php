@@ -18,6 +18,15 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\CodingStandard;
 
+use function in_array;
+use function preg_match;
+use function preg_quote;
+use function rtrim;
+use function strcasecmp;
+use function strpos;
+use function strtolower;
+use function trim;
+
 class UnusedUseStatementSniff implements Sniff
 {
     /**

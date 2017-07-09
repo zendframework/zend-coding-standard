@@ -3,6 +3,8 @@ namespace ZendCodingStandard\Sniffs\PHP;
 
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\LowerCaseKeywordSniff as GenericLowerCaseKeywordSniff;
 
+use function array_merge;
+
 class LowerCaseKeywordSniff extends GenericLowerCaseKeywordSniff
 {
     /**

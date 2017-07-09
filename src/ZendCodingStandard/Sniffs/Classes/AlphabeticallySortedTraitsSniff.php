@@ -5,6 +5,15 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use ZendCodingStandard\CodingStandard;
 
+use function array_map;
+use function end;
+use function implode;
+use function reset;
+use function str_replace;
+use function strcasecmp;
+use function trim;
+use function uasort;
+
 class AlphabeticallySortedTraitsSniff implements Sniff
 {
     /**

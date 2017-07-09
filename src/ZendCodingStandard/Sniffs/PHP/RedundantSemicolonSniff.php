@@ -5,6 +5,9 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function in_array;
+use function strtolower;
+
 class RedundantSemicolonSniff implements Sniff
 {
     /**

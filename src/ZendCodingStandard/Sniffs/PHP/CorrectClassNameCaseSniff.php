@@ -5,6 +5,24 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function array_map;
+use function array_merge;
+use function array_search;
+use function explode;
+use function get_declared_classes;
+use function get_declared_interfaces;
+use function get_declared_traits;
+use function implode;
+use function in_array;
+use function ltrim;
+use function preg_quote;
+use function preg_replace;
+use function strlen;
+use function strrchr;
+use function strtolower;
+use function substr;
+use function trim;
+
 /**
  * TODO: Better results for this sniff we will have if the parsed class is imported.
  * We can "include" the file on process, but probably it is not the best solution.

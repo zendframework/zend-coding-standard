@@ -5,6 +5,10 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function in_array;
+use function str_repeat;
+use function strlen;
+
 class MultilineBraceSniff implements Sniff
 {
     /**

@@ -1,6 +1,8 @@
 <?php
 namespace ZendCodingStandardTest;
 
+use function str_replace;
+
 class Ruleset extends \PHP_CodeSniffer\Ruleset
 {
     public function registerSniffs($files, $restrictions, $exclusions)

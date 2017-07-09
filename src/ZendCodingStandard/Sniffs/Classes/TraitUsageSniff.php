@@ -6,6 +6,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\CodingStandard;
 
+use function array_column;
+use function sort;
+use function str_replace;
+use function strcasecmp;
+use function usort;
+
 class TraitUsageSniff implements Sniff
 {
     /**
