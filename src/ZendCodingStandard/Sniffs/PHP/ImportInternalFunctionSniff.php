@@ -13,7 +13,7 @@ use function sprintf;
 use function strtolower;
 use function trim;
 
-class InternalFunctionSniff implements Sniff
+class ImportInternalFunctionSniff implements Sniff
 {
     /**
      * @var array<string, int> Hash map of all php built in function names.

@@ -3,12 +3,12 @@ namespace ZendCodingStandardTest\Sniffs\PHP;
 
 use ZendCodingStandardTest\Sniffs\TestCase;
 
-class InternalFunctionUnitTest extends TestCase
+class ImportInternalFunctionUnitTest extends TestCase
 {
     public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-            case 'InternalFunctionUnitTest.1.inc':
+            case 'ImportInternalFunctionUnitTest.1.inc':
                 return [
                     4 => 1,
                     5 => 1,
@@ -21,7 +21,7 @@ class InternalFunctionUnitTest extends TestCase
                     41 => 1,
                     49 => 1,
                 ];
-            case 'InternalFunctionUnitTest.2.inc':
+            case 'ImportInternalFunctionUnitTest.2.inc':
                 return [
                     5 => 1,
                     6 => 1,

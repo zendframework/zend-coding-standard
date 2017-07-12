@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="Zend Framework Coding Standard">
     <rule ref="vendor/zendframework/zend-coding-standard/src/ZendCodingStandard/ruleset.xml"/>
+
+    <!-- Disabled by default -->
+    <rule ref="ZendCodingStandard.PHP.ImportInternalFunction">
+        <exclude name="ZendCodingStandard.PHP.ImportInternalFunction"/>
+    </rule>
 </ruleset>
