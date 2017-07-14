@@ -110,14 +110,14 @@ class UnnecessaryParenthesesSniff implements Sniff
         if (in_array($tokens[$prev]['code'], Tokens::$castTokens, true)) {
             $op = $phpcsFile->findNext(
                 Tokens::$assignmentTokens
-                + Tokens::$booleanOperators
-                + Tokens::$equalityTokens
-                + Tokens::$operators
-                + [
-                    T_INLINE_ELSE => T_INLINE_ELSE,
-                    T_INLINE_THEN => T_INLINE_THEN,
-                    T_INSTANCEOF => T_INSTANCEOF,
-                ],
+                    + Tokens::$booleanOperators
+                    + Tokens::$equalityTokens
+                    + Tokens::$operators
+                    + [
+                        T_INLINE_ELSE => T_INLINE_ELSE,
+                        T_INLINE_THEN => T_INLINE_THEN,
+                        T_INSTANCEOF => T_INSTANCEOF,
+                    ],
                 $stackPtr + 1,
                 $closePtr
             );
@@ -136,13 +136,13 @@ class UnnecessaryParenthesesSniff implements Sniff
         if (in_array($tokens[$prev]['code'], $prevTokens, true)) {
             $op = $phpcsFile->findNext(
                 Tokens::$assignmentTokens
-                + Tokens::$booleanOperators
-                + Tokens::$equalityTokens
-                + Tokens::$operators
-                + [
-                    T_INLINE_ELSE => T_INLINE_ELSE,
-                    T_INLINE_THEN => T_INLINE_THEN,
-                ],
+                    + Tokens::$booleanOperators
+                    + Tokens::$equalityTokens
+                    + Tokens::$operators
+                    + [
+                        T_INLINE_ELSE => T_INLINE_ELSE,
+                        T_INLINE_THEN => T_INLINE_THEN,
+                    ],
                 $stackPtr + 1,
                 $closePtr
             );
@@ -157,15 +157,15 @@ class UnnecessaryParenthesesSniff implements Sniff
         if (in_array($tokens[$prev]['code'], Tokens::$equalityTokens, true)) {
             $op = $phpcsFile->findNext(
                 Tokens::$assignmentTokens
-                + Tokens::$booleanOperators
-                + [
-                    T_BITWISE_AND => T_BITWISE_AND,
-                    T_BITWISE_OR  => T_BITWISE_OR,
-                    T_BITWISE_XOR => T_BITWISE_XOR,
-                    T_COALESCE    => T_COALESCE,
-                    T_INLINE_ELSE => T_INLINE_ELSE,
-                    T_INLINE_THEN => T_INLINE_THEN,
-                ],
+                    + Tokens::$booleanOperators
+                    + [
+                        T_BITWISE_AND => T_BITWISE_AND,
+                        T_BITWISE_OR  => T_BITWISE_OR,
+                        T_BITWISE_XOR => T_BITWISE_XOR,
+                        T_COALESCE    => T_COALESCE,
+                        T_INLINE_ELSE => T_INLINE_ELSE,
+                        T_INLINE_THEN => T_INLINE_THEN,
+                    ],
                 $stackPtr + 1,
                 $closePtr
             );
@@ -184,11 +184,11 @@ class UnnecessaryParenthesesSniff implements Sniff
             if (in_array($tokens[$prev]['code'], [T_INLINE_THEN, T_INLINE_ELSE], true)) {
                 $op = $phpcsFile->findNext(
                     Tokens::$assignmentTokens
-                    + Tokens::$booleanOperators
-                    + [
-                        T_INLINE_ELSE => T_INLINE_ELSE,
-                        T_INLINE_THEN => T_INLINE_THEN,
-                    ],
+                        + Tokens::$booleanOperators
+                        + [
+                            T_INLINE_ELSE => T_INLINE_ELSE,
+                            T_INLINE_THEN => T_INLINE_THEN,
+                        ],
                     $stackPtr + 1,
                     $closePtr
                 );
