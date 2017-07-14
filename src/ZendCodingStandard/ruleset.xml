@@ -15,6 +15,10 @@
         <exclude name="Generic.PHP.LowerCaseKeyword"/>
         <exclude name="Squiz.ControlStructures.LowercaseDeclaration"/>
         <exclude name="Squiz.Functions.LowercaseFunctionKeywords"/>
+        <!-- Replaced by ZendCodingStandard.WhiteSpace.ScopeIndent -->
+        <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+        <exclude name="PSR2.Methods.FunctionCallSignature.Indent"/>
+        <exclude name="Squiz.WhiteSpace.ScopeClosingBrace.Indent"/>
     </rule>
 
     <!-- Generic Rules -->
