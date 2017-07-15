@@ -202,9 +202,9 @@ string that spans $numLines lines
 ";
 
 $oldArray = array(
- 'it', 'does',
-    'not',
-   'check',
+ 'the', 'sniff',
+    'does',
+   'check',      'indents', 'in',
   'arrays'
 );
 
@@ -399,4 +399,19 @@ class Test3
             'param'
         )->shouldBeCalled();
     }
+
+public function method3()
+{
+$list = [
+'fn' => function ($a) {
+if ($a === true) {
+echo 'hi';
+}
+},
+'call' => sprintf(
+'Text %s',
+'param'
+),
+];
+}
 }

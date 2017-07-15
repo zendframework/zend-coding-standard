@@ -38,6 +38,7 @@ class ScopeIndentSniff implements Sniff
         T_GOTO_LABEL,
         T_COMMA,
         T_OPEN_PARENTHESIS,
+        T_OPEN_SHORT_ARRAY,
     ];
 
     private $caseEndToken = [
@@ -62,6 +63,8 @@ class ScopeIndentSniff implements Sniff
                 T_SEMICOLON => T_SEMICOLON,
                 T_OPEN_PARENTHESIS => T_OPEN_PARENTHESIS,
                 T_OPEN_CURLY_BRACKET => T_OPEN_CURLY_BRACKET,
+                T_OPEN_SHORT_ARRAY => T_OPEN_SHORT_ARRAY,
+                T_ARRAY => T_ARRAY,
                 T_COMMA => T_COMMA,
                 T_INLINE_ELSE => T_INLINE_ELSE,
                 T_INLINE_THEN => T_INLINE_THEN,
@@ -77,6 +80,7 @@ class ScopeIndentSniff implements Sniff
                 T_CLOSE_PARENTHESIS => T_CLOSE_PARENTHESIS,
                 T_USE => T_USE,
                 T_CLOSURE => T_CLOSURE,
+                T_ARRAY => T_ARRAY,
             ];
     }
 
@@ -186,18 +190,6 @@ class ScopeIndentSniff implements Sniff
                 continue;
             }
 
-            // skip short arrays
-            if ($tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
-                $i = $tokens[$i]['bracket_closer'];
-                continue;
-            }
-
-            // skip long arrays
-            if ($tokens[$i]['code'] === T_ARRAY) {
-                $i = $tokens[$i]['parenthesis_closer'];
-                continue;
-            }
-
             // skip heredoc/nowdoc
             if ($tokens[$i]['code'] === T_START_HEREDOC
                 || $tokens[$i]['code'] === T_START_NOWDOC
@@ -295,7 +287,7 @@ class ScopeIndentSniff implements Sniff
                         $extras[$endOfStatement] = $this->indent;
                     }
 
-                    $extraIndent += $this->indent;// expectedIndent += $this->indent;
+                    $extraIndent += $this->indent;
                 } elseif ($tokens[$next]['code'] === T_CLOSE_PARENTHESIS) {
                     if (isset($extras[$next])) {
                         $extraIndent -= $extras[$next];
@@ -335,6 +327,11 @@ class ScopeIndentSniff implements Sniff
                         }
 
                         continue;
+                    }
+                } elseif ($tokens[$next]['code'] === T_CLOSE_SHORT_ARRAY) {
+                    if (isset($extras[$next])) {
+                        $extraIndent -= $extras[$next];
+                        unset($extras[$next]);
                     }
                 } elseif ($tokens[$next]['code'] === T_OBJECT_OPERATOR) {
                     if (isset($extras[$next])) {
@@ -448,12 +445,23 @@ class ScopeIndentSniff implements Sniff
             // count extra indent
             $ei = 0;
             if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS
+                || $tokens[$i]['code'] === T_OPEN_SHORT_ARRAY
                 || ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
                     && isset($tokens[$i]['scope_closer']))
             ) {
-                $xEnd = $tokens[$i]['code'] === T_OPEN_PARENTHESIS
-                    ? $tokens[$i]['parenthesis_closer']
-                    : $tokens[$i]['scope_closer'];
+                switch ($tokens[$i]['code']) {
+                    case T_OPEN_PARENTHESIS:
+                        $key = 'parenthesis_closer';
+                        break;
+                    case T_OPEN_SHORT_ARRAY:
+                        $key = 'bracket_closer';
+                        break;
+                    default:
+                        $key = 'scope_closer';
+                        break;
+
+                }
+                $xEnd = $tokens[$i][$key];
 
                 // no extra indent if closing parenthesis/bracket is in the same line
                 if ($tokens[$i]['line'] === $tokens[$xEnd]['line']) {
@@ -462,12 +470,16 @@ class ScopeIndentSniff implements Sniff
 
                 // if there is another open bracket in that line, skip current one.
                 $another = $i;
-                while (($another = $phpcsFile->findNext([T_OPEN_PARENTHESIS, T_OPEN_CURLY_BRACKET], $another + 1))
+                $openTags = [T_OPEN_PARENTHESIS, T_OPEN_SHORT_ARRAY, T_OPEN_CURLY_BRACKET];
+                while (($another = $phpcsFile->findNext($openTags, $another + 1))
                     && $tokens[$another]['line'] === $tokens[$i]['line']
                 ) {
                     if (($tokens[$another]['code'] === T_OPEN_PARENTHESIS
                             && $tokens[$tokens[$another]['parenthesis_closer']]['line'] > $tokens[$another]['line'])
-                        || (isset($tokens[$another]['scope_closer'])
+                        || ($tokens[$another]['code'] === T_OPEN_SHORT_ARRAY
+                            && $tokens[$tokens[$another]['bracket_closer']]['line'] > $tokens[$another]['line'])
+                        || ($tokens[$another]['code'] === T_OPEN_CURLY_BRACKET
+                            && isset($tokens[$another]['scope_closer'])
                             && $tokens[$tokens[$another]['scope_closer']]['line'] > $tokens[$another]['line'])
                     ) {
                         continue 2;
