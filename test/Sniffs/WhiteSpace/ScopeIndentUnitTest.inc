@@ -415,3 +415,26 @@ echo 'hi';
 ];
 }
 }
+
+$foo = $bar
++ [
+'foo',
+'bar',
+];
+
+$foo = $bar
++ func(
+'foo',
+'bar'
+);
+
+$f->foo(
+'foo'
+)
+->bar(
+'bar',
+$foo
++ [
+'bar',
+]
+);

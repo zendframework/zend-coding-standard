@@ -443,7 +443,6 @@ class ScopeIndentSniff implements Sniff
             }
 
             // count extra indent
-            $ei = 0;
             if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS
                 || $tokens[$i]['code'] === T_OPEN_SHORT_ARRAY
                 || ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
@@ -459,7 +458,6 @@ class ScopeIndentSniff implements Sniff
                     default:
                         $key = 'scope_closer';
                         break;
-
                 }
                 $xEnd = $tokens[$i][$key];
 
@@ -495,14 +493,21 @@ class ScopeIndentSniff implements Sniff
                     ++$firstInNextLine;
                 }
 
+                // Additional indent of the content if it should be one more depth.
+                $ei1 = 0;
                 if ($tokens[$first]['level'] === $tokens[$firstInNextLine]['level']
                     && $tokens[$firstInNextLine]['code'] !== T_CLOSE_CURLY_BRACKET
                 ) {
-                    $ei += $this->indent;
+                    $ei1 = $this->indent;
+                    if (isset($extras[$xEnd])) {
+                        $extras[$xEnd] += $ei1;
+                    } else {
+                        $extras[$xEnd] = $ei1;
+                    }
                 }
 
+                $ei2 = 0;
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, $i + 1, null, true);
-
                 if ($tokens[$next]['line'] > $tokens[$i]['line']) {
                     // current line indent
                     $whitespace = $phpcsFile->findFirstOnLine([], $i, true);
@@ -512,19 +517,17 @@ class ScopeIndentSniff implements Sniff
                             - $extraIndent;
 
                         if ($sum > 0) {
-                            $ei += $sum;
+                            $ei2 = $sum;
+                            if (isset($extras[$xEnd + 1])) {
+                                $extras[$xEnd + 1] += $ei2;
+                            } else {
+                                $extras[$xEnd + 1] = $ei2;
+                            }
                         }
                     }
                 }
-            }
 
-            if ($ei) {
-                $extraIndent += $ei;
-                if (isset($extras[$xEnd])) {
-                    $extras[$xEnd] += $ei;
-                } else {
-                    $extras[$xEnd] = $ei;
-                }
+                $extraIndent += $ei1 + $ei2;
             }
         }
 
