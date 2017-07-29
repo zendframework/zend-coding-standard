@@ -438,3 +438,14 @@ $foo
 'bar',
 ]
 );
+
+$this->abc($a, [
+    'param1',
+    'param2',
+])
+     ->def();
+
+$this->def($a, [
+         'abc',
+         'def',
+     ]);

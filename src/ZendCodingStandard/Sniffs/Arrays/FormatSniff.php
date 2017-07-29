@@ -122,33 +122,6 @@ class FormatSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($firstOnLine - 1, '');
                     }
                 }
-
-                $expected = $indent + $this->indent;
-
-                // Check array element indent.
-                if ($firstOnLine = $phpcsFile->findFirstOnLine(T_WHITESPACE, $next)) {
-                    $found = strlen($tokens[$firstOnLine]['content']);
-                    if ($found !== $expected) {
-                        $error = 'Invalid array element indent - expected %d spaces; %d found';
-                        $data = [
-                            $expected,
-                            $found,
-                        ];
-                        $fix = $phpcsFile->addFixableError($error, $firstOnLine, 'ElementIndent', $data);
-
-                        if ($fix) {
-                            $phpcsFile->fixer->replaceToken($firstOnLine, str_repeat(' ', $expected));
-                        }
-                    }
-                } else {
-                    $error = 'Invalid array element indent - expected %d spaces; 0 found';
-                    $data = [$expected];
-                    $fix = $phpcsFile->addFixableError($error, $next, 'ElementIndent', $data);
-
-                    if ($fix) {
-                        $phpcsFile->fixer->addContentBefore($next, str_repeat(' ', $expected));
-                    }
-                }
             }
 
             if ($tokens[$next]['code'] === T_COMMENT
@@ -179,17 +152,6 @@ class FormatSniff implements Sniff
                     }
                     $phpcsFile->fixer->addNewlineBefore($bracketCloser);
                     $phpcsFile->fixer->endChangeset();
-                }
-            } elseif ($first === $bracketCloser - 1
-                && $tokens[$first]['code'] === T_WHITESPACE
-                && strlen($tokens[$first]['content']) !== $indent
-            ) {
-                $error = 'Expected %d spaces; found %d';
-                $data = [$indent, strlen($tokens[$first]['content'])];
-                $fix = $phpcsFile->addFixableError($error, $first, 'CloseBracketIndent', $data);
-
-                if ($fix) {
-                    $phpcsFile->fixer->replaceToken($first, str_repeat(' ', $indent));
                 }
             }
         }
