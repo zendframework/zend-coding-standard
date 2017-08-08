@@ -24,9 +24,11 @@ class ScopeIndentSniff implements Sniff
     private $controlStructures = [
         T_IF => T_IF,
         T_ELSEIF => T_ELSEIF,
+        T_SWITCH => T_SWITCH,
         T_WHILE => T_WHILE,
         T_FOR => T_FOR,
         T_FOREACH => T_FOREACH,
+        T_CATCH => T_CATCH,
     ];
 
     private $endOfStatement = [
@@ -72,6 +74,7 @@ class ScopeIndentSniff implements Sniff
             ];
 
         $this->functionToken = Tokens::$functionNameTokens
+            + $this->controlStructures
             + [
                 T_SELF => T_SELF,
                 T_STATIC => T_STATIC,
@@ -198,22 +201,120 @@ class ScopeIndentSniff implements Sniff
                 continue;
             }
 
-            if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
-                if (empty($tokens[$i]['parenthesis_owner'])) {
-                    $parenthesisOwner = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i - 1, null, true);
-                } else {
-                    $parenthesisOwner = $tokens[$i]['parenthesis_owner'];
-                }
-
-                if (in_array($tokens[$parenthesisOwner]['code'], $this->controlStructures, true)) {
-                    $i = $tokens[$i]['parenthesis_closer'];
-                    continue;
-                }
-            }
-
             if (isset($extras[$i])) {
                 $extraIndent -= $extras[$i];
                 unset($extras[$i]);
+            }
+
+            // check if closing parenthesis is in the same line as control structure
+            if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
+                && isset($tokens[$i]['scope_condition'])
+                && ($scopeCondition = $tokens[$tokens[$i]['scope_condition']])
+                && ! in_array($scopeCondition['code'], [T_FUNCTION, T_CLOSURE], true)
+                && ($parenthesis = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i - 1, null, true))
+                && $tokens[$parenthesis]['code'] === T_CLOSE_PARENTHESIS
+                && $tokens[$parenthesis]['line'] > $scopeCondition['line']
+            ) {
+                $prev = $phpcsFile->findPrevious(
+                    Tokens::$emptyTokens + [T_CLOSE_PARENTHESIS => T_CLOSE_PARENTHESIS],
+                    $parenthesis - 1,
+                    null,
+                    true
+                );
+                if ($scopeCondition['line'] === $tokens[$prev]['line']) {
+                    $error = 'Closing parenthesis must be in the same line as control structure.';
+                    $fix = $phpcsFile->addFixableError($error, $parenthesis, 'UnnecessaryLineBreak');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+                        for ($j = $prev + 1; $j < $parenthesis; ++$j) {
+                            if ($tokens[$j]['code'] === T_WHITESPACE) {
+                                $phpcsFile->fixer->replaceToken($j, '');
+                            }
+                        }
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                }
+            }
+
+            // closing parenthesis in next line when multi-line control structure
+            if ($tokens[$i]['code'] === T_CLOSE_PARENTHESIS
+                && $tokens[$i]['line'] > $tokens[$tokens[$i]['parenthesis_opener']]['line']
+            ) {
+                $prev = $phpcsFile->findPrevious(
+                    Tokens::$emptyTokens
+                        + [
+                            T_CLOSE_SHORT_ARRAY => T_CLOSE_SHORT_ARRAY,
+                            T_CLOSE_CURLY_BRACKET => T_CLOSE_CURLY_BRACKET,
+                            T_CLOSE_PARENTHESIS => T_CLOSE_PARENTHESIS,
+                        ],
+                    $i - 1,
+                    null,
+                    true
+                );
+
+                $owner = $phpcsFile->findPrevious(
+                    Tokens::$emptyTokens,
+                    $tokens[$i]['parenthesis_opener'] - 1,
+                    null,
+                    true
+                );
+                if ($tokens[$prev]['line'] === $tokens[$i]['line']
+                    && in_array($tokens[$owner]['code'], $this->functionToken, true)
+                    && $this->hasContainNewLine(
+                        $phpcsFile,
+                        $tokens[$i]['parenthesis_opener'],
+                        $tokens[$i]['parenthesis_closer']
+                    )
+                ) {
+                    $error = 'Closing parenthesis must be in next line';
+                    $fix = $phpcsFile->addFixableError($error, $i, 'ClosingParenthesis');
+
+                    if ($fix) {
+                        $phpcsFile->fixer->addNewlineBefore($i);
+                    }
+                }
+
+                if (isset($tokens[$owner]['scope_condition'])) {
+                    $scopeCondition = $tokens[$owner];
+                    $prev = $i;
+                    while (($prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $prev - 1, null, true))
+                        && $tokens[$prev]['code'] === T_CLOSE_PARENTHESIS
+                        && $tokens[$prev]['line'] > $scopeCondition['line']
+                        && $tokens[$tokens[$prev]['parenthesis_opener']]['line'] === $scopeCondition['line']
+                        && ! $phpcsFile->findFirstOnLine(
+                            Tokens::$emptyTokens + [T_CLOSE_PARENTHESIS => T_CLOSE_PARENTHESIS],
+                            $prev,
+                            true
+                        )
+                    ) {
+                        if ($tokens[$prev]['line'] <= $tokens[$i]['line'] - 1) {
+                            $error = 'Invalid closing parenthesis position.';
+                            $fix = $phpcsFile->addFixableError($error, $prev, 'InvalidClosingParenthesisPosition');
+
+                            if ($fix) {
+                                $phpcsFile->fixer->beginChangeset();
+                                for ($j = $prev + 1; $j < $i; ++$j) {
+                                    if ($tokens[$j]['code'] === T_WHITESPACE) {
+                                        $phpcsFile->fixer->replaceToken($j, '');
+                                    }
+                                }
+                                $phpcsFile->fixer->endChangeset();
+                            }
+                        } elseif ($tokens[$prev + 1]['code'] === T_WHITESPACE) {
+                            $error = 'Unexpected whitespace before closing parenthesis.';
+                            $fix = $phpcsFile->addFixableError(
+                                $error,
+                                $prev + 1,
+                                'UnexpectedSpacesBeforeClosingParenthesis'
+                            );
+
+                            if ($fix) {
+                                $phpcsFile->fixer->replaceToken($prev + 1, '');
+                            }
+                        }
+                    }
+                }
             }
 
             if ($tokens[$i]['code'] === T_OBJECT_OPERATOR) {
@@ -298,6 +399,7 @@ class ScopeIndentSniff implements Sniff
                     $owner = $phpcsFile->findPrevious(Tokens::$emptyTokens, $opener - 1, null, true);
 
                     // if it is not a function call
+                    // and not a control structure
                     if (! in_array($tokens[$owner]['code'], $this->functionToken, true)) {
                         $error = 'Closing parenthesis must be in previous line.';
                         $fix = $phpcsFile->addFixableError($error, $next, 'ClosingParenthesis');
@@ -387,8 +489,51 @@ class ScopeIndentSniff implements Sniff
                 } elseif (! in_array($tokens[$prev]['code'], $this->endOfStatement, true)
                     && $tokens[$next]['code'] !== T_OPEN_CURLY_BRACKET
                 ) {
-                    if ($expectedIndent + $extraIndent <= $previousIndent) {
+                    if ($this->getControlStructurePtr($phpcsFile, $next) !== false) {
+                        $addIndent = $expectedIndent + $extraIndent - $this->indent <= $previousIndent
+                            && ! in_array($tokens[$next]['code'], Tokens::$booleanOperators, true);
+                    } else {
+                        $addIndent = $expectedIndent + $extraIndent <= $previousIndent;
+                    }
+
+                    if ($addIndent) {
                         $expectedIndent = ($depth + 1) * $this->indent;
+                    }
+                }
+
+                // one less indent
+                // if it is in control structure
+                // and there is no eol between
+                // open and close parenthesis
+                if (($tokens[$next]['code'] === T_CLOSE_PARENTHESIS
+                        || $tokens[$next]['code'] === T_CLOSE_SHORT_ARRAY
+                        || ($tokens[$next]['code'] === T_CLOSE_CURLY_BRACKET
+                            && isset($tokens[$next]['scope_opener'])))
+                    && ($controlStructurePtr = $this->getControlStructurePtr($phpcsFile, $next))
+                    && $tokens[$next]['line'] < $tokens[$tokens[$controlStructurePtr]['parenthesis_closer']]['line']
+                    && ! $this->hasContainNewLine(
+                        $phpcsFile,
+                        $tokens[$controlStructurePtr]['parenthesis_opener'],
+                        $tokens[$controlStructurePtr]['parenthesis_closer']
+                    )
+                ) {
+                    // if it is closure, so $next token is T_CLOSE_PARENTHESIS
+                    // and the following non-empty token is T_CURLY_OPEN_BRACKET
+                    // then expect one more indent on the whole body of the closure.
+                    if ($tokens[$next]['code'] === T_CLOSE_PARENTHESIS
+                        && ($fNext = $phpcsFile->findNext(Tokens::$emptyTokens, $next + 1, null, true))
+                        && $tokens[$fNext]['code'] === T_OPEN_CURLY_BRACKET
+                        && isset($tokens[$fNext]['scope_closer'])
+                    ) {
+                        $extraIndent -= $this->indent;
+                        $sc = $tokens[$fNext]['scope_closer'];
+                        if (isset($extras[$sc])) {
+                            $extras[$sc] -= $this->indent;
+                        } else {
+                            $extras[$sc] = - $this->indent;
+                        }
+                    } else {
+                        $expectedIndent -= $this->indent;
                     }
                 }
 
@@ -466,19 +611,46 @@ class ScopeIndentSniff implements Sniff
                     continue;
                 }
 
-                // if there is another open bracket in that line, skip current one.
+                // If open parenthesis belongs to control structure
+                if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS
+                    && isset($tokens[$i]['parenthesis_owner'])
+                    && in_array($tokens[$tokens[$i]['parenthesis_owner']]['code'], $this->controlStructures, true)
+                ) {
+                    // search for first non-empty token in line,
+                    // where is the closing parenthesis of the control structure
+                    $firstOnLine = $phpcsFile->findFirstOnLine(Tokens::$emptyTokens, $xEnd, true);
+
+                    $extraIndent += $this->indent;
+                    if (isset($extras[$firstOnLine])) {
+                        $extras[$firstOnLine] += $this->indent;
+                    } else {
+                        $extras[$firstOnLine] = $this->indent;
+                    }
+
+                    $controlStructure[$tokens[$i]['line']] = $tokens[$i]['parenthesis_closer'];
+
+                    continue;
+                }
+
+                // If there is another open bracket in the current line,
+                // and closing bracket is in the same line as closing bracket of the current token
+                // (or there is no no line break between them)
+                // skip the current token to count indent.
                 $another = $i;
                 $openTags = [T_OPEN_PARENTHESIS, T_OPEN_SHORT_ARRAY, T_OPEN_CURLY_BRACKET];
                 while (($another = $phpcsFile->findNext($openTags, $another + 1))
                     && $tokens[$another]['line'] === $tokens[$i]['line']
                 ) {
                     if (($tokens[$another]['code'] === T_OPEN_PARENTHESIS
-                            && $tokens[$tokens[$another]['parenthesis_closer']]['line'] > $tokens[$another]['line'])
+                            && $tokens[$tokens[$another]['parenthesis_closer']]['line'] > $tokens[$another]['line']
+                            && ! $this->hasContainNewLine($phpcsFile, $tokens[$another]['parenthesis_closer'], $xEnd))
                         || ($tokens[$another]['code'] === T_OPEN_SHORT_ARRAY
-                            && $tokens[$tokens[$another]['bracket_closer']]['line'] > $tokens[$another]['line'])
+                            && $tokens[$tokens[$another]['bracket_closer']]['line'] > $tokens[$another]['line']
+                            && ! $this->hasContainNewLine($phpcsFile, $tokens[$another]['bracket_closer'], $xEnd))
                         || ($tokens[$another]['code'] === T_OPEN_CURLY_BRACKET
                             && isset($tokens[$another]['scope_closer'])
-                            && $tokens[$tokens[$another]['scope_closer']]['line'] > $tokens[$another]['line'])
+                            && $tokens[$tokens[$another]['scope_closer']]['line'] > $tokens[$another]['line']
+                            && ! $this->hasContainNewLine($phpcsFile, $tokens[$another]['scope_closer'], $xEnd))
                     ) {
                         continue 2;
                     }
@@ -494,15 +666,27 @@ class ScopeIndentSniff implements Sniff
                 }
 
                 // Additional indent of the content if it should be one more depth.
+                // We count them only if it is not in the same line as control structure
+                // or the closing parenthesis of the statement is not in the line with
+                // closing parenthesis of control structure.
                 $ei1 = 0;
-                if ($tokens[$first]['level'] === $tokens[$firstInNextLine]['level']
-                    && $tokens[$firstInNextLine]['code'] !== T_CLOSE_CURLY_BRACKET
+                $controlStructurePtr = $this->getControlStructurePtr($phpcsFile, $i);
+                if ($controlStructurePtr === false
+                    || $this->hasContainNewLine(
+                        $phpcsFile,
+                        $tokens[$controlStructurePtr]['parenthesis_opener'],
+                        $tokens[$controlStructurePtr]['parenthesis_closer']
+                    )
                 ) {
-                    $ei1 = $this->indent;
-                    if (isset($extras[$xEnd])) {
-                        $extras[$xEnd] += $ei1;
-                    } else {
-                        $extras[$xEnd] = $ei1;
+                    if ($tokens[$first]['level'] === $tokens[$firstInNextLine]['level']
+                        && $tokens[$firstInNextLine]['code'] !== T_CLOSE_CURLY_BRACKET
+                    ) {
+                        $ei1 = $this->indent;
+                        if (isset($extras[$xEnd])) {
+                            $extras[$xEnd] += $ei1;
+                        } else {
+                            $extras[$xEnd] = $ei1;
+                        }
                     }
                 }
 
@@ -535,6 +719,8 @@ class ScopeIndentSniff implements Sniff
     }
 
     /**
+     * @todo: need name refactor and method description
+     *
      * @param File $phpcsFile
      * @param int $ptr
      * @return int|null
@@ -561,6 +747,8 @@ class ScopeIndentSniff implements Sniff
     }
 
     /**
+     * @todo: need name refactor and method description
+     *
      * @param File $phpcsFile
      * @param int $ptr
      * @return int|null
@@ -585,6 +773,9 @@ class ScopeIndentSniff implements Sniff
     }
 
     /**
+     * Checks if there is another object operator
+     * before $ptr token.
+     *
      * @param File $phpcsFile
      * @param int $ptr
      * @return int|null
@@ -606,5 +797,74 @@ class ScopeIndentSniff implements Sniff
         }
 
         return null;
+    }
+
+    /**
+     * Checks if between $fromPtr and $toPtr is any new line
+     * excluding scopes (arrays, closures, multiline function calls).
+     *
+     * @param File $phpcsFile
+     * @param int $fromPtr
+     * @param int $toPtr
+     * @return bool
+     */
+    private function hasContainNewLine(File $phpcsFile, $fromPtr, $toPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        for ($j = $fromPtr + 1; $j < $toPtr; ++$j) {
+            switch ($tokens[$j]['code']) {
+                case T_OPEN_PARENTHESIS:
+                case T_ARRAY:
+                    $j = $tokens[$j]['parenthesis_closer'];
+                    continue 2;
+                case T_OPEN_CURLY_BRACKET:
+                    if (isset($tokens[$j]['scope_closer'])) {
+                        $j = $tokens[$j]['scope_closer'];
+                    }
+                    continue 2;
+                case T_OPEN_SHORT_ARRAY:
+                    $j = $tokens[$j]['bracket_closer'];
+                    continue 2;
+                case T_WHITESPACE:
+                    if (strpos($tokens[$j]['content'], $phpcsFile->eolChar) !== false) {
+                        return true;
+                    }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the $ptr token is inside control structure
+     * and returns the control structure pointer;
+     * otherwise returns boolean `false`.
+     *
+     * @param File $phpcsFile
+     * @param int $ptr
+     * @return int|false
+     */
+    private function getControlStructurePtr(File $phpcsFile, $ptr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        if (isset($tokens[$ptr]['nested_parenthesis'])) {
+            foreach ($tokens[$ptr]['nested_parenthesis'] as $start => $end) {
+                // find expression before
+                $prev = $phpcsFile->findPrevious(
+                    Tokens::$emptyTokens,
+                    $start - 1,
+                    null,
+                    true
+                );
+
+                if (in_array($tokens[$prev]['code'], $this->controlStructures, true)) {
+                    return $prev;
+                }
+            }
+        }
+
+        return false;
     }
 }

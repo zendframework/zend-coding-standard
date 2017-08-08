@@ -64,8 +64,8 @@ if ($a
     && ($b
         || $c)
     && preg_match(
-    '/a/',
-    'b'
+        '/a/',
+        'b'
     )
 ) {
     return 12;
@@ -143,4 +143,80 @@ if ($a
         || $e)
 ) {
     echo 3;
+}
+
+while (in_array($a, [
+    $b,
+    $c,
+    $d,
+], true)) {
+}
+
+if (in_array($a, array(
+    $b,
+    $c
+), true)) {
+} elseif (myFunc($a, anotherFunc(
+    $d,
+    $e
+), true)) {
+}
+
+do {
+} while (myFunc($a, function (
+    $b,
+    $c
+) {
+    return $b <=> $c;
+}, true));
+
+if (myFunc([
+    'elem1',
+    'elem2',
+], function (
+    $a,
+    $b
+) {
+    return $a > $b;
+}, [
+    'param' => 'val'
+])) {
+} elseif (($a
+        && $b)
+    || ($c
+        && $d)
+    || ($e
+        && $f
+        && $g)
+) {
+}
+
+do {
+} while ($a
+    && ($b
+        || $c
+        || $d)
+);
+
+if ($a
+    && (($b
+            || $c
+            || $d)
+        && $e
+        || ($f && $g))
+) {
+} elseif ($a
+    && ((($b
+                || $c
+                || $d)
+            && $e)
+        || ($f && $g))
+) {
+} elseif ($a
+    && (($x && ($b
+                || $c
+                || $d)
+            && $e)
+        || ($f && $g))
+) {
 }

@@ -414,6 +414,26 @@ echo 'hi';
 ),
 ];
 }
+
+public function method4()
+{
+$this->console
+->writeln(
+Argument::that(function ($arg) {
+if (false === strpos($arg, 'src/ErrorMiddleware.php')) {
+return false;
+}
+if (false === strpos(
+$arg,
+sprintf('<error>implementing %s</error>', ErrorMiddlewareInterface::class)
+)) {
+return false;
+}
+return true;
+})
+)
+->shouldBeCalled();
+}
 }
 
 $foo = $bar
@@ -449,3 +469,11 @@ $this->def($a, [
          'abc',
          'def',
      ]);
+
+throw new MyException(sprintf(
+'Type "%s" is unknown or cannot be used as property default value.',
+get_class($value)
+), $param, [
+'foo' => 'bar',
+'bar' => 'baz',
+]);
