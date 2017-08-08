@@ -1,4 +1,7 @@
 <?php
+// @codingStandardsChangeSetting ZendCodingStandard.Formatting.ReturnType spacesBeforeColon 0
+// @codingStandardsChangeSetting ZendCodingStandard.Formatting.ReturnType spacesAfterColon 1
+// @codingStandardsChangeSetting ZendCodingStandard.Formatting.ReturnType spacesAfterNullable 0
 
 $v = 1;
 
