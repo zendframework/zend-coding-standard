@@ -115,6 +115,7 @@ class VariableCommentSniff extends AbstractVariableSniff
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
+        // Sniff process only class member vars.
     }
 
     /**
@@ -122,5 +123,6 @@ class VariableCommentSniff extends AbstractVariableSniff
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {
+        // Sniff process only class member vars.
     }
 }
