@@ -60,8 +60,8 @@ interface MyInterface
     public function c() :?int;
     public function d() :Float;
     public function e() :? float;
-    public function f():Double;
-    public function g():?double;
+    public function f():Object;
+    public function g():?object;
     public function h():Array;
     public function i() : ?array;
     public function j():String;

@@ -34,7 +34,7 @@ class ReturnTypeSniff implements Sniff
         'void',
         'int',
         'float',
-        'double',
+        'object',
         'string',
         'array',
         'iterable',
