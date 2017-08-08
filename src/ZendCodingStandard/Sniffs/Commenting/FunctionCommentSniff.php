@@ -39,6 +39,25 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     private $hasInheritDoc = [];
 
     /**
+     * Allowed simple type hints for method params.
+     *
+     * @var array
+     */
+    private $simpleTypeHints = [
+        'array',
+        'bool',
+        'float',
+        'int',
+        'object',
+        'string',
+        'resource',
+        'callable',
+        'parent',
+        'self',
+        'iterable',
+    ];
+
+    /**
      * @inheritDoc
      */
     protected function processReturn(File $phpcsFile, $stackPtr, $commentStart)
@@ -610,7 +629,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                         $suggestedTypeHint = 'callable';
                     } elseif (strpos($suggestedName, 'callback') !== false) {
                         $suggestedTypeHint = 'callable';
-                    } elseif (! in_array($typeName, CodingStandard::$allowedTypes)) {
+                    } elseif (! in_array($typeName, $this->simpleTypeHints, true)) {
                         $suggestedTypeHint = $suggestedName;
                     } elseif ($this->phpVersion >= 70000) {
                         if ($typeName === 'string') {

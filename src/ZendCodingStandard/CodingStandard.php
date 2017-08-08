@@ -12,18 +12,6 @@ use function strtolower;
 
 class CodingStandard
 {
-    public static $allowedTypes = [
-        'array',
-        'bool',
-        'float',
-        'int',
-        'mixed',
-        'object',
-        'string',
-        'resource',
-        'callable',
-    ];
-
     /**
      * Returns a valid variable type for param/var tag.
      *
