@@ -225,8 +225,7 @@ class TraitUsageSniff implements Sniff
         } while ($nextUse !== false
             && (! CodingStandard::isTraitUse($phpcsFile, $nextUse)
                 || ! isset($tokens[$nextUse]['conditions'][$class])
-                || $tokens[$nextUse]['level'] !== $tokens[$class]['level'] + 1
-            )
+                || $tokens[$nextUse]['level'] !== $tokens[$class]['level'] + 1)
         );
 
         if ($nextUse !== false) {
