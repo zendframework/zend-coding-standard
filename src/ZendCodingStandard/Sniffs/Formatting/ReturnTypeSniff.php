@@ -64,12 +64,13 @@ class ReturnTypeSniff implements Sniff
 
         $colon = $phpcsFile->findPrevious(T_COLON, $stackPtr - 1);
 
+        $expected = str_repeat(' ', $this->spacesBeforeColon);
         // Token before colon does not match configured number of spaces.
         if (($this->spacesBeforeColon === 0
-                && $tokens[$colon - 1]['code'] !== T_CLOSE_PARENTHESIS)
+                && $tokens[$colon - 1]['code'] === T_WHITESPACE)
             || ($this->spacesBeforeColon > 0
                 && ($tokens[$colon - 1]['code'] !== T_WHITESPACE
-                    || $tokens[$colon - 1]['content'] !== str_repeat(' ', $this->spacesBeforeColon)))
+                    || $tokens[$colon - 1]['content'] !== $expected))
         ) {
             $error = 'There must be exactly %d space(s) between the closing parenthesis and the colon'
                 . ' when declaring a return type for a function';
@@ -78,25 +79,25 @@ class ReturnTypeSniff implements Sniff
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
-                $token = $colon - 1;
-                while ($tokens[$token]['code'] !== T_CLOSE_PARENTHESIS) {
-                    $phpcsFile->fixer->replaceToken($token, '');
-
-                    --$token;
-                }
-                if ($this->spacesBeforeColon > 0) {
-                    $phpcsFile->fixer->addContentBefore($colon, str_repeat(' ', $this->spacesBeforeColon));
+                if ($tokens[$colon - 1]['code'] === T_WHITESPACE) {
+                    $phpcsFile->fixer->replaceToken($colon - 1, $expected);
+                    if (isset($tokens[$colon - 2]) && $tokens[$colon - 2]['code'] === T_WHITESPACE) {
+                        $phpcsFile->fixer->replaceToken($colon - 2, '');
+                    }
+                } else {
+                    $phpcsFile->fixer->addContentBefore($colon, $expected);
                 }
                 $phpcsFile->fixer->endChangeset();
             }
         }
 
+        $expected = str_repeat(' ', $this->spacesAfterColon);
         // Token after colon does not match configured number of spaces.
         if (($this->spacesAfterColon === 0
                 && $tokens[$colon + 1]['code'] === T_WHITESPACE)
             || ($this->spacesAfterColon > 0
                 && ($tokens[$colon + 1]['code'] !== T_WHITESPACE
-                    || $tokens[$colon + 1]['content'] !== str_repeat(' ', $this->spacesAfterColon)))
+                    || $tokens[$colon + 1]['content'] !== $expected))
         ) {
             $error = 'There must be exactly %d space(s) between the colon and return type'
                 . ' when declaring a return type for a function';
@@ -105,21 +106,22 @@ class ReturnTypeSniff implements Sniff
 
             if ($fix) {
                 if ($tokens[$colon + 1]['code'] === T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken($colon + 1, str_repeat(' ', $this->spacesAfterColon));
+                    $phpcsFile->fixer->replaceToken($colon + 1, $expected);
                 } else {
-                    $phpcsFile->fixer->addContent($colon, ' ');
+                    $phpcsFile->fixer->addContent($colon, $expected);
                 }
             }
         }
 
         $nullable = $phpcsFile->findNext(T_NULLABLE, $colon + 1, $stackPtr);
         if ($nullable) {
+            $expected = str_repeat(' ', $this->spacesAfterNullable);
             // Token after nullable does not match configured number of spaces.
             if (($this->spacesAfterNullable === 0
                     && $tokens[$nullable + 1]['code'] === T_WHITESPACE)
                 || ($this->spacesAfterNullable > 0
                     && ($tokens[$nullable + 1]['code'] !== T_WHITESPACE
-                        || $tokens[$nullable + 1]['content'] !== str_repeat(' ', $this->spacesAfterNullable)))
+                        || $tokens[$nullable + 1]['content'] !== $expected))
             ) {
                 $error = 'There must be exactly %d space(s) between the nullable operator and return type'
                     . ' when declaring a return type for a function';
@@ -128,9 +130,9 @@ class ReturnTypeSniff implements Sniff
 
                 if ($fix) {
                     if ($tokens[$nullable + 1]['code'] === T_WHITESPACE) {
-                        $phpcsFile->fixer->replaceToken($nullable + 1, '');
+                        $phpcsFile->fixer->replaceToken($nullable + 1, $expected);
                     } else {
-                        $phpcsFile->fixer->addContent($nullable, str_repeat(' ', $this->spacesAfterNullable));
+                        $phpcsFile->fixer->addContent($nullable, $expected);
                     }
                 }
             }
