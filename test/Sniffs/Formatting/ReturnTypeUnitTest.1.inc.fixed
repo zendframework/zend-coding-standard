@@ -15,4 +15,4 @@ function d() :  ?int{}
 function e()  :bool {}
 function f()  :? bool {}
 function g()  :bool{}
-function h()  :? bool {};
+function h()  :? bool {}

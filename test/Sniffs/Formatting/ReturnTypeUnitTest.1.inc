@@ -19,4 +19,4 @@ function f(): ?  bool {}
 function g()
     :bool{}
 function h():
-    ?bool {};
+    ?bool {}

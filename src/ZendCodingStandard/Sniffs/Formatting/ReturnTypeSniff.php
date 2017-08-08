@@ -62,94 +62,48 @@ class ReturnTypeSniff implements Sniff
         $this->spacesAfterNullable = (int) $this->spacesAfterNullable;
         $tokens = $phpcsFile->getTokens();
 
+        // Check if between the closing parenthesis and return type are only allowed tokens.
+        $parenthesisCloser = $phpcsFile->findPrevious(
+            [
+                T_COLON,
+                T_NS_SEPARATOR,
+                T_NULLABLE,
+                T_STRING,
+                T_WHITESPACE,
+            ],
+            $stackPtr - 1,
+            null,
+            true
+        );
+        if ($tokens[$parenthesisCloser]['code'] !== T_CLOSE_PARENTHESIS) {
+            $error = 'Return type declaration contains invalid token %s';
+            $data = [$tokens[$parenthesisCloser]['type']];
+            $phpcsFile->addError($error, $parenthesisCloser, 'InvalidToken', $data);
+
+            return;
+        }
+
         $colon = $phpcsFile->findPrevious(T_COLON, $stackPtr - 1);
-
-        $expected = str_repeat(' ', $this->spacesBeforeColon);
-        // Token before colon does not match configured number of spaces.
-        if (($this->spacesBeforeColon === 0
-                && $tokens[$colon - 1]['code'] === T_WHITESPACE)
-            || ($this->spacesBeforeColon > 0
-                && ($tokens[$colon - 1]['code'] !== T_WHITESPACE
-                    || $tokens[$colon - 1]['content'] !== $expected))
-        ) {
-            $error = 'There must be exactly %d space(s) between the closing parenthesis and the colon'
-                . ' when declaring a return type for a function';
-            $data = [$this->spacesBeforeColon];
-            $fix = $phpcsFile->addFixableError($error, $colon - 1, 'SpaceBeforeColon', $data);
-
-            if ($fix) {
-                $phpcsFile->fixer->beginChangeset();
-                if ($tokens[$colon - 1]['code'] === T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken($colon - 1, $expected);
-                    if (isset($tokens[$colon - 2]) && $tokens[$colon - 2]['code'] === T_WHITESPACE) {
-                        $phpcsFile->fixer->replaceToken($colon - 2, '');
-                    }
-                } else {
-                    $phpcsFile->fixer->addContentBefore($colon, $expected);
-                }
-                $phpcsFile->fixer->endChangeset();
-            }
-        }
-
-        $expected = str_repeat(' ', $this->spacesAfterColon);
-        // Token after colon does not match configured number of spaces.
-        if (($this->spacesAfterColon === 0
-                && $tokens[$colon + 1]['code'] === T_WHITESPACE)
-            || ($this->spacesAfterColon > 0
-                && ($tokens[$colon + 1]['code'] !== T_WHITESPACE
-                    || $tokens[$colon + 1]['content'] !== $expected))
-        ) {
-            $error = 'There must be exactly %d space(s) between the colon and return type'
-                . ' when declaring a return type for a function';
-            $data = [$this->spacesAfterColon];
-            $fix = $phpcsFile->addFixableError($error, $colon, 'NoSpaceAfterColon', $data);
-
-            if ($fix) {
-                if ($tokens[$colon + 1]['code'] === T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken($colon + 1, $expected);
-                } else {
-                    $phpcsFile->fixer->addContent($colon, $expected);
-                }
-            }
-        }
-
         $nullable = $phpcsFile->findNext(T_NULLABLE, $colon + 1, $stackPtr);
-        if ($nullable) {
-            $expected = str_repeat(' ', $this->spacesAfterNullable);
-            // Token after nullable does not match configured number of spaces.
-            if (($this->spacesAfterNullable === 0
-                    && $tokens[$nullable + 1]['code'] === T_WHITESPACE)
-                || ($this->spacesAfterNullable > 0
-                    && ($tokens[$nullable + 1]['code'] !== T_WHITESPACE
-                        || $tokens[$nullable + 1]['content'] !== $expected))
-            ) {
-                $error = 'There must be exactly %d space(s) between the nullable operator and return type'
-                    . ' when declaring a return type for a function';
-                $data = [$this->spacesAfterNullable];
-                $fix = $phpcsFile->addFixableError($error, $nullable + 1, 'SpaceAfterNullable', $data);
 
-                if ($fix) {
-                    if ($tokens[$nullable + 1]['code'] === T_WHITESPACE) {
-                        $phpcsFile->fixer->replaceToken($nullable + 1, $expected);
-                    } else {
-                        $phpcsFile->fixer->addContent($nullable, $expected);
-                    }
-                }
-            }
+        $this->checkSpacesBeforeColon($phpcsFile, $colon);
+        $this->checkSpacesAfterColon($phpcsFile, $colon);
+        if ($nullable) {
+            $this->checkSpacesAfterNullable($phpcsFile, $nullable);
         }
 
         $first = $phpcsFile->findNext(Tokens::$emptyTokens, ($nullable ?: $colon) + 1, null, true);
         $end = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], $stackPtr + 1);
         $last = $phpcsFile->findPrevious(Tokens::$emptyTokens, $end - 1, null, true);
 
-        $invalid = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR, T_RETURN_TYPE], $first, $last + 1, true);
-        if ($invalid) {
+        $space = $phpcsFile->findNext(T_WHITESPACE, $first, $last + 1);
+        if ($space) {
             $error = 'Return type declaration contains invalid token %s';
-            $data = [$tokens[$invalid]['type']];
-            $fix = $phpcsFile->addFixableError($error, $invalid, 'InvalidToken', $data);
+            $data = [$tokens[$space]['type']];
+            $fix = $phpcsFile->addFixableError($error, $space, 'SpaceInReturnType', $data);
 
             if ($fix) {
-                $phpcsFile->fixer->replaceToken($invalid, '');
+                $phpcsFile->fixer->replaceToken($space, '');
             }
 
             return;
@@ -170,6 +124,136 @@ class ReturnTypeSniff implements Sniff
 
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr, strtolower($returnType));
+            }
+        }
+    }
+
+    /**
+     * Check if token before colon match configured number of spaces.
+     *
+     * @param File $phpcsFile
+     * @param int $colon
+     * @return void
+     */
+    private function checkSpacesBeforeColon(File $phpcsFile, $colon)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // The whitespace before colon is not expected and it is not present.
+        if ($this->spacesBeforeColon === 0
+            && $tokens[$colon - 1]['code'] !== T_WHITESPACE
+        ) {
+            return;
+        }
+
+        $expected = str_repeat(' ', $this->spacesBeforeColon);
+
+        // Previous token contains expected number of spaces,
+        // and before whitespace there is close parenthesis token.
+        if ($this->spacesBeforeColon > 0
+            && $tokens[$colon - 1]['content'] === $expected
+            && $tokens[$colon - 2]['code'] === T_CLOSE_PARENTHESIS
+        ) {
+            return;
+        }
+
+        $error = 'There must be exactly %d space(s) between the closing parenthesis and the colon'
+            . ' when declaring a return type for a function';
+        $data = [$this->spacesBeforeColon];
+        $fix = $phpcsFile->addFixableError($error, $colon - 1, 'SpacesBeforeColon', $data);
+
+        if ($fix) {
+            $phpcsFile->fixer->beginChangeset();
+            if ($tokens[$colon - 1]['code'] === T_WHITESPACE) {
+                $phpcsFile->fixer->replaceToken($colon - 1, $expected);
+                if (isset($tokens[$colon - 2]) && $tokens[$colon - 2]['code'] === T_WHITESPACE) {
+                    $phpcsFile->fixer->replaceToken($colon - 2, '');
+                }
+            } else {
+                $phpcsFile->fixer->addContentBefore($colon, $expected);
+            }
+            $phpcsFile->fixer->endChangeset();
+        }
+    }
+
+    /**
+     * Check if token after colon match configured number of spaces.
+     *
+     * @param File $phpcsFile
+     * @param int $colon
+     * @return void
+     */
+    private function checkSpacesAfterColon(File $phpcsFile, $colon)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // The whitespace after colon is not expected and it is not present.
+        if ($this->spacesAfterColon === 0
+            && $tokens[$colon + 1]['code'] !== T_WHITESPACE
+        ) {
+            return;
+        }
+
+        $expected = str_repeat(' ', $this->spacesAfterColon);
+
+        // Next token contains expected number of spaces.
+        if ($this->spacesAfterColon > 0
+            && $tokens[$colon + 1]['content'] === $expected
+        ) {
+            return;
+        }
+
+        $error = 'There must be exactly %d space(s) between the colon and return type'
+            . ' when declaring a return type for a function';
+        $data = [$this->spacesAfterColon];
+        $fix = $phpcsFile->addFixableError($error, $colon, 'SpacesAfterColon', $data);
+
+        if ($fix) {
+            if ($tokens[$colon + 1]['code'] === T_WHITESPACE) {
+                $phpcsFile->fixer->replaceToken($colon + 1, $expected);
+            } else {
+                $phpcsFile->fixer->addContent($colon, $expected);
+            }
+        }
+    }
+
+    /**
+     * Checks if token after nullable operator match configured number of spaces.
+     *
+     * @param File $phpcsFile
+     * @param int $nullable
+     * @return void
+     */
+    private function checkSpacesAfterNullable(File $phpcsFile, $nullable)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // The whitespace after nullable operator is not expected and it is not present.
+        if ($this->spacesAfterNullable === 0
+            && $tokens[$nullable + 1]['code'] !== T_WHITESPACE
+        ) {
+            return;
+        }
+
+        $expected = str_repeat(' ', $this->spacesAfterNullable);
+
+        // Next token contains expected number of spaces.
+        if ($this->spacesAfterNullable > 0
+            && $tokens[$nullable + 1]['content'] === $expected
+        ) {
+            return;
+        }
+
+        $error = 'There must be exactly %d space(s) between the nullable operator and return type'
+            . ' when declaring a return type for a function';
+        $data = [$this->spacesAfterNullable];
+        $fix = $phpcsFile->addFixableError($error, $nullable + 1, 'SpacesAfterNullable', $data);
+
+        if ($fix) {
+            if ($tokens[$nullable + 1]['code'] === T_WHITESPACE) {
+                $phpcsFile->fixer->replaceToken($nullable + 1, $expected);
+            } else {
+                $phpcsFile->fixer->addContent($nullable, $expected);
             }
         }
     }
