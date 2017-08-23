@@ -83,3 +83,15 @@ interface MyInterface
     public function y($a, $b, $c) : \My\TestClass;
     public function z():? \ReturnType \MyType;
 }
+
+class NonFixable
+{
+    public function a() // comment
+    : int {}
+
+    public function b() /* comment */ : int {}
+
+    public function c(): // comment
+    int {}
+    public function d(): /* comment */ int {}
+}

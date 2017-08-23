@@ -53,6 +53,10 @@ class ReturnTypeUnitTest extends TestCase
             81 => 1,
             83 => 1,
             84 => 3,
+            89 => 1,
+            92 => 1,
+            94 => 1,
+            96 => 1,
         ];
     }
 
