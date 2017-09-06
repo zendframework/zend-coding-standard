@@ -1,0 +1,9 @@
+<?php
+
+namespace MyNamespace;
+
+use const E_NOTICE;
+use const E_WARNING;
+
+$a = E_NOTICE;
+$b = E_WARNING;
