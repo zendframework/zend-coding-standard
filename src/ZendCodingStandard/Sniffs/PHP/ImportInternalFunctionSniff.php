@@ -48,7 +48,7 @@ class ImportInternalFunctionSniff implements Sniff
     /**
      * @var array<string, string> Array of imported function in current namespace.
      */
-    private $importedFunction;
+    private $importedFunctions;
 
     /**
      * @var null|int Last use statement position.
@@ -82,7 +82,7 @@ class ImportInternalFunctionSniff implements Sniff
         $namespace = $this->getNamespace($phpcsFile, $stackPtr);
         if ($this->currentNamespace !== $namespace) {
             $this->currentNamespace = $namespace;
-            $this->importedFunction = $this->getImportedFunctions($phpcsFile, $stackPtr);
+            $this->importedFunctions = $this->getImportedFunctions($phpcsFile, $stackPtr);
         }
 
         $tokens = $phpcsFile->getTokens();
@@ -115,8 +115,8 @@ class ImportInternalFunctionSniff implements Sniff
 
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
         if ($tokens[$prev]['code'] === T_NS_SEPARATOR) {
-            if (isset($this->importedFunction[$content])) {
-                if (strtolower($this->importedFunction[$content]['fqn']) === $content) {
+            if (isset($this->importedFunctions[$content])) {
+                if (strtolower($this->importedFunctions[$content]['fqn']) === $content) {
                     $error = 'FQN for PHP internal function "%s" is not needed here, function is already imported';
                     $data = [
                         $content,
@@ -142,7 +142,7 @@ class ImportInternalFunctionSniff implements Sniff
                 }
             }
         } else {
-            if (! isset($this->importedFunction[$content])) {
+            if (! isset($this->importedFunctions[$content])) {
                 $error = 'PHP internal function "%s" must be imported';
                 $data = [
                     $content,
@@ -257,7 +257,7 @@ class ImportInternalFunctionSniff implements Sniff
             $phpcsFile->fixer->addNewline($ptr);
         }
 
-        $this->importedFunction[$functionName] = [
+        $this->importedFunctions[$functionName] = [
             'name' => $functionName,
             'fqn'  => $functionName,
         ];
