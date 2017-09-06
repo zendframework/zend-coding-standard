@@ -137,9 +137,7 @@ class ScopeIndentSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OPEN_TAG,
-        ];
+        return [T_OPEN_TAG];
     }
 
     /**
