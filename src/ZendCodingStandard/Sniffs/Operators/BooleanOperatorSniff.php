@@ -5,6 +5,8 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use const T_WHITESPACE;
+
 class BooleanOperatorSniff implements Sniff
 {
     /**

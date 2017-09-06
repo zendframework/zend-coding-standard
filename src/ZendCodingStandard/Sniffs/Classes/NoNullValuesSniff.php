@@ -7,6 +7,10 @@ use PHP_CodeSniffer\Util\Tokens;
 
 use function in_array;
 
+use const T_EQUAL;
+use const T_NULL;
+use const T_WHITESPACE;
+
 class NoNullValuesSniff extends AbstractVariableSniff
 {
     /**

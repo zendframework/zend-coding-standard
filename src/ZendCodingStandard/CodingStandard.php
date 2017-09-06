@@ -10,6 +10,11 @@ use function sprintf;
 use function strpos;
 use function strtolower;
 
+use const T_ANON_CLASS;
+use const T_CLASS;
+use const T_OPEN_PARENTHESIS;
+use const T_TRAIT;
+
 class CodingStandard
 {
     /**

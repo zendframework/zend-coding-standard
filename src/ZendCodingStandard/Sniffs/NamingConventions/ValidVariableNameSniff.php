@@ -14,6 +14,9 @@ use PHP_CodeSniffer\Util\Common;
 use function in_array;
 use function ltrim;
 
+use const T_DOUBLE_COLON;
+use const T_WHITESPACE;
+
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
     const CODE_CAMEL_CAPS = 'NotCamelCaps';

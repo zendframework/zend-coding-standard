@@ -8,6 +8,10 @@ use PHP_CodeSniffer\Util\Tokens;
 use function preg_replace;
 use function strtolower;
 
+use const T_BOOLEAN_NOT;
+use const T_UNSET_CAST;
+use const T_WHITESPACE;
+
 class TypeCastingSniff implements Sniff
 {
     private $castMap = [

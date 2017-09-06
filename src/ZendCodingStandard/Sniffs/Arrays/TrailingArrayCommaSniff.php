@@ -9,6 +9,18 @@ namespace ZendCodingStandard\Sniffs\Arrays;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use const T_COMMA;
+use const T_COMMENT;
+use const T_DOC_COMMENT;
+use const T_DOC_COMMENT_CLOSE_TAG;
+use const T_DOC_COMMENT_OPEN_TAG;
+use const T_DOC_COMMENT_STAR;
+use const T_DOC_COMMENT_STRING;
+use const T_DOC_COMMENT_TAG;
+use const T_DOC_COMMENT_WHITESPACE;
+use const T_OPEN_SHORT_ARRAY;
+use const T_WHITESPACE;
+
 class TrailingArrayCommaSniff implements Sniff
 {
     /**

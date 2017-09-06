@@ -26,6 +26,9 @@ use function strrpos;
 use function substr;
 use function trim;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
+
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**

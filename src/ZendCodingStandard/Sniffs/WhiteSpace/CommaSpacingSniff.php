@@ -22,6 +22,12 @@ use PHP_CodeSniffer\Util\Tokens;
 use function array_merge;
 use function strlen;
 
+use const T_CLOSE_SHORT_ARRAY;
+use const T_COMMA;
+use const T_DOUBLE_ARROW;
+use const T_OPEN_SHORT_ARRAY;
+use const T_WHITESPACE;
+
 class CommaSpacingSniff implements Sniff
 {
     /**

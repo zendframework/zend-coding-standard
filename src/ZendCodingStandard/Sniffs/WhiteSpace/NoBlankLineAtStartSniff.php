@@ -4,6 +4,13 @@ namespace ZendCodingStandard\Sniffs\WhiteSpace;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use const T_CLASS;
+use const T_CLOSURE;
+use const T_FUNCTION;
+use const T_INTERFACE;
+use const T_TRAIT;
+use const T_WHITESPACE;
+
 class NoBlankLineAtStartSniff implements Sniff
 {
     /**

@@ -27,6 +27,18 @@ use function strpos;
 use function strtolower;
 use function trim;
 
+use const T_AS;
+use const T_DOC_COMMENT_STRING;
+use const T_DOC_COMMENT_TAG;
+use const T_NAMESPACE;
+use const T_NS_SEPARATOR;
+use const T_OBJECT_OPERATOR;
+use const T_RETURN_TYPE;
+use const T_SEMICOLON;
+use const T_STRING;
+use const T_USE;
+use const T_WHITESPACE;
+
 class UnusedUseStatementSniff implements Sniff
 {
     /**

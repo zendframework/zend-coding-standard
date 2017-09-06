@@ -15,6 +15,12 @@ use function strtolower;
 use function trim;
 use function uasort;
 
+use const T_NAMESPACE;
+use const T_NS_SEPARATOR;
+use const T_SEMICOLON;
+use const T_STRING;
+use const T_USE;
+
 class AlphabeticallySortedUsesSniff implements Sniff
 {
     /**

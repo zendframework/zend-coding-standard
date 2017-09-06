@@ -8,6 +8,12 @@ use function str_repeat;
 use function strlen;
 use function strpos;
 
+use const T_CLOSE_SHORT_ARRAY;
+use const T_COMMENT;
+use const T_DOUBLE_ARROW;
+use const T_OPEN_SHORT_ARRAY;
+use const T_WHITESPACE;
+
 class FormatSniff implements Sniff
 {
     /**

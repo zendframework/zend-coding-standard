@@ -7,6 +7,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 use function in_array;
 
+use const T_BITWISE_AND;
+use const T_COMMA;
+use const T_OPEN_PARENTHESIS;
+use const T_OPEN_SHORT_ARRAY;
+use const T_WHITESPACE;
+
 class ReferenceSniff implements Sniff
 {
     /**

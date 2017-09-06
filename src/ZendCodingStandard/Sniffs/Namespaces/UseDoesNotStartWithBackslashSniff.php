@@ -8,6 +8,11 @@ use ZendCodingStandard\CodingStandard;
 
 use function strtolower;
 
+use const T_NS_SEPARATOR;
+use const T_STRING;
+use const T_USE;
+use const T_WHITESPACE;
+
 class UseDoesNotStartWithBackslashSniff implements Sniff
 {
     /**

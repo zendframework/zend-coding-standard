@@ -8,6 +8,11 @@ use PHP_CodeSniffer\Util\Tokens;
 use function in_array;
 use function strtolower;
 
+use const T_ANON_CLASS;
+use const T_CLOSE_CURLY_BRACKET;
+use const T_CLOSURE;
+use const T_SEMICOLON;
+
 class RedundantSemicolonSniff implements Sniff
 {
     /**

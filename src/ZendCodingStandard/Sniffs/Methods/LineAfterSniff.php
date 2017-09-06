@@ -6,6 +6,15 @@ use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 use function max;
 
+use const T_ANON_CLASS;
+use const T_CLASS;
+use const T_CLOSE_CURLY_BRACKET;
+use const T_FUNCTION;
+use const T_INTERFACE;
+use const T_SEMICOLON;
+use const T_TRAIT;
+use const T_WHITESPACE;
+
 class LineAfterSniff extends AbstractScopeSniff
 {
     /**

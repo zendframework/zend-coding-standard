@@ -12,6 +12,16 @@ use function str_replace;
 use function strcasecmp;
 use function usort;
 
+use const T_ANON_CLASS;
+use const T_CLASS;
+use const T_CLOSE_CURLY_BRACKET;
+use const T_COMMA;
+use const T_OPEN_CURLY_BRACKET;
+use const T_SEMICOLON;
+use const T_TRAIT;
+use const T_USE;
+use const T_WHITESPACE;
+
 class TraitUsageSniff implements Sniff
 {
     /**

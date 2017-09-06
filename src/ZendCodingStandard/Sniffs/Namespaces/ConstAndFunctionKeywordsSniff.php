@@ -8,6 +8,9 @@ use ZendCodingStandard\CodingStandard;
 
 use function strtolower;
 
+use const T_USE;
+use const T_WHITESPACE;
+
 class ConstAndFunctionKeywordsSniff implements Sniff
 {
     /**

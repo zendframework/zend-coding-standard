@@ -11,6 +11,18 @@ use function strlen;
 use function strpos;
 use function trim;
 
+use const T_DOC_COMMENT_CLOSE_TAG;
+use const T_DOC_COMMENT_OPEN_TAG;
+use const T_DOC_COMMENT_STAR;
+use const T_DOC_COMMENT_STRING;
+use const T_DOC_COMMENT_TAG;
+use const T_DOC_COMMENT_WHITESPACE;
+use const T_NAMESPACE;
+use const T_OPEN_CURLY_BRACKET;
+use const T_OPEN_TAG;
+use const T_USE;
+use const T_WHITESPACE;
+
 class DocCommentSniff implements Sniff
 {
     /**

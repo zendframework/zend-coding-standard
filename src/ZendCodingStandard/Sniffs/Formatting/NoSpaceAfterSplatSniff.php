@@ -4,6 +4,9 @@ namespace ZendCodingStandard\Sniffs\Formatting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use const T_ELLIPSIS;
+use const T_WHITESPACE;
+
 class NoSpaceAfterSplatSniff implements Sniff
 {
     /**

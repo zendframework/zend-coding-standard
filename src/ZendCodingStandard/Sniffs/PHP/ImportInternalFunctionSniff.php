@@ -13,6 +13,21 @@ use function sprintf;
 use function strtolower;
 use function trim;
 
+use const T_AS;
+use const T_BITWISE_AND;
+use const T_DOUBLE_COLON;
+use const T_FUNCTION;
+use const T_NAMESPACE;
+use const T_NEW;
+use const T_NS_SEPARATOR;
+use const T_OBJECT_OPERATOR;
+use const T_OPEN_PARENTHESIS;
+use const T_OPEN_TAG;
+use const T_SEMICOLON;
+use const T_STRING;
+use const T_USE;
+use const T_WHITESPACE;
+
 class ImportInternalFunctionSniff implements Sniff
 {
     /**

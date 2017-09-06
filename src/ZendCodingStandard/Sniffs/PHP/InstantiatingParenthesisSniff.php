@@ -7,6 +7,15 @@ use PHP_CodeSniffer\Util\Tokens;
 
 use function array_merge;
 
+use const T_ANON_CLASS;
+use const T_NEW;
+use const T_NS_SEPARATOR;
+use const T_OPEN_PARENTHESIS;
+use const T_SELF;
+use const T_STATIC;
+use const T_STRING;
+use const T_VARIABLE;
+
 class InstantiatingParenthesisSniff implements Sniff
 {
     /**

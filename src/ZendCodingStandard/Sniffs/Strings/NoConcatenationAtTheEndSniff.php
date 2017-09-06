@@ -4,6 +4,9 @@ namespace ZendCodingStandard\Sniffs\Strings;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use const T_STRING_CONCAT;
+use const T_WHITESPACE;
+
 class NoConcatenationAtTheEndSniff implements Sniff
 {
     /**

@@ -12,6 +12,16 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use ZendCodingStandard\CodingStandard;
 
+use const T_COMMENT;
+use const T_DOC_COMMENT_CLOSE_TAG;
+use const T_DOC_COMMENT_STRING;
+use const T_PRIVATE;
+use const T_PROTECTED;
+use const T_PUBLIC;
+use const T_STATIC;
+use const T_VAR;
+use const T_WHITESPACE;
+
 class VariableCommentSniff extends AbstractVariableSniff
 {
     /**

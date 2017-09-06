@@ -4,6 +4,10 @@ namespace ZendCodingStandard\Sniffs\WhiteSpace;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use const T_COMMENT;
+use const T_OPEN_TAG;
+use const T_WHITESPACE;
+
 class BlankLineSniff implements Sniff
 {
     /**

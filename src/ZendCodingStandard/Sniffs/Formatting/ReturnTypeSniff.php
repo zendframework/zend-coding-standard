@@ -10,6 +10,16 @@ use function str_repeat;
 use function strtolower;
 use function trim;
 
+use const T_CLOSE_PARENTHESIS;
+use const T_COLON;
+use const T_NS_SEPARATOR;
+use const T_NULLABLE;
+use const T_OPEN_CURLY_BRACKET;
+use const T_RETURN_TYPE;
+use const T_SEMICOLON;
+use const T_STRING;
+use const T_WHITESPACE;
+
 class ReturnTypeSniff implements Sniff
 {
     /**

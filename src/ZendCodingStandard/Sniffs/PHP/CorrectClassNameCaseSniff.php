@@ -23,6 +23,31 @@ use function strtolower;
 use function substr;
 use function trim;
 
+use const T_AS;
+use const T_CLOSURE;
+use const T_COLON;
+use const T_COMMA;
+use const T_DOC_COMMENT_STRING;
+use const T_DOC_COMMENT_TAG;
+use const T_DOC_COMMENT_WHITESPACE;
+use const T_DOUBLE_COLON;
+use const T_EXTENDS;
+use const T_FUNCTION;
+use const T_IMPLEMENTS;
+use const T_NAMESPACE;
+use const T_NEW;
+use const T_NS_SEPARATOR;
+use const T_NULLABLE;
+use const T_OPEN_PARENTHESIS;
+use const T_PARENT;
+use const T_RETURN_TYPE;
+use const T_SELF;
+use const T_STATIC;
+use const T_STRING;
+use const T_USE;
+use const T_VARIABLE;
+use const T_WHITESPACE;
+
 /**
  * TODO: Better results for this sniff we will have if the parsed class is imported.
  * We can "include" the file on process, but probably it is not the best solution.

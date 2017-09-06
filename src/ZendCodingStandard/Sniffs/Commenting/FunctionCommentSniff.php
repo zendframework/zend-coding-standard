@@ -22,6 +22,20 @@ use function strtoupper;
 use function substr;
 use function trim;
 
+use const PHP_VERSION_ID;
+use const T_CLOSURE;
+use const T_DOC_COMMENT_CLOSE_TAG;
+use const T_DOC_COMMENT_OPEN_TAG;
+use const T_DOC_COMMENT_STAR;
+use const T_DOC_COMMENT_STRING;
+use const T_DOC_COMMENT_WHITESPACE;
+use const T_FUNCTION;
+use const T_RETURN;
+use const T_SEMICOLON;
+use const T_STRING;
+use const T_WHITESPACE;
+use const T_YIELD;
+
 class FunctionCommentSniff extends PEARFunctionCommentSniff
 {
     /**

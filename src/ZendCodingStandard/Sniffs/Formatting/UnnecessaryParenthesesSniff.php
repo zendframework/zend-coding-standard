@@ -7,6 +7,47 @@ use PHP_CodeSniffer\Util\Tokens;
 
 use function in_array;
 
+use const T_ANON_CLASS;
+use const T_BITWISE_AND;
+use const T_BITWISE_OR;
+use const T_BITWISE_XOR;
+use const T_BOOLEAN_NOT;
+use const T_CLONE;
+use const T_CLOSE_CURLY_BRACKET;
+use const T_CLOSE_PARENTHESIS;
+use const T_CLOSE_SHORT_ARRAY;
+use const T_CLOSE_SQUARE_BRACKET;
+use const T_CLOSE_TAG;
+use const T_COALESCE;
+use const T_COLON;
+use const T_COMMA;
+use const T_DOUBLE_ARROW;
+use const T_ECHO;
+use const T_EMPTY;
+use const T_EVAL;
+use const T_EXIT;
+use const T_INCLUDE;
+use const T_INCLUDE_ONCE;
+use const T_INLINE_ELSE;
+use const T_INLINE_THEN;
+use const T_INSTANCEOF;
+use const T_ISSET;
+use const T_LIST;
+use const T_OBJECT_OPERATOR;
+use const T_OPEN_PARENTHESIS;
+use const T_OPEN_TAG;
+use const T_REQUIRE;
+use const T_REQUIRE_ONCE;
+use const T_RETURN;
+use const T_SELF;
+use const T_SEMICOLON;
+use const T_STATIC;
+use const T_STRING;
+use const T_STRING_CONCAT;
+use const T_UNSET;
+use const T_USE;
+use const T_VARIABLE;
+
 class UnnecessaryParenthesesSniff implements Sniff
 {
     private $parenthesesAllowedTokens = [

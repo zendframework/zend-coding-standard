@@ -5,6 +5,10 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use const T_INLINE_ELSE;
+use const T_INLINE_THEN;
+use const T_WHITESPACE;
+
 class TernaryOperatorSniff implements Sniff
 {
     /**
