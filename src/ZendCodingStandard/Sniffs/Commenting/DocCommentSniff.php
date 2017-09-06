@@ -4,11 +4,18 @@ namespace ZendCodingStandard\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+use function array_filter;
+use function implode;
 use function in_array;
+use function ltrim;
+use function max;
 use function preg_match;
+use function preg_split;
+use function round;
 use function str_repeat;
 use function strlen;
 use function strpos;
+use function strtolower;
 use function trim;
 
 use const T_DOC_COMMENT_CLOSE_TAG;
@@ -25,6 +32,15 @@ use const T_WHITESPACE;
 
 class DocCommentSniff implements Sniff
 {
+    public $indent = 4;
+
+    private $tagWithType = [
+        '@var',
+        '@param',
+        '@return',
+        '@throws',
+    ];
+
     /**
      * @inheritDoc
      */
@@ -49,6 +65,7 @@ class DocCommentSniff implements Sniff
         $this->checkBeforeOpen($phpcsFile, $commentStart);
         $this->checkAfterClose($phpcsFile, $commentStart, $commentEnd);
         $this->checkCommentIndents($phpcsFile, $commentStart, $commentEnd);
+        $this->checkTagsSpaces($phpcsFile, $commentStart);
 
         // Doc block comment in one line.
         if ($tokens[$commentStart]['line'] == $tokens[$commentEnd]['line']) {
@@ -334,6 +351,7 @@ class DocCommentSniff implements Sniff
         } elseif ($tokens[$commentStart + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
             // This case is currently not supported.
             // Comment /**@var null $name; */ is not recognized as doc-block comment.
+            // todo: fix is already marged to PHP_CodeSniffer 3.1.0, need to be changed after release 3.1.0
             $error = 'Expected 1 space after opening tag of one line doc block comment.';
             $fix = $phpcsFile->addFixableError($error, $commentStart, 'InvalidSpacing');
 
@@ -358,7 +376,7 @@ class DocCommentSniff implements Sniff
      * Checks if there is one space after star in multiline doc comment.
      * More than one space is allowed, unless the line contains tag.
      *
-     * TODO: needs to check with doctrine annotations
+     * @todo: needs to check with doctrine annotations
      *
      * @param File $phpcsFile
      * @param int $commentStart
@@ -393,6 +411,64 @@ class DocCommentSniff implements Sniff
 
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($next + 1, ' ');
+                    }
+                } elseif ($tokens[$next + 2]['code'] !== T_DOC_COMMENT_TAG
+                    && $tokens[$next + 2]['code'] !== T_DOC_COMMENT_CLOSE_TAG
+                ) {
+                    $prev = $phpcsFile->findPrevious(
+                        [
+                            T_DOC_COMMENT_WHITESPACE,
+                            T_DOC_COMMENT_STRING,
+                            T_DOC_COMMENT_STAR,
+                        ],
+                        $next - 1,
+                        null,
+                        true
+                    );
+
+                    $trimmed = ltrim($tokens[$next + 1]['content']);
+                    $spaces = strlen($tokens[$next + 1]['content']) - strlen($trimmed);
+                    if ($tokens[$prev]['code'] === T_DOC_COMMENT_TAG
+                        && ($spaces < $this->indent + 1
+                            || (($spaces - 1) % $this->indent) !== 0
+                            || ($spaces > $this->indent + 1
+                                && $tokens[$prev]['line'] === $tokens[$next + 1]['line'] - 1))
+                    ) {
+                        $prev2 = $phpcsFile->findPrevious(
+                            [
+                                T_DOC_COMMENT_WHITESPACE,
+                                T_DOC_COMMENT_STAR,
+                            ],
+                            $next - 1,
+                            $prev,
+                            true
+                        );
+
+                        if ($tokens[$prev2]['line'] === $tokens[$next]['line'] - 1) {
+                            if ($tokens[$prev]['line'] === $tokens[$next + 1]['line'] - 1) {
+                                $expectedSpaces = 1 + $this->indent;
+                            } else {
+                                $expectedSpaces = 1 + max(
+                                    round(($spaces - 1) / $this->indent) * $this->indent,
+                                    $this->indent
+                                );
+                            }
+                            $error = 'Invalid indent before description; expected %d spaces, found %d';
+                            $data = [
+                                $expectedSpaces,
+                                $spaces,
+                            ];
+                            $fix = $phpcsFile->addFixableError($error, $next + 1, 'InvalidDescriptionIndent', $data);
+
+                            if ($fix) {
+                                $phpcsFile->fixer->replaceToken($next + 1, str_repeat(' ', $expectedSpaces) . $trimmed);
+                            }
+                        } else {
+                            $error = 'Additional description is not allowed after tag.'
+                                . ' Please move description to the top of the PHPDocs'
+                                . ' or remove empty line above if it is description for the tag.';
+                            $phpcsFile->addError($error, $next + 1, 'AdditionalDescription');
+                        }
                     }
                 }
             }
@@ -640,6 +716,104 @@ class DocCommentSniff implements Sniff
                 $phpcsFile->fixer->addContentBefore($firstOnLine, '*');
                 $phpcsFile->fixer->endChangeset();
             }
+        }
+    }
+
+    /**
+     * @param File $phpcsFile
+     * @param int $commentStart
+     * @return void
+     */
+    private function checkTagsSpaces(File $phpcsFile, $commentStart)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // Return when there is no tags in the comment.
+        if (empty($tokens[$commentStart]['comment_tags'])) {
+            return;
+        }
+
+        // Return when comment contains one of the following tags.
+        $skipIfContains = ['@copyright', '@license'];
+        foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
+            if (in_array(strtolower($tokens[$tag]['content']), $skipIfContains, true)) {
+                return;
+            }
+        }
+
+        foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
+            // Continue if next token is not a whitespace.
+            if ($tokens[$tag + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
+                continue;
+            }
+
+            // Continue if next token contains new line.
+            if (strpos($tokens[$tag + 1]['content'], $phpcsFile->eolChar) !== false) {
+                continue;
+            }
+
+            // Continue if after next token the comment ends.
+            // It means end of the comment is in the same line as the tag.
+            if ($tokens[$tag + 2]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
+                continue;
+            }
+
+            // Check spaces after type for some tags.
+            if (in_array(strtolower($tokens[$tag]['content']), $this->tagWithType, true)
+                && $tokens[$tag + 2]['code'] === T_DOC_COMMENT_STRING
+            ) {
+                $this->checkSpacesAfterTag($phpcsFile, $tag);
+            }
+
+            // Continue if next token is one space.
+            if ($tokens[$tag + 1]['content'] === ' ') {
+                continue;
+            }
+
+            $error = 'There must be exactly one space after PHPDoc tag.';
+            $fix = $phpcsFile->addFixableError($error, $tag + 1, 'SpaceAfterTag');
+
+            if ($fix) {
+                $phpcsFile->fixer->replaceToken($tag + 1, ' ');
+            }
+        }
+    }
+
+    /**
+     * @param File $phpcsFile
+     * @param int $tag
+     * @return void
+     */
+    private function checkSpacesAfterTag(File $phpcsFile, $tag)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $content = $tokens[$tag + 2]['content'];
+        $expected = implode(' ', array_filter(preg_split('/\s+/', $content)));
+
+        if ($tokens[$tag + 3]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
+            // In case when spacing between type and variable is correct.
+            // Space before closing comment tag are covered in another case.
+            if (trim($content) === $expected) {
+                return;
+            }
+
+            $expected .= ' ';
+        }
+
+        if ($content === $expected) {
+            return;
+        }
+
+        $error = 'Invalid spacing in comment; expected: "%s", found "%s"';
+        $data = [
+            $expected,
+            $content,
+        ];
+        $fix = $phpcsFile->addFixableError($error, $tag + 2, 'TagDescriptionSpacing', $data);
+
+        if ($fix) {
+            $phpcsFile->fixer->replaceToken($tag + 2, $expected);
         }
     }
 }

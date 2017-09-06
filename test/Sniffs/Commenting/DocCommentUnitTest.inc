@@ -134,4 +134,56 @@ class Foo
          */
         $x = 'something';
     }
+
+    /** @var  string */
+    private $b = 'xyz';
+
+    /**
+     * @param  int    $a
+     * @param  string $b   Description.
+     * @return void
+     *   @throws  \Exception
+     * @throws  \RuntimeException  When...
+     */
+    public function test6($a, $b)
+    {
+        /** @var  string  $foo */
+        $foo = 'foo';
+    }
+
+    /**
+     * Here is method description.
+     * It could be very long.
+     * There should be one empty line before params.
+     * @param int $a   Another description.
+     * @param bool $b
+     * @param string $def This is very long
+     * description of the param
+     * ... continues here
+     * @return array This is
+     *description, of the returned value.
+     *
+     * @throws \Exception
+     *
+     * @throws \RuntimeException
+     *
+     * Here is an extra comment. It is not allowed to be here.
+     */
+    public function test7($a, $b, $def)
+    {
+        return [$a, $b, $def];
+    }
+
+    /**
+     * @todo: comment
+     *        next line
+     *        another one
+     *
+     * @return void The description
+     *         extra line here
+     * @dataProvider   myDataProvider
+     * @noWhitespaceAfterTag*/
+    public function test8()
+    {
+    }
 }
