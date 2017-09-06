@@ -372,8 +372,8 @@ class DocCommentSniff implements Sniff
         $next = $commentStart;
         $search = [T_DOC_COMMENT_STAR, T_DOC_COMMENT_CLOSE_TAG];
         while ($next = $phpcsFile->findNext($search, $next + 1, $commentEnd + 1)) {
-            if ($tokens[$next]['code'] === T_DOC_COMMENT_STAR
-                && $tokens[$next + 1]['code'] !== T_DOC_COMMENT_WHITESPACE
+            if (($tokens[$next + 1]['code'] !== T_DOC_COMMENT_WHITESPACE
+                    && $tokens[$next]['code'] === T_DOC_COMMENT_STAR)
                 || ($tokens[$next + 1]['code'] === T_DOC_COMMENT_WHITESPACE
                     && strpos($tokens[$next + 1]['content'], $phpcsFile->eolChar) === false)
             ) {
