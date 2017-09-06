@@ -11,9 +11,9 @@
 (int)$var;
 (bool)$var;
 (string)$var;
-(double)$var;
 (float)$var;
-(real)$var;
+(float)$var;
+(float)$var;
 (unset)$var;
 
 (bool)  $var;
@@ -23,9 +23,9 @@
 (int)      $var;
 (bool)     $var;
 (string)   $var;
-(double)   $var;
+(float)   $var;
 (float)    $var;
-(real)     $var;
+(float)     $var;
 (unset)    $var;
 
 (bool) $var;
@@ -43,7 +43,7 @@
 (int)      $var;
 (bool)     $var;
 (string)   $var;
-(double)   $var;
+(float)   $var;
 (float)    $var;
-(real)     $var;
+(float)     $var;
 (UNSET)    $var;
