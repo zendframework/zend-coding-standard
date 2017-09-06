@@ -93,6 +93,11 @@ class ImportInternalFunctionSniff implements Sniff
             return;
         }
 
+        $content = strtolower($tokens[$stackPtr]['content']);
+        if (! isset($this->builtInFunctions[$content])) {
+            return;
+        }
+
         $prev = $phpcsFile->findPrevious(
             Tokens::$emptyTokens + [T_BITWISE_AND => T_BITWISE_AND, T_NS_SEPARATOR => T_NS_SEPARATOR],
             $stackPtr - 1,
@@ -105,11 +110,6 @@ class ImportInternalFunctionSniff implements Sniff
             || $tokens[$prev]['code'] === T_DOUBLE_COLON
             || $tokens[$prev]['code'] === T_OBJECT_OPERATOR
         ) {
-            return;
-        }
-
-        $content = strtolower($tokens[$stackPtr]['content']);
-        if (! isset($this->builtInFunctions[$content])) {
             return;
         }
 
