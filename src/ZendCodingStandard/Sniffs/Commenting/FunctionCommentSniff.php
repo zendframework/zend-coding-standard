@@ -23,6 +23,7 @@ use function substr;
 use function trim;
 
 use const PHP_VERSION_ID;
+use const T_ANON_CLASS;
 use const T_CLOSURE;
 use const T_DOC_COMMENT_CLOSE_TAG;
 use const T_DOC_COMMENT_OPEN_TAG;
@@ -35,6 +36,7 @@ use const T_SEMICOLON;
 use const T_STRING;
 use const T_WHITESPACE;
 use const T_YIELD;
+use const T_YIELD_FROM;
 
 class FunctionCommentSniff extends PEARFunctionCommentSniff
 {
@@ -105,8 +107,16 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 $error = 'Return type missing for @return tag in function comment';
                 $phpcsFile->addError($error, $return, 'MissingReturnType');
             } else {
+                // Support both a return type and a description.
+                preg_match('/^((?:\|?(?:array\([^\)]*\)|[\\\\a-z0-9\[\]]+))*)( .*)?/i', $content, $returnParts);
+                if (! isset($returnParts[1])) {
+                    return;
+                }
+
+                $returnType = $returnParts[1];
+
                 // Check return type (can be multiple, separated by '|').
-                $typeNames = explode('|', $content);
+                $typeNames = explode('|', $returnType);
                 $suggestedNames = [];
                 foreach ($typeNames as $i => $typeName) {
                     $suggestedName = CodingStandard::suggestType($typeName);
@@ -116,23 +126,24 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 }
 
                 $suggestedType = implode('|', $suggestedNames);
-                if ($content !== $suggestedType) {
+                if ($returnType !== $suggestedType) {
                     $error = 'Expected "%s" but found "%s" for function return type';
                     $data = [
                         $suggestedType,
-                        $content,
+                        $returnType,
                     ];
                     $fix = $phpcsFile->addFixableError($error, $return, 'InvalidReturn', $data);
 
                     if ($fix) {
-                        $phpcsFile->fixer->replaceToken($return + 2, $suggestedType);
+                        $replacement = $suggestedType;
+                        if (! empty($returnParts[2])) {
+                            $replacement .= $returnParts[2];
+                        }
+
+                        $phpcsFile->fixer->replaceToken($return + 2, $replacement);
+                        unset($replacement);
                     }
                 }
-
-                // Support both a return type and a description. The return type
-                // is anything up to the first space.
-                $returnParts = explode(' ', $content, 2);
-                $returnType = $returnParts[0];
 
                 // If the return type is void, make sure there is
                 // no return statement in the function.
@@ -140,13 +151,16 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     if (isset($tokens[$stackPtr]['scope_closer'])) {
                         $endToken = $tokens[$stackPtr]['scope_closer'];
                         for ($returnToken = $stackPtr; $returnToken < $endToken; $returnToken++) {
-                            if ($tokens[$returnToken]['code'] === T_CLOSURE) {
+                            if ($tokens[$returnToken]['code'] === T_CLOSURE
+                                || $tokens[$returnToken]['code'] === T_ANON_CLASS
+                            ) {
                                 $returnToken = $tokens[$returnToken]['scope_closer'];
                                 continue;
                             }
 
                             if ($tokens[$returnToken]['code'] === T_RETURN
                                 || $tokens[$returnToken]['code'] === T_YIELD
+                                || $tokens[$returnToken]['code'] === T_YIELD_FROM
                             ) {
                                 break;
                             }
@@ -162,19 +176,28 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             }
                         }
                     }
-                } elseif ($returnType !== 'mixed') {
-                    $returnTypes = explode('|', $returnType);
-
+                } elseif ($returnType !== 'mixed' && ! in_array('void', $typeNames, true)) {
                     // If return type is not void, there needs to be a return statement
                     // somewhere in the function that returns something.
-
-                    // If "void" is not also in one of the return types.
-                    if (! in_array('void', $returnTypes)
-                        && isset($tokens[$stackPtr]['scope_closer'])
-                    ) {
+                    if (isset($tokens[$stackPtr]['scope_closer'])) {
                         $endToken = $tokens[$stackPtr]['scope_closer'];
-                        $returnToken = $phpcsFile->findNext([T_RETURN, T_YIELD], $stackPtr, $endToken);
-                        if ($returnToken === false) {
+                        for ($returnToken = $stackPtr; $returnToken < $endToken; $returnToken++) {
+                            if ($tokens[$returnToken]['code'] === T_CLOSURE
+                                || $tokens[$returnToken]['code'] === T_ANON_CLASS
+                            ) {
+                                $returnToken = $tokens[$returnToken]['scope_closer'];
+                                continue;
+                            }
+
+                            if ($tokens[$returnToken]['code'] === T_RETURN
+                                || $tokens[$returnToken]['code'] === T_YIELD
+                                || $tokens[$returnToken]['code'] === T_YIELD_FROM
+                            ) {
+                                break;
+                            }
+                        }
+
+                        if ($returnToken === $endToken) {
                             $error = 'Function return type is not void, but function has no return statement';
                             $phpcsFile->addError($error, $return, 'InvalidNoReturn');
                         } else {
@@ -254,7 +277,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
     /**
      * Checks if function comment contains @inheritDoc tag.
-     * Methods should run only once.
+     * Method should run only once for each scope.
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token
@@ -613,116 +636,101 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
             // Check the param type value.
             $typeNames = explode('|', $param['type']);
+            $suggestedTypeNames = [];
+
             foreach ($typeNames as $typeName) {
                 $suggestedName = CodingStandard::suggestType($typeName);
-                if ($typeName !== $suggestedName) {
-                    $error = 'Expected "%s" but found "%s" for parameter type';
-                    $data = [
-                        $suggestedName,
-                        $typeName,
-                    ];
-                    $fix = $phpcsFile->addFixableError($error, $param['tag'], 'IncorrectParamVarName', $data);
+                $suggestedTypeNames[] = $suggestedName;
 
-                    if ($fix) {
-                        $content = $suggestedName;
-                        $content .= str_repeat(' ', $param['type_space']);
-                        $content .= $param['var'];
-                        $content .= str_repeat(' ', $param['var_space']);
-                        if (isset($param['commentLines'][0])) {
-                            $content .= $param['commentLines'][0]['comment'];
-                        }
+                if (count($typeNames) > 1) {
+                    continue;
+                }
 
-                        $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
+                // Check type hint for array and custom type.
+                $suggestedTypeHint = '';
+                if (strpos($suggestedName, 'array') !== false || substr($suggestedName, -2) === '[]') {
+                    $suggestedTypeHint = 'array';
+                } elseif (strpos($suggestedName, 'callable') !== false) {
+                    $suggestedTypeHint = 'callable';
+                } elseif (strpos($suggestedName, 'callback') !== false) {
+                    $suggestedTypeHint = 'callable';
+                } elseif (! in_array($typeName, $this->simpleTypeHints, true)) {
+                    $suggestedTypeHint = $suggestedName;
+                }
+
+                if ($this->phpVersion >= 70000) {
+                    if ($typeName === 'string') {
+                        $suggestedTypeHint = 'string';
+                    } elseif ($typeName === 'int' || $typeName === 'integer') {
+                        $suggestedTypeHint = 'int';
+                    } elseif ($typeName === 'float') {
+                        $suggestedTypeHint = 'float';
+                    } elseif ($typeName === 'bool' || $typeName === 'boolean') {
+                        $suggestedTypeHint = 'bool';
                     }
-                } elseif (count($typeNames) === 1) {
-                    // Check type hint for array and custom type.
-                    $suggestedTypeHint = '';
-                    if (strpos($suggestedName, 'array') !== false || substr($suggestedName, -2) === '[]') {
-                        $suggestedTypeHint = 'array';
-                    } elseif (strpos($suggestedName, 'callable') !== false) {
-                        $suggestedTypeHint = 'callable';
-                    } elseif (strpos($suggestedName, 'callback') !== false) {
-                        $suggestedTypeHint = 'callable';
-                    } elseif (! in_array($typeName, $this->simpleTypeHints, true)) {
-                        $suggestedTypeHint = $suggestedName;
-                    } elseif ($this->phpVersion >= 70000) {
-                        if ($typeName === 'string') {
-                            $suggestedTypeHint = 'string';
-                        } elseif ($typeName === 'int' || $typeName === 'integer') {
-                            $suggestedTypeHint = 'int';
-                        } elseif ($typeName === 'float') {
-                            $suggestedTypeHint = 'float';
-                        } elseif ($typeName === 'bool' || $typeName === 'boolean') {
-                            $suggestedTypeHint = 'bool';
+                }
+
+                if ($suggestedTypeHint !== '' && isset($realParams[$pos])) {
+                    $typeHint = $realParams[$pos]['type_hint'];
+                    if ($typeHint === '') {
+                        $error = 'Type hint "%s" missing for %s';
+                        $data = [
+                            $suggestedTypeHint,
+                            $param['var'],
+                        ];
+
+                        $errorCode = 'TypeHintMissing';
+                        if ($suggestedTypeHint === 'string'
+                            || $suggestedTypeHint === 'int'
+                            || $suggestedTypeHint === 'float'
+                            || $suggestedTypeHint === 'bool'
+                        ) {
+                            $errorCode = 'Scalar' . $errorCode;
                         }
+
+                        $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
+                    } elseif ($typeHint !== substr($suggestedTypeHint, strlen($typeHint) * -1)) {
+                        $error = 'Expected type hint "%s"; found "%s" for %s';
+                        $data = [
+                            $suggestedTypeHint,
+                            $typeHint,
+                            $param['var'],
+                        ];
+                        $phpcsFile->addError($error, $stackPtr, 'IncorrectTypeHint', $data);
                     }
-
-                    if ($suggestedTypeHint !== '' && isset($realParams[$pos])) {
-                        $typeHint = $realParams[$pos]['type_hint'];
-                        if ($typeHint === '') {
-                            $error = 'Type hint "%s" missing for %s';
-                            $data = [
-                                $suggestedTypeHint,
-                                $param['var'],
-                            ];
-
-                            $errorCode = 'TypeHintMissing';
-                            if ($suggestedTypeHint === 'string'
-                                || $suggestedTypeHint === 'int'
-                                || $suggestedTypeHint === 'float'
-                                || $suggestedTypeHint === 'bool'
-                            ) {
-                                $errorCode = 'Scalar' . $errorCode;
-                            }
-
-                            $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
-                        } elseif ($typeHint !== substr($suggestedTypeHint, strlen($typeHint) * -1)) {
-                            $error = 'Expected type hint "%s"; found "%s" for %s';
-                            $data = [
-                                $suggestedTypeHint,
-                                $typeHint,
-                                $param['var'],
-                            ];
-                            $phpcsFile->addError($error, $stackPtr, 'IncorrectTypeHint', $data);
-                        }
-                    } elseif ($suggestedTypeHint === '' && isset($realParams[$pos])) {
-                        $typeHint = $realParams[$pos]['type_hint'];
-                        if ($typeHint !== '') {
-                            $error = 'Unknown type hint "%s" found for %s';
-                            $data = [
-                                $typeHint,
-                                $param['var'],
-                            ];
-                            $phpcsFile->addError($error, $stackPtr, 'InvalidTypeHint', $data);
-                        }
+                } elseif ($suggestedTypeHint === '' && isset($realParams[$pos])) {
+                    $typeHint = $realParams[$pos]['type_hint'];
+                    if ($typeHint !== '') {
+                        $error = 'Unknown type hint "%s" found for %s';
+                        $data = [
+                            $typeHint,
+                            $param['var'],
+                        ];
+                        $phpcsFile->addError($error, $stackPtr, 'InvalidTypeHint', $data);
                     }
                 }
             }
 
-            if ($param['var'] === '') {
-                continue;
-            }
-
-            $foundParams[] = $param['var'];
-
-            // Check number of spaces after the type.
-            $spaces = $maxType - strlen($param['type']) + 1;
-            if ($param['type_space'] !== $spaces) {
-                $error = 'Expected %s spaces after parameter type; %s found';
-                $data = [
-                    $spaces,
-                    $param['type_space'],
+            $suggestedType = implode($suggestedTypeNames, '|');
+            if ($param['type'] !== $suggestedType) {
+                $error = 'Expected "%s" but found "%s" for parameter type';
+                $data  = [
+                    $suggestedType,
+                    $param['type'],
                 ];
-                $fix = $phpcsFile->addFixableError($error, $param['tag'], 'SpacingAfterParamType', $data);
 
+                $fix = $phpcsFile->addFixableError($error, $param['tag'], 'IncorrectParamVarName', $data);
                 if ($fix) {
                     $phpcsFile->fixer->beginChangeset();
 
-                    $content = $param['type'];
-                    $content .= str_repeat(' ', $spaces);
+                    $content  = $suggestedType;
+                    $content .= str_repeat(' ', $param['type_space']);
                     $content .= $param['var'];
                     $content .= str_repeat(' ', $param['var_space']);
-                    $content .= $param['commentLines'][0]['comment'];
+                    if (isset($param['commentLines'][0])) {
+                        $content .= $param['commentLines'][0]['comment'];
+                    }
+
                     $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
 
                     // Fix up the indent of additional comment lines.
@@ -733,7 +741,8 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                             continue;
                         }
 
-                        $newIndent = $param['commentLines'][$lineNum]['indent'] + $spaces - $param['type_space'];
+                        $diff      = strlen($param['type']) - strlen($suggestedType);
+                        $newIndent = $param['commentLines'][$lineNum]['indent'] - $diff;
                         $phpcsFile->fixer->replaceToken(
                             $param['commentLines'][$lineNum]['token'] - 1,
                             str_repeat(' ', $newIndent)
@@ -743,6 +752,15 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     $phpcsFile->fixer->endChangeset();
                 }
             }
+
+            if ($param['var'] === '') {
+                continue;
+            }
+
+            $foundParams[] = $param['var'];
+
+            // Check number of spaces after the type.
+            $this->checkSpacingAfterParamType($phpcsFile, $param, $maxType);
 
             // Make sure the param name is correct.
             if (isset($realParams[$pos])) {
@@ -775,43 +793,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
             }
 
             // Check number of spaces after the var name.
-            $spaces = $maxVar - strlen($param['var']) + 1;
-            if ($param['var_space'] !== $spaces) {
-                $error = 'Expected %s spaces after parameter name; %s found';
-                $data = [
-                    $spaces,
-                    $param['var_space'],
-                ];
-                $fix = $phpcsFile->addFixableError($error, $param['tag'], 'SpacingAfterParamName', $data);
-
-                if ($fix) {
-                    $phpcsFile->fixer->beginChangeset();
-
-                    $content = $param['type'];
-                    $content .= str_repeat(' ', $param['type_space']);
-                    $content .= $param['var'];
-                    $content .= str_repeat(' ', $spaces);
-                    $content .= $param['commentLines'][0]['comment'];
-                    $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
-
-                    // Fix up the indent of additional comment lines.
-                    foreach ($param['commentLines'] as $lineNum => $line) {
-                        if ($lineNum === 0
-                            || $param['commentLines'][$lineNum]['indent'] === 0
-                        ) {
-                            continue;
-                        }
-
-                        $newIndent = $param['commentLines'][$lineNum]['indent'] + $spaces - $param['var_space'];
-                        $phpcsFile->fixer->replaceToken(
-                            $param['commentLines'][$lineNum]['token'] - 1,
-                            str_repeat(' ', $newIndent)
-                        );
-                    }
-
-                    $phpcsFile->fixer->endChangeset();
-                }
-            }
+            $this->checkSpacingAfterParamName($phpcsFile, $param, $maxVar);
 
             // Param comments must start with a capital letter and end with the full stop.
             if (preg_match('/^(\p{Ll}|\P{L})/u', $param['comment']) === 1) {
@@ -841,6 +823,112 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
             $error = 'Doc comment for parameter "%s" missing';
             $data = [$neededParam];
             $phpcsFile->addError($error, $commentStart, 'MissingParamTag', $data);
+        }
+    }
+
+    /**
+     * Check the spacing after the type of a parameter.
+     *
+     * @param File $phpcsFile The file being scanned.
+     * @param array $param The parameter to be checked.
+     * @param int $maxType The maxlength of the longest parameter type.
+     * @param int $spacing The number of spaces to add after the type.
+     */
+    protected function checkSpacingAfterParamType(File $phpcsFile, array $param, $maxType, $spacing = 1)
+    {
+        // Check number of spaces after the type.
+        $spaces = $maxType - strlen($param['type']) + $spacing;
+        if ($param['type_space'] !== $spaces) {
+            $error = 'Expected %s spaces after parameter type; %s found';
+            $data  = [
+                $spaces,
+                $param['type_space'],
+            ];
+
+            $fix = $phpcsFile->addFixableError($error, $param['tag'], 'SpacingAfterParamType', $data);
+            if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
+
+                $content  = $param['type'];
+                $content .= str_repeat(' ', $spaces);
+                $content .= $param['var'];
+                $content .= str_repeat(' ', $param['var_space']);
+                $content .= $param['commentLines'][0]['comment'];
+                $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
+
+                // Fix up the indent of additional comment lines.
+                foreach ($param['commentLines'] as $lineNum => $line) {
+                    if ($lineNum === 0
+                        || $param['commentLines'][$lineNum]['indent'] === 0
+                    ) {
+                        continue;
+                    }
+
+                    $diff      = $param['type_space'] - $spaces;
+                    $newIndent = $param['commentLines'][$lineNum]['indent'] - $diff;
+                    $phpcsFile->fixer->replaceToken(
+                        $param['commentLines'][$lineNum]['token'] - 1,
+                        str_repeat(' ', $newIndent)
+                    );
+                }
+
+                $phpcsFile->fixer->endChangeset();
+            }
+        }
+    }
+
+    /**
+     * Check the spacing after the name of a parameter.
+     *
+     * @param File $phpcsFile The file being scanned.
+     * @param array $param The parameter to be checked.
+     * @param int $maxVar The maxlength of the longest parameter name.
+     * @param int $spacing The number of spaces to add after the type.
+     */
+    protected function checkSpacingAfterParamName(File $phpcsFile, array $param, $maxVar, $spacing = 1)
+    {
+        // Check number of spaces after the var name.
+        $spaces = $maxVar - strlen($param['var']) + $spacing;
+        if ($param['var_space'] !== $spaces) {
+            $error = 'Expected %s spaces after parameter name; %s found';
+            $data = [
+                $spaces,
+                $param['var_space'],
+            ];
+
+            $fix = $phpcsFile->addFixableError($error, $param['tag'], 'SpacingAfterParamName', $data);
+            if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
+
+                $content = $param['type'];
+                $content .= str_repeat(' ', $param['type_space']);
+                $content .= $param['var'];
+                $content .= str_repeat(' ', $spaces);
+                $content .= $param['commentLines'][0]['comment'];
+                $phpcsFile->fixer->replaceToken($param['tag'] + 2, $content);
+
+                // Fix up the indent of additional comment lines.
+                foreach ($param['commentLines'] as $lineNum => $line) {
+                    if ($lineNum === 0
+                        || $param['commentLines'][$lineNum]['indent'] === 0
+                    ) {
+                        continue;
+                    }
+
+                    $diff = $param['var_space'] - $spaces;
+                    $newIndent = $param['commentLines'][$lineNum]['indent'] - $diff;
+                    if ($newIndent <= 0) {
+                        continue;
+                    }
+
+                    $phpcsFile->fixer->replaceToken(
+                        $param['commentLines'][$lineNum]['token'] - 1,
+                        str_repeat(' ', $newIndent)
+                    );
+                }
+
+                $phpcsFile->fixer->endChangeset();
+            }
         }
     }
 }
