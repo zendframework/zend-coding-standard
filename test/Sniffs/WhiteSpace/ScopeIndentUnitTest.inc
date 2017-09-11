@@ -477,3 +477,26 @@ get_class($value)
 'foo' => 'bar',
 'bar' => 'baz',
 ]);
+
+function test1(array $a, $b)
+{
+    if (array_filter($a, function ($v) use ($b) {
+        return $v === $b * 2;
+    })) {
+        return 1;
+    }
+
+    return 0;
+}
+
+function test2()
+{
+    if (false === strpos(
+        'haystack',
+        'needle'
+    )) {
+        return 1;
+    }
+
+    return 0;
+}

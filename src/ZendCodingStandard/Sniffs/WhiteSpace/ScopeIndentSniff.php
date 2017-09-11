@@ -544,42 +544,6 @@ class ScopeIndentSniff implements Sniff
                     }
                 }
 
-                // one less indent
-                // if it is in control structure
-                // and there is no eol between
-                // open and close parenthesis
-                if (($tokens[$next]['code'] === T_CLOSE_PARENTHESIS
-                        || $tokens[$next]['code'] === T_CLOSE_SHORT_ARRAY
-                        || ($tokens[$next]['code'] === T_CLOSE_CURLY_BRACKET
-                            && isset($tokens[$next]['scope_opener'])))
-                    && ($controlStructurePtr = $this->getControlStructurePtr($phpcsFile, $next))
-                    && $tokens[$next]['line'] < $tokens[$tokens[$controlStructurePtr]['parenthesis_closer']]['line']
-                    && ! $this->hasContainNewLine(
-                        $phpcsFile,
-                        $tokens[$controlStructurePtr]['parenthesis_opener'],
-                        $tokens[$controlStructurePtr]['parenthesis_closer']
-                    )
-                ) {
-                    // if it is closure, so $next token is T_CLOSE_PARENTHESIS
-                    // and the following non-empty token is T_CURLY_OPEN_BRACKET
-                    // then expect one more indent on the whole body of the closure.
-                    if ($tokens[$next]['code'] === T_CLOSE_PARENTHESIS
-                        && ($fNext = $phpcsFile->findNext(Tokens::$emptyTokens, $next + 1, null, true))
-                        && $tokens[$fNext]['code'] === T_OPEN_CURLY_BRACKET
-                        && isset($tokens[$fNext]['scope_closer'])
-                    ) {
-                        $extraIndent -= $this->indent;
-                        $sc = $tokens[$fNext]['scope_closer'];
-                        if (isset($extras[$sc])) {
-                            $extras[$sc] -= $this->indent;
-                        } else {
-                            $extras[$sc] = - $this->indent;
-                        }
-                    } else {
-                        $expectedIndent -= $this->indent;
-                    }
-                }
-
                 $expectedIndent += $extraIndent;
                 $previousIndent = $expectedIndent;
 
@@ -649,8 +613,8 @@ class ScopeIndentSniff implements Sniff
                 }
                 $xEnd = $tokens[$i][$key];
 
-                // no extra indent if closing parenthesis/bracket is in the same line
-                if ($tokens[$i]['line'] === $tokens[$xEnd]['line']) {
+                // no extra indent if there is no new line between open and close brackets
+                if (! $this->hasContainNewLine($phpcsFile, $i, $xEnd)) {
                     continue;
                 }
 
@@ -708,28 +672,15 @@ class ScopeIndentSniff implements Sniff
                     ++$firstInNextLine;
                 }
 
-                // Additional indent of the content if it should be one more depth.
-                // We count them only if it is not in the same line as control structure
-                // or the closing parenthesis of the statement is not in the line with
-                // closing parenthesis of control structure.
                 $ei1 = 0;
-                $controlStructurePtr = $this->getControlStructurePtr($phpcsFile, $i);
-                if ($controlStructurePtr === false
-                    || $this->hasContainNewLine(
-                        $phpcsFile,
-                        $tokens[$controlStructurePtr]['parenthesis_opener'],
-                        $tokens[$controlStructurePtr]['parenthesis_closer']
-                    )
+                if ($tokens[$first]['level'] === $tokens[$firstInNextLine]['level']
+                    && $tokens[$firstInNextLine]['code'] !== T_CLOSE_CURLY_BRACKET
                 ) {
-                    if ($tokens[$first]['level'] === $tokens[$firstInNextLine]['level']
-                        && $tokens[$firstInNextLine]['code'] !== T_CLOSE_CURLY_BRACKET
-                    ) {
-                        $ei1 = $this->indent;
-                        if (isset($extras[$xEnd])) {
-                            $extras[$xEnd] += $ei1;
-                        } else {
-                            $extras[$xEnd] = $ei1;
-                        }
+                    $ei1 = $this->indent;
+                    if (isset($extras[$xEnd])) {
+                        $extras[$xEnd] += $ei1;
+                    } else {
+                        $extras[$xEnd] = $ei1;
                     }
                 }
 
