@@ -4,17 +4,14 @@ namespace ZendCodingStandard\Sniffs\PHP;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
-use ZendCodingStandard\CodingStandard;
+use ZendCodingStandard\Helper\Namespaces;
 
 use function array_walk_recursive;
 use function get_defined_constants;
-use function ltrim;
 use function sprintf;
 use function strtolower;
 use function strtoupper;
-use function trim;
 
-use const T_AS;
 use const T_BITWISE_AND;
 use const T_DOUBLE_COLON;
 use const T_FUNCTION;
@@ -24,13 +21,12 @@ use const T_NS_SEPARATOR;
 use const T_OBJECT_OPERATOR;
 use const T_OPEN_PARENTHESIS;
 use const T_OPEN_TAG;
-use const T_SEMICOLON;
 use const T_STRING;
-use const T_USE;
-use const T_WHITESPACE;
 
 class ImportInternalConstantSniff implements Sniff
 {
+    use Namespaces;
+
     /**
      * @var array<string, int> Hash map of all php built in constant names.
      */
@@ -91,7 +87,7 @@ class ImportInternalConstantSniff implements Sniff
         $namespace = $this->getNamespace($phpcsFile, $stackPtr);
         if ($this->currentNamespace !== $namespace) {
             $this->currentNamespace = $namespace;
-            $this->importedConstants = $this->getImportedConstants($phpcsFile, $stackPtr);
+            $this->importedConstants = $this->getImportedConstants($phpcsFile, $stackPtr, $this->lastUse);
         }
 
         $tokens = $phpcsFile->getTokens();
@@ -168,75 +164,6 @@ class ImportInternalConstantSniff implements Sniff
                 }
             }
         }
-    }
-
-    /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return string
-     */
-    private function getNamespace(File $phpcsFile, $stackPtr)
-    {
-        if ($nsStart = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr - 1)) {
-            $nsEnd = $phpcsFile->findNext([T_NS_SEPARATOR, T_STRING, T_WHITESPACE], $nsStart + 1, null, true);
-            return trim($phpcsFile->getTokensAsString($nsStart + 1, $nsEnd - $nsStart - 1));
-        }
-
-        return '';
-    }
-
-    /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return array
-     */
-    private function getImportedConstants(File $phpcsFile, $stackPtr)
-    {
-        $first = 0;
-        $last  = $phpcsFile->numTokens;
-
-        $tokens = $phpcsFile->getTokens();
-
-        $nsStart = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr);
-        if ($nsStart && isset($tokens[$nsStart]['scope_opener'])) {
-            $first = $tokens[$nsStart]['scope_opener'];
-            $last = $tokens[$nsStart]['scope_closer'];
-        }
-
-        $this->lastUse = null;
-        $constants = [];
-
-        $use = $first;
-        while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
-            if (CodingStandard::isGlobalUse($phpcsFile, $use)) {
-                $next = $phpcsFile->findNext(Tokens::$emptyTokens, $use + 1, null, true);
-                if ($tokens[$next]['code'] === T_STRING
-                    && strtolower($tokens[$next]['content']) === 'const'
-                ) {
-                    $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
-                    $end = $phpcsFile->findPrevious(
-                        T_STRING,
-                        $phpcsFile->findNext([T_AS, T_SEMICOLON], $start + 1) - 1
-                    );
-                    $endOfStatement = $phpcsFile->findEndOfStatement($next);
-                    $name = $phpcsFile->findPrevious(T_STRING, $endOfStatement - 1);
-                    $fullName = $phpcsFile->getTokensAsString($start, $end - $start + 1);
-
-                    $constants[strtoupper($tokens[$name]['content'])] = [
-                        'name' => $tokens[$name]['content'],
-                        'fqn'  => ltrim($fullName, '\\'),
-                    ];
-
-                    $this->lastUse = $use;
-                }
-            }
-
-            if (! $this->lastUse) {
-                $this->lastUse = $use;
-            }
-        }
-
-        return $constants;
     }
 
     /**

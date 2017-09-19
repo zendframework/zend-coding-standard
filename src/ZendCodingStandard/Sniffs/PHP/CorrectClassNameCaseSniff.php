@@ -4,6 +4,7 @@ namespace ZendCodingStandard\Sniffs\PHP;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use ZendCodingStandard\Helper\Namespaces;
 
 use function array_map;
 use function array_merge;
@@ -18,12 +19,10 @@ use function ltrim;
 use function preg_quote;
 use function preg_replace;
 use function strlen;
-use function strrchr;
 use function strtolower;
 use function substr;
 use function trim;
 
-use const T_AS;
 use const T_CLOSURE;
 use const T_COLON;
 use const T_COMMA;
@@ -34,7 +33,6 @@ use const T_DOUBLE_COLON;
 use const T_EXTENDS;
 use const T_FUNCTION;
 use const T_IMPLEMENTS;
-use const T_NAMESPACE;
 use const T_NEW;
 use const T_NS_SEPARATOR;
 use const T_NULLABLE;
@@ -54,6 +52,8 @@ use const T_WHITESPACE;
  */
 class CorrectClassNameCaseSniff implements Sniff
 {
+    use Namespaces;
+
     /**
      * @var array
      */
@@ -457,52 +457,6 @@ class CorrectClassNameCaseSniff implements Sniff
     }
 
     /**
-     * Returns array of imported classes. Key is lowercase name, and value is FQCN.
-     *
-     * @param File $phpcsFile
-     * @return array
-     */
-    private function getGlobalUses(File $phpcsFile)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $imports = [];
-
-        $use = 0;
-        while ($use = $phpcsFile->findNext(T_USE, $use + 1)) {
-            if (! empty($tokens[$use]['conditions'])) {
-                continue;
-            }
-
-            $nextToken = $phpcsFile->findNext(T_WHITESPACE, $use + 1, null, true);
-
-            $end = $phpcsFile->findNext(
-                [T_NS_SEPARATOR, T_STRING],
-                $nextToken + 1,
-                null,
-                true
-            );
-
-            $class = trim($phpcsFile->getTokensAsString($nextToken, $end - $nextToken));
-
-            $endOfStatement = $phpcsFile->findEndOfStatement($use);
-            if ($aliasStart = $phpcsFile->findNext([T_WHITESPACE, T_AS], $end + 1, $endOfStatement, true)) {
-                $alias = trim($phpcsFile->getTokensAsString($aliasStart, $endOfStatement - $aliasStart));
-            } else {
-                if (strrchr($class, '\\') !== false) {
-                    $alias = substr(strrchr($class, '\\'), 1);
-                } else {
-                    $alias = $class;
-                }
-            }
-
-            $imports[strtolower($alias)] = ['alias' => $alias, 'class' => $class];
-        }
-
-        return $imports;
-    }
-
-    /**
      * Checks if class is defined and has different case - then returns class name
      * with correct case. Otherwise returns false.
      *
@@ -524,20 +478,5 @@ class CorrectClassNameCaseSniff implements Sniff
         }
 
         return $this->declaredClasses[$index];
-    }
-
-    /**
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return string
-     */
-    private function getNamespace(File $phpcsFile, $stackPtr)
-    {
-        if ($nsStart = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr - 1)) {
-            $nsEnd = $phpcsFile->findNext([T_NS_SEPARATOR, T_STRING, T_WHITESPACE], $nsStart + 1, null, true);
-            return trim($phpcsFile->getTokensAsString($nsStart + 1, $nsEnd - $nsStart - 1));
-        }
-
-        return '';
     }
 }
