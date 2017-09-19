@@ -283,7 +283,7 @@ class CorrectClassNameCaseSniff implements Sniff
 
         $newTypesArr = [];
         foreach ($typesArr as $type) {
-            $expected = $this->getExcepctedName($phpcsFile, $type, $stackPtr + 2);
+            $expected = $this->getExpectedName($phpcsFile, $type, $stackPtr + 2);
 
             $newTypesArr[] = $expected;
         }
@@ -315,7 +315,7 @@ class CorrectClassNameCaseSniff implements Sniff
      * @param int $stackPtr
      * @return string
      */
-    private function getExcepctedName(File $phpcsFile, $class, $stackPtr)
+    private function getExpectedName(File $phpcsFile, $class, $stackPtr)
     {
         if ($class[0] === '\\') {
             $result = $this->hasDifferentCase(ltrim($class, '\\'));
