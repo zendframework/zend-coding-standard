@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @api
+ * @author
+ * @category
+ * @copyright
+ * @deprecated
+ * @example
+ * @filesource
+ * @global
+ * @ignore
+ * @inheritDoc
+ * @internal
+ * @license
+ * @link
+ * @method
+ * @package
+ * @param
+ * @property
+ * @property-read
+ * @property-write
+ * @return
+ * @see
+ * @since
+ * @source
+ * @subpackage
+ * @throws
+ * @todo
+ * @uses
+ * @used-by
+ * @var
+ * @version
+ */
+
+/**
+ * @after
+ * @afterClass
+ * @backupGlobals
+ * @backupStaticAttributes
+ * @before
+ * @beforeClass
+ * @codeCoverageIgnore
+ * @codeCoverageIgnoreStart
+ * @codeCoverageIgnoreEnd
+ * @covers
+ * @coversDefaultClass
+ * @coversNothing
+ * @dataProvider
+ * @depends
+ * @expectedException
+ * @expectedExceptionCode
+ * @expectedExceptionMessage
+ * @expectedExceptionMessageRegExp
+ * @group
+ * @large
+ * @medium
+ * @preserveGlobalState
+ * @requires
+ * @runTestsInSeparateProcesses
+ * @runInSeparateProcess
+ * @small
+ * @test
+ * @testdox
+ * @ticket
+ */
+
+/**
+ * @param correct
+ */
+
+/**
+ * @myCustomTag
+ * @mycustomtag
+ */
