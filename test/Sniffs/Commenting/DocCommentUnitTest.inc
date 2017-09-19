@@ -186,4 +186,13 @@ class Foo
     public function test8()
     {
     }
+
+    /**
+     * Empty line in the comment is not allowed.
+
+     * Here is something else.
+     */
+    public function test9()
+    {
+    }
 }

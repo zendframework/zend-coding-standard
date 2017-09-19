@@ -557,6 +557,28 @@ class DocCommentSniff implements Sniff
 
             $from = $next;
         }
+
+        // Check for blank lines without *
+        $from = $commentStart;
+        $to = $commentEnd;
+
+        while ($next = $phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $from + 1, $to + 1, true)) {
+            if ($tokens[$next]['line'] > $tokens[$from]['line'] + 1) {
+                $ptr = $from + 1;
+                while ($tokens[$ptr]['line'] === $tokens[$from]['line']) {
+                    ++$ptr;
+                }
+
+                $error = 'Blank line found in PHPDoc comment';
+                $fix = $phpcsFile->addFixableError($error, $ptr, 'BlankLine');
+
+                if ($fix) {
+                    $phpcsFile->fixer->addContentBefore($ptr, '*');
+                }
+            }
+
+            $from = $next;
+        }
     }
 
     /**
