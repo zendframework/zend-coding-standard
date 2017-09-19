@@ -17,16 +17,14 @@ use const T_WHITESPACE;
 
 class LineAfterSniff extends AbstractScopeSniff
 {
-    /**
-     * @inheritDoc
-     */
     public function __construct()
     {
         parent::__construct([T_CLASS, T_INTERFACE, T_TRAIT, T_ANON_CLASS], [T_FUNCTION]);
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
+     * @param int $currScope
      */
     protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
@@ -64,7 +62,7 @@ class LineAfterSniff extends AbstractScopeSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {

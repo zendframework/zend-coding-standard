@@ -5,12 +5,20 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class UnusedUseStatementUnitTest extends TestCase
 {
-    public function getErrorList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getErrorList($testFile = '')
     {
         return [];
     }
 
-    public function getWarningList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getWarningList($testFile = '')
     {
         return [
             6 => 1,

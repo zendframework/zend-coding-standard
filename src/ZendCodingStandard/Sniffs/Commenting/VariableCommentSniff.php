@@ -25,7 +25,7 @@ use const T_WHITESPACE;
 class VariableCommentSniff extends AbstractVariableSniff
 {
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function processMemberVar(File $phpcsFile, $stackPtr)
     {
@@ -121,7 +121,7 @@ class VariableCommentSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
@@ -129,7 +129,7 @@ class VariableCommentSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {

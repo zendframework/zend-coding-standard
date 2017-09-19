@@ -32,8 +32,14 @@ use const T_WHITESPACE;
 
 class DocCommentSniff implements Sniff
 {
+    /**
+     * @var int
+     */
     public $indent = 4;
 
+    /**
+     * @var string[]
+     */
     public $tagWithType = [
         '@var',
         '@param',
@@ -42,7 +48,7 @@ class DocCommentSniff implements Sniff
     ];
 
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -50,7 +56,7 @@ class DocCommentSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -86,7 +92,6 @@ class DocCommentSniff implements Sniff
     /**
      * Checks if doc comment is empty.
      *
-     * @param File $phpcsFile
      * @param int $commentStart
      * @param int $commentEnd
      * @return bool
@@ -152,9 +157,7 @@ class DocCommentSniff implements Sniff
      * Checks if there is no any other content before doc comment opening tag,
      * and if there is blank line before doc comment (for multiline doc comment).
      *
-     * @param File $phpcsFile
      * @param int $commentStart
-     * @return void
      */
     private function checkBeforeOpen(File $phpcsFile, $commentStart)
     {
@@ -192,9 +195,7 @@ class DocCommentSniff implements Sniff
     /**
      * Checks if there is no any other content after doc comment opening tag (for multiline doc comment).
      *
-     * @param File $phpcsFile
      * @param int $commentStart
-     * @return void
      */
     private function checkAfterOpen(File $phpcsFile, $commentStart)
     {
@@ -231,9 +232,7 @@ class DocCommentSniff implements Sniff
     /**
      * Checks if there is no any other content before doc comment closing tag (for multiline doc comment).
      *
-     * @param File $phpcsFile
      * @param int $commentEnd
-     * @return void
      */
     private function checkBeforeClose(File $phpcsFile, $commentEnd)
     {
@@ -259,10 +258,8 @@ class DocCommentSniff implements Sniff
     /**
      * Checks if there is no any other content after doc comment closing tag (for multiline doc comment).
      *
-     * @param File $phpcsFile
      * @param int $commentStart
      * @param int $commentEnd
-     * @return void
      */
     private function checkAfterClose(File $phpcsFile, $commentStart, $commentEnd)
     {
@@ -329,10 +326,8 @@ class DocCommentSniff implements Sniff
      * Checks if there is exactly one space after doc comment opening tag,
      * and exactly one space before closing tag (for single line doc comment).
      *
-     * @param File $phpcsFile
      * @param int $commentStart
      * @param int $commentEnd
-     * @return void
      */
     private function checkSpacesInOneLineComment(File $phpcsFile, $commentStart, $commentEnd)
     {
@@ -351,7 +346,7 @@ class DocCommentSniff implements Sniff
         } elseif ($tokens[$commentStart + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
             // This case is currently not supported.
             // Comment /**@var null $name; */ is not recognized as doc-block comment.
-            // todo: fix is already marged to PHP_CodeSniffer 3.1.0, need to be changed after release 3.1.0
+            // todo: fix is already merged to PHP_CodeSniffer 3.1.0, need to be changed after release 3.1.0
             $error = 'Expected 1 space after opening tag of one line doc block comment.';
             $fix = $phpcsFile->addFixableError($error, $commentStart, 'InvalidSpacing');
 
@@ -378,10 +373,8 @@ class DocCommentSniff implements Sniff
      *
      * @todo: needs to check with doctrine annotations
      *
-     * @param File $phpcsFile
      * @param int $commentStart
      * @param int $commentEnd
-     * @return void
      */
     private function checkSpacesAfterStar(File $phpcsFile, $commentStart, $commentEnd)
     {
@@ -479,10 +472,8 @@ class DocCommentSniff implements Sniff
      * Doc comment cannot have empty line on the beginning of the comment, at the end of the comment,
      * and there is allowed only one empty line between two comment sections.
      *
-     * @param File $phpcsFile
      * @param int $commentStart
      * @param int $commentEnd
-     * @return void
      */
     private function checkBlankLinesInComment(File $phpcsFile, $commentStart, $commentEnd)
     {
@@ -584,10 +575,8 @@ class DocCommentSniff implements Sniff
     /**
      * Checks indents of the comment (opening tag, lines with star, closing tag).
      *
-     * @param File $phpcsFile
      * @param int $commentStart
      * @param int $commentEnd
-     * @return void
      */
     private function checkCommentIndents(File $phpcsFile, $commentStart, $commentEnd)
     {
@@ -704,9 +693,7 @@ class DocCommentSniff implements Sniff
     /**
      * Check if there is one blank line before comment tags.
      *
-     * @param File $phpcsFile
      * @param int $commentStart
-     * @return void
      */
     private function checkBlankLineBeforeTags(File $phpcsFile, $commentStart)
     {
@@ -742,9 +729,7 @@ class DocCommentSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $commentStart
-     * @return void
      */
     private function checkTagsSpaces(File $phpcsFile, $commentStart)
     {
@@ -802,9 +787,7 @@ class DocCommentSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $tag
-     * @return void
      */
     private function checkSpacesAfterTag(File $phpcsFile, $tag)
     {

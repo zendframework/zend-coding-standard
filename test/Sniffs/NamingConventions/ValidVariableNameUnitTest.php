@@ -5,6 +5,10 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class ValidVariableNameUnitTest extends TestCase
 {
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getErrorList($testFile = '')
     {
         return [
@@ -14,6 +18,10 @@ class ValidVariableNameUnitTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getWarningList($testFile = '')
     {
         return [];

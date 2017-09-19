@@ -5,6 +5,10 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class TypeCastingUnitTest extends TestCase
 {
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getErrorList($testFile = '')
     {
         return [
@@ -40,6 +44,10 @@ class TypeCastingUnitTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getWarningList($testFile = '')
     {
         return [];

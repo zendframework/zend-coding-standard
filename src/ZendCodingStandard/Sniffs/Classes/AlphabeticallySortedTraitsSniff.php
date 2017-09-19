@@ -26,7 +26,7 @@ use const T_USE;
 class AlphabeticallySortedTraitsSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -34,7 +34,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -66,9 +66,8 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $scopePtr
-     * @return array[]
+     * @return string[][]
      */
     private function getTraits(File $phpcsFile, $scopePtr)
     {
@@ -110,7 +109,6 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $stackPtr
      * @return int
      */
@@ -130,8 +128,8 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     }
 
     /**
-     * @param array $a
-     * @param array $b
+     * @param string[] $a
+     * @param string[] $b
      * @return int
      */
     private function compareUseStatements(array $a, array $b)
@@ -152,9 +150,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
-     * @param array[] $uses
-     * @return void
+     * @param string[][] $uses
      */
     private function fixAlphabeticalOrder(File $phpcsFile, array $uses)
     {

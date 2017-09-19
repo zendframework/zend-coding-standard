@@ -5,6 +5,10 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class ReturnTypeUnitTest extends TestCase
 {
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getErrorList($testFile = '')
     {
         if ($testFile === 'ReturnTypeUnitTest.1.inc') {
@@ -60,6 +64,10 @@ class ReturnTypeUnitTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getWarningList($testFile = '')
     {
         return [];

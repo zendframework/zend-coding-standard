@@ -5,7 +5,11 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class TrailingArrayCommaUnitTest extends TestCase
 {
-    public function getErrorList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getErrorList($testFile = '')
     {
         return [
             11 => 1,
@@ -15,7 +19,11 @@ class TrailingArrayCommaUnitTest extends TestCase
         ];
     }
 
-    public function getWarningList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getWarningList($testFile = '')
     {
         return [];
     }

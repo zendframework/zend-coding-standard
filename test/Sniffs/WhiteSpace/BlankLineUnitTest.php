@@ -5,6 +5,10 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class BlankLineUnitTest extends TestCase
 {
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getErrorList($testFile = '')
     {
         return [
@@ -17,6 +21,10 @@ class BlankLineUnitTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getWarningList($testFile = '')
     {
         return [];

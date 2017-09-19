@@ -35,7 +35,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     ];
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
@@ -60,7 +60,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processMemberVar(File $phpcsFile, $stackPtr)
     {
@@ -68,7 +68,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {

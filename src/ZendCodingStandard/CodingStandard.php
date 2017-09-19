@@ -76,7 +76,6 @@ class CodingStandard
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $stackPtr
      * @return bool
      */
@@ -99,7 +98,6 @@ class CodingStandard
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $stackPtr
      * @return bool
      */

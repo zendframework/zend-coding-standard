@@ -5,7 +5,11 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class AlphabeticallySortedTraitsUnitTest extends TestCase
 {
-    public function getErrorList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getErrorList($testFile = '')
     {
         return [
             12 => 1,
@@ -13,7 +17,11 @@ class AlphabeticallySortedTraitsUnitTest extends TestCase
         ];
     }
 
-    public function getWarningList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getWarningList($testFile = '')
     {
         return [];
     }

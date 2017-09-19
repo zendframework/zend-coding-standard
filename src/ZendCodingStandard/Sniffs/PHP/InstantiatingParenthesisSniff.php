@@ -19,7 +19,7 @@ use const T_VARIABLE;
 class InstantiatingParenthesisSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -27,7 +27,7 @@ class InstantiatingParenthesisSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

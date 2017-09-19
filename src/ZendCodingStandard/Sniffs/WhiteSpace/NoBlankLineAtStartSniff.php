@@ -14,7 +14,7 @@ use const T_WHITESPACE;
 class NoBlankLineAtStartSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -28,7 +28,7 @@ class NoBlankLineAtStartSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

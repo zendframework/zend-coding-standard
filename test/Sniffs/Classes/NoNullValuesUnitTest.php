@@ -5,7 +5,11 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class NoNullValuesUnitTest extends TestCase
 {
-    public function getErrorList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getErrorList($testFile = '')
     {
         return [
             6 => 1,
@@ -19,7 +23,11 @@ class NoNullValuesUnitTest extends TestCase
         ];
     }
 
-    public function getWarningList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getWarningList($testFile = '')
     {
         return [];
     }

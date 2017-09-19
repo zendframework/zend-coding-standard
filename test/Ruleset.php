@@ -5,6 +5,11 @@ use function str_replace;
 
 class Ruleset extends \PHP_CodeSniffer\Ruleset
 {
+    /**
+     * @param string[] $files
+     * @param bool[] $restrictions
+     * @param bool[] $exclusions
+     */
     public function registerSniffs($files, $restrictions, $exclusions)
     {
         foreach ($restrictions as $className => $bool) {

@@ -14,7 +14,7 @@ use const T_WHITESPACE;
 class ConstAndFunctionKeywordsSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -22,7 +22,7 @@ class ConstAndFunctionKeywordsSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

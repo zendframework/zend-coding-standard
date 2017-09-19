@@ -24,7 +24,7 @@ use const T_WHITESPACE;
 class TrailingArrayCommaSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -32,7 +32,7 @@ class TrailingArrayCommaSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

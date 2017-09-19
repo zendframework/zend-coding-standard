@@ -5,7 +5,11 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class FormatUnitTest extends TestCase
 {
-    public function getErrorList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getErrorList($testFile = '')
     {
         return [
             2 => 2,
@@ -34,7 +38,11 @@ class FormatUnitTest extends TestCase
         ];
     }
 
-    public function getWarningList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getWarningList($testFile = '')
     {
         return [];
     }

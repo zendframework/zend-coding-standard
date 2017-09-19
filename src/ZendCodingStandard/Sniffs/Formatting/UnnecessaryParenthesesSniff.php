@@ -93,7 +93,7 @@ class UnnecessaryParenthesesSniff implements Sniff
     ];
 
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -101,7 +101,7 @@ class UnnecessaryParenthesesSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -245,11 +245,9 @@ class UnnecessaryParenthesesSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $openPtr
      * @param int $closePtr
      * @param string $errorCode
-     * @return void
      */
     private function error(File $phpcsFile, $openPtr, $closePtr, $errorCode)
     {

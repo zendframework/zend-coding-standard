@@ -16,7 +16,7 @@ use const T_WHITESPACE;
 class UseDoesNotStartWithBackslashSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -24,7 +24,7 @@ class UseDoesNotStartWithBackslashSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

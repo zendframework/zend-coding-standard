@@ -69,7 +69,7 @@ class CorrectClassNameCaseSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -90,7 +90,7 @@ class CorrectClassNameCaseSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -124,9 +124,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks statement before double colon - "ClassName::".
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkDoubleColon(File $phpcsFile, $stackPtr)
     {
@@ -156,9 +154,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks "new ClassName" statements.
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkNew(File $phpcsFile, $stackPtr)
     {
@@ -187,9 +183,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks "use" statements - global and traits.
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkUse(File $phpcsFile, $stackPtr)
     {
@@ -223,9 +217,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks params type hints
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkFunctionParams(File $phpcsFile, $stackPtr)
     {
@@ -247,9 +239,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks return type (PHP 7)
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkReturnType(File $phpcsFile, $stackPtr)
     {
@@ -262,9 +252,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks PHPDocs tags
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkTag(File $phpcsFile, $stackPtr)
     {
@@ -310,7 +298,6 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Returns expected class name for given $class.
      *
-     * @param File $phpcsFile
      * @param string $class
      * @param int $stackPtr
      * @return string
@@ -350,9 +337,7 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks "extends" and "implements" classes/interfaces.
      *
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return void
      */
     private function checkExtendsAndImplements(File $phpcsFile, $stackPtr)
     {
@@ -382,11 +367,9 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Checks if class is used correctly.
      *
-     * @param File $phpcsFile
      * @param int $start
      * @param int $end
      * @param bool $isGlobalUse
-     * @return void
      */
     private function checkClass(File $phpcsFile, $start, $end, $isGlobalUse = false)
     {
@@ -430,12 +413,10 @@ class CorrectClassNameCaseSniff implements Sniff
     /**
      * Reports new fixable error.
      *
-     * @param File $phpcsFile
      * @param int $start
      * @param int $end
      * @param string $expected
      * @param string $actual
-     * @return void
      */
     private function error(File $phpcsFile, $start, $end, $expected, $actual)
     {

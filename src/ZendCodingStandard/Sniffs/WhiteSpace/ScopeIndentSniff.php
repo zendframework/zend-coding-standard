@@ -133,7 +133,7 @@ class ScopeIndentSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -141,7 +141,8 @@ class ScopeIndentSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
+     * @return null|int
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -715,9 +716,8 @@ class ScopeIndentSniff implements Sniff
     /**
      * @todo: need name refactor and method description
      *
-     * @param File $phpcsFile
      * @param int $ptr
-     * @return int|null
+     * @return null|int
      */
     private function fp(File $phpcsFile, $ptr)
     {
@@ -743,9 +743,8 @@ class ScopeIndentSniff implements Sniff
     /**
      * @todo: need name refactor and method description
      *
-     * @param File $phpcsFile
      * @param int $ptr
-     * @return int|null
+     * @return null|int
      */
     private function np(File $phpcsFile, $ptr)
     {
@@ -770,9 +769,8 @@ class ScopeIndentSniff implements Sniff
      * Checks if there is another object operator
      * before $ptr token.
      *
-     * @param File $phpcsFile
      * @param int $ptr
-     * @return int|null
+     * @return null|int
      */
     private function hasPrevObjectOperator(File $phpcsFile, $ptr)
     {
@@ -797,7 +795,6 @@ class ScopeIndentSniff implements Sniff
      * Checks if between $fromPtr and $toPtr is any new line
      * excluding scopes (arrays, closures, multiline function calls).
      *
-     * @param File $phpcsFile
      * @param int $fromPtr
      * @param int $toPtr
      * @return bool
@@ -835,9 +832,8 @@ class ScopeIndentSniff implements Sniff
      * and returns the control structure pointer;
      * otherwise returns boolean `false`.
      *
-     * @param File $phpcsFile
      * @param int $ptr
-     * @return int|false
+     * @return false|int
      */
     private function getControlStructurePtr(File $phpcsFile, $ptr)
     {

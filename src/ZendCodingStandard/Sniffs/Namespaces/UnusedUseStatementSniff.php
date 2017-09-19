@@ -41,7 +41,7 @@ use const T_WHITESPACE;
 class UnusedUseStatementSniff implements Sniff
 {
     /**
-     * @var array
+     * @var int[]
      */
     private $checkInTokens = [
         T_STRING,
@@ -51,7 +51,7 @@ class UnusedUseStatementSniff implements Sniff
     ];
 
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -59,7 +59,7 @@ class UnusedUseStatementSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

@@ -25,7 +25,7 @@ use const T_WHITESPACE;
 class TraitUsageSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -33,7 +33,7 @@ class TraitUsageSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -275,9 +275,7 @@ class TraitUsageSniff implements Sniff
     /**
      * Fix order of statements inside trait's curly brackets.
      *
-     * @param File $phpcsFile
-     * @param array $statements
-     * @return void
+     * @param string[] $statements
      */
     private function fixAlphabeticalOrder(File $phpcsFile, array $statements)
     {
@@ -303,8 +301,8 @@ class TraitUsageSniff implements Sniff
     /**
      * @internal
      *
-     * @param array $a
-     * @param array $b
+     * @param string[] $a
+     * @param string[] $b
      * @return int
      */
     public function compareStatements(array $a, array $b)

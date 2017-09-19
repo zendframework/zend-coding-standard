@@ -14,7 +14,7 @@ use const T_WHITESPACE;
 class NoNullValuesSniff extends AbstractVariableSniff
 {
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processMemberVar(File $phpcsFile, $stackPtr)
     {
@@ -45,7 +45,7 @@ class NoNullValuesSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
@@ -53,7 +53,7 @@ class NoNullValuesSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {

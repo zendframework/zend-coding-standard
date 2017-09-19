@@ -12,7 +12,7 @@ use const T_WHITESPACE;
 class TernaryOperatorSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -23,7 +23,7 @@ class TernaryOperatorSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -90,9 +90,8 @@ class TernaryOperatorSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return int|null
+     * @return null|int
      */
     protected function findThen(File $phpcsFile, $stackPtr)
     {
@@ -116,9 +115,8 @@ class TernaryOperatorSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $stackPtr
-     * @return int|null
+     * @return null|int
      */
     protected function findElse(File $phpcsFile, $stackPtr)
     {

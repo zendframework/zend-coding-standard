@@ -13,7 +13,7 @@ use const T_YIELD;
 class LowerCaseKeywordSniff extends GenericLowerCaseKeywordSniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {

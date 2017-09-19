@@ -10,7 +10,7 @@ use const T_WHITESPACE;
 class BooleanOperatorSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -18,7 +18,7 @@ class BooleanOperatorSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

@@ -87,7 +87,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * Should this test be skipped for some reason.
      *
-     * @return bool
+     * @return false
      */
     protected function shouldSkipTest()
     {
@@ -96,8 +96,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * Tests the extending classes Sniff class.
-     *
-     * @return void
      */
     final public function testSniff()
     {
@@ -178,7 +176,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * Generate a list of test failures for a given sniffed file.
      *
      * @param LocalFile $file The file being tested.
-     * @return array
+     * @return string[]
      * @throws RuntimeException
      */
     public function generateFailureMessages(LocalFile $file)
@@ -364,7 +362,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @param string $filename The name of the file being tested.
      * @param Config $config The config data for the run.
-     * @return array
+     * @return string[]
      */
     public function setCliValues($filename, Config $config)
     {
@@ -377,7 +375,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * The key of the array should represent the line number and the value
      * should represent the number of errors that should occur on that line.
      *
-     * @return array(int => int)
+     * @return int[]
      */
     abstract protected function getErrorList();
 
@@ -387,7 +385,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * The key of the array should represent the line number and the value
      * should represent the number of warnings that should occur on that line.
      *
-     * @return array(int => int)
+     * @return int[]
      */
     abstract protected function getWarningList();
 }

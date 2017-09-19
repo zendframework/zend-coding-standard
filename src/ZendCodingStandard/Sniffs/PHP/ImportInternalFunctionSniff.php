@@ -58,7 +58,7 @@ class ImportInternalFunctionSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -66,7 +66,7 @@ class ImportInternalFunctionSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -155,7 +155,6 @@ class ImportInternalFunctionSniff implements Sniff
     }
 
     /**
-     * @param File $phpcsFile
      * @param int $stackPtr
      * @param string $functionName
      */

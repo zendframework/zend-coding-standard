@@ -31,7 +31,7 @@ use const T_WHITESPACE;
 class CommaSpacingSniff implements Sniff
 {
     /**
-     * @inheritDoc
+     * @return int[]
      */
     public function register()
     {
@@ -39,7 +39,7 @@ class CommaSpacingSniff implements Sniff
     }
 
     /**
-     * @inheritDoc
+     * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr)
     {

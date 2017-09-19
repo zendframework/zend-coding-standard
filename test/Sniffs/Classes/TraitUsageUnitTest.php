@@ -5,7 +5,11 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class TraitUsageUnitTest extends TestCase
 {
-    public function getErrorList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getErrorList($testFile = '')
     {
         return [
             9 => 1,
@@ -21,7 +25,11 @@ class TraitUsageUnitTest extends TestCase
         ];
     }
 
-    public function getWarningList()
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
+    public function getWarningList($testFile = '')
     {
         return [];
     }
