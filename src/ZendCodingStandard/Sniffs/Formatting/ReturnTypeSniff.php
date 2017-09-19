@@ -25,7 +25,7 @@ class ReturnTypeSniff implements Sniff
     /**
      * @var int
      */
-    public $spacesBeforeColon = 0;
+    public $spacesBeforeColon = 1;
 
     /**
      * @var int
