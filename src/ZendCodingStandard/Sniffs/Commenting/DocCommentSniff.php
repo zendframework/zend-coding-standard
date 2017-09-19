@@ -34,7 +34,7 @@ class DocCommentSniff implements Sniff
 {
     public $indent = 4;
 
-    private $tagWithType = [
+    public $tagWithType = [
         '@var',
         '@param',
         '@return',
