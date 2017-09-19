@@ -227,6 +227,7 @@ class UnnecessaryParenthesesSniff implements Sniff
                     Tokens::$assignmentTokens
                         + Tokens::$booleanOperators
                         + [
+                            T_COALESCE    => T_COALESCE,
                             T_INLINE_ELSE => T_INLINE_ELSE,
                             T_INLINE_THEN => T_INLINE_THEN,
                         ],
