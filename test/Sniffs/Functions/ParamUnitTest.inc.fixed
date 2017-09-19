@@ -1,0 +1,310 @@
+<?php
+
+namespace MyNamespace\Test;
+
+use DateTime;
+use RuntimeException as Exception;
+use ZTest\MyNamespace\ParentClass as FunctionParamParent;
+
+class FunctionParam extends FunctionParamParent
+{
+    public function paramType(DateTime $a) {}
+
+    /**
+     * @param DateTime $a
+     */
+    public function paramTypeInDocs($a) {}
+
+    public function paramNeedsSpecification($a) {}
+
+    public function arrayTypeNeedsSpecification(array $a) {}
+
+    /**
+     * @param array $a
+     */
+    public function arrayTypeNeedsSpecificationInDocs($a) {}
+
+    /**
+     * @param int[] $a
+     */
+    public function arrayTypeSpecified(array $a) {}
+
+    /**
+     * @param string $a
+     */
+    public function arrayTypeSpecifiedWrongly(array $a) {}
+
+    public function traversableNeedsSpecification(\Traversable $a) {}
+
+    /**
+     * @param \Traversable $a
+     */
+    public function traversableNeedsSpecificationInDocs($a) {}
+
+    /**
+     * @param \ArrayAccess|\ArrayObject $a
+     */
+    public function traversableSpecified(\Traversable $a) {}
+
+    /**
+     * @param string|DateTime[]|\Traversable $a
+     */
+    public function traversableSpecifiedWrongly(\Traversable $a) {}
+
+    public function iterableNeedsSpecification(iterable $a) {}
+
+    /**
+     * @param iterable $a
+     */
+    public function iterableNeedsSpecificationInDocs($a) {}
+
+    /**
+     * @param MyIterableClass $a
+     */
+    public function iterableSpecified(iterable $a) {}
+
+    /**
+     * @param int|DateTime[] $a
+     */
+    public function iterableSpecifiedWrongly(iterable $a) {}
+
+    /**
+     * @param mixed $a
+     */
+    public function mixedParamIsNotAllowed($a) {}
+
+    /**
+     * @param mixed[] $a
+     */
+    public function mixedArrayParamIsNotAllowed(array $a) {}
+
+    public function multipleParamsOneNeedsSpecification($a, DateTime $v) {}
+
+    public function multipleParamsOneNeedsClarification(DateTime $a, array $b) {}
+
+    public function multipleParamsAllNeedsSpecification($a, $b, $c) {}
+
+    /**
+     * @param int ...$a
+     */
+    public function variadicParamWithoutTypeHint(...$a) {}
+
+    /**
+     *
+     */
+    public function variadicParamTagRedundant(string ...$a) {}
+
+    /**
+     * @param string[] ...$a
+     */
+    public function variadicParamWrongTag1(string ...$a) {}
+
+    /**
+     * @param array[] ...$a
+     */
+    public function variadicParamWrongTag2(array ...$a) {}
+
+    /**
+     * @param
+     */
+    public function missingParamTypeAndInvalidTypeHintCase(string $a) {}
+
+    /**
+     * @param something
+     */
+    public function invalidParamTagAndInvalidTypeHintCase(?int $a) {}
+
+    /**
+     * @param $a something
+     */
+    public function invalidParamTag(bool $a) {}
+
+    /**
+     * @param ...$a
+     */
+    public function missingTypeInParam(...$a) {}
+
+    /**
+     * @param $c
+     * @param int $inconsistentPARAMname
+     */
+    public function inconsistentParamName($a, $inconsistentParamName) {}
+
+    /**
+     * @param string[] $a
+     */
+    public function variadicParam(...$a) {}
+
+    public function selfAndParent(self $a, parent $b) {}
+
+    public function nullableSelfAndParent(?self $a, ?parent $b) {}
+
+    /**
+     * @param self $a
+     * @param parent $b
+     */
+    public function selfAndParentInTags($a, $b) {}
+
+    /**
+     * @param bool|int $a
+     */
+    public function duplicatedTypeInTag($a) {}
+
+    /**
+     * @param void $a
+     * @param false|true $b
+     */
+    public function voidAndTrueAndFalse($a, $b) {}
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public function fcqnAndImportedClass(
+        DateTime $a,
+        DateTime $b,
+        DateTime $c,
+        DateTime $d,
+        ?DateTime $e,
+        ?DateTime $f,
+        ?DateTime $g,
+        ?DateTime $h
+    ) {}
+
+    /**
+     * @param null|int[] $a
+     */
+    public function missingNullInTag(?iterable $a) {}
+
+    public function selfInsteadOfClassName(self $a) {}
+
+    /**
+     * @param self $a
+     */
+    public function selfInsteadOfClassNameInTag($a) {}
+
+    public function parentInsteadOfFCQNParentClassName(parent $b) {}
+
+    /**
+     * @param parent $a
+     */
+    public function parentInsteadOfFCQNParentClassNameInTag($a) {}
+
+    /**
+     * @param DateTime $a Description.
+     *
+     */
+    public function canUseImportedClasses(DateTime $a, ?DateTime ...$b) {}
+
+    /**
+     * @param int $a
+     * @param string $a
+     */
+    public function duplicatedTagForTheSameParam($a) {}
+
+    /**
+     * @param float $a
+     * @param false $b
+     * @param object $c
+     */
+    public function inconsistentPrimitiveTypes(int $a, bool $b, string $c) {}
+
+    /**
+     * @param ?array $a
+     * @param |int| $b
+     * @param int $c
+     */
+    public function invalidParamTypes($a, $b) {}
+
+    /**
+     * @param string $a
+     * @param Exception $b
+     */
+    public function wrongType(DateTime $a, \Throwable $b) {}
+
+    /**
+     * @param string $a
+     * @param array $b
+     * @param \Traversable $c
+     * @param iterable $d
+     */
+    public function someTypesNeedsSpecification($a, $b, $c, $d, \Exception $e, Exception $f) {}
+
+    /**
+     * @param DateTime $a
+     */
+    public function paramContainAnotherType(\DateTimeInterface $a) {}
+
+    /**
+     * @param float|int|string $a
+     * @param bool|int|DateTime $b
+     * @param null|\ArrayAccess|\ArrayObject|DateTime $c
+     */
+    public function wrongOrderOfParamTypes($a, $b, $c) {}
+
+    /**
+     * @param bool $a
+     * @param null|DateTime|Something $b
+     * @param string|DateTime|Something $c
+     *
+     * @param null|DateTime $e
+     * @param null|string $f
+     * @param null|string $g
+     */
+    public function defaultValueAndNull(
+        $a,
+        ?DateTime $b,
+        DateTime $c,
+        DateTime $d,
+        DateTime $e = null,
+        string $f = null,
+        string $g = null,
+        string $h = 'null'
+    ) {}
+
+    /**
+     * @param null[]|string[] $a
+     *
+     * @param int|string $c
+     */
+    public function inconsistentParamTypesInTag($a, int $b, string $c) {}
+
+    /**
+     * @param string $a
+     * @param bool $c Another param description
+     *     It is also.
+     *     Very long.
+     * @param int $d This is very Long
+     *     description of the last param.
+     * @return string Here is description
+     *     of the return value.
+     *
+     */
+    public function wrongParamOrder($a, DateTime $b, $c, $d) {}
+
+    /**
+     * @param null|string $a
+     */
+    public function paramNeedsTag1(string $a = null) {}
+
+    /** 
+     * @param null|int $int
+     */
+    public function paramNeedsTag2(int $int = null) {}
+
+    /**
+     * @param null|int $a
+     */
+    public function paramHasWrongType1(bool $a = null) {}
+
+    /**
+     * @param string $a
+     */
+    public function paramHasWrongType2(int $a) {}
+}

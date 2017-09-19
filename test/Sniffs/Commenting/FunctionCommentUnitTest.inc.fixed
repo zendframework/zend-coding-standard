@@ -1,56 +1,51 @@
 <?php
 namespace MyApp\MyNamespace;
 
-use Bar;
-use DateTime;
-
-class Foo extends Bar
+class Foo
 {
-    /**
-     * @inheritDoc
-     */
-    protected function test1(DateTime $x, $y)
-    {
-    }
+    // inline comment
+    private function inlineComment() {}
 
     /**
-     * Comment.
+     * @return void
+     */
+
+    private function emptyLine() {}
+
+    /**
+     * @myTag
+     * @anotherTag
+*
+     * @param $a
+     * @param $b
+     * @param $c
+     * @param $d
+     * @return void
+     * @throws \Exception
+     * @throws \RuntimeException
+     */
+    private function tagsOrder($a, $b, $c, $d) {}
+
+    /**
+     * @see
+     */
+    private function seeMissingContent() {}
+
+    /**
+     * @dataProvider something
+*
+     * @param int $a
+     * @param int $b Param
+     *     long description.
+     * @return void
+     * @throws \Exception
+     */
+    private function removeBlankLines($a, $b) {}
+
+    /**
+     * @dataProvider something
      *
-     * {@inheritDoc}
+     * @param string $a
      */
-    protected function test2()
-    {
-    }
-
-    /**
-     * @return array(int => bool)
-     */
-    private function returnsIntBoolArray()
-    {
-        return [1 => true];
-    }
-
-    /**
-     * @return int[]
-     */
-    private function returnsIntArray()
-    {
-        return [0, 1];
-    }
-
-    /**
-     * @return bool[]
-     */
-    private function returnsBoolArray()
-    {
-        return [true, false];
-    }
-
-    /**
-     * @return array
-     */
-    private function returnsArray()
-    {
-        return [];
-    }
+    private function toManyEmptyLines($a) {}
 }

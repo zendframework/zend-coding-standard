@@ -5,34 +5,29 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class FunctionCommentUnitTest extends TestCase
 {
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getErrorList($testFile = '')
     {
-        switch ($testFile) {
-            case 'FunctionCommentUnitTest.1.inc':
-                return [
-                    8 => 2,
-                    9 => 1,
-                    17 => 2,
-                    26 => 1,
-                    33 => 1,
-                    35 => 2,
-                    49 => 1,
-                    50 => 1,
-                    57 => 1,
-                    66 => 1,
-                ];
-        }
-
         return [
-            10 => 1,
-            16 => 1,
-            26 => 1,
-            34 => 1,
+            7 => 1,
+            11 => 1,
+            17 => 1,
+            29 => 1,
+            35 => 1,
+            36 => 1,
+            39 => 1,
             42 => 1,
-            50 => 1,
+            49 => 1,
         ];
     }
 
+    /**
+     * @param string $testFile
+     * @return int[]
+     */
     public function getWarningList($testFile = '')
     {
         return [];
