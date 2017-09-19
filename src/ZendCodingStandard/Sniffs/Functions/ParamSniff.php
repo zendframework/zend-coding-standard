@@ -3,7 +3,6 @@ namespace ZendCodingStandard\Sniffs\Functions;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\Helper\Methods;
 
 use function array_filter;
@@ -26,7 +25,6 @@ use function trim;
 use function ucfirst;
 use function usort;
 
-use const T_DOC_COMMENT_CLOSE_TAG;
 use const T_DOC_COMMENT_STAR;
 use const T_DOC_COMMENT_STRING;
 use const T_DOC_COMMENT_WHITESPACE;
@@ -34,7 +32,6 @@ use const T_FUNCTION;
 use const T_NS_SEPARATOR;
 use const T_NULLABLE;
 use const T_STRING;
-use const T_WHITESPACE;
 
 class ParamSniff implements Sniff
 {
@@ -75,7 +72,7 @@ class ParamSniff implements Sniff
         if ($commentStart = $this->getCommentStart($phpcsFile, $stackPtr)) {
             $this->processParamDoc($phpcsFile, $stackPtr, $commentStart);
         }
-        $this->processParamSpec($phpcsFile, $stackPtr);
+        $this->processParamSpec($phpcsFile);
     }
 
     /**
@@ -163,7 +160,7 @@ class ParamSniff implements Sniff
             $description = isset($split[2]) ? $split[2] : null;
             $type = $split[0];
 
-            $this->checkParam($phpcsFile, current($param), $stackPtr, $tag, $name, $type, $description);
+            $this->checkParam($phpcsFile, current($param), $tag, $name, $type, $description);
         }
 
         $last = current($this->processedParams);
@@ -262,7 +259,6 @@ class ParamSniff implements Sniff
 
     /**
      * @param string[] $param Real param function details.
-     * @param null|int $methodPtr Position of the method definition token.
      * @param null|int $tagPtr Position of the @param tag.
      * @param null|string $name Name of the param in the @param tag.
      * @param null|string $typeStr Type of the param in the @param tag.
@@ -271,7 +267,6 @@ class ParamSniff implements Sniff
     private function checkParam(
         File $phpcsFile,
         array $param,
-        $methodPtr = null,
         $tagPtr = null,
         $name = null,
         $typeStr = null,
@@ -320,19 +315,6 @@ class ParamSniff implements Sniff
                     $param['name'],
                 ];
                 $phpcsFile->addError($error, $param['token'], $code, $data);
-            } elseif (isset($param['default'])
-                && strtolower($param['default']) === 'null'
-                && $typeHint[0] !== '?'
-            ) {
-                $error = 'Parameter %s needs specification in PHPDocs';
-                $data = [
-                    $param['name'],
-                ];
-                $fix = $phpcsFile->addFixableError($error, $param['token'], 'MissingSpecificationNUll', $data);
-
-                if ($fix) {
-                    $this->addParameter($phpcsFile, $methodPtr, $param['name'], 'null|' . $param['type_hint']);
-                }
             }
 
             return;
@@ -590,14 +572,23 @@ class ParamSniff implements Sniff
         // Check if PHPDocs param is required
         if ($typeHint
             && ! in_array($lowerTypeHint, $this->needSpecificationTypes, true)
-            && $this->typesMatch($typeHint, $typeStr)
             && ! $description
         ) {
-            $error = 'Param tag is redundant';
-            $fix = $phpcsFile->addFixableError($error, $tagPtr, 'RedundantParamDoc');
+            $tmpTypeHint = $typeHint;
+            if (isset($param['default'])
+                && strtolower($param['default']) === 'null'
+                && $tmpTypeHint[0] !== '?'
+            ) {
+                $tmpTypeHint = '?' . $tmpTypeHint;
+            }
 
-            if ($fix) {
-                $this->removeTag($phpcsFile, $tagPtr);
+            if ($this->typesMatch($tmpTypeHint, $typeStr)) {
+                $error = 'Param tag is redundant';
+                $fix = $phpcsFile->addFixableError($error, $tagPtr, 'RedundantParamDoc');
+
+                if ($fix) {
+                    $this->removeTag($phpcsFile, $tagPtr);
+                }
             }
         }
     }
@@ -621,68 +612,14 @@ class ParamSniff implements Sniff
         return (bool) preg_match('/^((?:\\\\?[a-z0-9]+)+(?:\[\])*)(\|(?:\\\\?[a-z0-9]+)+(?:\[\])*)*$/i', $str);
     }
 
-    /**
-     * @param int $stackPtr
-     */
-    private function processParamSpec(File $phpcsFile, $stackPtr)
+    private function processParamSpec(File $phpcsFile)
     {
         foreach ($this->params as $k => $param) {
             if (in_array($k, $this->processedParams, true)) {
                 continue;
             }
 
-            $this->checkParam($phpcsFile, $param, $stackPtr);
+            $this->checkParam($phpcsFile, $param);
         }
-    }
-
-    /**
-     * @param int $methodPtr
-     * @param string $name
-     * @param string $type
-     */
-    private function addParameter(File $phpcsFile, $methodPtr, $name, $type)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $skip = Tokens::$methodPrefixes
-            + [T_WHITESPACE => T_WHITESPACE];
-
-        $commentEnd = $phpcsFile->findPrevious($skip, $methodPtr - 1, null, true);
-        if ($tokens[$commentEnd]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
-            $firstOnLine = $phpcsFile->findFirstOnLine([], $commentEnd, true);
-            $indent = ' ';
-            $content = '* @param %3$s %4$s%2$s%1$s';
-            if ($tokens[$firstOnLine]['code'] === T_DOC_COMMENT_WHITESPACE) {
-                $indent = $tokens[$firstOnLine]['content'];
-            } elseif ($tokens[$firstOnLine]['code'] === T_WHITESPACE) {
-                $indent .= $tokens[$firstOnLine]['content'];
-                $content = '%2$s%1$s* @param %3$s %4$s%2$s%1$s';
-            }
-
-            $before = $commentEnd;
-        } else {
-            $next = $phpcsFile->findNext(T_WHITESPACE, $commentEnd + 1, null, true);
-            $firstOnLine = $phpcsFile->findFirstOnLine([], $next, true);
-            $indent = '';
-            if ($tokens[$firstOnLine]['code'] === T_WHITESPACE) {
-                $indent = $tokens[$firstOnLine]['content'];
-            }
-
-            $content = '%1$s/**%2$s'
-                . '%1$s * @param %3$s %4$s%2$s'
-                . '%1$s */%2$s';
-
-            $before = $firstOnLine;
-        }
-
-        $content = sprintf(
-            $content,
-            $indent,
-            $phpcsFile->eolChar,
-            $type,
-            $name
-        );
-
-        $phpcsFile->fixer->addContentBefore($before, $content);
     }
 }

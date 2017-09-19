@@ -287,10 +287,10 @@ class FunctionParam extends FunctionParamParent
      */
     public function wrongParamOrder($a, DateTime $b, $c, $d) {}
 
-    public function paramNeedsTag1(string $a = null) {}
+    public function paramDoesNotNeedTag1(string $a = null) {}
 
     /** */
-    public function paramNeedsTag2(int $int = null) {}
+    public function paramDoesNotNeedTag2(int $int = null) {}
 
     /**
      * @param null|int $a

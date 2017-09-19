@@ -253,9 +253,8 @@ class FunctionParam extends FunctionParamParent
      * @param null|DateTime|Something $b
      * @param string|DateTime|Something $c
      *
-     * @param null|DateTime $e
-     * @param null|string $f
-     * @param null|string $g
+     *
+     *
      */
     public function defaultValueAndNull(
         $a,
@@ -288,15 +287,10 @@ class FunctionParam extends FunctionParamParent
      */
     public function wrongParamOrder($a, DateTime $b, $c, $d) {}
 
-    /**
-     * @param null|string $a
-     */
-    public function paramNeedsTag1(string $a = null) {}
+    public function paramDoesNotNeedTag1(string $a = null) {}
 
-    /** 
-     * @param null|int $int
-     */
-    public function paramNeedsTag2(int $int = null) {}
+    /** */
+    public function paramDoesNotNeedTag2(int $int = null) {}
 
     /**
      * @param null|int $a
