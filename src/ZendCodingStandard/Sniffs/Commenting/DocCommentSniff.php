@@ -344,9 +344,6 @@ class DocCommentSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($commentStart + 1, ' ');
             }
         } elseif ($tokens[$commentStart + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
-            // This case is currently not supported.
-            // Comment /**@var null $name; */ is not recognized as doc-block comment.
-            // todo: fix is already merged to PHP_CodeSniffer 3.1.0, need to be changed after release 3.1.0
             $error = 'Expected 1 space after opening tag of one line doc block comment.';
             $fix = $phpcsFile->addFixableError($error, $commentStart, 'InvalidSpacing');
 

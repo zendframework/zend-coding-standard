@@ -69,7 +69,7 @@ class DocCommentUnitTest extends TestCase
                     11 => 1,
                     14 => 2,
                     17 => 1,
-                    // 20 => 2, // not yet supported
+                    20 => 2,
                 ];
             case 'DocCommentUnitTest.7.inc':
                 return [

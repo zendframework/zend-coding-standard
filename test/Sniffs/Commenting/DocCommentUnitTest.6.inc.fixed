@@ -17,7 +17,7 @@ class OneLine
         /** @var null $no */
         $no = null;
 
-        /**@var null $notYetSupported*/
-        $notYetSupported = null;
+        /** @var null $missingSpaces */
+        $missingSpaces = null;
     }
 }
