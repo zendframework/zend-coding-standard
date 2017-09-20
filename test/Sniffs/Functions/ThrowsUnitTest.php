@@ -25,9 +25,10 @@ class ThrowsUnitTest extends TestCase
             127 => 1,
             142 => 1,
             160 => 1,
-            174 => 1,
+            171 => 1,
             178 => 1,
             184 => 1,
+            189 => 1,
         ];
     }
 

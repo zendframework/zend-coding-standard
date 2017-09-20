@@ -170,10 +170,7 @@ class ThrowsSniff implements Sniff
                     }
 
                     $thrownExceptions[] = $suggested;
-                } else {
-                    // the next token is not a valid name - it could be variable name
-                    $error = 'Expected exception class name';
-                    $phpcsFile->addError($error, $currException, 'ThrowClassName');
+                    continue;
                 }
             } elseif ($tokens[$next]['code'] === T_VARIABLE) {
                 $catch = $phpcsFile->findPrevious(T_CATCH, $throw, $scopeBegin);
@@ -196,10 +193,12 @@ class ThrowsSniff implements Sniff
                             $thrownExceptions[] = $exception;
                         }
                     }
-                } else {
-                    ++$thrownVariables;
+
+                    continue;
                 }
             }
+
+            ++$thrownVariables;
         }
 
         if (! $foundThrows) {
@@ -216,7 +215,7 @@ class ThrowsSniff implements Sniff
         $thrownExceptions = array_unique($thrownExceptions);
 
         // Make sure @throws tag count matches thrown count.
-        $thrownCount = count($thrownExceptions);
+        $thrownCount = count($thrownExceptions) ?: 1;
         $tagCount = count(array_unique($this->throwTags));
 
         if ($thrownVariables > 0) {

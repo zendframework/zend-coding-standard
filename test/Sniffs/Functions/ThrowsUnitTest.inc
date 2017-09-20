@@ -181,6 +181,11 @@ class ThrowUnitTest
     {
     }
 
+    public function throwExceptionFromFactory()
+    {
+        throw ExceptionFacotry::create();
+    }
+
     public function throwVariableAndException()
     {
         $e = new Exception();
