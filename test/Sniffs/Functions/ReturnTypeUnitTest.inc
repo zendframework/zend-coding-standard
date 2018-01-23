@@ -224,28 +224,36 @@ abstract class FunctionCommentReturn
     /**
      * @return mixed
      */
-    abstract public function mixedTypeIsNotAllowed();
+    abstract public function mixedTypeIsAllowed();
 
     /**
      * @return mixed[][]
      */
-    abstract public function mixedArrayTypeIsNotAllowed();
+    abstract public function mixedArrayTypeIsAllowed();
 
-    abstract public function returnTypeArrayNeedsSpecification() : array;
+    abstract public function returnTypeArrayDoesNotNeedSpecification() : array;
 
-    abstract public function returnTypeNullableArrayNeedsSpecification() : ?array;
+    abstract public function returnTypeNullableArrayDoesNotNeedSpecification() : ?array;
 
-    abstract public function returnTypeTraversableNeedsSpecification() : \Traversable;
+    abstract public function returnTypeTraversableDoesNotNeedSpecification() : \Traversable;
 
-    abstract public function returnTypeNullableTraversableNeedsSpecificaiton() : ?\Traversable;
+    abstract public function returnTypeNullableTraversableDoesNotNeedSpecificaiton() : ?\Traversable;
 
-    abstract public function returnTypeTraversableWithoutNSNeedsSpecification() : Traversable;
+    abstract public function returnTypeTraversableWithoutNSDoesNotNeedSpecification() : Traversable;
 
-    abstract public function returnTypeNullableTraversableWithoutNSNeedsSpecification() : ?Traversable;
+    abstract public function returnTypeNullableTraversableWithoutNSDoesNotNeedSpecification() : ?Traversable;
 
-    abstract public function returnTypeIterableNeedsSpecification() : iterable;
+    abstract public function returnTypeGeneratorDoesNotNeedSpecification() : \Generator;
 
-    abstract public function returnTypeNullableIterableNeedsSpecification() : ?iterable;
+    abstract public function returnTypeNullableGeneratorDoesNotNeedSpecificaiton() : ?\Generator;
+
+    abstract public function returnTypeGeneratorWithoutNSDoesNotNeedSpecification() : Generator;
+
+    abstract public function returnTypeNullableGeneratorWithoutNSDoesNotNeedSpecification() : ?Generator;
+
+    abstract public function returnTypeIterableDoesNotNeedSpecification() : iterable;
+
+    abstract public function returnTypeNullableIterableDoesNotNeedSpecification() : ?iterable;
 
     /**
      * @return array
@@ -266,6 +274,16 @@ abstract class FunctionCommentReturn
      * @return Traversable[]
      */
     abstract public function tagReturnTypeArrayOfTraversableNeedsSpecification();
+
+    /**
+     * @return \Generator[]
+     */
+    abstract public function tagReturnTypeGeneratorNeedsSpecification();
+
+    /**
+     * @return Generator
+     */
+    abstract public function tagReturnTypeArrayOfGeneratorNeedsSpecification();
 
     /**
      * @return iterable

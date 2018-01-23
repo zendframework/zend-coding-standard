@@ -6,7 +6,9 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use ZendCodingStandard\Helper\Methods;
 
 use function array_filter;
+use function array_merge;
 use function array_unique;
+use function count;
 use function current;
 use function explode;
 use function implode;
@@ -70,16 +72,15 @@ class ParamSniff implements Sniff
         $this->params = $phpcsFile->getMethodParameters($stackPtr);
 
         if ($commentStart = $this->getCommentStart($phpcsFile, $stackPtr)) {
-            $this->processParamDoc($phpcsFile, $stackPtr, $commentStart);
+            $this->processParamDoc($phpcsFile, $commentStart);
         }
         $this->processParamSpec($phpcsFile);
     }
 
     /**
-     * @param int $stackPtr
      * @param int $commentStart
      */
-    private function processParamDoc(File $phpcsFile, $stackPtr, $commentStart)
+    private function processParamDoc(File $phpcsFile, $commentStart)
     {
         $params = [];
         $paramsMap = [];
@@ -307,14 +308,6 @@ class ParamSniff implements Sniff
                     $param['name'],
                 ];
                 $phpcsFile->addError($error, $param['token'], 'MissingSpecification', $data);
-            } elseif (in_array($lowerTypeHint, $this->needSpecificationTypes, true)) {
-                $type = strtr($lowerTypeHint, ['\\' => '', '?' => '']);
-                $code = sprintf('ParamType%sSpecification', ucfirst($type));
-                $error = 'Parameter "%s" needs better specification in PHPDocs';
-                $data = [
-                    $param['name'],
-                ];
-                $phpcsFile->addError($error, $param['token'], $code, $data);
             }
 
             return;
@@ -376,6 +369,19 @@ class ParamSniff implements Sniff
             }
         }
 
+        $cannotBeMixed = [
+            'array',
+            'iterable',
+            'mixed',
+            'traversable',
+            '\traversable',
+            'generator',
+            '\generator',
+        ];
+        $hasNull = array_filter($types, function ($v) {
+            return strtolower($v) === 'null' || stripos($v, 'null[') === 0;
+        });
+        $count = count($types);
         $break = false;
         foreach ($types as $key => $type) {
             $lower = strtolower($type);
@@ -413,11 +419,19 @@ class ParamSniff implements Sniff
                 continue;
             }
 
-            if ($lower === 'mixed'
-                || stripos($type, 'mixed[') === 0
+            if ((($hasNull && $count > 2)
+                    || ((! $hasNull
+                            || ($lower === 'mixed' || strpos($lower, 'mixed[') === 0))
+                        && $count > 1))
+                && array_filter($cannotBeMixed, function ($v) use ($lower) {
+                    return $v === $lower || strpos($lower, $v . '[') === 0;
+                })
             ) {
-                $error = 'Param type "mixed" is not allowed. Please specify the type.';
-                $phpcsFile->addError($error, $tagPtr + 2, 'ParamDocMixed');
+                $error = 'Param type "%s" is not allowed. Please specify the type.';
+                $data = [
+                    $type,
+                ];
+                $phpcsFile->addError($error, $tagPtr + 2, 'ParamDocMixed', $data);
 
                 $break = true;
                 continue;
@@ -430,21 +444,6 @@ class ParamSniff implements Sniff
                 $data = [
                     $type,
                 ];
-                $phpcsFile->addError($error, $tagPtr + 2, $code, $data);
-
-                $break = true;
-                continue;
-            }
-
-            if (array_filter($this->needSpecificationTypes, function ($v) use ($lower) {
-                return $lower === $v || strpos($lower, $v . '[') === 0;
-            })) {
-                $type = str_replace('\\', '', $lower);
-                $code = sprintf('Param%sSpecification', ucfirst($type));
-                $data = [
-                    stripos($type, 'traversable') !== false ? ucfirst($type) : $type,
-                ];
-                $error = 'Param type "%s" needs better specification';
                 $phpcsFile->addError($error, $tagPtr + 2, $code, $data);
 
                 $break = true;
@@ -471,6 +470,8 @@ class ParamSniff implements Sniff
             }
 
             if ($typeHint) {
+                $simpleTypes = array_merge($this->simpleReturnTypes, ['mixed']);
+
                 // array
                 if (in_array($lowerTypeHint, ['array', '?array'], true)
                     && ! in_array($lower, ['null', 'array'], true)
@@ -488,7 +489,7 @@ class ParamSniff implements Sniff
 
                 // iterable
                 if (in_array($lowerTypeHint, ['iterable', '?iterable'], true)
-                    && in_array($lower, $this->simpleReturnTypes, true)
+                    && in_array($lower, $simpleTypes, true)
                 ) {
                     $error = 'Param type contains "%s" which is not an iterable type';
                     $data = [
@@ -508,8 +509,7 @@ class ParamSniff implements Sniff
                         '?\traversable',
                     ], true)
                     && ! in_array($lower, ['null', 'traversable', '\traversable'], true)
-                    && (strpos($type, '[]') !== false
-                        || in_array($lower, $this->simpleReturnTypes, true))
+                    && in_array($lower, $simpleTypes, true)
                 ) {
                     $error = 'Param type contains "%s" which is not a traversable type';
                     $data = [
@@ -521,13 +521,48 @@ class ParamSniff implements Sniff
                     continue;
                 }
 
-                if (! in_array($lowerTypeHint, $this->needSpecificationTypes, true)
-                    && ((in_array($lowerTypeHint, $this->simpleReturnTypes, true)
+                // generator
+                if (in_array($lowerTypeHint, [
+                        'generator',
+                        '?generator',
+                        '\generator',
+                        '?\generator',
+                    ], true)
+                    && ! in_array($lower, ['null', 'generator', '\generator'], true)
+                    && in_array($lower, array_merge($simpleTypes, ['mixed']), true)
+                ) {
+                    $error = 'Param type contains %s which is not a generator type';
+                    $data = [
+                        $type,
+                    ];
+                    $phpcsFile->addError($error, $tagPtr + 2, 'NotGeneratorType', $data);
+
+                    $break = true;
+                    continue;
+                }
+
+                $needSpecificationTypes = [
+                    'array',
+                    '?array',
+                    'iterable',
+                    '?iterable',
+                    'traversable',
+                    '?traversable',
+                    '\traversable',
+                    '?\traversable',
+                    'generator',
+                    '?generator',
+                    '\generator',
+                    '?\generator',
+                ];
+
+                if (! in_array($lowerTypeHint, $needSpecificationTypes, true)
+                    && ((in_array($lowerTypeHint, $simpleTypes, true)
                             && $lower !== 'null'
                             && $lower !== $lowerTypeHint
                             && '?' . $lower !== $lowerTypeHint)
-                        || (! in_array($lowerTypeHint, $this->simpleReturnTypes, true)
-                            && array_filter($this->simpleReturnTypes, function ($v) use ($lower) {
+                        || (! in_array($lowerTypeHint, $simpleTypes, true)
+                            && array_filter($simpleTypes, function ($v) use ($lower) {
                                 return $v === $lower || strpos($lower, $v . '[') === 0;
                             })))
                 ) {
@@ -570,10 +605,7 @@ class ParamSniff implements Sniff
         }
 
         // Check if PHPDocs param is required
-        if ($typeHint
-            && ! in_array($lowerTypeHint, $this->needSpecificationTypes, true)
-            && ! $description
-        ) {
+        if ($typeHint && ! $description) {
             $tmpTypeHint = $typeHint;
             if (isset($param['default'])
                 && strtolower($param['default']) === 'null'

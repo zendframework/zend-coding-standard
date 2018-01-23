@@ -125,20 +125,6 @@ trait Methods
     ];
 
     /**
-     * @var string[]
-     */
-    private $needSpecificationTypes = [
-        'array',
-        '?array',
-        'iterable',
-        '?iterable',
-        'traversable',
-        '?traversable',
-        '\traversable',
-        '?\traversable',
-    ];
-
-    /**
      * @param int $stackPtr
      */
     private function initScope(File $phpcsFile, $stackPtr)

@@ -15,7 +15,7 @@ abstract class FunctionCommentReturn
     abstract public function nullArrayTypeSpecification() : ?array;
 
     /**
-     * @return iterable|string|MyIterableClass|\DateTime[]
+     * @return iterable|string|\DateTime[]|MyIterableClass
      */
     abstract public function iterableTypeSpecification() : iterable;
 

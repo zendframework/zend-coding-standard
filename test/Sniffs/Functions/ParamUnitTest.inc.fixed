@@ -17,12 +17,12 @@ class FunctionParam extends FunctionParamParent
 
     public function paramNeedsSpecification($a) {}
 
-    public function arrayTypeNeedsSpecification(array $a) {}
+    public function arrayTypeDoesNotNeedSpecification(array $a) {}
 
     /**
      * @param array $a
      */
-    public function arrayTypeNeedsSpecificationInDocs($a) {}
+    public function arrayTypeDoesNotNeedSpecificationInDocs($a) {}
 
     /**
      * @param int[] $a
@@ -34,12 +34,12 @@ class FunctionParam extends FunctionParamParent
      */
     public function arrayTypeSpecifiedWrongly(array $a) {}
 
-    public function traversableNeedsSpecification(\Traversable $a) {}
+    public function traversableDoesNotNeedSpecification(\Traversable $a) {}
 
     /**
      * @param \Traversable $a
      */
-    public function traversableNeedsSpecificationInDocs($a) {}
+    public function traversableDoesNotNeedSpecificationInDocs($a) {}
 
     /**
      * @param \ArrayAccess|\ArrayObject $a
@@ -51,12 +51,12 @@ class FunctionParam extends FunctionParamParent
      */
     public function traversableSpecifiedWrongly(\Traversable $a) {}
 
-    public function iterableNeedsSpecification(iterable $a) {}
+    public function iterableDoesNotNeedSpecification(iterable $a) {}
 
     /**
      * @param iterable $a
      */
-    public function iterableNeedsSpecificationInDocs($a) {}
+    public function iterableDoesNotNeedSpecificationInDocs($a) {}
 
     /**
      * @param MyIterableClass $a
@@ -71,16 +71,16 @@ class FunctionParam extends FunctionParamParent
     /**
      * @param mixed $a
      */
-    public function mixedParamIsNotAllowed($a) {}
+    public function mixedParamIsAllowed($a) {}
 
     /**
      * @param mixed[] $a
      */
-    public function mixedArrayParamIsNotAllowed(array $a) {}
+    public function mixedArrayParamIsAllowed(array $a) {}
 
     public function multipleParamsOneNeedsSpecification($a, DateTime $v) {}
 
-    public function multipleParamsOneNeedsClarification(DateTime $a, array $b) {}
+    public function multipleParamsAnyDoesNotNeedClarification(DateTime $a, array $b) {}
 
     public function multipleParamsAllNeedsSpecification($a, $b, $c) {}
 
@@ -301,4 +301,11 @@ class FunctionParam extends FunctionParamParent
      * @param string $a
      */
     public function paramHasWrongType2(int $a) {}
+
+    public function generatorDoesNotNeedSpecification(\Generator $a) {}
+
+    /**
+     * @param \Generator $a
+     */
+    public function generatorDoesNotNeedSpecificationInDocs($a) {}
 }

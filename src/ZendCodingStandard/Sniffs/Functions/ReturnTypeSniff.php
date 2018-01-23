@@ -8,6 +8,7 @@ use ZendCodingStandard\Helper\Methods;
 
 use function array_filter;
 use function array_intersect;
+use function array_merge;
 use function array_udiff;
 use function array_unique;
 use function count;
@@ -20,7 +21,6 @@ use function preg_match;
 use function preg_replace;
 use function preg_split;
 use function sprintf;
-use function str_replace;
 use function strcasecmp;
 use function stripos;
 use function strpos;
@@ -247,16 +247,38 @@ class ReturnTypeSniff implements Sniff
             return;
         }
 
+        $cannotBeMixed = [
+            'mixed',
+            'array',
+            'iterable',
+            'traversable',
+            '\traversable',
+            'generator',
+            '\generator',
+        ];
+
         $hasInvalidType = false;
         $this->returnDocTypes = explode('|', $this->returnDocValue);
+        $count = count($this->returnDocTypes);
+        $hasNull = array_filter($this->returnDocTypes, function ($v) {
+            return strtolower($v) === 'null' || stripos($v, 'null[') === 0;
+        });
         foreach ($this->returnDocTypes as $key => $type) {
             $lower = strtolower($type);
 
-            if ($lower === 'mixed'
-                || strpos($lower, 'mixed[') === 0
+            if ((($hasNull && $count > 2)
+                    || ((! $hasNull
+                            || ($lower === 'mixed' || strpos($lower, 'mixed[') === 0))
+                        && $count > 1))
+                && array_filter($cannotBeMixed, function ($v) use ($lower) {
+                    return $v === $lower || strpos($lower, $v . '[') === 0;
+                })
             ) {
-                $error = 'Return type "mixed" type is not allowed. Please specify the type.';
-                $phpcsFile->addError($error, $returnDoc + 2, 'ReturnMixed');
+                $error = 'Return type "%s" cannot be mixed with other types.';
+                $data = [
+                    $type,
+                ];
+                $phpcsFile->addError($error, $returnDoc + 2, 'ReturnMixed', $data);
 
                 $hasInvalidType = true;
                 continue;
@@ -266,21 +288,6 @@ class ReturnTypeSniff implements Sniff
                 // If void is mixed up with other return types.
                 $error = 'Return "void" is mixed with other types. Please use null instead.';
                 $phpcsFile->addError($error, $returnDoc + 2, 'ReturnVoidWithOther');
-
-                $hasInvalidType = true;
-                continue;
-            }
-
-            if (array_filter($this->needSpecificationTypes, function ($v) use ($type) {
-                return strtolower($type) === $v || stripos($type, $v . '[') === 0;
-            })) {
-                $type = str_replace('\\', '', strtolower($type));
-                $code = sprintf('Return%sSpecification', ucfirst($type));
-                $data = [
-                    stripos($type, 'traversable') !== false ? ucfirst($type) : $type,
-                ];
-                $error = 'Return type "%s" needs better specification';
-                $phpcsFile->addError($error, $returnDoc + 2, $code, $data);
 
                 $hasInvalidType = true;
                 continue;
@@ -465,20 +472,6 @@ class ReturnTypeSniff implements Sniff
             return;
         }
 
-        if (! $this->returnDoc
-            && in_array($lowerReturnTypeValue, $this->needSpecificationTypes, true)
-        ) {
-            $type = strtr($lowerReturnTypeValue, ['\\' => '', '?' => '']);
-            $code = sprintf('ReturnType%sSpecification', ucfirst($type));
-            $error = 'Return type "%s" needs better specification in PHPDocs.';
-            $data = [
-                $type === 'traversable' ? ucfirst($type) : $type,
-            ];
-            $phpcsFile->addError($error, $returnType, $code, $data);
-
-            return;
-        }
-
         if (! $this->returnDoc || ! $this->returnDocIsValid) {
             return;
         }
@@ -518,7 +511,22 @@ class ReturnTypeSniff implements Sniff
             return;
         }
 
-        if (! in_array($lowerReturnTypeValue, $this->needSpecificationTypes, true)) {
+        $needSpecificationTypes = [
+            'array',
+            '?array',
+            'iterable',
+            '?iterable',
+            'traversable',
+            '?traversable',
+            '\traversable',
+            '?\traversable',
+            'generator',
+            '?generator',
+            '\generator',
+            '?\generator',
+        ];
+
+        if (! in_array($lowerReturnTypeValue, $needSpecificationTypes, true)) {
             if ($this->typesMatch($this->returnTypeValue, $this->returnDocValue)) {
                 // There is no description and values are the same so PHPDoc tag is redundant.
                 if (! $this->returnDocDescription) {
@@ -602,6 +610,8 @@ class ReturnTypeSniff implements Sniff
             return;
         }
 
+        $simpleTypes = array_merge($this->simpleReturnTypes, ['mixed']);
+
         switch ($lowerReturnTypeValue) {
             case 'array':
             case '?array':
@@ -628,7 +638,7 @@ class ReturnTypeSniff implements Sniff
                         continue;
                     }
 
-                    if (in_array($lower, $this->simpleReturnTypes, true)) {
+                    if (in_array($lower, $simpleTypes, true)) {
                         $error = 'Return type contains "%s" which is not an iterable type';
                         $data = [
                             $type,
@@ -648,14 +658,32 @@ class ReturnTypeSniff implements Sniff
                         continue;
                     }
 
-                    if (strpos($type, '[]') !== false
-                        || in_array($lower, $this->simpleReturnTypes, true)
-                    ) {
+                    if (in_array($lower, $simpleTypes, true)) {
                         $error = 'Return type contains "%s" which is not a traversable type';
                         $data = [
                             $type,
                         ];
                         $phpcsFile->addError($error, $this->returnDoc + 2, 'NotTraversableType', $data);
+                    }
+                }
+                break;
+
+            case 'generator':
+            case '?generator':
+            case '\generator':
+            case '?\generator':
+                foreach ($this->returnDocTypes as $type) {
+                    $lower = strtolower($type);
+                    if (in_array($lower, ['null', 'generator', '\generator'], true)) {
+                        continue;
+                    }
+
+                    if (in_array($lower, $simpleTypes, true)) {
+                        $error = 'Return type contains "%s" which is not a generator type';
+                        $data = [
+                            $type,
+                        ];
+                        $phpcsFile->addError($error, $this->returnDoc + 2, 'NotGeneratorType', $data);
                     }
                 }
                 break;
