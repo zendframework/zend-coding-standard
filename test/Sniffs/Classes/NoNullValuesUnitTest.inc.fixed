@@ -19,7 +19,7 @@ class NoNullValues
         $var = null;
 
         $class = new class() {
-            private $s1 = null;
+            private $s1;
         };
 
         $string = "String $var = null";

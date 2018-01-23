@@ -17,9 +17,7 @@ class NoNullValuesUnitTest extends TestCase
             9 => 1,
             11 => 1,
             13 => 1,
-            // @todo: Member vars of nested class are not processed correctly
-            // @see https://github.com/squizlabs/PHP_CodeSniffer/pull/1498
-            // 23 => 1,
+            23 => 1,
         ];
     }
 
