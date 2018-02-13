@@ -315,4 +315,17 @@ abstract class FunctionCommentReturn
     {
         return mt_rand(0, 1) ? null : false;
     }
+
+    /**
+     * @return array|callable|iterable|\Generator|\Traversable
+     */
+    public function returnArrayOrSomethingElse($x)
+    {
+        if ($x) {
+            return function() {
+            };
+        }
+
+        return [];
+    }
 }

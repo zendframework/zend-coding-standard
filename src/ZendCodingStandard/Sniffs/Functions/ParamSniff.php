@@ -369,18 +369,6 @@ class ParamSniff implements Sniff
             }
         }
 
-        $cannotBeMixed = [
-            'array',
-            'iterable',
-            'mixed',
-            'traversable',
-            '\traversable',
-            'generator',
-            '\generator',
-        ];
-        $hasNull = array_filter($types, function ($v) {
-            return strtolower($v) === 'null' || stripos($v, 'null[') === 0;
-        });
         $count = count($types);
         $break = false;
         foreach ($types as $key => $type) {
@@ -419,15 +407,10 @@ class ParamSniff implements Sniff
                 continue;
             }
 
-            if ((($hasNull && $count > 2)
-                    || ((! $hasNull
-                            || ($lower === 'mixed' || strpos($lower, 'mixed[') === 0))
-                        && $count > 1))
-                && array_filter($cannotBeMixed, function ($v) use ($lower) {
-                    return $v === $lower || strpos($lower, $v . '[') === 0;
-                })
+            if ($count > 1
+                && ($lower === 'mixed' || strpos($lower, 'mixed[') === 0)
             ) {
-                $error = 'Param type "%s" is not allowed. Please specify the type.';
+                $error = 'Param type "%s" cannot be mixed with other types.';
                 $data = [
                     $type,
                 ];

@@ -22,7 +22,6 @@ use function preg_replace;
 use function preg_split;
 use function sprintf;
 use function strcasecmp;
-use function stripos;
 use function strpos;
 use function strtolower;
 use function strtr;
@@ -247,34 +246,16 @@ class ReturnTypeSniff implements Sniff
             return;
         }
 
-        $cannotBeMixed = [
-            'mixed',
-            'array',
-            'iterable',
-            'traversable',
-            '\traversable',
-            'generator',
-            '\generator',
-        ];
-
         $hasInvalidType = false;
         $this->returnDocTypes = explode('|', $this->returnDocValue);
         $count = count($this->returnDocTypes);
-        $hasNull = array_filter($this->returnDocTypes, function ($v) {
-            return strtolower($v) === 'null' || stripos($v, 'null[') === 0;
-        });
         foreach ($this->returnDocTypes as $key => $type) {
             $lower = strtolower($type);
 
-            if ((($hasNull && $count > 2)
-                    || ((! $hasNull
-                            || ($lower === 'mixed' || strpos($lower, 'mixed[') === 0))
-                        && $count > 1))
-                && array_filter($cannotBeMixed, function ($v) use ($lower) {
-                    return $v === $lower || strpos($lower, $v . '[') === 0;
-                })
+            if ($count > 1
+                && ($lower === 'mixed' || strpos($lower, 'mixed[') === 0)
             ) {
-                $error = 'Return type "%s" cannot be mixed with other types.';
+                $error = 'Return type %s cannot be mixed with other types.';
                 $data = [
                     $type,
                 ];

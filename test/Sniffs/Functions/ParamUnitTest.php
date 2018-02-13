@@ -32,7 +32,7 @@ class ParamUnitTest extends TestCase
         return [
             18 => 1,
             33 => 1,
-            50 => 3,
+            50 => 2,
             67 => 1,
             81 => 1,
             85 => 3,

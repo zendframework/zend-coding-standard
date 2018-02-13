@@ -113,4 +113,24 @@ class FunctionParam
      * @param MyObj $x
      */
     public function test22(array $x) {}
+
+    /**
+     * @param array|callable $a
+     */
+    public function paramArrayWithOtherTypes($a) {}
+
+    /**
+     * @param callable|iterable $a
+     */
+    public function paramIterableWithOtherTypes($a) {}
+
+    /**
+     * @param int|\Traversable $a
+     */
+    public function paramTraversableWithOtherTypes($a) {}
+
+    /**
+     * @param float|\Generator $a
+     */
+    public function paramGeneratorWithOtherTypes($a) {}
 }
