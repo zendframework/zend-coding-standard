@@ -731,7 +731,11 @@ class ScopeIndentSniff implements Sniff
                     $ptr = $tokens[$ptr]['bracket_opener'];
                 } elseif ($tokens[$ptr]['code'] === T_OBJECT_OPERATOR) {
                     return $tokens[$ptr]['column'];
-                } elseif ($tokens[$ptr]['code'] === T_SEMICOLON) {
+                } elseif (in_array(
+                    $tokens[$ptr]['code'],
+                    [T_SEMICOLON, T_OPEN_PARENTHESIS],
+                    true
+                )) {
                     break;
                 }
             }
@@ -755,9 +759,11 @@ class ScopeIndentSniff implements Sniff
                 $ptr = $tokens[$ptr]['parenthesis_closer'];
             } elseif ($tokens[$ptr]['code'] === T_OPEN_CURLY_BRACKET) {
                 $ptr = $tokens[$ptr]['bracket_closer'];
-            } elseif ($tokens[$ptr]['code'] === T_OBJECT_OPERATOR
-                || $tokens[$ptr]['code'] === T_SEMICOLON
-            ) {
+            } elseif (in_array(
+                $tokens[$ptr]['code'],
+                [T_OBJECT_OPERATOR, T_SEMICOLON, T_CLOSE_PARENTHESIS],
+                true
+            )) {
                 return $ptr;
             }
         }

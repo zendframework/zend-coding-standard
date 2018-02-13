@@ -15,6 +15,7 @@
         <!-- Replaced by ZendCodingStandard.WhiteSpace.ScopeIndent -->
         <exclude name="Generic.WhiteSpace.ScopeIndent"/>
         <exclude name="PSR2.Methods.FunctionCallSignature.Indent"/>
+        <exclude name="PSR2.Methods.FunctionCallSignature.OpeningIndent"/>
         <exclude name="Squiz.WhiteSpace.ScopeClosingBrace.Indent"/>
     </rule>
 

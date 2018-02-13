@@ -500,3 +500,9 @@ function test2()
 
     return 0;
 }
+
+$response = $handler->handle(
+    $request
+        ->withMethod(RequestMethod::METHOD_GET)
+        ->withAttribute(self::FORWARDED_HTTP_METHOD_ATTRIBUTE, RequestMethod::METHOD_HEAD)
+);
