@@ -30,6 +30,8 @@ use function trim;
 use function ucfirst;
 use function usort;
 
+use const T_ARRAY_HINT;
+use const T_CALLABLE;
 use const T_DOC_COMMENT_STAR;
 use const T_DOC_COMMENT_STRING;
 use const T_DOC_COMMENT_WHITESPACE;
@@ -250,8 +252,8 @@ class ParamSniff implements Sniff
      */
     private function replaceParamTypeHint(File $phpcsFile, $varPtr, $newTypeHint)
     {
-        $last = $phpcsFile->findPrevious(T_STRING, $varPtr - 1);
-        $first = $phpcsFile->findPrevious([T_NULLABLE, T_STRING, T_NS_SEPARATOR], $last, null, true);
+        $last = $phpcsFile->findPrevious([T_ARRAY_HINT, T_CALLABLE, T_STRING], $varPtr - 1);
+        $first = $phpcsFile->findPrevious([T_NULLABLE, T_STRING, T_NS_SEPARATOR], $last - 1, null, true);
 
         $phpcsFile->fixer->beginChangeset();
         $phpcsFile->fixer->replaceToken($last, $newTypeHint);

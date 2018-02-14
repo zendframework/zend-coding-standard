@@ -308,4 +308,6 @@ class FunctionParam extends FunctionParamParent
      * @param \Generator $a
      */
     public function generatorDoesNotNeedSpecificationInDocs($a) {}
+
+    private function privateMethod(CALLABLE $o, Array $p) {}
 }

@@ -103,6 +103,7 @@ class ParamUnitTest extends TestCase
             282 => 1,
             296 => 1,
             301 => 1,
+            312 => 2,
         ];
     }
 
