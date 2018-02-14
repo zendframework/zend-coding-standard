@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\Sniffs\WhiteSpace;
 
 use ZendCodingStandardTest\Sniffs\TestCase;

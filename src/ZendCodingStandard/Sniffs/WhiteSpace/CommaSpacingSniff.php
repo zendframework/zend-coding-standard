@@ -13,6 +13,8 @@
  *     ]
  */
 
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;

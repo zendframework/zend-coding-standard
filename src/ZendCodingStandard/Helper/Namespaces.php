@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Helper;
 
 use PHP_CodeSniffer\Files\File;

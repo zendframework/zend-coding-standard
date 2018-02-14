@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\Sniffs\Methods;
 
 use ZendCodingStandardTest\Sniffs\TestCase;

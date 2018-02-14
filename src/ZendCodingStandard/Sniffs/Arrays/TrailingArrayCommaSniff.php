@@ -4,6 +4,8 @@
  * with fix: comma shouldn't be added after "[" for empty arrays "[]".
  */
 
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Sniffs\Arrays;
 
 use PHP_CodeSniffer\Files\File;

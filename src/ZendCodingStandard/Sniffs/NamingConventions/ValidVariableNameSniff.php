@@ -5,6 +5,8 @@
  * @see https://github.com/consistence/coding-standard/blob/master/Consistence/Sniffs/NamingConventions/ValidVariableNameSniff.php
  */
 
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Files\File;

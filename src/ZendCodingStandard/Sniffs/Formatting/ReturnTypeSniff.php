@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Sniffs\Formatting;
 
 use PHP_CodeSniffer\Files\File;

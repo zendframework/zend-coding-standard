@@ -6,6 +6,8 @@
  *  - skip normal comments if there is one blank line after the comment
  */
 
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;

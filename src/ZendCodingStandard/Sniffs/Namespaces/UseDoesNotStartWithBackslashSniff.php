@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ZendCodingStandard\Sniffs\Namespaces;
 
 use PHP_CodeSniffer\Files\File;

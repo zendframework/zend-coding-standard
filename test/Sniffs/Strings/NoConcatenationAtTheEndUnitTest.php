@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\Sniffs\Strings;
 
 use ZendCodingStandardTest\Sniffs\TestCase;
