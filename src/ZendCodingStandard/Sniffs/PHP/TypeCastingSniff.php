@@ -27,7 +27,7 @@ class TypeCastingSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return Tokens::$castTokens
             + [T_BOOLEAN_NOT => T_BOOLEAN_NOT];
@@ -67,7 +67,7 @@ class TypeCastingSniff implements Sniff
         $expected = preg_replace('/\s/', '', strtolower($content));
         if ($content !== $expected || isset($this->castMap[$expected])) {
             $error = 'Invalid casting used. Expected %s, found %s';
-            $expected = isset($this->castMap[$expected]) ? $this->castMap[$expected] : $expected;
+            $expected = $this->castMap[$expected] ?? $expected;
             $data = [
                 $expected,
                 $content,

@@ -16,7 +16,7 @@ class NoInlineCommentAfterCurlyCloseSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_CLOSE_CURLY_BRACKET];
     }

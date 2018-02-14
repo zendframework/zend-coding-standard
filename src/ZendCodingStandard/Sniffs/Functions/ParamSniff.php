@@ -61,7 +61,7 @@ class ParamSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_FUNCTION];
     }
@@ -82,10 +82,7 @@ class ParamSniff implements Sniff
         $this->processParamSpec($phpcsFile);
     }
 
-    /**
-     * @param int $commentStart
-     */
-    private function processParamDoc(File $phpcsFile, $commentStart)
+    private function processParamDoc(File $phpcsFile, int $commentStart) : void
     {
         $params = [];
         $paramsMap = [];
@@ -163,7 +160,7 @@ class ParamSniff implements Sniff
                 $phpcsFile->addError($error, $tag + 2, 'InvalidParamTypeDoc', $data);
                 continue;
             }
-            $description = isset($split[2]) ? $split[2] : null;
+            $description = $split[2] ?? null;
             $type = $split[0];
 
             $this->checkParam($phpcsFile, current($param), $tag, $name, $type, $description);
@@ -191,9 +188,8 @@ class ParamSniff implements Sniff
 
     /**
      * @param string[] $map
-     * @param int $wrong
      */
-    private function fixParamOrder(File $phpcsFile, array $map, $wrong)
+    private function fixParamOrder(File $phpcsFile, array $map, int $wrong) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -246,11 +242,7 @@ class ParamSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param int $varPtr
-     * @param string $newTypeHint
-     */
-    private function replaceParamTypeHint(File $phpcsFile, $varPtr, $newTypeHint)
+    private function replaceParamTypeHint(File $phpcsFile, int $varPtr, string $newTypeHint) : void
     {
         $last = $phpcsFile->findPrevious([T_ARRAY_HINT, T_CALLABLE, T_STRING], $varPtr - 1);
         $first = $phpcsFile->findPrevious([T_NULLABLE, T_STRING, T_NS_SEPARATOR], $last - 1, null, true);
@@ -264,7 +256,7 @@ class ParamSniff implements Sniff
     }
 
     /**
-     * @param string[] $param Real param function details.
+     * @param array $param Real param function details.z
      * @param null|int $tagPtr Position of the @param tag.
      * @param null|string $name Name of the param in the @param tag.
      * @param null|string $typeStr Type of the param in the @param tag.
@@ -273,11 +265,11 @@ class ParamSniff implements Sniff
     private function checkParam(
         File $phpcsFile,
         array $param,
-        $tagPtr = null,
-        $name = null,
-        $typeStr = null,
-        $description = null
-    ) {
+        int $tagPtr = null,
+        string $name = null,
+        string $typeStr = null,
+        string $description = null
+    ) : void {
         $typeHint = $param['type_hint'];
 
         if ($typeHint) {
@@ -613,26 +605,18 @@ class ParamSniff implements Sniff
         }
     }
 
-    /**
-     * @param string $str
-     * @return bool
-     */
-    private function isVariable($str)
+    private function isVariable(string $str) : bool
     {
         return strpos($str, '$') === 0
             || strpos($str, '...$') === 0;
     }
 
-    /**
-     * @param string $str
-     * @return bool
-     */
-    private function isType($str)
+    private function isType(string $str) : bool
     {
         return (bool) preg_match('/^((?:\\\\?[a-z0-9]+)+(?:\[\])*)(\|(?:\\\\?[a-z0-9]+)+(?:\[\])*)*$/i', $str);
     }
 
-    private function processParamSpec(File $phpcsFile)
+    private function processParamSpec(File $phpcsFile) : void
     {
         foreach ($this->params as $k => $param) {
             if (in_array($k, $this->processedParams, true)) {

@@ -127,10 +127,7 @@ trait Methods
         'void',
     ];
 
-    /**
-     * @param int $stackPtr
-     */
-    private function initScope(File $phpcsFile, $stackPtr)
+    private function initScope(File $phpcsFile, int $stackPtr) : void
     {
         if ($this->currentFile !== $phpcsFile) {
             $this->currentFile = $phpcsFile;
@@ -163,12 +160,7 @@ trait Methods
         }
     }
 
-    /**
-     * @param string $a
-     * @param string $b
-     * @return int
-     */
-    public function sortTypes($a, $b)
+    public function sortTypes(string $a, string $b) : int
     {
         $a = strtolower(str_replace('\\', ':', $a));
         $b = strtolower(str_replace('\\', ':', $b));
@@ -214,11 +206,7 @@ trait Methods
         );
     }
 
-    /**
-     * @param string $class
-     * @return string
-     */
-    private function getSuggestedType($class)
+    private function getSuggestedType(string $class) : string
     {
         $prefix = $class[0] === '?' ? '?' : '';
         $suffix = strstr($class, '[');
@@ -260,12 +248,7 @@ trait Methods
         return $class;
     }
 
-    /**
-     * @param string $typeHint
-     * @param string $typeStr
-     * @return bool
-     */
-    private function typesMatch($typeHint, $typeStr)
+    private function typesMatch(string $typeHint, string $typeStr) : bool
     {
         $isNullable = $typeHint[0] === '?';
         $lowerTypeHint = strtolower($isNullable ? substr($typeHint, 1) : $typeHint);
@@ -300,11 +283,7 @@ trait Methods
                     || $fqcnTypeHint . '|null' === $fqcnTypes));
     }
 
-    /**
-     * @param string $class
-     * @return string
-     */
-    private function getFQCN($class)
+    private function getFQCN(string $class) : string
     {
         // It is a simple type
         if (in_array(strtolower($class), $this->simpleReturnTypes, true)) {
@@ -325,11 +304,7 @@ trait Methods
         return ($this->currentNamespace ? '\\' . $this->currentNamespace : '') . '\\' . $class;
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    private function isClassName($name)
+    private function isClassName(string $name) : bool
     {
         if (! $this->className) {
             return false;
@@ -344,11 +319,7 @@ trait Methods
             || $lower === $lowerClassName;
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    private function isParentClassName($name)
+    private function isParentClassName(string $name) : bool
     {
         if (! $this->parentClassName) {
             return false;
@@ -362,10 +333,7 @@ trait Methods
             || $lower === $lowerParentClassName;
     }
 
-    /**
-     * @param int $tagPtr
-     */
-    private function removeTag(File $phpcsFile, $tagPtr)
+    private function removeTag(File $phpcsFile, int $tagPtr) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -382,11 +350,7 @@ trait Methods
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param int $stackPtr
-     * @return null|int
-     */
-    private function getCommentStart(File $phpcsFile, $stackPtr)
+    private function getCommentStart(File $phpcsFile, int $stackPtr) : ?int
     {
         $tokens = $phpcsFile->getTokens();
         $skip = Tokens::$methodPrefixes

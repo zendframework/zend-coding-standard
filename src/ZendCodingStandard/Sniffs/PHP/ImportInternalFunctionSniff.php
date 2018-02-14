@@ -63,7 +63,7 @@ class ImportInternalFunctionSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_STRING];
     }
@@ -157,11 +157,7 @@ class ImportInternalFunctionSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     * @param string $functionName
-     */
-    private function importFunction(File $phpcsFile, $stackPtr, $functionName)
+    private function importFunction(File $phpcsFile, int $stackPtr, string $functionName) : void
     {
         if ($this->lastUse) {
             $ptr = $phpcsFile->findEndOfStatement($this->lastUse);

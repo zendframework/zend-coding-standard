@@ -98,7 +98,7 @@ class UnnecessaryParenthesesSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_OPEN_PARENTHESIS];
     }
@@ -248,12 +248,7 @@ class UnnecessaryParenthesesSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $openPtr
-     * @param int $closePtr
-     * @param string $errorCode
-     */
-    private function error(File $phpcsFile, $openPtr, $closePtr, $errorCode)
+    private function error(File $phpcsFile, int $openPtr, int $closePtr, string $errorCode) : void
     {
         $tokens = $phpcsFile->getTokens();
 

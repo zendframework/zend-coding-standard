@@ -29,7 +29,7 @@ class FormatSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_OPEN_SHORT_ARRAY];
     }
@@ -53,10 +53,7 @@ class FormatSniff implements Sniff
         $this->singleLineArray($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param int $stackPtr
-     */
-    private function multiLineArray(File $phpcsFile, $stackPtr)
+    private function multiLineArray(File $phpcsFile, int $stackPtr) : void
     {
         $tokens = $phpcsFile->getTokens();
         $arrayToken = $tokens[$stackPtr];
@@ -164,10 +161,7 @@ class FormatSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     */
-    private function singleLineArray(File $phpcsFile, $stackPtr)
+    private function singleLineArray(File $phpcsFile, int $stackPtr) : void
     {
         $tokens = $phpcsFile->getTokens();
         $arrayToken = $tokens[$stackPtr];

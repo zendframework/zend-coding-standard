@@ -19,7 +19,7 @@ class NoBlankLineAtStartSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [
             T_CLASS,

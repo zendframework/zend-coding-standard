@@ -85,7 +85,7 @@ class TagCaseSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_DOC_COMMENT_TAG];
     }

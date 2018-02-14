@@ -28,11 +28,7 @@ use const T_WHITESPACE;
  */
 trait Namespaces
 {
-    /**
-     * @param int $stackPtr
-     * @return string
-     */
-    private function getNamespace(File $phpcsFile, $stackPtr)
+    private function getNamespace(File $phpcsFile, int $stackPtr) : string
     {
         if ($nsStart = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr - 1)) {
             $nsEnd = $phpcsFile->findNext([T_NS_SEPARATOR, T_STRING, T_WHITESPACE], $nsStart + 1, null, true);
@@ -45,10 +41,9 @@ trait Namespaces
     /**
      * Returns array of imported classes. Key is lowercase name, and value is FQCN.
      *
-     * @param int $stackPtr
      * @return string[][]
      */
-    private function getGlobalUses(File $phpcsFile, $stackPtr = 0)
+    private function getGlobalUses(File $phpcsFile, int $stackPtr = 0) : array
     {
         $first = 0;
         $last  = $phpcsFile->numTokens;
@@ -98,11 +93,9 @@ trait Namespaces
     }
 
     /**
-     * @param int $stackPtr
-     * @param null|int $lastUse
      * @return string[][]
      */
-    private function getImportedConstants(File $phpcsFile, $stackPtr, &$lastUse)
+    private function getImportedConstants(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
     {
         $first = 0;
         $last  = $phpcsFile->numTokens;
@@ -152,11 +145,9 @@ trait Namespaces
     }
 
     /**
-     * @param int $stackPtr
-     * @param null|int $lastUse
      * @return string[][]
      */
-    private function getImportedFunctions(File $phpcsFile, $stackPtr, &$lastUse)
+    private function getImportedFunctions(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
     {
         $first = 0;
         $last  = $phpcsFile->numTokens;

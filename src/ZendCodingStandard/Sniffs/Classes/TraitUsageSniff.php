@@ -30,7 +30,7 @@ class TraitUsageSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_USE];
     }
@@ -280,7 +280,7 @@ class TraitUsageSniff implements Sniff
      *
      * @param string[] $statements
      */
-    private function fixAlphabeticalOrder(File $phpcsFile, array $statements)
+    private function fixAlphabeticalOrder(File $phpcsFile, array $statements) : void
     {
         $phpcsFile->fixer->beginChangeset();
         foreach ($statements as $statement) {
@@ -289,7 +289,9 @@ class TraitUsageSniff implements Sniff
             }
         }
 
-        usort($statements, [$this, 'compareStatements']);
+        usort($statements, function (array $a, array $b) {
+            return $this->compareStatements($a, $b);
+        });
 
         $begins = array_column($statements, 'begin');
         sort($begins);
@@ -302,13 +304,10 @@ class TraitUsageSniff implements Sniff
     }
 
     /**
-     * @internal
-     *
      * @param string[] $a
      * @param string[] $b
-     * @return int
      */
-    public function compareStatements(array $a, array $b)
+    private function compareStatements(array $a, array $b) : int
     {
         return strcasecmp(
             $this->clearName($a['content']),
@@ -316,11 +315,7 @@ class TraitUsageSniff implements Sniff
         );
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function clearName($name)
+    private function clearName(string $name) : string
     {
         return str_replace('\\', ':', $name);
     }

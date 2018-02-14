@@ -21,8 +21,6 @@ use const T_WHITESPACE;
 
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
-    const CODE_CAMEL_CAPS = 'NotCamelCaps';
-
     /** @var string[] */
     private $phpReservedVars = [
         '_SERVER',
@@ -39,7 +37,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     /**
      * @param int $stackPtr
      */
-    protected function processVariable(File $phpcsFile, $stackPtr)
+    protected function processVariable(File $phpcsFile, $stackPtr) : void
     {
         $tokens = $phpcsFile->getTokens();
         $varName = ltrim($tokens[$stackPtr]['content'], '$');
@@ -57,14 +55,14 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         if (! Common::isCamelCaps($varName, false, true, false)) {
             $error = 'Variable "%s" is not in valid camel caps format';
             $data = [$varName];
-            $phpcsFile->addError($error, $stackPtr, self::CODE_CAMEL_CAPS, $data);
+            $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $data);
         }
     }
 
     /**
      * @param int $stackPtr
      */
-    protected function processMemberVar(File $phpcsFile, $stackPtr)
+    protected function processMemberVar(File $phpcsFile, $stackPtr) : void
     {
         // handled by PSR2.Classes.PropertyDeclaration
     }
@@ -72,7 +70,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     /**
      * @param int $stackPtr
      */
-    protected function processVariableInString(File $phpcsFile, $stackPtr)
+    protected function processVariableInString(File $phpcsFile, $stackPtr) : void
     {
         // handled by Squiz.Strings.DoubleQuoteUsage
     }

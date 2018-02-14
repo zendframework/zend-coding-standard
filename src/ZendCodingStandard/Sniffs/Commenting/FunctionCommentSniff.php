@@ -49,7 +49,7 @@ class FunctionCommentSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_FUNCTION];
     }
@@ -84,11 +84,7 @@ class FunctionCommentSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $commentStart
-     * @param int $commentEnd
-     */
-    private function processSee(File $phpcsFile, $commentStart, $commentEnd)
+    private function processSee(File $phpcsFile, int $commentStart, int $commentEnd) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -106,10 +102,7 @@ class FunctionCommentSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $commentStart
-     */
-    private function processTagOrder(File $phpcsFile, $commentStart)
+    private function processTagOrder(File $phpcsFile, int $commentStart) : void
     {
         $tokens = $phpcsFile->getTokens();
 

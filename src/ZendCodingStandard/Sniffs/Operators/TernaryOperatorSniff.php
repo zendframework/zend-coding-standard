@@ -17,7 +17,7 @@ class TernaryOperatorSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [
             T_INLINE_ELSE,
@@ -92,11 +92,7 @@ class TernaryOperatorSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     * @return null|int
-     */
-    protected function findThen(File $phpcsFile, $stackPtr)
+    protected function findThen(File $phpcsFile, int $stackPtr) : ?int
     {
         $tokens = $phpcsFile->getTokens();
         $count = 0;
@@ -117,11 +113,7 @@ class TernaryOperatorSniff implements Sniff
         return null;
     }
 
-    /**
-     * @param int $stackPtr
-     * @return null|int
-     */
-    protected function findElse(File $phpcsFile, $stackPtr)
+    protected function findElse(File $phpcsFile, int $stackPtr) : ?int
     {
         $tokens = $phpcsFile->getTokens();
         $count = 0;

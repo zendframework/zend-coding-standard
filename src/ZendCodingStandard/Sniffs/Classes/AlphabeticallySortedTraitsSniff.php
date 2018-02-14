@@ -31,7 +31,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_CLASS, T_TRAIT, T_ANON_CLASS];
     }
@@ -69,10 +69,9 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     }
 
     /**
-     * @param int $scopePtr
      * @return string[][]
      */
-    private function getTraits(File $phpcsFile, $scopePtr)
+    private function getTraits(File $phpcsFile, int $scopePtr) : array
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -111,11 +110,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
         return $uses;
     }
 
-    /**
-     * @param int $stackPtr
-     * @return int
-     */
-    private function getEndOfTraitScope(File $phpcsFile, $stackPtr)
+    private function getEndOfTraitScope(File $phpcsFile, int $stackPtr) : int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -133,9 +128,8 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     /**
      * @param string[] $a
      * @param string[] $b
-     * @return int
      */
-    private function compareUseStatements(array $a, array $b)
+    private function compareUseStatements(array $a, array $b) : int
     {
         return strcasecmp(
             $this->clearName($a['name']),
@@ -143,11 +137,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
         );
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function clearName($name)
+    private function clearName(string $name) : string
     {
         return str_replace('\\', ':', $name);
     }
@@ -155,7 +145,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
     /**
      * @param string[][] $uses
      */
-    private function fixAlphabeticalOrder(File $phpcsFile, array $uses)
+    private function fixAlphabeticalOrder(File $phpcsFile, array $uses) : void
     {
         $first = reset($uses);
         $last = end($uses);

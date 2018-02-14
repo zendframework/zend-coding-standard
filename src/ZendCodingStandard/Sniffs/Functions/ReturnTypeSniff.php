@@ -89,7 +89,7 @@ class ReturnTypeSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_FUNCTION];
     }
@@ -119,10 +119,9 @@ class ReturnTypeSniff implements Sniff
     }
 
     /**
-     * @param int $stackPtr
      * @return bool|int
      */
-    private function getReturnType(File $phpcsFile, $stackPtr)
+    private function getReturnType(File $phpcsFile, int $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -135,10 +134,7 @@ class ReturnTypeSniff implements Sniff
         return $phpcsFile->findNext(T_RETURN_TYPE, $stackPtr + 1, $to);
     }
 
-    /**
-     * @param int $commentStart
-     */
-    private function processReturnDoc(File $phpcsFile, $commentStart)
+    private function processReturnDoc(File $phpcsFile, int $commentStart) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -403,10 +399,7 @@ class ReturnTypeSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     */
-    private function processReturnType(File $phpcsFile, $stackPtr)
+    private function processReturnType(File $phpcsFile, int $stackPtr) : void
     {
         // Get return type from method signature
         $returnType = $this->getReturnType($phpcsFile, $stackPtr);
@@ -674,10 +667,7 @@ class ReturnTypeSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     */
-    private function processReturnStatements(File $phpcsFile, $stackPtr)
+    private function processReturnStatements(File $phpcsFile, int $stackPtr) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -871,11 +861,7 @@ class ReturnTypeSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $ptr
-     * @return string
-     */
-    private function getReturnValue(File $phpcsFile, $ptr)
+    private function getReturnValue(File $phpcsFile, int $ptr) : string
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -997,9 +983,8 @@ class ReturnTypeSniff implements Sniff
     /**
      * @param string[] $expectedType
      * @param string[] $expectedDoc
-     * @return bool
      */
-    private function hasCorrectType(array $expectedType, array $expectedDoc)
+    private function hasCorrectType(array $expectedType, array $expectedDoc) : bool
     {
         if ($expectedType
             && $this->returnType
@@ -1022,10 +1007,7 @@ class ReturnTypeSniff implements Sniff
         return true;
     }
 
-    /**
-     * @param int $ptr
-     */
-    private function returnCodeVoid(File $phpcsFile, $ptr)
+    private function returnCodeVoid(File $phpcsFile, int $ptr) : void
     {
         if (($this->returnDoc && $this->returnDocIsValid)
             || ($this->returnType && $this->returnTypeIsValid && strtolower($this->returnTypeValue) !== 'void')
@@ -1036,10 +1018,7 @@ class ReturnTypeSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $ptr
-     */
-    private function returnCodeValue(File $phpcsFile, $ptr)
+    private function returnCodeValue(File $phpcsFile, int $ptr) : void
     {
         // Special method cannot return any values.
         if ($this->isSpecialMethod) {

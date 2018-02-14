@@ -60,7 +60,7 @@ class ReturnTypeSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_RETURN_TYPE];
     }
@@ -143,10 +143,8 @@ class ReturnTypeSniff implements Sniff
 
     /**
      * Check if token before colon match configured number of spaces.
-     *
-     * @param int $colon
      */
-    private function checkSpacesBeforeColon(File $phpcsFile, $colon)
+    private function checkSpacesBeforeColon(File $phpcsFile, int $colon) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -189,10 +187,8 @@ class ReturnTypeSniff implements Sniff
 
     /**
      * Check if token after colon match configured number of spaces.
-     *
-     * @param int $colon
      */
-    private function checkSpacesAfterColon(File $phpcsFile, $colon)
+    private function checkSpacesAfterColon(File $phpcsFile, int $colon) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -228,10 +224,8 @@ class ReturnTypeSniff implements Sniff
 
     /**
      * Checks if token after nullable operator match configured number of spaces.
-     *
-     * @param int $nullable
      */
-    private function checkSpacesAfterNullable(File $phpcsFile, $nullable)
+    private function checkSpacesAfterNullable(File $phpcsFile, int $nullable) : void
     {
         $tokens = $phpcsFile->getTokens();
 

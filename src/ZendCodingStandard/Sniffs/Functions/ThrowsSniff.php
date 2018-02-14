@@ -46,7 +46,7 @@ class ThrowsSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_FUNCTION];
     }
@@ -66,10 +66,7 @@ class ThrowsSniff implements Sniff
         $this->processThrowStatements($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param int $commentStart
-     */
-    private function processThrowsDoc(File $phpcsFile, $commentStart)
+    private function processThrowsDoc(File $phpcsFile, int $commentStart) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -109,10 +106,7 @@ class ThrowsSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     */
-    protected function processThrowStatements(File $phpcsFile, $stackPtr)
+    protected function processThrowStatements(File $phpcsFile, int $stackPtr) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -253,11 +247,9 @@ class ThrowsSniff implements Sniff
     }
 
     /**
-     * @param int $from
-     * @param int $to
      * @return string[]
      */
-    private function getExceptions(File $phpcsFile, $from, $to)
+    private function getExceptions(File $phpcsFile, int $from, int $to) : array
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -312,9 +304,8 @@ class ThrowsSniff implements Sniff
      *
      * @param string[] $conditions
      * @param int $scope Scope to check in conditions.
-     * @return bool
      */
-    private function isLastScope(array $conditions, $scope)
+    private function isLastScope(array $conditions, int $scope) : bool
     {
         foreach (array_reverse($conditions, true) as $ptr => $code) {
             if ($code !== T_FUNCTION && $code !== T_CLOSURE && $code !== T_TRY) {

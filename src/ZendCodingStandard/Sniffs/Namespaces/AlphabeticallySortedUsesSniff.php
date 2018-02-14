@@ -29,7 +29,7 @@ class AlphabeticallySortedUsesSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_NAMESPACE];
     }
@@ -133,10 +133,9 @@ class AlphabeticallySortedUsesSniff implements Sniff
     }
 
     /**
-     * @param int $scopePtr
      * @return string[][]
      */
-    private function getUseStatements(File $phpcsFile, $scopePtr)
+    private function getUseStatements(File $phpcsFile, int $scopePtr) : array
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -193,9 +192,8 @@ class AlphabeticallySortedUsesSniff implements Sniff
     /**
      * @param string[] $a
      * @param string[] $b
-     * @return int
      */
-    private function compareUseStatements(array $a, array $b)
+    private function compareUseStatements(array $a, array $b) : int
     {
         if ($a['type'] === $b['type']) {
             return strcasecmp(
@@ -213,11 +211,7 @@ class AlphabeticallySortedUsesSniff implements Sniff
         return 1;
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function clearName($name)
+    private function clearName(string $name) : string
     {
         return str_replace('\\', ':', $name);
     }
@@ -225,7 +219,7 @@ class AlphabeticallySortedUsesSniff implements Sniff
     /**
      * @param string[][] $uses
      */
-    private function fixAlphabeticalOrder(File $phpcsFile, array $uses)
+    private function fixAlphabeticalOrder(File $phpcsFile, array $uses) : void
     {
         $first = reset($uses);
         $last = end($uses);

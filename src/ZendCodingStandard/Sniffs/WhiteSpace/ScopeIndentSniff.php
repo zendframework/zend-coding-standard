@@ -138,7 +138,7 @@ class ScopeIndentSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_OPEN_TAG];
     }
@@ -718,11 +718,8 @@ class ScopeIndentSniff implements Sniff
 
     /**
      * @todo: need name refactor and method description
-     *
-     * @param int $ptr
-     * @return null|int
      */
-    private function fp(File $phpcsFile, $ptr)
+    private function fp(File $phpcsFile, int $ptr) : ?int
     {
         if ($this->alignObjectOperators) {
             $tokens = $phpcsFile->getTokens();
@@ -749,11 +746,8 @@ class ScopeIndentSniff implements Sniff
 
     /**
      * @todo: need name refactor and method description
-     *
-     * @param int $ptr
-     * @return null|int
      */
-    private function np(File $phpcsFile, $ptr)
+    private function np(File $phpcsFile, int $ptr) : ?int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -777,11 +771,8 @@ class ScopeIndentSniff implements Sniff
     /**
      * Checks if there is another object operator
      * before $ptr token.
-     *
-     * @param int $ptr
-     * @return null|int
      */
-    private function hasPrevObjectOperator(File $phpcsFile, $ptr)
+    private function hasPrevObjectOperator(File $phpcsFile, int $ptr) : ?int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -803,12 +794,8 @@ class ScopeIndentSniff implements Sniff
     /**
      * Checks if between $fromPtr and $toPtr is any new line
      * excluding scopes (arrays, closures, multiline function calls).
-     *
-     * @param int $fromPtr
-     * @param int $toPtr
-     * @return bool
      */
-    private function hasContainNewLine(File $phpcsFile, $fromPtr, $toPtr)
+    private function hasContainNewLine(File $phpcsFile, int $fromPtr, int $toPtr) : bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -841,10 +828,9 @@ class ScopeIndentSniff implements Sniff
      * and returns the control structure pointer;
      * otherwise returns boolean `false`.
      *
-     * @param int $ptr
      * @return false|int
      */
-    private function getControlStructurePtr(File $phpcsFile, $ptr)
+    private function getControlStructurePtr(File $phpcsFile, int $ptr)
     {
         $tokens = $phpcsFile->getTokens();
 

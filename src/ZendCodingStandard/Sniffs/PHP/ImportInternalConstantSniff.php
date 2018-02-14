@@ -72,7 +72,7 @@ class ImportInternalConstantSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_STRING];
     }
@@ -169,11 +169,7 @@ class ImportInternalConstantSniff implements Sniff
         }
     }
 
-    /**
-     * @param int $stackPtr
-     * @param string $constantName
-     */
-    private function importConstant(File $phpcsFile, $stackPtr, $constantName)
+    private function importConstant(File $phpcsFile, int $stackPtr, string $constantName) : void
     {
         if ($this->lastUse) {
             $ptr = $phpcsFile->findEndOfStatement($this->lastUse);

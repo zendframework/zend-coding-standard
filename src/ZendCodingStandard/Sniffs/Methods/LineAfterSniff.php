@@ -29,7 +29,7 @@ class LineAfterSniff extends AbstractScopeSniff
      * @param int $stackPtr
      * @param int $currScope
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -67,7 +67,7 @@ class LineAfterSniff extends AbstractScopeSniff
     /**
      * @param int $stackPtr
      */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) : void
     {
     }
 }

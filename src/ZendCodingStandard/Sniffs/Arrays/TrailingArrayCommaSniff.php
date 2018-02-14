@@ -28,7 +28,7 @@ class TrailingArrayCommaSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return [T_OPEN_SHORT_ARRAY];
     }

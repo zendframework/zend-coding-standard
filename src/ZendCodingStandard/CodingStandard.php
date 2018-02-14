@@ -27,9 +27,8 @@ class CodingStandard
      * Returns the correct type name suggestion if type name is invalid.
      *
      * @param string $varType The variable type to process.
-     * @return string
      */
-    public static function suggestType($varType)
+    public static function suggestType(string $varType) : string
     {
         $lowerVarType = strtolower($varType);
         switch ($lowerVarType) {
@@ -78,11 +77,7 @@ class CodingStandard
         return Common::suggestType($varType);
     }
 
-    /**
-     * @param int $stackPtr
-     * @return bool
-     */
-    public static function isTraitUse(File $phpcsFile, $stackPtr)
+    public static function isTraitUse(File $phpcsFile, int $stackPtr) : bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -100,11 +95,7 @@ class CodingStandard
         return true;
     }
 
-    /**
-     * @param int $stackPtr
-     * @return bool
-     */
-    public static function isGlobalUse(File $phpcsFile, $stackPtr)
+    public static function isGlobalUse(File $phpcsFile, int $stackPtr) : bool
     {
         $tokens = $phpcsFile->getTokens();
 

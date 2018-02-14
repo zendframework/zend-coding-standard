@@ -15,7 +15,7 @@ class BooleanOperatorSniff implements Sniff
     /**
      * @return int[]
      */
-    public function register()
+    public function register() : array
     {
         return Tokens::$booleanOperators;
     }
