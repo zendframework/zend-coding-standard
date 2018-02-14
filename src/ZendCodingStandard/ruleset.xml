@@ -8,8 +8,7 @@
 
     <!-- PSR-2 base -->
     <rule ref="PSR2">
-        <!-- Below 3 rules are covered by ZendCodingStandard.PHP.LowerCaseKeywordSniff -->
-        <exclude name="Generic.PHP.LowerCaseKeyword"/>
+        <!-- Below 2 rules are covered by Generic.PHP.LowerCaseKeyword -->
         <exclude name="Squiz.ControlStructures.LowercaseDeclaration"/>
         <exclude name="Squiz.Functions.LowercaseFunctionKeywords"/>
         <!-- Replaced by ZendCodingStandard.WhiteSpace.ScopeIndent -->
