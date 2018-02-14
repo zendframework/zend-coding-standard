@@ -21,6 +21,7 @@ class FunctionCommentUnitTest extends TestCase
             39 => 1,
             42 => 1,
             49 => 1,
+            57 => 1,
         ];
     }
 

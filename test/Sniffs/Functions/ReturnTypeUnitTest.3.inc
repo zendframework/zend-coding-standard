@@ -211,4 +211,15 @@ class FunctionCommentReturn
     {
         return $x;
     }
+
+    /**
+     * @return array {
+     *   @var bool $required Weather this element is required
+     *   @var string $label The display name for this element
+     * }
+     */
+    public function test27() : array
+    {
+        return [];
+    }
 }

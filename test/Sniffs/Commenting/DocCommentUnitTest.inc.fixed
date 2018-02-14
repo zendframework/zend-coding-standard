@@ -197,4 +197,17 @@ $c = 'xyz';
     public function test9()
     {
     }
+
+    /**
+     * @param array $arr {
+     *     @var bool $required Here is the description
+     *         of the field in the array
+     *             hey
+     *     @var string $name Another very long
+     *         description here
+     * }
+     */
+    public function test10(array $arr)
+    {
+    }
 }

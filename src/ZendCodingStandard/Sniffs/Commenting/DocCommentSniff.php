@@ -7,15 +7,16 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use function array_filter;
 use function implode;
 use function in_array;
-use function ltrim;
 use function max;
 use function preg_match;
+use function preg_replace;
 use function preg_split;
 use function round;
 use function str_repeat;
 use function strlen;
 use function strpos;
 use function strtolower;
+use function substr;
 use function trim;
 
 use const T_DOC_COMMENT_CLOSE_TAG;
@@ -377,6 +378,10 @@ class DocCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
+        $firstTag = isset($tokens[$commentStart]['comment_tags'][0])
+            ? $tokens[$commentStart]['comment_tags'][0]
+            : null;
+
         $next = $commentStart;
         $search = [T_DOC_COMMENT_STAR, T_DOC_COMMENT_CLOSE_TAG];
         while ($next = $phpcsFile->findNext($search, $next + 1, $commentEnd + 1)) {
@@ -385,19 +390,41 @@ class DocCommentSniff implements Sniff
                 || ($tokens[$next + 1]['code'] === T_DOC_COMMENT_WHITESPACE
                     && strpos($tokens[$next + 1]['content'], $phpcsFile->eolChar) === false)
             ) {
+                $nested = 0;
+                if ($firstTag) {
+                    $prev = $next;
+                    while ($prev = $phpcsFile->findPrevious(T_DOC_COMMENT_STRING, $prev - 1, $firstTag)) {
+                        if ($tokens[$prev]['content'][0] === '}') {
+                            --$nested;
+                        }
+                        if (substr($tokens[$prev]['content'], -1) === '{') {
+                            ++$nested;
+                        }
+                    }
+                }
+
+                $expectedSpaces = 1 + $this->indent * $nested;
+                $expected = str_repeat(' ', $expectedSpaces);
+
                 if ($tokens[$next + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
-                    $error = 'There must be exactly one space between star and comment.';
-                    $fix = $phpcsFile->addFixableError($error, $next, 'NoSpaceAfterStar');
+                    $error = 'There must be exactly %d space(s) between star and comment; found 0';
+                    $data = [
+                        $expectedSpaces,
+                    ];
+                    $fix = $phpcsFile->addFixableError($error, $next, 'NoSpaceAfterStar', $data);
 
                     if ($fix) {
-                        $phpcsFile->fixer->addContent($next, ' ');
+                        $phpcsFile->fixer->addContent($next, $expected);
                     }
-                } elseif ($tokens[$next + 1]['content'] !== ' '
+                } elseif ($tokens[$next + 1]['content'] !== $expected
                     && ($tokens[$next + 2]['content'][0] === '@'
                         || $tokens[$next + 1]['line'] === $tokens[$commentStart]['line'] + 1)
                 ) {
-                    $error = 'There must be exactly one space between star and comment.';
-                    $fix = $phpcsFile->addFixableError($error, $next + 1, 'TooManySpacesAfterStar');
+                    $error = 'There must be exactly %d space(s) between star and comment';
+                    $data = [
+                        $expectedSpaces,
+                    ];
+                    $fix = $phpcsFile->addFixableError($error, $next + 1, 'TooManySpacesAfterStar', $data);
 
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($next + 1, ' ');
@@ -416,14 +443,20 @@ class DocCommentSniff implements Sniff
                         true
                     );
 
-                    $trimmed = ltrim($tokens[$next + 1]['content']);
-                    $spaces = strlen($tokens[$next + 1]['content']) - strlen($trimmed);
+                    if ($tokens[$next + 2]['content'][0] === '}') {
+                        $expectedSpaces -= $this->indent;
+                    } else {
+                        $expectedSpaces += $this->indent;
+                    }
+
+                    $spaces = strlen(preg_replace('/^( *).*$/', '\\1', $tokens[$next + 1]['content']));
                     if ($tokens[$prev]['code'] === T_DOC_COMMENT_TAG
-                        && ($spaces < $this->indent + 1
+                        && ($spaces < $expectedSpaces
                             || (($spaces - 1) % $this->indent) !== 0
-                            || ($spaces > $this->indent + 1
+                            || ($spaces > $expectedSpaces
                                 && $tokens[$prev]['line'] === $tokens[$next + 1]['line'] - 1))
                     ) {
+                        // could be doc string or tag
                         $prev2 = $phpcsFile->findPrevious(
                             [
                                 T_DOC_COMMENT_WHITESPACE,
@@ -435,9 +468,7 @@ class DocCommentSniff implements Sniff
                         );
 
                         if ($tokens[$prev2]['line'] === $tokens[$next]['line'] - 1) {
-                            if ($tokens[$prev]['line'] === $tokens[$next + 1]['line'] - 1) {
-                                $expectedSpaces = 1 + $this->indent;
-                            } else {
+                            if ($tokens[$prev]['line'] !== $tokens[$next + 1]['line'] - 1) {
                                 $expectedSpaces = 1 + max(
                                     round(($spaces - 1) / $this->indent) * $this->indent,
                                     $this->indent
@@ -451,7 +482,7 @@ class DocCommentSniff implements Sniff
                             $fix = $phpcsFile->addFixableError($error, $next + 1, 'InvalidDescriptionIndent', $data);
 
                             if ($fix) {
-                                $phpcsFile->fixer->replaceToken($next + 1, str_repeat(' ', $expectedSpaces) . $trimmed);
+                                $phpcsFile->fixer->replaceToken($next + 1, str_repeat(' ', $expectedSpaces));
                             }
                         } else {
                             $error = 'Additional description is not allowed after tag.'

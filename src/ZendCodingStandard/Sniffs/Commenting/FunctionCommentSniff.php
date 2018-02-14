@@ -10,8 +10,10 @@ use function array_search;
 use function current;
 use function in_array;
 use function key;
+use function next;
 use function strpos;
 use function strtolower;
+use function substr;
 use function uasort;
 
 use const T_COMMENT;
@@ -112,7 +114,8 @@ class FunctionCommentSniff implements Sniff
         $tags = $tokens[$commentStart]['comment_tags'];
 
         $data = [];
-        foreach ($tags as $key => $tag) {
+        while ($tag = current($tags)) {
+            $key = key($tags);
             if (isset($tags[$key + 1])) {
                 $lastFrom = $tags[$key + 1];
             } else {
@@ -125,16 +128,55 @@ class FunctionCommentSniff implements Sniff
                 null,
                 true
             );
+
+            // if the last character of the description is {
+            // we need to find closing curly bracket and treat the whole block
+            // as one, skip tags inside if there any
+            if (substr($tokens[$last]['content'], -1) === '{') {
+                $dep = 1;
+                $i = $last;
+                $max = $tokens[$commentStart]['comment_closer'];
+                while ($dep > 0 && $i < $max) {
+                    $i = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $i + 1, $max);
+
+                    if (! $i) {
+                        break;
+                    }
+
+                    if ($tokens[$i]['content'][0] === '}') {
+                        --$dep;
+                    }
+
+                    if (substr($tokens[$i]['content'], -1) === '{') {
+                        ++$dep;
+                    }
+                }
+
+                if ($dep > 0) {
+                    $error = 'Tag contains nested description, but cannot find the closing bracket';
+                    $phpcsFile->addError($error, $last, 'NotClosed');
+                    return;
+                }
+
+                $last = $i;
+                while (isset($tags[$key + 1]) && $tags[$key + 1] < $i) {
+                    next($tags);
+                    ++$key;
+                }
+            }
+
             while ($tokens[$last + 1]['line'] === $tokens[$last]['line']) {
                 ++$last;
             }
 
             $data[] = [
-                'tag' => strtolower($tokens[$tag]['content']),
+                'tag'   => strtolower($tokens[$tag]['content']),
                 'token' => $tag,
                 'first' => $phpcsFile->findFirstOnLine([], $tag, true),
-                'last' => $last,
+                'last'  => $last,
             ];
+
+            next($tags);
         }
 
         $firstTag = current($data);

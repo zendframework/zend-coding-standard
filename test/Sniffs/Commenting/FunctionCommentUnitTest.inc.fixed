@@ -48,4 +48,16 @@ class Foo
      * @param string $a
      */
     private function toManyEmptyLines($a) {}
+
+    /**
+     * @param array $a {
+     *   @var string $isCache
+     *   @var string $template
+     * }
+     * @return array {
+     *   @var bool $foo
+     *   @var float $bar
+     * }
+     */
+    private function longParams($a) {}
 }
