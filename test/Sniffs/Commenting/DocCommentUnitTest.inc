@@ -208,4 +208,15 @@ class Foo
     public function test10(array $arr)
     {
     }
+
+    /**
+     * @param array $a {
+     *   @var array {
+     *     @var string $val Descr
+     *       iption.
+     *     @var bool $req
+     *   }
+     * }
+     */
+    private function twoLevelNesting(array $a) {}
 }

@@ -159,6 +159,11 @@ class DocCommentUnitTest extends TestCase
             185 => 1,
             192 => 1,
             203 => 1,
+            214 => 1,
+            215 => 1,
+            216 => 1,
+            217 => 1,
+            218 => 1,
         ];
     }
 

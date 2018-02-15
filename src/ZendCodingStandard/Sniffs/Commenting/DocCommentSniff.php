@@ -408,7 +408,7 @@ class DocCommentSniff implements Sniff
                     $fix = $phpcsFile->addFixableError($error, $next + 1, 'TooManySpacesAfterStar', $data);
 
                     if ($fix) {
-                        $phpcsFile->fixer->replaceToken($next + 1, ' ');
+                        $phpcsFile->fixer->replaceToken($next + 1, $expected);
                     }
                 } elseif ($tokens[$next + 2]['code'] !== T_DOC_COMMENT_TAG
                     && $tokens[$next + 2]['code'] !== T_DOC_COMMENT_CLOSE_TAG
