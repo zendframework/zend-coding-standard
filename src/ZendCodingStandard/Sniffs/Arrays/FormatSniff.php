@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ZendCodingStandard\Sniffs\Arrays;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Sniffs\AbstractArraySniff;
 
 use function str_repeat;
 use function strlen;
@@ -14,10 +14,9 @@ use function strpos;
 use const T_CLOSE_SHORT_ARRAY;
 use const T_COMMENT;
 use const T_DOUBLE_ARROW;
-use const T_OPEN_SHORT_ARRAY;
 use const T_WHITESPACE;
 
-class FormatSniff implements Sniff
+class FormatSniff extends AbstractArraySniff
 {
     /**
      * The number of spaces code should be indented.
@@ -27,80 +26,98 @@ class FormatSniff implements Sniff
     public $indent = 4;
 
     /**
-     * @return int[]
+     * Processes a single-line array definition.
+     *
+     * @param File $phpcsFile The current file being checked.
+     * @param int $stackPtr The position of the current token
+     *     in the stack passed in $tokens.
+     * @param int $arrayStart The token that starts the array definition.
+     * @param int $arrayEnd The token that ends the array definition.
+     * @param array $indices An array of token positions for the array keys,
+     *     double arrows, and values.
      */
-    public function register() : array
+    protected function processSingleLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices) : void
     {
-        return [T_OPEN_SHORT_ARRAY];
+        $tokens = $phpcsFile->getTokens();
+
+        // Single-line array - spaces before first element
+        if ($tokens[$arrayStart + 1]['code'] === T_WHITESPACE) {
+            $error = 'Expected 0 spaces after array bracket opener; %d found';
+            $data = [strlen($tokens[$arrayStart + 1]['content'])];
+            $fix = $phpcsFile->addFixableError($error, $arrayStart + 1, 'SingleLineSpaceBefore', $data);
+
+            if ($fix) {
+                $phpcsFile->fixer->replaceToken($arrayStart + 1, '');
+            }
+        }
+
+        // Single-line array - spaces before last element
+        if ($tokens[$arrayEnd - 1]['code'] === T_WHITESPACE) {
+            $error = 'Expected 0 spaces before array bracket closer; %d found';
+            $data = [strlen($tokens[$arrayEnd - 1]['content'])];
+            $fix = $phpcsFile->addFixableError($error, $arrayEnd - 1, 'SingleLineSpaceAfter', $data);
+
+            if ($fix) {
+                $phpcsFile->fixer->replaceToken($arrayEnd - 1, '');
+            }
+        }
     }
 
     /**
-     * @param int $stackPtr
+     * Processes a multi-line array definition.
+     *
+     * @param File $phpcsFile The current file being checked.
+     * @param int $stackPtr The position of the current token
+     *     in the stack passed in $tokens.
+     * @param int $arrayStart The token that starts the array definition.
+     * @param int $arrayEnd The token that ends the array definition.
+     * @param array $indices An array of token positions for the array keys,
+     *     double arrows, and values.
      */
-    public function process(File $phpcsFile, $stackPtr)
+    protected function processMultiLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices) : void
     {
         $tokens = $phpcsFile->getTokens();
-        $arrayToken = $tokens[$stackPtr];
 
-        $bracketOpener = $arrayToken['bracket_opener'];
-        $bracketCloser = $arrayToken['bracket_closer'];
-
-        if ($tokens[$bracketOpener]['line'] !== $tokens[$bracketCloser]['line']) {
-            $this->multiLineArray($phpcsFile, $stackPtr);
-            return;
-        }
-
-        $this->singleLineArray($phpcsFile, $stackPtr);
-    }
-
-    private function multiLineArray(File $phpcsFile, int $stackPtr) : void
-    {
-        $tokens = $phpcsFile->getTokens();
-        $arrayToken = $tokens[$stackPtr];
-
-        $bracketOpener = $arrayToken['bracket_opener'];
-        $bracketCloser = $arrayToken['bracket_closer'];
-
-        $firstContent = $phpcsFile->findNext(T_WHITESPACE, $bracketOpener + 1, null, true);
+        $firstContent = $phpcsFile->findNext(T_WHITESPACE, $arrayStart + 1, null, true);
         if ($tokens[$firstContent]['code'] === T_CLOSE_SHORT_ARRAY) {
-            $error = 'Empty array must be in one line.';
+            $error = 'Empty array must be in one line';
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'EmptyArrayInOneLine');
 
             if ($fix) {
-                $phpcsFile->fixer->replaceToken($bracketOpener + 1, '');
+                $phpcsFile->fixer->replaceToken($arrayStart + 1, '');
             }
 
             return;
         }
 
-        $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, $bracketCloser - 1, null, true);
-        if ($tokens[$bracketCloser]['line'] > $tokens[$lastContent]['line'] + 1) {
-            $error = 'Blank line found at the end of array';
-            $fix = $phpcsFile->addFixableError($error, $bracketCloser - 1, 'BlankLineAtTheEnd');
+        $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, $arrayEnd - 1, null, true);
+        if ($tokens[$arrayEnd]['line'] > $tokens[$lastContent]['line'] + 1) {
+            $error = 'Blank line found at the end of the array';
+            $fix = $phpcsFile->addFixableError($error, $arrayEnd - 1, 'BlankLineAtTheEnd');
 
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
                 $i = $lastContent + 1;
-                while ($tokens[$i]['line'] !== $tokens[$bracketCloser]['line']) {
+                while ($tokens[$i]['line'] !== $tokens[$arrayEnd]['line']) {
                     $phpcsFile->fixer->replaceToken($i, '');
                     ++$i;
                 }
-                $phpcsFile->fixer->addNewlineBefore($bracketCloser);
+                $phpcsFile->fixer->addNewlineBefore($arrayEnd);
                 $phpcsFile->fixer->endChangeset();
             }
         }
 
-        $first = $phpcsFile->findFirstOnLine([], $bracketOpener, true);
+        $first = $phpcsFile->findFirstOnLine([], $arrayStart, true);
         $indent = $tokens[$first]['code'] === T_WHITESPACE
             ? strlen($tokens[$first]['content'])
             : 0;
 
-        $previousLine = $tokens[$bracketOpener]['line'];
-        $next = $bracketOpener;
-        while ($next = $phpcsFile->findNext(T_WHITESPACE, $next + 1, $bracketCloser, true)) {
+        $previousLine = $tokens[$arrayStart]['line'];
+        $next = $arrayStart;
+        while ($next = $phpcsFile->findNext(T_WHITESPACE, $next + 1, $arrayEnd, true)) {
             if ($previousLine === $tokens[$next]['line']) {
                 if ($tokens[$next]['code'] !== T_COMMENT) {
-                    $error = 'There must be one array element per line.';
+                    $error = 'There must be one array element per line';
                     $fix = $phpcsFile->addFixableError($error, $next, 'OneElementPerLine');
 
                     if ($fix) {
@@ -115,11 +132,11 @@ class FormatSniff implements Sniff
             } else {
                 if ($previousLine < $tokens[$next]['line'] - 1
                     && (! empty($tokens[$stackPtr]['conditions'])
-                        || $previousLine === $tokens[$bracketOpener]['line'])
+                        || $previousLine === $tokens[$arrayStart]['line'])
                 ) {
                     $firstOnLine = $phpcsFile->findFirstOnLine([], $next, true);
 
-                    $error = 'Blank line is not allowed here.';
+                    $error = 'Blank line is not allowed here';
                     $fix = $phpcsFile->addFixableError($error, $firstOnLine - 1, 'BlankLine');
 
                     if ($fix) {
@@ -144,50 +161,19 @@ class FormatSniff implements Sniff
             $next = $end;
         }
 
-        if ($first = $phpcsFile->findFirstOnLine([], $bracketCloser, true)) {
-            if ($first < $bracketCloser - 1) {
-                $error = 'Array closing bracket should be in new line.';
-                $fix = $phpcsFile->addFixableError($error, $bracketCloser, 'ClosingBracketInNewLine');
+        if ($first = $phpcsFile->findFirstOnLine([], $arrayEnd, true)) {
+            if ($first < $arrayEnd - 1) {
+                $error = 'Array closing bracket should be in new line';
+                $fix = $phpcsFile->addFixableError($error, $arrayEnd, 'ClosingBracketInNewLine');
 
                 if ($fix) {
                     $phpcsFile->fixer->beginChangeset();
                     if ($indent > 0) {
-                        $phpcsFile->fixer->addContentBefore($bracketCloser, str_repeat(' ', $indent));
+                        $phpcsFile->fixer->addContentBefore($arrayEnd, str_repeat(' ', $indent));
                     }
-                    $phpcsFile->fixer->addNewlineBefore($bracketCloser);
+                    $phpcsFile->fixer->addNewlineBefore($arrayEnd);
                     $phpcsFile->fixer->endChangeset();
                 }
-            }
-        }
-    }
-
-    private function singleLineArray(File $phpcsFile, int $stackPtr) : void
-    {
-        $tokens = $phpcsFile->getTokens();
-        $arrayToken = $tokens[$stackPtr];
-
-        $bracketOpener = $arrayToken['bracket_opener'];
-        $bracketCloser = $arrayToken['bracket_closer'];
-
-        // Single-line array - spaces before first element
-        if ($tokens[$bracketOpener + 1]['code'] === T_WHITESPACE) {
-            $error = 'Expected 0 spaces after array bracket opener; %d found';
-            $data = [strlen($tokens[$bracketOpener + 1]['content'])];
-            $fix = $phpcsFile->addFixableError($error, $bracketOpener + 1, 'SingleLineSpaceBefore', $data);
-
-            if ($fix) {
-                $phpcsFile->fixer->replaceToken($bracketOpener + 1, '');
-            }
-        }
-
-        // Single-line array - spaces before last element
-        if ($tokens[$bracketCloser - 1]['code'] === T_WHITESPACE) {
-            $error = 'Expected 0 spaces before array bracket closer; %d found';
-            $data = [strlen($tokens[$bracketCloser - 1]['content'])];
-            $fix = $phpcsFile->addFixableError($error, $bracketCloser - 1, 'SingleLineSpaceAfter', $data);
-
-            if ($fix) {
-                $phpcsFile->fixer->replaceToken($bracketCloser - 1, '');
             }
         }
     }
