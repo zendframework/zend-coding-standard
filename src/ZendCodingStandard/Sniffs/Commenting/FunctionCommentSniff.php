@@ -8,6 +8,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
+use function array_filter;
 use function array_search;
 use function current;
 use function in_array;
@@ -44,6 +45,13 @@ class FunctionCommentSniff implements Sniff
     public $blankLineBefore = [
         '@dataProvider',
         '@param',
+    ];
+
+    /**
+     * @var string[]
+     */
+    public $nestedTags = [
+        '@var',
     ];
 
     /**
@@ -156,6 +164,18 @@ class FunctionCommentSniff implements Sniff
 
                 $last = $i;
                 while (isset($tags[$key + 1]) && $tags[$key + 1] < $i) {
+                    $tagName = strtolower($tokens[$tags[$key + 1]]['content']);
+                    if (! array_filter($this->nestedTags, function ($v) use ($tagName) {
+                        return strtolower($v) === $tagName;
+                    })) {
+                        $error = 'Tag %s cannot be nested.';
+                        $data = [
+                            $tokens[$tags[$key + 1]]['content'],
+                        ];
+                        $phpcsFile->addError($error, $tags[$key + 1], 'NestedTag', $data);
+                        return;
+                    }
+
                     $nestedTags[] = $tags[$key + 1];
 
                     next($tags);

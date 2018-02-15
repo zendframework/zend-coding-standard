@@ -73,4 +73,28 @@ class Foo
      * @param int $b
      */
     private function noEmptyLineBetweenLongDefParamAndAnoterParam(array $a, $b) {}
+
+    /**
+     * @param array $a {
+     *     @param string $hey
+     * }
+     */
+    private function notAllowedNestedParam(array $a) {}
+
+    /**
+     * @param array $a {
+     *     @var string $hi
+     *     @var bool $required
+     */
+    private function missingClosingCurlyBRacket(array $a) {}
+
+    /**
+     * @param array $a {
+     *   @var array {
+     *     @var string $val
+     *     @var bool $req
+     *   }
+     * }
+     */
+    private function twoLevelNesting(array $a) {}
 }
