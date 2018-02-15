@@ -40,7 +40,7 @@ class LineAfterSniff extends AbstractScopeSniff
             $closer = $phpcsFile->findNext(T_SEMICOLON, $tokens[$stackPtr]['parenthesis_closer'] + 1);
         }
 
-        $contentAfter  = $phpcsFile->findNext(T_WHITESPACE, $closer + 1, null, true);
+        $contentAfter = $phpcsFile->findNext(T_WHITESPACE, $closer + 1, null, true);
         if ($contentAfter !== false
             && $tokens[$contentAfter]['line'] - $tokens[$closer]['line'] !== 2
             && $tokens[$contentAfter]['code'] !== T_CLOSE_CURLY_BRACKET

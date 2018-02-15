@@ -46,7 +46,7 @@ trait Namespaces
     private function getGlobalUses(File $phpcsFile, int $stackPtr = 0) : array
     {
         $first = 0;
-        $last  = $phpcsFile->numTokens;
+        $last = $phpcsFile->numTokens;
 
         $tokens = $phpcsFile->getTokens();
 
@@ -98,7 +98,7 @@ trait Namespaces
     private function getImportedConstants(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
     {
         $first = 0;
-        $last  = $phpcsFile->numTokens;
+        $last = $phpcsFile->numTokens;
 
         $tokens = $phpcsFile->getTokens();
 
@@ -150,7 +150,7 @@ trait Namespaces
     private function getImportedFunctions(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
     {
         $first = 0;
-        $last  = $phpcsFile->numTokens;
+        $last = $phpcsFile->numTokens;
 
         $tokens = $phpcsFile->getTokens();
 
