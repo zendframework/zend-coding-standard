@@ -64,4 +64,13 @@ class Foo
      * }
      */
     private function longParams($a) {}
+
+    /**
+     * @param array $a {
+     *     @var string $hola
+     * }
+     *
+     * @param int $b
+     */
+    private function noEmptyLineBetweenLongDefParamAndAnoterParam(array $a, $b) {}
 }

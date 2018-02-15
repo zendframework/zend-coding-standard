@@ -108,6 +108,7 @@ class FunctionCommentSniff implements Sniff
 
         $tags = $tokens[$commentStart]['comment_tags'];
 
+        $nestedTags = [];
         $data = [];
         while ($tag = current($tags)) {
             $key = key($tags);
@@ -155,6 +156,8 @@ class FunctionCommentSniff implements Sniff
 
                 $last = $i;
                 while (isset($tags[$key + 1]) && $tags[$key + 1] < $i) {
+                    $nestedTags[] = $tags[$key + 1];
+
                     next($tags);
                     ++$key;
                 }
@@ -231,7 +234,10 @@ class FunctionCommentSniff implements Sniff
                 continue;
             }
 
-            $prevTag = $tags[$key - 1];
+            $i = $key;
+            do {
+                $prevTag = $tags[--$i];
+            } while (in_array($prevTag, $nestedTags, true));
             if (in_array($tokens[$tag]['content'], $this->blankLineBefore, true)
                 && $tokens[$prevTag]['content'] !== $tokens[$tag]['content']
             ) {
