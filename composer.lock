@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2379eab2896b6b8a22ce5e31fb6ae184",
+    "content-hash": "2528f561888e57981d5f87311dcf666c",
     "packages": [
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "d7c00c3000ac0ce79c96fcbfef86b49a71158cd1"
+                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d7c00c3000ac0ce79c96fcbfef86b49a71158cd1",
-                "reference": "d7c00c3000ac0ce79c96fcbfef86b49a71158cd1",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4842476c434e375f9d3182ff7b89059583aa8b27",
+                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27",
                 "shasum": ""
             },
             "require": {
@@ -27,7 +27,7 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "bin": [
                 "bin/phpcs",
@@ -55,7 +55,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-12-19T21:44:46+00:00"
+            "time": "2018-02-20T21:35:23+00:00"
         }
     ],
     "packages-dev": [
@@ -414,16 +414,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "9f901e29c93dae4aa77c0bb161df4276f9c9a1be"
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/9f901e29c93dae4aa77c0bb161df4276f9c9a1be",
-                "reference": "9f901e29c93dae4aa77c0bb161df4276f9c9a1be",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
                 "shasum": ""
             },
             "require": {
@@ -473,7 +473,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-02-11T18:49:29+00:00"
+            "time": "2018-02-19T10:16:54+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -806,16 +806,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "6.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "e495e5d3660321b62c294d8c0e954d02d6ce2573"
+                "reference": "e3249dedc2d99259ccae6affbc2684eac37c2e53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/e495e5d3660321b62c294d8c0e954d02d6ce2573",
-                "reference": "e495e5d3660321b62c294d8c0e954d02d6ce2573",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/e3249dedc2d99259ccae6affbc2684eac37c2e53",
+                "reference": "e3249dedc2d99259ccae6affbc2684eac37c2e53",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +858,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-02-01T13:11:13+00:00"
+            "time": "2018-02-15T05:27:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
