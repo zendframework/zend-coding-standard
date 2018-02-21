@@ -219,4 +219,26 @@ class Foo
      * }
      */
     private function twoLevelNesting(array $a) {}
+
+    /**
+     * This is a description.
+     * {@inheritDoc}
+     */
+    private function inheritDoc1() {}
+
+    /**
+     * This is a description.
+     * {@inheritdoc}
+     */
+    private function inheritDoc2() {}
+
+    /**
+     * @inheritDoc
+     */
+    private function inheritDocTag1() {}
+
+    /**
+     * @inheritdoc
+     */
+    private function inheritDocTag2() {}
 }

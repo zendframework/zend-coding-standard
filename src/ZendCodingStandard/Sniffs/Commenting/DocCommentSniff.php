@@ -76,6 +76,7 @@ class DocCommentSniff implements Sniff
         $this->checkAfterClose($phpcsFile, $commentStart, $commentEnd);
         $this->checkCommentIndents($phpcsFile, $commentStart, $commentEnd);
         $this->checkTagsSpaces($phpcsFile, $commentStart);
+        $this->checkInheritDoc($phpcsFile, $commentStart, $commentEnd);
 
         // Doc block comment in one line.
         if ($tokens[$commentStart]['line'] === $tokens[$commentEnd]['line']) {
@@ -814,6 +815,28 @@ class DocCommentSniff implements Sniff
 
         if ($fix) {
             $phpcsFile->fixer->replaceToken($tag + 2, $expected);
+        }
+    }
+
+    private function checkInheritDoc(File $phpcsFile, int $commentStart, int $commentEnd) : void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $commentContent = $phpcsFile->getTokensAsString($commentStart + 1, $commentEnd - $commentStart - 1);
+        if (preg_match('/\*.*\{@inheritDoc\}/i', $commentContent, $m)) {
+            $error = 'Tag {@inheritDoc} is not allowed in doc-block comment. Please define explicitly types.';
+            $phpcsFile->addError($error, $commentStart, 'InheritDoc');
+            return;
+        }
+
+        if (isset($tokens[$commentStart]['comment_tags'])) {
+            foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
+                if (strtolower($tokens[$tag]['content']) === '@inheritdoc') {
+                    $error = 'Tag @inheritDoc is not allowed in doc-block comment. Please define explicitly types.';
+                    $phpcsFile->addError($error, $tag, 'InheritDocTag');
+                    break;
+                }
+            }
         }
     }
 }
