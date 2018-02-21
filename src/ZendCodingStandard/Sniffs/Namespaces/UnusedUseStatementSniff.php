@@ -24,7 +24,6 @@ use function preg_match;
 use function preg_quote;
 use function rtrim;
 use function strcasecmp;
-use function strpos;
 use function strtolower;
 use function trim;
 
@@ -206,13 +205,8 @@ class UnusedUseStatementSniff implements Sniff
             }
 
             // Also remove whitespace after the semicolon (new lines).
-            while (isset($tokens[$i]) && $tokens[$i]['code'] === T_WHITESPACE) {
+            if (isset($tokens[$i]) && $tokens[$i]['code'] === T_WHITESPACE) {
                 $phpcsFile->fixer->replaceToken($i, '');
-                if (strpos($tokens[$i]['content'], $phpcsFile->eolChar) !== false) {
-                    break;
-                }
-
-                ++$i;
             }
 
             $phpcsFile->fixer->endChangeset();
