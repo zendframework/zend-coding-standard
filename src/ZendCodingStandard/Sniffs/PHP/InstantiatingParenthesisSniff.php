@@ -14,6 +14,7 @@ use const T_ANON_CLASS;
 use const T_NEW;
 use const T_NS_SEPARATOR;
 use const T_OPEN_PARENTHESIS;
+use const T_OPEN_SQUARE_BRACKET;
 use const T_SELF;
 use const T_STATIC;
 use const T_STRING;
@@ -49,6 +50,10 @@ class InstantiatingParenthesisSniff implements Sniff
             null,
             true
         );
+
+        while ($tokens[$end]['code'] === T_OPEN_SQUARE_BRACKET) {
+            $end = $phpcsFile->findNext(Tokens::$emptyTokens, $tokens[$end]['bracket_closer'] + 1, null, true);
+        }
 
         if ($tokens[$end]['code'] !== T_OPEN_PARENTHESIS) {
             $last = $phpcsFile->findPrevious(

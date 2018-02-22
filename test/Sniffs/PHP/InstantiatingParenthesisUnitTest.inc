@@ -31,3 +31,11 @@ array(new DateTime);
 
 $anonymousClass = new class{};
 $anonymousClass = new class {};
+
+new $arr['val'];
+new $arr['val']();
+(new $arr)['val'];
+(new $arr())['val'];
+
+new $arr['abc']['def'];
+new $arr['key']['inx']();
