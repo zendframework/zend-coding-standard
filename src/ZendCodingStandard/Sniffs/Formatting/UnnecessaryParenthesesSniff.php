@@ -53,10 +53,14 @@ use const T_VARIABLE;
 
 class UnnecessaryParenthesesSniff implements Sniff
 {
+    /**
+     * @var int[]
+     */
     private $parenthesesAllowedTokens = [
         T_ANON_CLASS,
         T_CLOSE_CURLY_BRACKET,
         T_CLOSE_PARENTHESIS,
+        T_CLOSE_SQUARE_BRACKET,
         T_EMPTY,
         T_EVAL,
         T_EXIT,
@@ -70,6 +74,9 @@ class UnnecessaryParenthesesSniff implements Sniff
         T_VARIABLE,
     ];
 
+    /**
+     * @var int[]
+     */
     private $endTokens = [
         T_INLINE_ELSE,
         T_INLINE_THEN,
@@ -85,6 +92,9 @@ class UnnecessaryParenthesesSniff implements Sniff
         T_CLOSE_TAG,
     ];
 
+    /**
+     * @var int[]
+     */
     private $spaceTokens = [
         T_CLONE,
         T_ECHO,
