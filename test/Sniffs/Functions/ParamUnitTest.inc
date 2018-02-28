@@ -104,28 +104,11 @@ class FunctionParam extends FunctionParamParent
      */
     public function variadicParamWrongTag2(array ...$a) {}
 
-    /**
-     * @param
-     */
-    public function missingParamTypeAndInvalidTypeHintCase(String $a) {}
+    public function invalidTypeHintCase1(String $a) {}
+
+    public function invalidTypeHintCase2(?INT $a) {}
 
     /**
-     * @param something
-     */
-    public function invalidParamTagAndInvalidTypeHintCase(?INT $a) {}
-
-    /**
-     * @param $a something
-     */
-    public function invalidParamTag(bool $a) {}
-
-    /**
-     * @param ...$a
-     */
-    public function missingTypeInParam(...$a) {}
-
-    /**
-     * @param $c
      * @param int $inconsistentPARAMname
      */
     public function inconsistentParamName($a, $inconsistentParamName) {}
@@ -138,23 +121,6 @@ class FunctionParam extends FunctionParamParent
     public function selfAndParent(FunctionParam $a, FunctionParamParent $b) {}
 
     public function nullableSelfAndParent(?FunctionParam $a, ?FunctionParamParent $b) {}
-
-    /**
-     * @param FunctionParam $a
-     * @param FunctionParamParent $b
-     */
-    public function selfAndParentInTags($a, $b) {}
-
-    /**
-     * @param bool|int|bool $a
-     */
-    public function duplicatedTypeInTag($a) {}
-
-    /**
-     * @param void $a
-     * @param false|true $b
-     */
-    public function voidAndTrueAndFalse($a, $b) {}
 
     /**
      * @param DateTime $a
@@ -184,17 +150,7 @@ class FunctionParam extends FunctionParamParent
 
     public function selfInsteadOfClassName(\MyNamespace\Test\FunctionParam $a) {}
 
-    /**
-     * @param \MyNamespace\Test\FunctionParam $a
-     */
-    public function selfInsteadOfClassNameInTag($a) {}
-
     public function parentInsteadOfFCQNParentClassName(\ZTest\MyNamespace\ParentClass $b) {}
-
-    /**
-     * @param \ZTest\MyNamespace\ParentClass $a
-     */
-    public function parentInsteadOfFCQNParentClassNameInTag($a) {}
 
     /**
      * @param \DateTime $a Description.
@@ -216,20 +172,18 @@ class FunctionParam extends FunctionParamParent
     public function inconsistentPrimitiveTypes(int $a, bool $b, string $c) {}
 
     /**
-     * @param ?array $a
-     * @param |int| $b
      * @param int $c
      */
-    public function invalidParamTypes($a, $b) {}
+    public function invalidParamDoc() {}
 
     /**
      * @param string $a
-     * @param \RuntimeException $b
+     * @param Exception $b
      */
     public function wrongType(DateTime $a, \Throwable $b) {}
 
     /**
-     * @param String $a
+     * @param string $a
      * @param array $b
      * @param \Traversable $c
      * @param iterable $d
@@ -242,14 +196,7 @@ class FunctionParam extends FunctionParamParent
     public function paramContainAnotherType(\DateTimeInterface $a) {}
 
     /**
-     * @param string|int|float $a
-     * @param DateTime|int|bool $b
-     * @param \ArrayObject|\ArrayAccess|DateTime|null $c
-     */
-    public function wrongOrderOfParamTypes($a, $b, $c) {}
-
-    /**
-     * @param boolean $a
+     * @param bool $a
      * @param null|DateTime|Something $b
      * @param string|DateTime|Something $c
      * @param null|DateTime $d
@@ -268,7 +215,7 @@ class FunctionParam extends FunctionParamParent
     ) {}
 
     /**
-     * @param null[]|string[] $a
+     * @param string[] $a
      * @param null|int $b
      * @param int|string $c
      */

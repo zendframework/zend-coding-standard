@@ -7,64 +7,64 @@ use MyNamespace\FunctionCommentReturnParent as ParentClass;
 
 abstract class FunctionCommentReturn extends ParentClass
 {
-    abstract public function classNameReturnTypeShouldBeSelfInstead() : FunctionCommentReturn;
+    abstract public function classNameReturnTypeShouldBeSelfInstead() : self;
 
-    abstract public function nullableClassNameReturnTypeShouldBeSelfInstead() : ?FunctionCommentReturn;
+    abstract public function nullableClassNameReturnTypeShouldBeSelfInstead() : ?self;
 
     abstract public function fcqnClassNameReturnTypeShouldBeSelfInstead()
-    : \MyNamespace\Test\Functions\FunctionCommentReturn;
+    : self;
 
     abstract public function fcqnNullableClassNameReturnTypeShouldBeSelfInstead()
-    : ?\MyNamespace\Test\Functions\FunctionCommentReturn;
+    : ?self;
 
-    abstract public function parentClassNameReturnTypeShouldBeParentInstead() : ParentClass;
+    abstract public function parentClassNameReturnTypeShouldBeParentInstead() : parent;
 
-    abstract public function nullableParentClassNameReturnTypeShouldBeParentInstead() : ?ParentClass;
+    abstract public function nullableParentClassNameReturnTypeShouldBeParentInstead() : ?parent;
 
     abstract public function fcqnParentClassNameReturnTypeShouldBeParentInstead()
-    : \MyNamespace\FunctionCommentReturnParent;
+    : parent;
 
     abstract public function fcqnNullableParentClassNameReturnTypeShouldBeParentInstead()
-    : ?\MyNamespace\FunctionCommentReturnParent;
+    : ?parent;
 
-    abstract public function returnTypeInvalidPrimitiveTypeCase() : Int;
+    abstract public function returnTypeInvalidPrimitiveTypeCase() : int;
 
-    abstract public function returnTypeInvalidComplexTypeCase() : dt;
+    abstract public function returnTypeInvalidComplexTypeCase() : DT;
 
-    abstract public function returnTypeCanUseAliasInsteadOfFCQN() : \DateTime;
-
-    /**
-     * @return \ArrayAccess
-     */
-    abstract public function missingNullableInTag() : ?\ArrayObject;
+    abstract public function returnTypeCanUseAliasInsteadOfFCQN() : DT;
 
     /**
      * @return null|\ArrayAccess
      */
+    abstract public function missingNullableInTag() : ?\ArrayObject;
+
+    /**
+     * @return \ArrayAccess
+     */
     abstract public function missingNullableInReturnType() : \ArrayObject;
 
     /**
-     * @return DT
+     *
      */
     abstract public function redundantTag1() : DT;
 
     /**
-     * @return null|DT
+     *
      */
     abstract public function redundantTag2() : ?DT;
 
     /**
-     * @return parent
+     *
      */
     abstract public function returnParent1() : parent;
 
     /**
-     * @return null|parent
+     *
      */
     abstract public function returnParent2() : parent;
 
     /**
-     * @return parent|null
+     *
      */
     abstract public function returnParent3() : parent;
 
@@ -74,12 +74,12 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnParent4() : parent;
 
     /**
-     * @return null|self
+     * @return self
      */
     abstract public function returnParent5() : parent;
 
     /**
-     * @return self|null
+     * @return self
      */
     abstract public function returnParent6() : parent;
 
@@ -89,12 +89,12 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnParent7() : parent;
 
     /**
-     * @return null|static
+     * @return static
      */
     abstract public function returnParent8() : parent;
 
     /**
-     * @return static|null
+     * @return static
      */
     abstract public function returnParent9() : parent;
 
@@ -104,12 +104,12 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnParent10() : parent;
 
     /**
-     * @return null|$this
+     * @return $this
      */
     abstract public function returnParent11() : parent;
 
     /**
-     * @return $this|null
+     * @return $this
      */
     abstract public function returnParent12() : parent;
 
@@ -119,37 +119,37 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnParent13() : parent;
 
     /**
-     * @return null|SomethingElse
+     * @return SomethingElse
      */
     abstract public function returnParent14() : parent;
 
     /**
-     * @return SomethingElse|null
+     * @return SomethingElse
      */
     abstract public function returnParent15() : parent;
 
     /**
      * @return AnotherClass
      */
-    abstract public function returnParent16() : Parent;
+    abstract public function returnParent16() : parent;
 
     /**
-     * @return parent
+     *
      */
     abstract public function returnNullableParent1() : ?parent;
 
     /**
-     * @return null|parent
+     *
      */
     abstract public function returnNullableParent2() : ?parent;
 
     /**
-     * @return parent|null
+     *
      */
     abstract public function returnNullableParent3() : ?parent;
 
     /**
-     * @return self
+     * @return null|self
      */
     abstract public function returnNullableParent4() : ?parent;
 
@@ -164,7 +164,7 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnNullableParent6() : ?parent;
 
     /**
-     * @return static
+     * @return null|static
      */
     abstract public function returnNullableParent7() : ?parent;
 
@@ -179,7 +179,7 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnNullableParent9() : ?parent;
 
     /**
-     * @return $this
+     * @return null|$this
      */
     abstract public function returnNullableParent10() : ?parent;
 
@@ -194,7 +194,7 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnNullableParent12() : ?parent;
 
     /**
-     * @return SomethingElse
+     * @return null|SomethingElse
      */
     abstract public function returnNullableParent13() : ?parent;
 
@@ -209,22 +209,22 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnNullableParent15() : ?parent;
 
     /**
-     * @return AnotherClass
+     * @return null|AnotherClass
      */
-    abstract public function returnNullableParent16() : ?Parent;
+    abstract public function returnNullableParent16() : ?parent;
 
     /**
-     * @return self
+     *
      */
     abstract public function returnSelf1() : self;
 
     /**
-     * @return null|self
+     *
      */
     abstract public function returnSelf2() : self;
 
     /**
-     * @return self|null
+     *
      */
     abstract public function returnSelf3() : self;
 
@@ -234,12 +234,12 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnSelf4() : self;
 
     /**
-     * @return null|static
+     * @return static
      */
     abstract public function returnSelf5() : self;
 
     /**
-     * @return static|null
+     * @return static
      */
     abstract public function returnSelf6() : self;
 
@@ -249,12 +249,12 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnSelf7() : self;
 
     /**
-     * @return null|$this
+     * @return $this
      */
     abstract public function returnSelf8() : self;
 
     /**
-     * @return $this|null
+     * @return $this
      */
     abstract public function returnSelf9() : self;
 
@@ -264,19 +264,19 @@ abstract class FunctionCommentReturn extends ParentClass
     abstract public function returnSelf10() : self;
 
     /**
-     * @return null|SomeClass
+     * @return SomeClass
      */
     abstract public function returnSelf11() : self;
 
     /**
-     * @return SomeClass|null
+     * @return SomeClass
      */
     abstract public function returnSelf12() : self;
 
     /**
      * @return AnotherClass
      */
-    abstract public function returnSelf13() : Self;
+    abstract public function returnSelf13() : self;
 
     /**
      * @return string|SomeClass

@@ -7,112 +7,97 @@ class FunctionParam
     /**
      * @param mixed $x
      */
-    public function test1($x) {}
-
-    /**
-     * @param mixed[] $x
-     */
-    public function test2($x) {}
-
-    /**
-     * @param mixed|mixed[] $x
-     */
-    public function test3($x) {}
+    public function test(int $x) {}
 
     /**
      * @param mixed $x
      */
-    public function test4(int $x) {}
-
-    /**
-     * @param mixed $x
-     */
-    public function test5(MyObj $x) {}
+    public function test(MyObj $x) {}
 
     /**
      * @param mixed[] $x
      */
-    public function test6(MyObj $x) {}
+    public function test(MyObj $x) {}
 
     /**
      * @param mixed $x
      */
-    public function test7(\Generator $x) {}
+    public function test(\Generator $x) {}
 
     /**
      * @param mixed[] $x
      */
-    public function test8(\Generator $x) {}
+    public function test(\Generator $x) {}
 
     /**
      * @param int $x
      */
-    public function test9(\Generator $x) {}
+    public function test(\Generator $x) {}
 
     /**
      * @param MyObj $x
      */
-    public function test10(\Generator $x) {}
+    public function test(\Generator $x) {}
 
     /**
      * @param mixed $x
      */
-    public function test11(\Traversable $x) {}
+    public function test(\Traversable $x) {}
 
     /**
      * @param mixed[] $x
      */
-    public function test12(\Traversable $x) {}
+    public function test(\Traversable $x) {}
 
     /**
      * @param int $x
      */
-    public function test13(\Traversable $x) {}
+    public function test(\Traversable $x) {}
 
     /**
      * @param MyObj $x
      */
-    public function test14(\Traversable $x) {}
+    public function test(\Traversable $x) {}
 
     /**
      * @param mixed $x
      */
-    public function test15(iterable $x) {}
+    public function test(iterable $x) {}
 
     /**
      * @param mixed[] $x
      */
-    public function test16(iterable $x) {}
+    public function test(iterable $x) {}
 
     /**
      * @param int $x
      */
-    public function test17(iterable $x) {}
+    public function test(iterable $x) {}
 
     /**
      * @param MyObj $x
      */
-    public function test18(iterable $x) {}
+    public function test(iterable $x) {}
 
     /**
      * @param mixed $x
      */
-    public function test19(array $x) {}
+    public function test(array $x) {}
 
     /**
      * @param mixed[] $x
      */
-    public function test20(array $x) {}
+    public function test(array $x) {}
 
     /**
      * @param int $x
      */
-    public function test21(array $x) {}
+    public function test(array $x) {}
 
     /**
      * @param MyObj $x
      */
-    public function test22(array $x) {}
+    public function test(array $x) {}
 
     /**
      * @param array|callable $a
@@ -133,4 +118,24 @@ class FunctionParam
      * @param float|\Generator $a
      */
     public function paramGeneratorWithOtherTypes($a) {}
+
+    /**
+     * @param
+     */
+    public function missingParamTypeAndName() {};
+
+    /**
+     * @param $a
+     */
+    public function missingParamType($a) {}
+
+    /**
+     * @param int
+     */
+    public function missingParamName($a) {}
+
+    /**
+     * @param int,string $a
+     */
+    public function invalidType($a);
 }

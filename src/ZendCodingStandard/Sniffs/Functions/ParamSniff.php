@@ -10,7 +10,6 @@ use ZendCodingStandard\Helper\Methods;
 
 use function array_filter;
 use function array_merge;
-use function array_unique;
 use function count;
 use function current;
 use function explode;
@@ -18,17 +17,11 @@ use function implode;
 use function in_array;
 use function key;
 use function preg_grep;
-use function preg_match;
+use function preg_replace;
 use function preg_split;
-use function sprintf;
-use function str_replace;
-use function stripos;
 use function strpos;
 use function strtolower;
-use function strtr;
 use function trim;
-use function ucfirst;
-use function usort;
 
 use const T_ARRAY_HINT;
 use const T_CALLABLE;
@@ -93,38 +86,23 @@ class ParamSniff implements Sniff
                 continue;
             }
 
-            if ($tokens[$tag + 2]['code'] !== T_DOC_COMMENT_STRING) {
-                $error = 'Param type ane name missing for @param tag in function comment';
-                $phpcsFile->addError($error, $tag, 'MissingParamDetailsDoc');
-
+            $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag + 1);
+            if ($string !== $tag + 2
+                || $tokens[$string]['line'] !== $tokens[$tag]['line']
+            ) {
+                // Missing param type and name
                 continue;
             }
 
             $split = preg_split('/\s/', $tokens[$tag + 2]['content'], 3);
-
-            if (! isset($split[1])) {
-                if ($this->isVariable($split[0])) {
-                    $error = 'Missing param type for param %s';
-                    $data = [
-                        $split[0],
-                    ];
-                    $phpcsFile->addError($error, $tag + 2, 'MissingParamTypeDoc', $data);
-                } else {
-                    $error = 'Missing parameter name in PHPDOcs';
-                    $phpcsFile->addError($error, $tag + 2, 'MissingParamNameDoc');
-                }
-
+            if (! isset($split[1]) || ! $this->isVariable($split[1])) {
+                // Missing param type or it's not a variable
                 continue;
             }
 
-            if (! $this->isVariable($split[1])) {
-                $error = 'Invalid parameter name';
-                $phpcsFile->addError($error, $tag + 2, 'InvalidParamNameDoc');
-                continue;
-            }
             $name = $split[1];
 
-            $clearName = strtolower(str_replace('.', '', $name));
+            $clearName = strtolower(preg_replace('/^\.{3}/', '', $name));
             if (in_array($clearName, $params, true)) {
                 $error = 'Param tag is duplicated for parameter %s';
                 $data = [
@@ -152,12 +130,8 @@ class ParamSniff implements Sniff
             $this->processedParams[] = key($param);
             $paramsMap[key($param)] = ['token' => $tag, 'name' => $name];
 
-            if (! $this->isType($split[0])) {
-                $error = 'Invalid type for param %s';
-                $data = [
-                    $split[1],
-                ];
-                $phpcsFile->addError($error, $tag + 2, 'InvalidParamTypeDoc', $data);
+            if (! $this->isType('@param', $split[0])) {
+                // The type definition is invalid
                 continue;
             }
             $description = $split[2] ?? null;
@@ -310,7 +284,7 @@ class ParamSniff implements Sniff
             return;
         }
 
-        $clearName = str_replace('.', '', $name);
+        $clearName = preg_replace('/^\.{3}/', '', $name);
         $isVariadic = $name !== $clearName;
 
         if ($param['name'] !== $clearName) {
@@ -329,25 +303,6 @@ class ParamSniff implements Sniff
         }
 
         $types = explode('|', $typeStr);
-
-        // Check if types are unique.
-        $uniq = array_unique($types);
-        if ($uniq !== $types) {
-            $expected = implode('|', $uniq);
-            $error = 'Duplicated types in param tag; expected "%s", but found "%s"';
-            $data = [
-                $expected,
-                implode('|', $types),
-            ];
-            $fix = $phpcsFile->addFixableError($error, $tagPtr + 2, 'DuplicateParamDocTypes', $data);
-
-            if ($fix) {
-                $content = trim($expected . ' ' . $name . ' ' . $description);
-                $phpcsFile->fixer->replaceToken($tagPtr + 2, $content);
-            }
-
-            return;
-        }
 
         // Check if null is one of the types
         if (($param['nullable_type']
@@ -385,62 +340,6 @@ class ParamSniff implements Sniff
 
                 if ($fix) {
                     unset($types[$key]);
-                    $content = trim(implode('|', $types) . ' ' . $name . ' ' . $description);
-                    $phpcsFile->fixer->replaceToken($tagPtr + 2, $content);
-                }
-
-                $break = true;
-                continue;
-            }
-
-            if (stripos($type, 'null[') === 0) {
-                $error = 'Param type "%s" is not a valid type';
-                $data = [
-                    $type,
-                ];
-                $phpcsFile->addError($error, $tagPtr + 2, 'ParamDocNullArray', $data);
-
-                $break = true;
-                continue;
-            }
-
-            if ($count > 1
-                && ($lower === 'mixed' || strpos($lower, 'mixed[') === 0)
-            ) {
-                $error = 'Param type "%s" cannot be mixed with other types.';
-                $data = [
-                    $type,
-                ];
-                $phpcsFile->addError($error, $tagPtr + 2, 'ParamDocMixed', $data);
-
-                $break = true;
-                continue;
-            }
-
-            $clearType = strtr($lower, ['[' => '', ']' => '']);
-            if (in_array($clearType, ['void', 'true', 'false'], true)) {
-                $error = 'Invalid param type: "%s"';
-                $code = sprintf('InvalidParam%sType', ucfirst($clearType));
-                $data = [
-                    $type,
-                ];
-                $phpcsFile->addError($error, $tagPtr + 2, $code, $data);
-
-                $break = true;
-                continue;
-            }
-
-            $suggestedType = $this->getSuggestedType($type);
-            if ($suggestedType !== $type) {
-                $error = 'Invalid param type; expected "%s", but found "%s"';
-                $data = [
-                    $suggestedType,
-                    $type,
-                ];
-                $fix = $phpcsFile->addFixableError($error, $tagPtr + 2, 'InvalidParamDocType', $data);
-
-                if ($fix) {
-                    $types[$key] = $suggestedType;
                     $content = trim(implode('|', $types) . ' ' . $name . ' ' . $description);
                     $phpcsFile->fixer->replaceToken($tagPtr + 2, $content);
                 }
@@ -564,26 +463,6 @@ class ParamSniff implements Sniff
             return;
         }
 
-        // Check if order of return types is as expected: first null, then simple types, and then complex.
-        $unsorted = implode('|', $types);
-        usort($types, function ($a, $b) {
-            return $this->sortTypes($a, $b);
-        });
-        $content = implode('|', $types);
-        if ($content !== $unsorted) {
-            $error = 'Invalid order of param types in @param tag; expected "%s" but found "%s"';
-            $data = [
-                $content,
-                $unsorted,
-            ];
-            $fix = $phpcsFile->addFixableError($error, $tagPtr + 2, 'ReturnTypesOrder', $data);
-
-            if ($fix) {
-                $content = trim($content . ' ' . $name . ' ' . $description);
-                $phpcsFile->fixer->replaceToken($tagPtr + 2, $content);
-            }
-        }
-
         // Check if PHPDocs param is required
         if ($typeHint && ! $description) {
             $tmpTypeHint = $typeHint;
@@ -603,17 +482,6 @@ class ParamSniff implements Sniff
                 }
             }
         }
-    }
-
-    private function isVariable(string $str) : bool
-    {
-        return strpos($str, '$') === 0
-            || strpos($str, '...$') === 0;
-    }
-
-    private function isType(string $str) : bool
-    {
-        return (bool) preg_match('/^((?:\\\\?[a-z0-9]+)+(?:\[\])*)(\|(?:\\\\?[a-z0-9]+)+(?:\[\])*)*$/i', $str);
     }
 
     private function processParamSpec(File $phpcsFile) : void

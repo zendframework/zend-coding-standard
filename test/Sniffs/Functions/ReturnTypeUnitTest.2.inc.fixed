@@ -448,7 +448,7 @@ abstract class FunctionCommentReturn
     }
 
     /**
-     * @return self
+     * @return $this
      */
     public function returnThisOnlyAndHasSelfInTag()
     {
@@ -456,7 +456,7 @@ abstract class FunctionCommentReturn
     }
 
     /**
-     * @return FunctionCommentReturn
+     * @return $this
      */
     public function returnThisOnlyAndHasClassNameInTag()
     {
@@ -464,7 +464,7 @@ abstract class FunctionCommentReturn
     }
 
     /**
-     * @return \MyNamespace\Test\Functions\FunctionCommentReturn
+     * @return $this
      */
     public function returnThisOnlyAndHasFCQNClassNameInTag()
     {

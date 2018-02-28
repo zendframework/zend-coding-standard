@@ -47,7 +47,7 @@ class FunctionParam extends FunctionParamParent
     public function traversableSpecified(\Traversable $a) {}
 
     /**
-     * @param string|DateTime[]|\Traversable $a
+     * @param string|\DateTime[]|\Traversable $a
      */
     public function traversableSpecifiedWrongly(\Traversable $a) {}
 
@@ -104,28 +104,11 @@ class FunctionParam extends FunctionParamParent
      */
     public function variadicParamWrongTag2(array ...$a) {}
 
-    /**
-     * @param
-     */
-    public function missingParamTypeAndInvalidTypeHintCase(string $a) {}
+    public function invalidTypeHintCase1(string $a) {}
+
+    public function invalidTypeHintCase2(?int $a) {}
 
     /**
-     * @param something
-     */
-    public function invalidParamTagAndInvalidTypeHintCase(?int $a) {}
-
-    /**
-     * @param $a something
-     */
-    public function invalidParamTag(bool $a) {}
-
-    /**
-     * @param ...$a
-     */
-    public function missingTypeInParam(...$a) {}
-
-    /**
-     * @param $c
      * @param int $inconsistentPARAMname
      */
     public function inconsistentParamName($a, $inconsistentParamName) {}
@@ -138,23 +121,6 @@ class FunctionParam extends FunctionParamParent
     public function selfAndParent(self $a, parent $b) {}
 
     public function nullableSelfAndParent(?self $a, ?parent $b) {}
-
-    /**
-     * @param self $a
-     * @param parent $b
-     */
-    public function selfAndParentInTags($a, $b) {}
-
-    /**
-     * @param bool|int $a
-     */
-    public function duplicatedTypeInTag($a) {}
-
-    /**
-     * @param void $a
-     * @param false|true $b
-     */
-    public function voidAndTrueAndFalse($a, $b) {}
 
     /**
      *
@@ -184,20 +150,10 @@ class FunctionParam extends FunctionParamParent
 
     public function selfInsteadOfClassName(self $a) {}
 
-    /**
-     * @param self $a
-     */
-    public function selfInsteadOfClassNameInTag($a) {}
-
     public function parentInsteadOfFCQNParentClassName(parent $b) {}
 
     /**
-     * @param parent $a
-     */
-    public function parentInsteadOfFCQNParentClassNameInTag($a) {}
-
-    /**
-     * @param DateTime $a Description.
+     * @param \DateTime $a Description.
      *
      */
     public function canUseImportedClasses(DateTime $a, ?DateTime ...$b) {}
@@ -216,11 +172,9 @@ class FunctionParam extends FunctionParamParent
     public function inconsistentPrimitiveTypes(int $a, bool $b, string $c) {}
 
     /**
-     * @param ?array $a
-     * @param |int| $b
      * @param int $c
      */
-    public function invalidParamTypes($a, $b) {}
+    public function invalidParamDoc() {}
 
     /**
      * @param string $a
@@ -242,13 +196,6 @@ class FunctionParam extends FunctionParamParent
     public function paramContainAnotherType(\DateTimeInterface $a) {}
 
     /**
-     * @param float|int|string $a
-     * @param bool|int|DateTime $b
-     * @param null|\ArrayAccess|\ArrayObject|DateTime $c
-     */
-    public function wrongOrderOfParamTypes($a, $b, $c) {}
-
-    /**
      * @param bool $a
      * @param null|DateTime|Something $b
      * @param string|DateTime|Something $c
@@ -268,7 +215,7 @@ class FunctionParam extends FunctionParamParent
     ) {}
 
     /**
-     * @param null[]|string[] $a
+     * @param string[] $a
      *
      * @param int|string $c
      */

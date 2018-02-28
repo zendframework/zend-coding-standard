@@ -16,6 +16,7 @@ use function implode;
 use function in_array;
 use function key;
 use function ltrim;
+use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function strcmp;
@@ -27,6 +28,7 @@ use function substr;
 
 use const T_CLASS;
 use const T_DOC_COMMENT_CLOSE_TAG;
+use const T_DOC_COMMENT_TAG;
 use const T_DOC_COMMENT_WHITESPACE;
 use const T_INTERFACE;
 use const T_TRAIT;
@@ -142,8 +144,10 @@ trait Methods
 
         $tokens = $phpcsFile->getTokens();
 
-        $this->methodName = $phpcsFile->getDeclarationName($stackPtr);
-        $this->isSpecialMethod = $this->methodName === '__construct' || $this->methodName === '__destruct';
+        if ($tokens[$stackPtr]['code'] !== T_DOC_COMMENT_TAG) {
+            $this->methodName = $phpcsFile->getDeclarationName($stackPtr);
+            $this->isSpecialMethod = $this->methodName === '__construct' || $this->methodName === '__destruct';
+        }
 
         // Get class name of the method, name of the parent class and implemented interfaces names
         $this->className = null;
@@ -212,7 +216,7 @@ trait Methods
         $suffix = strstr($class, '[');
         $clear = strtolower(strtr($class, ['?' => '', '[' => '', ']' => '']));
 
-        if (in_array($clear, $this->simpleReturnTypes, true)) {
+        if (in_array($clear, $this->simpleReturnTypes + ['static' => 'static'], true)) {
             return $prefix . $clear . $suffix;
         }
 
@@ -363,5 +367,29 @@ trait Methods
         }
 
         return $tokens[$commentEnd]['comment_opener'];
+    }
+
+    private function isThis(string $tag, string $type) : bool
+    {
+        if ($tag !== '@return') {
+            return false;
+        }
+
+        return in_array(strtolower($type), ['$this', '$this|null', 'null|$this'], true);
+    }
+
+    private function isVariable(string $str) : bool
+    {
+        return strpos($str, '$') === 0
+            || strpos($str, '...$') === 0;
+    }
+
+    private function isType(string $tag, string $type) : bool
+    {
+        if ($this->isThis($tag, $type)) {
+            return true;
+        }
+
+        return (bool) preg_match('/^((?:\\\\?[a-z0-9]+)+(?:\[\])*)(\|(?:\\\\?[a-z0-9]+)+(?:\[\])*)*$/i', $type);
     }
 }

@@ -1,0 +1,351 @@
+<?php
+
+namespace MyNamespace\Test;
+
+use ArrayIterator as AI;
+use DateTime;
+use RuntimeException as Exception;
+use ZTest\MyNamespace\ParentClass as ReturnTagParent;
+
+class ReturnTag extends ReturnTagParent {
+    /**
+     * @return
+     */
+    public function test() {}
+
+    /**
+     * @return something
+     */
+    public function test() {}
+
+    /**
+     * @return $a
+     */
+    public function test() {}
+
+    /**
+     * @return $a something
+     */
+    public function test() {}
+
+    /**
+     * @return int $a
+     */
+    public function test() {}
+
+    /**
+     * @return mixed
+     */
+    public function test() {}
+
+    /**
+     * @return mixed[]
+     */
+    public function test() {}
+
+    /**
+     * @return mixed|mixed[]
+     */
+    public function test() {}
+
+    /**
+     * @return string|DateTime[]|\Traversable
+     */
+    public function test() {}
+
+    /**
+     * @return ReturnTag
+     */
+    public function test() {}
+
+    /**
+     * @return \MyNamespace\Test\ReturnTag
+     */
+    public function test() {}
+
+    /**
+     * @return parent
+     */
+    public function test() {}
+
+    /**
+     * @return parent
+     */
+    public function test() {}
+
+    /**
+     * @return ReturnTag[]
+     */
+    public function test() {}
+
+    /**
+     * @return \MyNamespace\Test\ReturnTag[]
+     */
+    public function test() {}
+
+    /**
+     * @return parent[]
+     */
+    public function test() {}
+
+    /**
+     * @return parent[]
+     */
+    public function test() {}
+
+    /**
+     * @return ParentClass
+     */
+    public function test() {}
+
+    /**
+     * @return ParentClass[]
+     */
+    public function test() {}
+
+    /**
+     * @return bool|int
+     */
+    public function test() {}
+
+    /**
+     *
+     */
+    public function test() {}
+
+    /**
+     *
+     */
+    public function test() {}
+
+    /**
+     * @return void Description.
+     */
+    public function test() {}
+
+    /**
+     * @return void[]
+     */
+    public function test() {}
+
+    /**
+     * @return bool
+     */
+    public function test() {}
+
+    /**
+     * @return bool
+     */
+    public function test() {}
+
+    /**
+     * @return bool
+     */
+    public function test() {}
+
+    /**
+     * @return DateTime
+     */
+    public function test() {}
+
+    /**
+     * @return ?array
+     */
+    public function test() {}
+
+    /**
+     * @return |int|
+     */
+    public function test() {}
+
+    /**
+     * @return $a
+     */
+    public function test() {}
+
+    /**
+     * @return string
+     */
+    public function test() {}
+
+    /**
+     * @return float|int|string
+     */
+    public function test() {}
+
+    /**
+     * @return bool|int|DateTime
+     */
+    public function test() {}
+
+    /**
+     * @return null|\ArrayAccess|\ArrayObject|DateTime
+     */
+    public function test() {}
+
+    /**
+     * @return bool
+     */
+    public function test() {}
+
+    /**
+     * @return null[]|string[]
+     */
+    public function test() {}
+
+    /**
+     * @return $this
+     */
+    public function test() {}
+
+    /**
+     * @return $this
+     */
+    public function test() {}
+
+    /**
+     * @return null|$this
+     */
+    public function test() {}
+
+    /**
+     * @return null|$this
+     */
+    public function test() {}
+
+    /**
+     * @return null|$this
+     */
+    public function test() {}
+
+    /**
+     * @return null|$this
+     */
+    public function test() {}
+
+    /**
+     * @return int|$this
+     */
+    public function test() {}
+
+    /**
+     * @return null
+     */
+    public function test() {}
+
+    /**
+     * @return null[]
+     */
+    public function test() {}
+
+    /**
+     * @return null[][]
+     */
+    public function test() {}
+
+    /**
+     * @return null|null[]
+     */
+    public function test() {}
+
+    /**
+     * @return mixed|string
+     */
+    public function test() {}
+
+    /**
+     * @return array|mixed[]
+     */
+    public function test() {}
+
+    /**
+     * @return int|void
+     */
+    public function test() {}
+
+    /**
+     * @return AI
+     */
+    public function test() {}
+
+    /**
+     * @return AI
+     */
+    public function test() {}
+
+    /**
+     * @return AI
+     */
+    public function test() {}
+
+    /**
+     * @return int,string
+     */
+    abstract public function invalidTypeNotation();
+
+    /**
+     * @return array()
+     */
+    abstract public function invalidTypeNotationArray();
+
+    /**
+     * @return array[string]
+     */
+    abstract public function invalidTypeNotationArrayKeys();
+
+    /**
+     * @return array|array[]|iterable|iterable[][]|Traversable|\traversable[]
+     */
+    public function test() {}
+
+    /**
+     * @return null|true
+     */
+    public function test() {}
+
+    /**
+     * @return null|false
+     */
+    public function test() {}
+
+    /**
+     * @return self
+     */
+    public function test() {}
+
+    /**
+     * @return static
+     */
+    public function test() {}
+
+    /**
+     * @return parent
+     */
+    public function test() {}
+
+    /**
+     * @return self
+     */
+    public function test() {}
+
+    /**
+     * @return static
+     */
+    public function test() {}
+
+    /**
+     * @return parent
+     */
+    public function test() {}
+
+    /**
+     * @return array {
+     *     @var bool $required
+     *     @var string $label
+     *     @var array $arr {
+     *         @var int $counter
+     *     }
+     * }
+     */
+    public function test() {}
+}

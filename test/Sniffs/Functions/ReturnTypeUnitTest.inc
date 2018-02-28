@@ -23,11 +23,6 @@ abstract class FunctionCommentReturn
     abstract public function voidAbstractMethodNoReturnTag();
 
     /**
-     * @return
-     */
-    abstract public function noTypeInReturnTag();
-
-    /**
      * @return int
      * @return string
      */
@@ -171,66 +166,6 @@ abstract class FunctionCommentReturn
         return 1;
     }
 
-    /**
-     * @return void Description is not allowed.
-     */
-    public function voidWithDescription() {}
-
-    /**
-     * @return void
-     */
-    public function redundantReturnVoidTag() {}
-
-    /**
-     * @return int,string
-     */
-    abstract public function invalidTypeNotation();
-
-    /**
-     * @return array()
-     */
-    abstract public function invalidTypeNotationArray();
-
-    /**
-     * @return array[string]
-     */
-    abstract public function invalidTypeNotationArrayKeys();
-
-    /**
-     * @return $This
-     */
-    abstract public function returnThisInvalidCase1();
-
-    /**
-     * @return null|$THIS
-     */
-    abstract public function returnThisInvalidCase2();
-
-    /**
-     * @return null
-     */
-    abstract public function returnOnlyNull();
-
-    /**
-     * @return null[][]
-     */
-    abstract public function returnOnlyNullArray();
-
-    /**
-     * @return void|int
-     */
-    abstract public function voidMixedWithOtherTypes();
-
-    /**
-     * @return mixed
-     */
-    abstract public function mixedTypeIsAllowed();
-
-    /**
-     * @return mixed[][]
-     */
-    abstract public function mixedArrayTypeIsAllowed();
-
     abstract public function returnTypeArrayDoesNotNeedSpecification() : array;
 
     abstract public function returnTypeNullableArrayDoesNotNeedSpecification() : ?array;
@@ -256,52 +191,7 @@ abstract class FunctionCommentReturn
     abstract public function returnTypeNullableIterableDoesNotNeedSpecification() : ?iterable;
 
     /**
-     * @return array
-     */
-    abstract public function tagReturnTypeArrayNeedsSpecification();
-
-    /**
-     * @return array[]
-     */
-    abstract public function tarReturnTypeArrayOfArraysNeedsSpecification();
-
-    /**
-     * @return \Traversable
-     */
-    abstract public function tagReturnTypeTraversableNeedsSpecification();
-
-    /**
-     * @return Traversable[]
-     */
-    abstract public function tagReturnTypeArrayOfTraversableNeedsSpecification();
-
-    /**
-     * @return \Generator[]
-     */
-    abstract public function tagReturnTypeGeneratorNeedsSpecification();
-
-    /**
-     * @return Generator
-     */
-    abstract public function tagReturnTypeArrayOfGeneratorNeedsSpecification();
-
-    /**
-     * @return iterable
-     */
-    abstract public function tagReturnTypeIterableNeedsSpecification();
-
-    /**
-     * @return iterable[]
-     */
-    abstract public function tagReturnTypeArrayOfIterableNeedsSpecification();
-
-    /**
-     * @return Array[]|iterable|array|ITerable[][]|Traversable|\traversable[]
-     */
-    abstract public function allTagTypesNeedSpecification();
-
-    /**
-     * @return Null|TRUE
+     * @return bool|int We don't know the exact type here.
      */
     public function returnNullOrTrueWrongCaseInTag()
     {
@@ -309,7 +199,7 @@ abstract class FunctionCommentReturn
     }
 
     /**
-     * @return null|False
+     * @return string We don't know the exact type here.
      */
     public function returnNullOrFalseWrongCaseInTag()
     {
@@ -328,4 +218,24 @@ abstract class FunctionCommentReturn
 
         return [];
     }
+
+    /**
+     * @return
+     */
+    abstract public function missingType();
+
+    /**
+     * @return int,string
+     */
+    abstract public function invalidType();
+
+    /**
+     * @return null
+     */
+    abstract public function returnNull();
+
+    /**
+     * @return null[]
+     */
+    abstract public function returnNullArray();
 }

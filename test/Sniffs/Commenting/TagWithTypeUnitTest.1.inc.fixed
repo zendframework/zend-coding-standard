@@ -1,0 +1,299 @@
+<?php
+
+namespace MyNamespace\Test;
+
+use ArrayIterator as AI;
+use DateTime;
+use RuntimeException as Exception;
+use ZTest\MyNamespace\ParentClass as ParamTagParent;
+
+class ParamTag extends ParamTagParent {
+    /**
+     * @param
+     */
+    public function test($a) {}
+
+    /**
+     * @param something
+     */
+    public function test($a) {}
+
+    /**
+     * @param $a something
+     */
+    public function test($a) {}
+
+    /**
+     * @param ...$a
+     */
+    public function test(...$a) {}
+
+    /**
+     * @param $c
+     */
+    public function test($a) {}
+
+    /**
+     * @param mixed $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param mixed[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param mixed|mixed[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param string|DateTime[]|\Traversable $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param ParamTag $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param \MyNamespace\Test\ParamTag $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param parent $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param parent $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param ParamTag[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param \MyNamespace\Test\ParamTag[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param parent[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param parent[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param ParentClass $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param ParentClass[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param bool|int $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param void $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param void[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param true|false $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param bool|true $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param bool|false $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param DateTime $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param ?array $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param |int| $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param Exception $a
+     */
+    public function test(\Throwable $a) {}
+
+    /**
+     * @param string $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param float|int|string $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param bool|int|DateTime $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param null|\ArrayAccess|\ArrayObject|DateTime $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param bool $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param int $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param float $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param null[]|string[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param $this $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param null $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param null[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param null[][] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param null|null[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param mixed|string $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param array|mixed[] $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param int|void $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param AI $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param AI $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param AI $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param self $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param static $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param parent $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param self $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param static $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param parent $a
+     */
+    public function test($a) {}
+
+    /**
+     * @param array $a {
+     *     @var bool $required
+     *     @var string $label
+     *     @var array $arr {
+     *         @var int $counter
+     *     }
+     * }
+     * @param array $b {
+     *     @var int $int
+     * }
+     */
+    public function test($a, $b) {}
+}

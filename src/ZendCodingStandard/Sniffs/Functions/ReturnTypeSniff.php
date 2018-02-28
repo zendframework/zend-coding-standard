@@ -20,7 +20,6 @@ use function explode;
 use function implode;
 use function in_array;
 use function preg_grep;
-use function preg_match;
 use function preg_replace;
 use function preg_split;
 use function sprintf;
@@ -29,8 +28,6 @@ use function strpos;
 use function strtolower;
 use function strtr;
 use function trim;
-use function ucfirst;
-use function usort;
 
 use const T_ANON_CLASS;
 use const T_ARRAY;
@@ -76,14 +73,44 @@ class ReturnTypeSniff implements Sniff
 {
     use Methods;
 
+    /**
+     * @var string
+     */
     private $returnDoc;
+
+    /**
+     * @var array
+     */
     private $returnDocTypes = [];
+
+    /**
+     * @var string
+     */
     private $returnDocValue;
+
+    /**
+     * @var null|string
+     */
     private $returnDocDescription;
+
+    /**
+     * @var bool
+     */
     private $returnDocIsValid = true;
 
+    /**
+     * @var string
+     */
     private $returnType;
+
+    /**
+     * @var string
+     */
     private $returnTypeValue;
+
+    /**
+     * @var bool
+     */
     private $returnTypeIsValid = true;
 
     /**
@@ -158,10 +185,10 @@ class ReturnTypeSniff implements Sniff
                 $phpcsFile->addError($error, $tag, 'SpecialMethodReturnTag');
             }
 
-            if ($tokens[$tag + 2]['code'] !== T_DOC_COMMENT_STRING) {
-                $error = 'Return type missing for @return tag in function comment';
-                $phpcsFile->addError($error, $tag, 'MissingReturnTypeDoc');
-
+            $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag + 1);
+            if ($string !== $tag + 2
+                || $tokens[$string]['line'] !== $tokens[$tag]['line']
+            ) {
                 $this->returnDoc = $tag;
                 $this->returnDocIsValid = false;
                 return;
@@ -181,222 +208,23 @@ class ReturnTypeSniff implements Sniff
         $this->returnDocDescription = isset($split[1]) ? trim($split[1]) : null;
 
         if (strtolower($this->returnDocValue) === 'void') {
-            if ($this->returnDocDescription) {
-                $error = 'Description for return "void" type is not allowed.'
-                    . 'Please move it to method description.';
-                $phpcsFile->addError($error, $returnDoc, 'ReturnVoidDescription');
-
-                $this->returnDocIsValid = false;
-                return;
-            }
-
-            $error = 'Return tag "void" is redundant.';
-            $fix = $phpcsFile->addFixableError($error, $returnDoc, 'ReturnVoid');
-
-            if ($fix) {
-                $this->removeTag($phpcsFile, $returnDoc);
-            }
-
             $this->returnDocIsValid = false;
             return;
         }
 
-        $isThis = in_array(strtolower($this->returnDocValue), ['$this', '$this|null', 'null|$this'], true);
-        if (! $isThis
-            && ! preg_match(
-                '/^((?:\\\\?[a-z0-9]+)+(?:\[\])*)(\|(?:\\\\?[a-z0-9]+)+(?:\[\])*)*$/i',
-                $this->returnDocValue
-            )
-        ) {
-            $error = 'Return type has invalid format';
-            $phpcsFile->addError($error, $returnDoc + 2, 'ReturnInvalidFormat');
-
+        if (! $this->isType('@return', $this->returnDocValue)) {
             $this->returnDocIsValid = false;
             return;
-        }
-
-        if ($isThis
-            && strtolower($this->returnDocValue) !== $this->returnDocValue
-        ) {
-            $error = 'Invalid case of return type; expected %s but found %s';
-            $data = [
-                '$this',
-                $this->returnDocValue,
-            ];
-            $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'InvalidReturnThis', $data);
-
-            if ($fix) {
-                $content = trim(strtolower($this->returnDocValue) . ' ' . $this->returnDocDescription);
-                $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-            }
         }
 
         // Return tag contains only null, null[], null[][], ...
         $cleared = strtolower(strtr($this->returnDocValue, ['[' => '', ']' => '']));
         if ($cleared === 'null') {
-            $error = 'Return tag contains only "null". Please specify all returned types';
-            $data = [
-                $this->returnDocValue,
-            ];
-            $code = sprintf('ReturnOnly%s', ucfirst($cleared));
-            $phpcsFile->addError($error, $returnDoc + 2, $code, $data);
-
             $this->returnDocIsValid = false;
             return;
         }
 
-        $hasInvalidType = false;
         $this->returnDocTypes = explode('|', $this->returnDocValue);
-        $count = count($this->returnDocTypes);
-        foreach ($this->returnDocTypes as $key => $type) {
-            $lower = strtolower($type);
-
-            if ($count > 1
-                && ($lower === 'mixed' || strpos($lower, 'mixed[') === 0)
-            ) {
-                $error = 'Return type %s cannot be mixed with other types.';
-                $data = [
-                    $type,
-                ];
-                $phpcsFile->addError($error, $returnDoc + 2, 'ReturnMixed', $data);
-
-                $hasInvalidType = true;
-                continue;
-            }
-
-            if ($lower === 'void') {
-                // If void is mixed up with other return types.
-                $error = 'Return "void" is mixed with other types. Please use null instead.';
-                $phpcsFile->addError($error, $returnDoc + 2, 'ReturnVoidWithOther');
-
-                $hasInvalidType = true;
-                continue;
-            }
-
-            if (in_array(strtolower($type), ['null', 'true', 'false'], true)) {
-                $suggestedType = strtolower($type);
-            } else {
-                $suggestedType = $this->getSuggestedType($type);
-            }
-            if ($suggestedType !== $type) {
-                if (strpos($suggestedType, 'self') === 0) {
-                    $error = 'Return type cannot be class name. Please use "self", "static" or "$this" instead'
-                        . ' depends what you expect to be returned';
-                    $phpcsFile->addError($error, $returnDoc + 2, 'InvalidReturnClassName');
-
-                    $hasInvalidType = true;
-                    continue;
-                }
-
-                $error = 'Invalid return type; expected "%s", but found "%s"';
-                $data = [
-                    $suggestedType,
-                    $type,
-                ];
-                $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'InvalidReturn', $data);
-
-                if ($fix) {
-                    $this->returnDocTypes[$key] = $suggestedType;
-                    $content = trim(implode('|', $this->returnDocTypes) . ' ' . $this->returnDocDescription);
-                    $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-                }
-
-                $hasInvalidType = true;
-                continue;
-            }
-        }
-
-        if ($hasInvalidType) {
-            return;
-        }
-
-        // Check boolean values in return tag
-        $lowerReturnDocTypes = explode('|', strtolower($this->returnDocValue));
-        $hasTrue = in_array('true', $lowerReturnDocTypes, true);
-        $hasFalse = in_array('false', $lowerReturnDocTypes, true);
-        if (in_array('bool', $lowerReturnDocTypes, true)) {
-            if ($hasTrue) {
-                $error = 'Return tag contains "bool" and "true". Please use just "bool"';
-                $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'ReturnBoolAndTrue');
-
-                if ($fix) {
-                    $types = array_filter($this->returnDocTypes, function ($v) {
-                        return strtolower($v) !== 'true';
-                    });
-                    $content = trim(implode('|', $types) . ' ' . $this->returnDocDescription);
-                    $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-                }
-
-                return;
-            }
-
-            if ($hasFalse) {
-                $error = 'Return tag contains "bool" and "false". Please use just "bool"';
-                $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'ReturnBoolAndFalse');
-
-                if ($fix) {
-                    $types = array_filter($this->returnDocTypes, function ($v) {
-                        return strtolower($v) !== 'false';
-                    });
-                    $content = trim(implode('|', $types) . ' ' . $this->returnDocDescription);
-                    $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-                }
-
-                return;
-            }
-        } elseif ($hasTrue && $hasFalse) {
-            $error = 'Return tag contains "true" and "false". Please use "bool" instead.';
-            $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'ReturnTrueAndFalse');
-
-            if ($fix) {
-                $types = array_filter($this->returnDocTypes, function ($v) {
-                    return ! in_array(strtolower($v), ['true', 'false'], true);
-                });
-                $types[] = 'bool';
-                $content = trim(implode('|', $types) . ' ' . $this->returnDocDescription);
-                $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-            }
-
-            return;
-        }
-
-        // Check if types are unique.
-        $uniq = array_unique($this->returnDocTypes);
-        if ($uniq !== $this->returnDocTypes) {
-            $expected = implode('|', $uniq);
-            $error = 'Duplicated types in return tag; expected "%s", but found "%s"';
-            $data = [
-                $expected,
-                $this->returnDocValue,
-            ];
-            $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'DuplicateReturnDocTypes', $data);
-
-            if ($fix) {
-                $content = trim($expected . ' ' . $this->returnDocDescription);
-                $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-            }
-
-            return;
-        }
-
-        // Check if order of return types is as expected: first null, then simple types, and then complex.
-        usort($this->returnDocTypes, function ($a, $b) {
-            return $this->sortTypes($a, $b);
-        });
-        $content = implode('|', $this->returnDocTypes);
-        if ($content !== $this->returnDocValue) {
-            $error = 'Invalid order of return types in @return tag; expected "%s" but found "%s"';
-            $data = [
-                $content,
-                $this->returnDocValue,
-            ];
-            $fix = $phpcsFile->addFixableError($error, $returnDoc + 2, 'ReturnTypesOrder', $data);
-
-            if ($fix) {
-                $content = trim($content . ' ' . $this->returnDocDescription);
-                $phpcsFile->fixer->replaceToken($returnDoc + 2, $content);
-            }
-        }
     }
 
     private function processReturnType(File $phpcsFile, int $stackPtr) : void
