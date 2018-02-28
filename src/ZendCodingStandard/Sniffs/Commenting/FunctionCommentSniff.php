@@ -88,6 +88,15 @@ class FunctionCommentSniff implements Sniff
             $commentStart = $tokens[$commentEnd]['comment_opener'];
 
             $this->processTagOrder($phpcsFile, $commentStart);
+
+            if ($tokens[$commentStart]['line'] === $tokens[$commentEnd]['line']) {
+                $error = 'Function comment must be multiline comment';
+                $fix = $phpcsFile->addFixableError($error, $commentStart, 'SingleLine');
+
+                if ($fix) {
+                    $phpcsFile->fixer->addContent($commentStart, $phpcsFile->eolChar . ' *');
+                }
+            }
         }
     }
 

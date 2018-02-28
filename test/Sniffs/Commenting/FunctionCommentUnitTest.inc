@@ -92,4 +92,7 @@ class Foo
      * }
      */
     private function twoLevelNesting(array $a) {}
+
+    /** @return void */
+    private function inlineComment() {}
 }
