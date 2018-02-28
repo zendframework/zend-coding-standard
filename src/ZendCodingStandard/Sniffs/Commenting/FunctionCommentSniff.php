@@ -87,26 +87,7 @@ class FunctionCommentSniff implements Sniff
 
             $commentStart = $tokens[$commentEnd]['comment_opener'];
 
-            $this->processSee($phpcsFile, $commentStart, $commentEnd);
             $this->processTagOrder($phpcsFile, $commentStart);
-        }
-    }
-
-    private function processSee(File $phpcsFile, int $commentStart, int $commentEnd) : void
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
-            if (strtolower($tokens[$tag]['content']) !== '@see') {
-                continue;
-            }
-
-            // Make sure the tag isn't empty.
-            $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
-            if (! $string || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
-                $error = 'Content missing for @see tag in function comment';
-                $phpcsFile->addError($error, $tag, 'EmptySees');
-            }
         }
     }
 

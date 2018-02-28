@@ -52,6 +52,13 @@ class DocCommentSniff implements Sniff
     ];
 
     /**
+     * @var string[]
+     */
+    public $tagsWithContent = [
+        '@see',
+    ];
+
+    /**
      * @return int[]
      */
     public function register() : array
@@ -75,7 +82,7 @@ class DocCommentSniff implements Sniff
         $this->checkBeforeOpen($phpcsFile, $commentStart);
         $this->checkAfterClose($phpcsFile, $commentStart, $commentEnd);
         $this->checkCommentIndents($phpcsFile, $commentStart, $commentEnd);
-        $this->checkTagsSpaces($phpcsFile, $commentStart);
+        $this->checkTagsSpaces($phpcsFile, $commentStart, $commentEnd);
         $this->checkInheritDoc($phpcsFile, $commentStart, $commentEnd);
 
         // Doc block comment in one line.
@@ -730,7 +737,7 @@ class DocCommentSniff implements Sniff
         }
     }
 
-    private function checkTagsSpaces(File $phpcsFile, int $commentStart) : void
+    private function checkTagsSpaces(File $phpcsFile, int $commentStart, int $commentEnd) : void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -751,6 +758,15 @@ class DocCommentSniff implements Sniff
             // Continue if next token is not a whitespace.
             if ($tokens[$tag + 1]['code'] !== T_DOC_COMMENT_WHITESPACE) {
                 continue;
+            }
+
+            if (in_array($tokens[$tag]['content'], $this->tagsWithContent, true)) {
+                $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
+                if (! $string || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
+                    $error = 'Content missing for %s tag in PHPDoc comment';
+                    $data = $tokens[$tag]['content'];
+                    $phpcsFile->addError($error, $tag, 'EmptyTagContent', $data);
+                }
             }
 
             // Continue if next token contains new line.

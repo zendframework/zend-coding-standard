@@ -241,4 +241,9 @@ class Foo
      * @inheritdoc
      */
     private function inheritDocTag2() {}
+
+    /**
+     * @see
+     */
+    private function emptySeeContent() {}
 }
