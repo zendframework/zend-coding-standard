@@ -17,6 +17,9 @@ use const T_WHITESPACE;
 
 class TypeCastingSniff implements Sniff
 {
+    /**
+     * @var array
+     */
     private $castMap = [
         '(boolean)' => '(bool)',
         '(integer)' => '(int)',

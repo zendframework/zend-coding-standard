@@ -1,10 +1,4 @@
 <?php
-/**
- * Copied from Squiz_Sniffs_Commenting_VariableCommentSniff
- * with modifications:
- *  - use suggested types from ZendCodingStandard\CodingStandard
- *  - skip normal comments if there is one blank line after the comment
- */
 
 declare(strict_types=1);
 
@@ -12,11 +6,19 @@ namespace ZendCodingStandard\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
-use ZendCodingStandard\CodingStandard;
+
+use function array_filter;
+use function current;
+use function key;
+use function next;
+use function strtolower;
+use function substr;
 
 use const T_COMMENT;
 use const T_DOC_COMMENT_CLOSE_TAG;
+use const T_DOC_COMMENT_STAR;
 use const T_DOC_COMMENT_STRING;
+use const T_DOC_COMMENT_WHITESPACE;
 use const T_PRIVATE;
 use const T_PROTECTED;
 use const T_PUBLIC;
@@ -26,6 +28,13 @@ use const T_WHITESPACE;
 
 class VariableCommentSniff extends AbstractVariableSniff
 {
+    /**
+     * @var string[]
+     */
+    public $nestedTags = [
+        '@var',
+    ];
+
     /**
      * @param int $stackPtr
      */
@@ -46,14 +55,18 @@ class VariableCommentSniff extends AbstractVariableSniff
             || ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG
                 && $tokens[$commentEnd]['code'] !== T_COMMENT)
         ) {
-            $phpcsFile->addError('Missing member variable doc comment', $stackPtr, 'Missing');
+            $error = 'Missing member variable doc comment';
+            $phpcsFile->addError($error, $stackPtr, 'Missing');
             return;
         }
 
         if ($tokens[$commentEnd]['code'] === T_COMMENT) {
             if ($tokens[$commentEnd]['line'] === $tokens[$stackPtr]['line'] - 1) {
                 $error = 'You must use "/**" style comments for a member variable comment';
-                $phpcsFile->addError($error, $stackPtr, 'WrongStyle');
+                $phpcsFile->addError($error, $commentEnd, 'WrongStyle');
+            } else {
+                $error = 'Missing member variable doc comment';
+                $phpcsFile->addError($error, $stackPtr, 'Missing');
             }
 
             return;
@@ -62,63 +75,89 @@ class VariableCommentSniff extends AbstractVariableSniff
         $commentStart = $tokens[$commentEnd]['comment_opener'];
 
         $foundVar = null;
-        foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
-            if ($tokens[$tag]['content'] === '@var') {
+
+        $tags = $tokens[$commentStart]['comment_tags'];
+        while ($tag = current($tags)) {
+            $key = key($tags);
+            if (isset($tags[$key + 1])) {
+                $lastFrom = $tags[$key + 1];
+            } else {
+                $lastFrom = $tokens[$commentStart]['comment_closer'];
+            }
+
+            $last = $phpcsFile->findPrevious(
+                [T_DOC_COMMENT_STAR, T_DOC_COMMENT_WHITESPACE],
+                $lastFrom - 1,
+                null,
+                true
+            );
+
+            if (substr($tokens[$last]['content'], -1) === '{') {
+                $dep = 1;
+                $i = $last;
+                $max = $tokens[$commentStart]['comment_closer'];
+                while ($dep > 0 && $i < $max) {
+                    $i = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $i + 1, $max);
+
+                    if (! $i) {
+                        break;
+                    }
+
+                    if ($tokens[$i]['content'][0] === '}') {
+                        --$dep;
+                    }
+
+                    if (substr($tokens[$i]['content'], -1) === '{') {
+                        ++$dep;
+                    }
+                }
+
+                if ($dep > 0) {
+                    $error = 'Tag contains nested description, but cannot find the closing bracket';
+                    $phpcsFile->addError($error, $last, 'NotClosed');
+                    return;
+                }
+
+                while (isset($tags[$key + 1]) && $tags[$key + 1] < $i) {
+                    $tagName = strtolower($tokens[$tags[$key + 1]]['content']);
+                    if (! array_filter($this->nestedTags, function ($v) use ($tagName) {
+                        return strtolower($v) === $tagName;
+                    })) {
+                        $error = 'Tag %s cannot be nested.';
+                        $data = [
+                            $tokens[$tags[$key + 1]]['content'],
+                        ];
+                        $phpcsFile->addError($error, $tags[$key + 1], 'NestedTag', $data);
+                        return;
+                    }
+
+                    $nestedTags[] = $tags[$key + 1];
+
+                    next($tags);
+                    ++$key;
+                }
+            }
+
+            if (strtolower($tokens[$tag]['content']) === '@var') {
                 if ($foundVar !== null) {
                     $error = 'Only one @var tag is allowed in a member variable comment';
                     $phpcsFile->addError($error, $tag, 'DuplicateVar');
                 } else {
                     $foundVar = $tag;
                 }
-            } elseif ($tokens[$tag]['content'] === '@see') {
-                // Make sure the tag isn't empty.
-                $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
-                if ($string === false || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
-                    $error = 'Content missing for @see tag in member variable comment';
-                    $phpcsFile->addError($error, $tag, 'EmptySees');
-                }
             } else {
                 $error = '%s tag is not allowed in member variable comment';
                 $data = [$tokens[$tag]['content']];
-                $phpcsFile->addWarning($error, $tag, 'TagNotAllowed', $data);
+                $phpcsFile->addError($error, $tag, 'TagNotAllowed', $data);
             }
+
+            next($tags);
         }
 
         // The @var tag is the only one we require.
         if ($foundVar === null) {
             $error = 'Missing @var tag in member variable comment';
             $phpcsFile->addError($error, $commentEnd, 'MissingVar');
-            return;
-        }
-
-        $firstTag = $tokens[$commentStart]['comment_tags'][0];
-        if ($foundVar !== null && $tokens[$firstTag]['content'] !== '@var') {
-            $error = 'The @var tag must be the first tag in a member variable comment';
-            $phpcsFile->addError($error, $foundVar, 'VarOrder');
-        }
-
-        // Make sure the tag isn't empty and has the correct padding.
-        $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $foundVar, $commentEnd);
-        if ($string === false || $tokens[$string]['line'] !== $tokens[$foundVar]['line']) {
-            $error = 'Content missing for @var tag in member variable comment';
-            $phpcsFile->addError($error, $foundVar, 'EmptyVar');
-            return;
-        }
-
-        $varType = $tokens[$foundVar + 2]['content'];
-        // changed to use bool and int instead of boolean and integer accordingly
-        $suggestedType = CodingStandard::suggestType($varType);
-        if ($varType !== $suggestedType) {
-            $error = 'Expected "%s" but found "%s" for @var tag in member variable comment';
-            $data = [
-                $suggestedType,
-                $varType,
-            ];
-            $fix = $phpcsFile->addFixableError($error, $foundVar + 2, 'IncorrectVarType', $data);
-
-            if ($fix) {
-                $phpcsFile->fixer->replaceToken($foundVar + 2, $suggestedType);
-            }
         }
     }
 

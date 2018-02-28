@@ -31,7 +31,7 @@ class ImportInternalConstantSniff implements Sniff
     use Namespaces;
 
     /**
-     * @var array<string, int> Hash map of all php built in constant names.
+     * @var array Hash map of all php built in constant names.
      */
     private $builtInConstants;
 
@@ -46,7 +46,7 @@ class ImportInternalConstantSniff implements Sniff
     private $currentNamespace;
 
     /**
-     * @var array<string, string> Array of imported constant in current namespace.
+     * @var array Array of imported constant in current namespace.
      */
     private $importedConstants;
 

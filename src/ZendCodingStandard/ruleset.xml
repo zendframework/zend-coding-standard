@@ -68,11 +68,4 @@
         </properties>
     </rule>
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
-
-    <!-- ZendCodingStandard Rules -->
-    <rule ref="ZendCodingStandard.Commenting.VariableComment">
-        <exclude name="ZendCodingStandard.Commenting.VariableComment.Missing"/>
-        <exclude name="ZendCodingStandard.Commenting.VariableComment.TagNotAllowed"/>
-        <exclude name="ZendCodingStandard.Commenting.VariableComment.VarOrder"/>
-    </rule>
 </ruleset>

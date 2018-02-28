@@ -30,7 +30,7 @@ class ImportInternalFunctionSniff implements Sniff
     use Namespaces;
 
     /**
-     * @var array<string, int> Hash map of all php built in function names.
+     * @var array Hash map of all php built in function names.
      */
     private $builtInFunctions;
 
@@ -45,7 +45,7 @@ class ImportInternalFunctionSniff implements Sniff
     private $currentNamespace;
 
     /**
-     * @var array<string, string> Array of imported function in current namespace.
+     * @var array Array of imported function in current namespace.
      */
     private $importedFunctions;
 

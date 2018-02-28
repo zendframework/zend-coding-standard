@@ -65,10 +65,19 @@ use const T_WHITESPACE;
 
 class ScopeIndentSniff implements Sniff
 {
+    /**
+     * @var int
+     */
     public $indent = 4;
 
+    /**
+     * @var bool
+     */
     public $alignObjectOperators = true;
 
+    /**
+     * @var int[]
+     */
     private $controlStructures = [
         T_IF => T_IF,
         T_ELSEIF => T_ELSEIF,
@@ -79,6 +88,9 @@ class ScopeIndentSniff implements Sniff
         T_CATCH => T_CATCH,
     ];
 
+    /**
+     * @var int[]
+     */
     private $endOfStatement = [
         T_SEMICOLON,
         T_CLOSE_CURLY_BRACKET,
@@ -91,6 +103,9 @@ class ScopeIndentSniff implements Sniff
         T_OPEN_SHORT_ARRAY,
     ];
 
+    /**
+     * @var int[]
+     */
     private $caseEndToken = [
         T_BREAK,
         T_CONTINUE,
@@ -99,8 +114,14 @@ class ScopeIndentSniff implements Sniff
         T_EXIT,
     ];
 
+    /**
+     * @var int[]
+     */
     private $breakToken;
 
+    /**
+     * @var int[]
+     */
     private $functionToken;
 
     public function __construct()
