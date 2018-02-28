@@ -57,6 +57,7 @@ class CorrectClassNameCaseUnitTest extends TestCase
             77 => 1,
             83 => 1,
             84 => 1,
+            89 => 1,
         ];
     }
 

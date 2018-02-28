@@ -84,4 +84,11 @@ class MyClass
     ) : \ZendCodingStandardTest\Sniffs\TestCase {
         throw new \RangeException;
     }
+
+    /**
+     * @param iterable|\Traversable[]|\ArrayObject[]|Foo[] $a
+     */
+    public function trav(iterable $a)
+    {
+    }
 }

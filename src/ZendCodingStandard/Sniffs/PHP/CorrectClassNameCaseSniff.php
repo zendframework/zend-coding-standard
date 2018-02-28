@@ -22,7 +22,9 @@ use function ltrim;
 use function preg_quote;
 use function preg_replace;
 use function strlen;
+use function strstr;
 use function strtolower;
+use function strtr;
 use function substr;
 use function trim;
 
@@ -291,13 +293,16 @@ class CorrectClassNameCaseSniff implements Sniff
      */
     private function getExpectedName(File $phpcsFile, string $class, int $stackPtr) : string
     {
+        $suffix = strstr($class, '[');
+        $class = strtr($class, ['[' => '', ']' => '']);
+
         if ($class[0] === '\\') {
             $result = $this->hasDifferentCase(ltrim($class, '\\'));
             if ($result) {
-                return '\\' . $result;
+                return '\\' . $result . $suffix;
             }
 
-            return $class;
+            return $class . $suffix;
         }
 
         $imports = $this->getGlobalUses($phpcsFile);
@@ -305,7 +310,7 @@ class CorrectClassNameCaseSniff implements Sniff
         // Check if class is imported.
         if (isset($imports[strtolower($class)])) {
             if ($imports[strtolower($class)]['alias'] !== $class) {
-                return $imports[strtolower($class)]['alias'];
+                return $imports[strtolower($class)]['alias'] . $suffix;
             }
         } else {
             // Class from the same namespace.
@@ -314,11 +319,11 @@ class CorrectClassNameCaseSniff implements Sniff
 
             $result = $this->hasDifferentCase(ltrim($fullClassName, '\\'));
             if ($result) {
-                return ltrim(substr($result, strlen($namespace)), '\\');
+                return ltrim(substr($result, strlen($namespace)), '\\') . $suffix;
             }
         }
 
-        return $class;
+        return $class . $suffix;
     }
 
     /**
