@@ -115,6 +115,10 @@ class TagCaseSniff implements Sniff
             $content,
         ];
 
-        $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
+
+        if ($fix) {
+            $phpcsFile->fixer->replaceToken($stackPtr, $tagName);
+        }
     }
 }
