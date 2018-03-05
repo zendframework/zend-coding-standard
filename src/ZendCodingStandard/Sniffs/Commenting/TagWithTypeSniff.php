@@ -208,7 +208,7 @@ class TagWithTypeSniff implements Sniff
         }
 
         if (! $this->isVariable($split[1])) {
-            $error = 'Invalid parameter name';
+            $error = empty($split[1]) ? 'Missing parameter name in PHPDocs' : 'Invalid parameter name';
             $phpcsFile->addError($error, $tagPtr + 2, 'InvalidParamName');
             return false;
         }
