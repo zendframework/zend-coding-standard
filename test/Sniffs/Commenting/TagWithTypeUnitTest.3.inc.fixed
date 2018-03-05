@@ -284,4 +284,16 @@ class VarTag extends VarTagParent {
      * }
      */
     public $a;
+
+    public function test()
+    {
+        /** @var int */
+        foreach (func_get_args() as $a) {
+        }
+
+        new class () {
+            /** @var bool */
+            private $a;
+        };
+    }
 }

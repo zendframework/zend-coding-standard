@@ -6,12 +6,14 @@ namespace ZendCodingStandard\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\Helper\Methods;
 
 use function array_filter;
 use function array_shift;
 use function array_unique;
 use function count;
+use function end;
 use function explode;
 use function implode;
 use function in_array;
@@ -233,19 +235,26 @@ class TagWithTypeSniff implements Sniff
             $i = $phpcsFile->findPrevious([T_DOC_COMMENT_TAG, T_DOC_COMMENT_OPEN_TAG], $i - 1);
         }
 
+        $condition = end($tokens[$tagPtr]['conditions']);
+        $isMemberVar = isset(Tokens::$ooScopeTokens[$condition]);
+
         $split = preg_split('/\s/', $tokens[$tagPtr + 2]['content'], 3);
-        if ($nested > 0) {
-            if (! empty($split[0][0]) && $split[0][0] === '$') {
-                $error = 'Missing variable type';
-                $phpcsFile->addError($error, $tagPtr + 2, 'MissingVarType');
+        if ($nested > 0 || ! $isMemberVar) {
+            if (! isset($split[1])) {
+                if ($this->isVariable($split[0])) {
+                    $error = 'Missing variable type';
+                    $phpcsFile->addError($error, $tagPtr + 2, 'MissingVarType');
+                } else {
+                    $error = 'Missing variable name in PHPDocs';
+                    $phpcsFile->addError($error, $tagPtr + 2, 'MissingVarName');
+                }
 
                 return false;
             }
 
-            if (empty($split[1]) || (! empty($split[1][0]) && $split[1][0] !== '$')) {
-                $error = 'Missing variable name';
-                $phpcsFile->addError($error, $tagPtr + 2, 'MissingVarName');
-
+            if (! $this->isVariable($split[1])) {
+                $error = empty($split[1]) ? 'Missing variable name in PHPDocs' : 'Invalid variable name';
+                $phpcsFile->addError($error, $tagPtr + 2, 'InvalidVarName');
                 return false;
             }
 

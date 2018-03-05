@@ -171,6 +171,8 @@ class TagWithTypeUnitTest extends TestCase
                     272 => 1,
                     281 => 1,
                     282 => 1,
+                    290 => 1,
+                    295 => 1,
                 ];
         }
 
