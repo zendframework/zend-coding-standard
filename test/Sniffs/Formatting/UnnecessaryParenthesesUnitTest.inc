@@ -162,5 +162,7 @@ class UnnecessaryParentheses
 
         $r = $a === ($b + $c) * $d;
         $r = $a === $d * ($b + $c);
+        $r = $a === $b + $c;
+        $r = $a === ($b + $c);
     }
 }

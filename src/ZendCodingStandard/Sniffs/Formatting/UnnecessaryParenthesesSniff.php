@@ -216,7 +216,8 @@ class UnnecessaryParenthesesSniff implements Sniff
         // Check single expression comparision
         if (in_array($tokens[$prev]['code'], Tokens::$equalityTokens, true)) {
             $op = $phpcsFile->findNext(
-                Tokens::$assignmentTokens
+                Tokens::$arithmeticTokens
+                    + Tokens::$assignmentTokens
                     + Tokens::$booleanOperators
                     + [
                         T_BITWISE_AND => T_BITWISE_AND,
