@@ -156,7 +156,13 @@ class UnnecessaryParenthesesSniff implements Sniff
             }
         }
 
+        // Skip when operator before the parenthesis
         if (in_array($tokens[$prev]['code'], Tokens::$operators + Tokens::$booleanOperators, true)) {
+            return;
+        }
+
+        // Skip when operator after the parenthesis
+        if (in_array($tokens[$next]['code'], Tokens::$operators + Tokens::$booleanOperators, true)) {
             return;
         }
 

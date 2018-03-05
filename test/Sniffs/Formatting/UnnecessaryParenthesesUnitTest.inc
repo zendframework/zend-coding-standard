@@ -159,5 +159,8 @@ class UnnecessaryParentheses
         $a = $b ? 0 : ($c ?? 1);
 
         new $arr['abc']['def']();
+
+        $r = $a === ($b + $c) * $d;
+        $r = $a === $d * ($b + $c);
     }
 }
