@@ -81,7 +81,7 @@ class FunctionDataProviderTagSniff implements Sniff
                 $providerName = $tokens[$tag + 2]['content'];
 
                 if (preg_match('/Provider$/', $providerName)) {
-                    $error = 'Data provider name should have "Provider" suffix.';
+                    $error = 'Data provider name should not have "Provider" suffix.';
                     $phpcsFile->addError($error, $tag, 'DataProviderInvalidName');
                 }
             }
