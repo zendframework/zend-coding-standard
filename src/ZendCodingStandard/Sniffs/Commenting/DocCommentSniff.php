@@ -371,6 +371,7 @@ class DocCommentSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $firstTag = $tokens[$commentStart]['comment_tags'][0] ?? null;
 
+        $replaces = [];
         $next = $commentStart;
         $search = [T_DOC_COMMENT_STAR, T_DOC_COMMENT_CLOSE_TAG];
         while ($next = $phpcsFile->findNext($search, $next + 1, $commentEnd + 1)) {
@@ -439,6 +440,10 @@ class DocCommentSniff implements Sniff
                     }
 
                     $spaces = strlen(preg_replace('/^( *).*$/', '\\1', $tokens[$next + 1]['content']));
+                    if (! isset($replaces[$prev][$spaces])) {
+                        $replaces[$prev][$spaces] = $spaces;
+                    }
+
                     if ($tokens[$prev]['code'] === T_DOC_COMMENT_TAG
                         && ($spaces < $expectedSpaces
                             || (($spaces - 1) % $this->indent) !== 0
@@ -457,12 +462,16 @@ class DocCommentSniff implements Sniff
                         );
 
                         if ($tokens[$prev2]['line'] === $tokens[$next]['line'] - 1) {
-                            if ($tokens[$prev]['line'] !== $tokens[$next + 1]['line'] - 1) {
+                            if (isset($replaces[$prev][$spaces]) && $replaces[$prev][$spaces] !== $spaces) {
+                                $expectedSpaces = $replaces[$prev][$spaces];
+                            } elseif ($tokens[$prev]['line'] !== $tokens[$next + 1]['line'] - 1) {
                                 $expectedSpaces = 1 + (int) max(
                                     round(($spaces - 1) / $this->indent) * $this->indent,
                                     $this->indent
                                 );
                             }
+                            $replaces[$prev][$spaces] = $expectedSpaces;
+
                             $error = 'Invalid indent before description; expected %d spaces, found %d';
                             $data = [
                                 $expectedSpaces,

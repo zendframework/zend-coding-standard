@@ -246,4 +246,18 @@ class Foo
      * @see
      */
     private function emptySeeContent() {}
+
+    /**
+     * @triggers Comment here
+     *           and continuation here
+     *           and here
+     * @triggers Something
+     *           else
+     *           here
+     * @triggers hello
+     *           world
+     *            foo
+     *           bar baz
+     */
+    public function descriptionIndentWithTags() {}
 }
