@@ -63,6 +63,7 @@ class TagWithTypeUnitTest extends TestCase
                     272 => 1,
                     277 => 1,
                     282 => 1,
+                    304 => 1,
                 ];
             case 'TagWithTypeUnitTest.2.inc':
                 return [
@@ -120,6 +121,7 @@ class TagWithTypeUnitTest extends TestCase
                     327 => 1,
                     332 => 1,
                     337 => 1,
+                    356 => 1,
                 ];
             case 'TagWithTypeUnitTest.3.inc':
                 return [

@@ -298,3 +298,12 @@ abstract class FunctionCommentReturn extends ParentClass
      */
     abstract public function returnTypePrimitiveDoesNotMatchWithTag2() : string;
 }
+
+interface MyInterface extends MyOne, MyTwo
+{
+    public function method1($self) : MyInterface;
+
+    public function method2($myOne) : MyOne;
+
+    public function method3($myTwo) : MyTwo;
+}

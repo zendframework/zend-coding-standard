@@ -258,3 +258,12 @@ class FunctionParam extends FunctionParamParent
 
     private function privateMethod(CALLABLE $o, Array $p) {}
 }
+
+interface MyInterface extends MyOne, MyTwo
+{
+    public function method1(MyInterface $self);
+
+    public function method2(MyOne $myOne);
+
+    public function method3(MyTwo $myTwo);
+}

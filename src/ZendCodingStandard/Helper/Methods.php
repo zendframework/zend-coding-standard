@@ -26,12 +26,10 @@ use function strtolower;
 use function strtr;
 use function substr;
 
-use const T_CLASS;
 use const T_DOC_COMMENT_CLOSE_TAG;
 use const T_DOC_COMMENT_TAG;
 use const T_DOC_COMMENT_WHITESPACE;
 use const T_INTERFACE;
-use const T_TRAIT;
 use const T_WHITESPACE;
 
 /**
@@ -155,10 +153,12 @@ trait Methods
         $this->implementedInterfaceNames = [];
         if ($tokens[$stackPtr]['conditions']) {
             $conditionCode = end($tokens[$stackPtr]['conditions']);
-            if (in_array($conditionCode, [T_CLASS, T_TRAIT, T_INTERFACE], true)) {
+            if (in_array($conditionCode, Tokens::$ooScopeTokens, true)) {
                 $conditionPtr = key($tokens[$stackPtr]['conditions']);
                 $this->className = $phpcsFile->getDeclarationName($conditionPtr);
-                $this->parentClassName = $phpcsFile->findExtendedClassName($conditionPtr) ?: null;
+                if ($conditionCode !== T_INTERFACE) {
+                    $this->parentClassName = $phpcsFile->findExtendedClassName($conditionPtr) ?: null;
+                }
                 $this->implementedInterfaceNames = $phpcsFile->findImplementedInterfaceNames($conditionPtr) ?: [];
             }
         }

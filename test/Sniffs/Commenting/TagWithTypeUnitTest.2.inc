@@ -349,3 +349,21 @@ class ReturnTag extends ReturnTagParent {
      */
     public function test() {}
 }
+
+interface MyInterface extends MyOne, MyTwo
+{
+    /**
+     * @return MyInterface
+     */
+    public function method1($self);
+
+    /**
+     * @return MyOne
+     */
+    public function method2($myOne);
+
+    /**
+     * @return MyTwo
+     */
+    public function method3($myTwo);
+}

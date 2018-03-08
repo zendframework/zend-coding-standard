@@ -297,3 +297,21 @@ class ParamTag extends ParamTagParent {
      */
     public function test($a, $b) {}
 }
+
+interface MyInterface extends MyOne, MyTwo
+{
+    /**
+     * @param MyInterface $self
+     */
+    public function method1($self);
+
+    /**
+     * @param MyOne $myOne
+     */
+    public function method2($myOne);
+
+    /**
+     * @param MyTwo $myTwo
+     */
+    public function method3($myTwo);
+}

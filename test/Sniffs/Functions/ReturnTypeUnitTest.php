@@ -73,6 +73,7 @@ class ReturnTypeUnitTest extends TestCase
                     287 => 2,
                     292 => 1,
                     297 => 1,
+                    304 => 1,
                 ];
             case 'ReturnTypeUnitTest.2.inc':
                 return [
