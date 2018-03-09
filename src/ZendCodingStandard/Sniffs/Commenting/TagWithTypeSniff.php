@@ -100,7 +100,7 @@ class TagWithTypeSniff implements Sniff
             return;
         }
 
-        $split = preg_split('/\s/', $tokens[$stackPtr + 2]['content'], 3);
+        $split = preg_split('/\s/', $tokens[$stackPtr + 2]['content'], 2);
         $this->type = array_shift($split);
         $this->description = trim(array_shift($split) ?: '') ?: null;
 
