@@ -275,4 +275,12 @@ class ThrowUnitTest
     }
 
     abstract public function abstractMethod();
+
+    /**
+     * @throws \RuntimeException\Exception
+     */
+    public function throwException()
+    {
+        throw new Ex\Exception;
+    }
 }

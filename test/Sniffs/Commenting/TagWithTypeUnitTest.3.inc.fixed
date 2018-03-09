@@ -295,5 +295,13 @@ class VarTag extends VarTagParent {
             /** @var bool */
             private $a;
         };
+
+        /** @var Exception\Hello $a Description. */
+        $a = 'hello';
     }
+
+    /**
+     * @var Exception\Hello Description.
+     */
+    public $a;
 }

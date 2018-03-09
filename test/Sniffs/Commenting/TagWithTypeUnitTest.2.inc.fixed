@@ -348,6 +348,11 @@ class ReturnTag extends ReturnTagParent {
      * }
      */
     public function test() {}
+
+    /**
+     * @return Exception\Hello Description.
+     */
+    public function test() {}
 }
 
 interface MyInterface extends MyOne, MyTwo

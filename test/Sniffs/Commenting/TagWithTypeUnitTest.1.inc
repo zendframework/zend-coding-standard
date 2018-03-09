@@ -296,6 +296,11 @@ class ParamTag extends ParamTagParent {
      * }
      */
     public function test($a, $b) {}
+
+    /**
+     * @param \RuntimeException\Hello $a Description.
+     */
+    public function test($a) {}
 }
 
 interface MyInterface extends MyOne, MyTwo

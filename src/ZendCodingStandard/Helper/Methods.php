@@ -20,6 +20,8 @@ use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function strcmp;
+use function stripos;
+use function strlen;
 use function strpos;
 use function strstr;
 use function strtolower;
@@ -245,6 +247,13 @@ trait Methods
             foreach ($this->importedClasses as $use) {
                 if (strtolower($use['class']) === $ltrim) {
                     return $prefix . $use['alias'] . $suffix;
+                }
+
+                if (stripos($ltrim, $use['class'] . '\\') === 0) {
+                    $clear = ltrim(strtr($class, ['?' => '', '[' => '', ']' => '']), '\\');
+                    $name = substr($clear, strlen($use['class']));
+
+                    return $prefix . $use['alias'] . $name . $suffix;
                 }
             }
         }

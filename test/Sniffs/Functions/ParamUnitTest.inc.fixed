@@ -257,6 +257,8 @@ class FunctionParam extends FunctionParamParent
     public function generatorDoesNotNeedSpecificationInDocs($a) {}
 
     private function privateMethod(callable $o, array $p) {}
+
+    private function fqcnParam(Exception\Hello $world) {}
 }
 
 interface MyInterface extends MyOne, MyTwo
