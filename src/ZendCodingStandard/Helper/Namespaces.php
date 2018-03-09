@@ -8,6 +8,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\CodingStandard;
 
+use function in_array;
 use function ltrim;
 use function strrchr;
 use function strtolower;
@@ -64,7 +65,13 @@ trait Namespaces
                 continue;
             }
 
-            $nextToken = $phpcsFile->findNext(T_WHITESPACE, $use + 1, null, true);
+            $nextToken = $phpcsFile->findNext(Tokens::$emptyTokens, $use + 1, null, true);
+
+            if ($tokens[$nextToken]['code'] === T_STRING
+                && in_array(strtolower($tokens[$nextToken]['content']), ['const', 'function'], true)
+            ) {
+                continue;
+            }
 
             $end = $phpcsFile->findNext(
                 [T_NS_SEPARATOR, T_STRING],
@@ -93,6 +100,40 @@ trait Namespaces
     }
 
     /**
+     * @return false|int
+     */
+    private function isFunctionUse(File $phpcsFile, int $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+        $next = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if ($tokens[$next]['code'] === T_STRING
+            && strtolower($tokens[$next]['content']) === 'function'
+        ) {
+            return $next;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return false|int
+     */
+    private function isConstUse(File $phpcsFile, int $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+        $next = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if ($tokens[$next]['code'] === T_STRING
+            && strtolower($tokens[$next]['content']) === 'const'
+        ) {
+            return $next;
+        }
+
+        return false;
+    }
+
+    /**
      * @return string[][]
      */
     private function getImportedConstants(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
@@ -113,27 +154,24 @@ trait Namespaces
 
         $use = $first;
         while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
-            if (CodingStandard::isGlobalUse($phpcsFile, $use)) {
-                $next = $phpcsFile->findNext(Tokens::$emptyTokens, $use + 1, null, true);
-                if ($tokens[$next]['code'] === T_STRING
-                    && strtolower($tokens[$next]['content']) === 'const'
-                ) {
-                    $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
-                    $end = $phpcsFile->findPrevious(
-                        T_STRING,
-                        $phpcsFile->findNext([T_AS, T_SEMICOLON], $start + 1) - 1
-                    );
-                    $endOfStatement = $phpcsFile->findEndOfStatement($next);
-                    $name = $phpcsFile->findPrevious(T_STRING, $endOfStatement - 1);
-                    $fullName = $phpcsFile->getTokensAsString($start, $end - $start + 1);
+            if (CodingStandard::isGlobalUse($phpcsFile, $use)
+                && ($next = $this->isConstUse($phpcsFile, $use))
+            ) {
+                $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
+                $end = $phpcsFile->findPrevious(
+                    T_STRING,
+                    $phpcsFile->findNext([T_AS, T_SEMICOLON], $start + 1) - 1
+                );
+                $endOfStatement = $phpcsFile->findEndOfStatement($next);
+                $name = $phpcsFile->findPrevious(T_STRING, $endOfStatement - 1);
+                $fullName = $phpcsFile->getTokensAsString($start, $end - $start + 1);
 
-                    $constants[strtoupper($tokens[$name]['content'])] = [
-                        'name' => $tokens[$name]['content'],
-                        'fqn'  => ltrim($fullName, '\\'),
-                    ];
+                $constants[strtoupper($tokens[$name]['content'])] = [
+                    'name' => $tokens[$name]['content'],
+                    'fqn'  => ltrim($fullName, '\\'),
+                ];
 
-                    $lastUse = $use;
-                }
+                $lastUse = $use;
             }
 
             if (! $lastUse) {
@@ -165,27 +203,24 @@ trait Namespaces
 
         $use = $first;
         while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
-            if (CodingStandard::isGlobalUse($phpcsFile, $use)) {
-                $next = $phpcsFile->findNext(Tokens::$emptyTokens, $use + 1, null, true);
-                if ($tokens[$next]['code'] === T_STRING
-                    && strtolower($tokens[$next]['content']) === 'function'
-                ) {
-                    $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
-                    $end = $phpcsFile->findPrevious(
-                        T_STRING,
-                        $phpcsFile->findNext([T_AS, T_SEMICOLON], $start + 1) - 1
-                    );
-                    $endOfStatement = $phpcsFile->findEndOfStatement($next);
-                    $name = $phpcsFile->findPrevious(T_STRING, $endOfStatement - 1);
-                    $fullName = $phpcsFile->getTokensAsString($start, $end - $start + 1);
+            if (CodingStandard::isGlobalUse($phpcsFile, $use)
+                && ($next = $this->isFunctionUse($phpcsFile, $use))
+            ) {
+                $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
+                $end = $phpcsFile->findPrevious(
+                    T_STRING,
+                    $phpcsFile->findNext([T_AS, T_SEMICOLON], $start + 1) - 1
+                );
+                $endOfStatement = $phpcsFile->findEndOfStatement($next);
+                $name = $phpcsFile->findPrevious(T_STRING, $endOfStatement - 1);
+                $fullName = $phpcsFile->getTokensAsString($start, $end - $start + 1);
 
-                    $functions[strtolower($tokens[$name]['content'])] = [
-                        'name' => $tokens[$name]['content'],
-                        'fqn'  => ltrim($fullName, '\\'),
-                    ];
+                $functions[strtolower($tokens[$name]['content'])] = [
+                    'name' => $tokens[$name]['content'],
+                    'fqn'  => ltrim($fullName, '\\'),
+                ];
 
-                    $lastUse = $use;
-                }
+                $lastUse = $use;
             }
 
             if (! $lastUse) {
