@@ -32,6 +32,11 @@ class ImportInternalConstantUnitTest extends TestCase
                 return [
                     6 => 1,
                 ];
+            case 'ImportInternalConstantUnitTest.4.inc':
+                return [
+                    5 => 1,
+                    8 => 1,
+                ];
         }
 
         return [

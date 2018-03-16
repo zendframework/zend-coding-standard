@@ -154,9 +154,11 @@ trait Namespaces
 
         $use = $first;
         while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
-            if (CodingStandard::isGlobalUse($phpcsFile, $use)
-                && ($next = $this->isConstUse($phpcsFile, $use))
-            ) {
+            if (! CodingStandard::isGlobalUse($phpcsFile, $use)) {
+                continue;
+            }
+
+            if ($next = $this->isConstUse($phpcsFile, $use)) {
                 $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
                 $end = $phpcsFile->findPrevious(
                     T_STRING,
@@ -170,13 +172,9 @@ trait Namespaces
                     'name' => $tokens[$name]['content'],
                     'fqn'  => ltrim($fullName, '\\'),
                 ];
-
-                $lastUse = $use;
             }
 
-            if (! $lastUse) {
-                $lastUse = $use;
-            }
+            $lastUse = $use;
         }
 
         return $constants;
@@ -203,9 +201,11 @@ trait Namespaces
 
         $use = $first;
         while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
-            if (CodingStandard::isGlobalUse($phpcsFile, $use)
-                && ($next = $this->isFunctionUse($phpcsFile, $use))
-            ) {
+            if (! CodingStandard::isGlobalUse($phpcsFile, $use)) {
+                continue;
+            }
+
+            if ($next = $this->isFunctionUse($phpcsFile, $use)) {
                 $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
                 $end = $phpcsFile->findPrevious(
                     T_STRING,
@@ -219,13 +219,9 @@ trait Namespaces
                     'name' => $tokens[$name]['content'],
                     'fqn'  => ltrim($fullName, '\\'),
                 ];
-
-                $lastUse = $use;
             }
 
-            if (! $lastUse) {
-                $lastUse = $use;
-            }
+            $lastUse = $use;
         }
 
         return $functions;
