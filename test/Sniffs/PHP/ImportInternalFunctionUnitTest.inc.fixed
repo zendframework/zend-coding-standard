@@ -1,5 +1,7 @@
 <?php
 
+namespace ImportInternalFunction;
+
 use function range;
 use function array_keys;
 use function count;

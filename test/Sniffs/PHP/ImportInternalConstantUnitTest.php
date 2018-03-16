@@ -28,14 +28,18 @@ class ImportInternalConstantUnitTest extends TestCase
                     5 => 1,
                     6 => 1,
                 ];
+            case 'ImportInternalConstantUnitTest.3.inc':
+                return [
+                    6 => 1,
+                ];
         }
 
         return [
-            3 => 1,
             5 => 1,
-            6 => 2,
-            19 => 1,
-            24 => 1,
+            7 => 1,
+            8 => 2,
+            21 => 1,
+            26 => 1,
         ];
     }
 

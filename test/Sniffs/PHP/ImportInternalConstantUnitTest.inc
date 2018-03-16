@@ -1,5 +1,7 @@
 <?php
 
+namespace ImportInternalConstant;
+
 $a = SEEK_END;
 
 if ($a === E_WARNING) {

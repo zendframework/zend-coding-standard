@@ -1,5 +1,7 @@
 <?php
 
+namespace ImportInternalFunction;
+
 $array = range(1, 10);
 
 $keys = array_keys($array);

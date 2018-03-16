@@ -79,7 +79,7 @@ class ImportInternalFunctionSniff implements Sniff
         }
 
         $namespace = $this->getNamespace($phpcsFile, $stackPtr);
-        if ($this->currentNamespace !== $namespace) {
+        if ($namespace && $this->currentNamespace !== $namespace) {
             $this->currentNamespace = $namespace;
             $this->importedFunctions = $this->getImportedFunctions($phpcsFile, $stackPtr, $this->lastUse);
         }
@@ -114,7 +114,17 @@ class ImportInternalFunctionSniff implements Sniff
 
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
         if ($tokens[$prev]['code'] === T_NS_SEPARATOR) {
-            if (isset($this->importedFunctions[$content])) {
+            if (! $namespace) {
+                $error = 'FQN for PHP internal function "%s" is not needed here, file does not have defined namespace';
+                $data = [
+                    $content,
+                ];
+
+                $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoNamespace', $data);
+                if ($fix) {
+                    $phpcsFile->fixer->replaceToken($prev, '');
+                }
+            } elseif (isset($this->importedFunctions[$content])) {
                 if (strtolower($this->importedFunctions[$content]['fqn']) === $content) {
                     $error = 'FQN for PHP internal function "%s" is not needed here, function is already imported';
                     $data = [
@@ -140,7 +150,7 @@ class ImportInternalFunctionSniff implements Sniff
                     $phpcsFile->fixer->endChangeset();
                 }
             }
-        } else {
+        } elseif ($namespace) {
             if (! isset($this->importedFunctions[$content])) {
                 $error = 'PHP internal function "%s" must be imported';
                 $data = [

@@ -1,5 +1,7 @@
 <?php
 
+namespace ImportInternalConstant;
+
 use const SEEK_END;
 use const E_WARNING;
 use const E_ALL;

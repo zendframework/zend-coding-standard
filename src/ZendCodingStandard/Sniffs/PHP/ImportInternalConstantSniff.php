@@ -88,7 +88,7 @@ class ImportInternalConstantSniff implements Sniff
         }
 
         $namespace = $this->getNamespace($phpcsFile, $stackPtr);
-        if ($this->currentNamespace !== $namespace) {
+        if ($namespace && $this->currentNamespace !== $namespace) {
             $this->currentNamespace = $namespace;
             $this->importedConstants = $this->getImportedConstants($phpcsFile, $stackPtr, $this->lastUse);
         }
@@ -126,7 +126,17 @@ class ImportInternalConstantSniff implements Sniff
 
         $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
         if ($tokens[$prev]['code'] === T_NS_SEPARATOR) {
-            if (isset($this->importedConstants[$content])) {
+            if (! $namespace) {
+                $error = 'FQN for PHP internal constant "%s" is not needed here, file does not have defined namespace';
+                $data = [
+                    $content,
+                ];
+
+                $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoNamespace', $data);
+                if ($fix) {
+                    $phpcsFile->fixer->replaceToken($prev, '');
+                }
+            } elseif (isset($this->importedConstants[$content])) {
                 if (strtoupper($this->importedConstants[$content]['fqn']) === $content) {
                     $error = 'FQN for PHP internal constant "%s" is not needed here, constant is already imported';
                     $data = [
@@ -152,7 +162,7 @@ class ImportInternalConstantSniff implements Sniff
                     $phpcsFile->fixer->endChangeset();
                 }
             }
-        } else {
+        } elseif ($namespace) {
             if (! isset($this->importedConstants[$content])) {
                 $error = 'PHP internal constant "%s" must be imported';
                 $data = [
