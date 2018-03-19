@@ -506,3 +506,28 @@ $response = $handler->handle(
         ->withMethod(RequestMethod::METHOD_GET)
         ->withAttribute(self::FORWARDED_HTTP_METHOD_ATTRIBUTE, RequestMethod::METHOD_HEAD)
 );
+
+yield 'key' => (new DateTime(
+    (function () {
+        yield 'key1' => (new X(
+            'hi'
+        ));
+
+        yield 'key2' => (new X(
+                'hi',
+            ))
+            ->m()
+            ->r();
+
+        yield 'key3' => function () {
+            return [
+                'arr' => (new X(
+                    'hello'
+                ))
+                ->m()
+                ->s(),
+            ];
+        };
+    })()
+))
+->format('Y');

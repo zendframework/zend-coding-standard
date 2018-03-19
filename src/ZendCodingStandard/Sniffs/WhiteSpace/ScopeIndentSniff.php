@@ -32,6 +32,7 @@ use const T_COMMENT;
 use const T_CONSTANT_ENCAPSED_STRING;
 use const T_CONTINUE;
 use const T_DOC_COMMENT_OPEN_TAG;
+use const T_DOUBLE_ARROW;
 use const T_DOUBLE_QUOTED_STRING;
 use const T_ELSEIF;
 use const T_EXIT;
@@ -379,6 +380,34 @@ class ScopeIndentSniff implements Sniff
 
                             if ($fix) {
                                 $phpcsFile->fixer->replaceToken($prev + 1, '');
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ($tokens[$i]['code'] === T_DOUBLE_ARROW) {
+                $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i - 1, null, true);
+
+                if ($tokens[$prev]['line'] === $tokens[$i]['line']) {
+                    $next = $phpcsFile->findNext(Tokens::$emptyTokens, $i + 1, null, true);
+
+                    if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS
+                        && $tokens[$tokens[$next]['parenthesis_closer']]['line'] > $tokens[$next]['line']
+                    ) {
+                        $after = $phpcsFile->findNext(
+                            Tokens::$emptyTokens,
+                            $tokens[$next]['parenthesis_closer'] + 1,
+                            null,
+                            true
+                        );
+                        if ($tokens[$after]['code'] === T_OBJECT_OPERATOR) {
+                            $newEI = $this->indent;
+                            $extraIndent += $newEI;
+                            if (isset($extras[$after])) {
+                                $extras[$after] += $newEI;
+                            } else {
+                                $extras[$after] = $newEI;
                             }
                         }
                     }
@@ -779,7 +808,7 @@ class ScopeIndentSniff implements Sniff
                 $ptr = $tokens[$ptr]['bracket_closer'];
             } elseif (in_array(
                 $tokens[$ptr]['code'],
-                [T_OBJECT_OPERATOR, T_SEMICOLON, T_CLOSE_PARENTHESIS],
+                [T_OBJECT_OPERATOR, T_SEMICOLON, T_CLOSE_PARENTHESIS, T_CLOSE_SHORT_ARRAY],
                 true
             )) {
                 return $ptr;
