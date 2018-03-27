@@ -8,11 +8,7 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class ReturnTypeUnitTest extends TestCase
 {
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getErrorList($testFile = '')
+    public function getErrorList(string $testFile = '') : array
     {
         if ($testFile === 'ReturnTypeUnitTest.1.inc') {
             return [
@@ -67,11 +63,7 @@ class ReturnTypeUnitTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getWarningList($testFile = '')
+    public function getWarningList(string $testFile = '') : array
     {
         return [];
     }

@@ -8,11 +8,7 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class NoConcatenationAtTheEndUnitTest extends TestCase
 {
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getErrorList($testFile = '')
+    public function getErrorList(string $testFile = '') : array
     {
         return [
             3 => 1,
@@ -20,11 +16,7 @@ class NoConcatenationAtTheEndUnitTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getWarningList($testFile = '')
+    public function getWarningList(string $testFile = '') : array
     {
         return [];
     }

@@ -8,11 +8,7 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class TagCaseUnitTest extends TestCase
 {
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getErrorList($testFile = '')
+    public function getErrorList(string $testFile = '') : array
     {
         return [
             4 => 1,
@@ -78,11 +74,7 @@ class TagCaseUnitTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getWarningList($testFile = '')
+    public function getWarningList(string $testFile = '') : array
     {
         return [];
     }

@@ -8,11 +8,7 @@ use ZendCodingStandardTest\Sniffs\TestCase;
 
 class ParamUnitTest extends TestCase
 {
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getErrorList($testFile = '')
+    public function getErrorList(string $testFile = '') : array
     {
         switch ($testFile) {
             case 'ParamUnitTest.1.inc':
@@ -87,11 +83,7 @@ class ParamUnitTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $testFile
-     * @return int[]
-     */
-    public function getWarningList($testFile = '')
+    public function getWarningList(string $testFile = '') : array
     {
         return [];
     }

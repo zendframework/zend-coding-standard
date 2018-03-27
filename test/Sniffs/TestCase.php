@@ -63,7 +63,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @param string $testFileBase The base path that the unit tests files will have.
      * @return string[]
      */
-    protected function getTestFiles($testFileBase)
+    protected function getTestFiles($testFileBase) : array
     {
         $testFiles = [];
 
@@ -89,10 +89,8 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * Should this test be skipped for some reason.
-     *
-     * @return false
      */
-    protected function shouldSkipTest()
+    protected function shouldSkipTest() : bool
     {
         return false;
     }
@@ -100,7 +98,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * Tests the extending classes Sniff class.
      */
-    final public function testSniff()
+    final public function testSniff() : void
     {
         // Skip this test if we can't run in this environment.
         if ($this->shouldSkipTest()) {
@@ -109,7 +107,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $sniffCode = Common::getSniffCode(get_class($this));
         $sniffCode = str_replace('Test.', '.', $sniffCode);
-        list($standardName, $categoryName, $sniffName) = explode('.', $sniffCode);
+        [$standardName, $categoryName, $sniffName] = explode('.', $sniffCode);
 
         $testFileBase = $this->testsDir . $categoryName . DIRECTORY_SEPARATOR . $sniffName . 'UnitTest.';
 
@@ -182,7 +180,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @return string[]
      * @throws RuntimeException
      */
-    public function generateFailureMessages(LocalFile $file)
+    private function generateFailureMessages(LocalFile $file) : array
     {
         $testFile = $file->getFilename();
 
@@ -367,7 +365,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @param Config $config The config data for the run.
      * @return string[]
      */
-    public function setCliValues($filename, Config $config)
+    public function setCliValues(string $filename, Config $config) : array
     {
         return [];
     }
@@ -380,7 +378,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return int[]
      */
-    abstract protected function getErrorList();
+    abstract protected function getErrorList(string $testFile = '') : array;
 
     /**
      * Returns the lines where warnings should occur.
@@ -390,5 +388,5 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return int[]
      */
-    abstract protected function getWarningList();
+    abstract protected function getWarningList(string $testFile = '') : array;
 }
