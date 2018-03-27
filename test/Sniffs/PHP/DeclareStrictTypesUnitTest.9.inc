@@ -1,0 +1,1 @@
+<?php /* Must be first. */ declare(strict_types=1); /* Comment after. */ ?>
