@@ -1,9 +1,4 @@
 <?php
-/**
- * Copied from:
- *
- * @see https://github.com/consistence/coding-standard/blob/master/Consistence/Sniffs/NamingConventions/ValidVariableNameSniff.php
- */
 
 declare(strict_types=1);
 
@@ -13,7 +8,6 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use PHP_CodeSniffer\Util\Common;
 
-use function in_array;
 use function ltrim;
 
 use const T_DOUBLE_COLON;
@@ -21,17 +15,19 @@ use const T_WHITESPACE;
 
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
-    /** @var string[] */
-    private $phpReservedVars = [
-        '_SERVER',
-        '_GET',
-        '_POST',
-        '_REQUEST',
-        '_SESSION',
-        '_ENV',
-        '_COOKIE',
-        '_FILES',
-        'GLOBALS',
+    /**
+     * @var array
+     */
+    protected $phpReservedVars = [
+        '_SERVER'  => true,
+        '_GET'     => true,
+        '_POST'    => true,
+        '_REQUEST' => true,
+        '_SESSION' => true,
+        '_ENV'     => true,
+        '_COOKIE'  => true,
+        '_FILES'   => true,
+        'GLOBALS'  => true,
     ];
 
     /**
@@ -43,7 +39,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         $varName = ltrim($tokens[$stackPtr]['content'], '$');
 
         // If it's a php reserved var, then its ok.
-        if (in_array($varName, $this->phpReservedVars, true)) {
+        if (isset($this->phpReservedVars[$varName])) {
             return;
         }
 

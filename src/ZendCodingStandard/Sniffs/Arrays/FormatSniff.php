@@ -11,6 +11,7 @@ use function str_repeat;
 use function strlen;
 use function strpos;
 
+use const T_CLOSE_CURLY_BRACKET;
 use const T_CLOSE_SHORT_ARRAY;
 use const T_COMMENT;
 use const T_DOUBLE_ARROW;
@@ -152,7 +153,9 @@ class FormatSniff extends AbstractArraySniff
                 $end = $next;
             } else {
                 $end = $phpcsFile->findEndOfStatement($next);
-                if ($tokens[$end]['code'] === T_DOUBLE_ARROW) {
+                if ($tokens[$end]['code'] === T_DOUBLE_ARROW
+                    || $tokens[$end]['code'] === T_CLOSE_CURLY_BRACKET
+                ) {
                     $end = $phpcsFile->findEndOfStatement($end);
                 }
             }
