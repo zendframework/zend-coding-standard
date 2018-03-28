@@ -15,6 +15,8 @@ class TrailingArrayCommaUnitTest extends TestCase
             14 => 1,
             17 => 1,
             22 => 1,
+            25 => 1,
+            26 => 1,
         ];
     }
 
