@@ -41,9 +41,12 @@ trait Namespaces
     }
 
     /**
-     * Returns array of imported classes. Key is lowercase name, and value is FQCN.
-     *
-     * @return string[][]
+     * @return array Array of imported classes {
+     *     @var array $_ Key is lowercase class alias name {
+     *         @var string $alias Original class alias name
+     *         @var string $class FQCN
+     *     }
+     * }
      */
     private function getGlobalUses(File $phpcsFile, int $stackPtr = 0) : array
     {
@@ -139,7 +142,12 @@ trait Namespaces
     }
 
     /**
-     * @return string[][]
+     * @return array Array of imported constants {
+     *     @var array $_ Key is lowercase constant name {
+     *         @var string $name Original constant name
+     *         @var string $fqn Fully qualified constant name without leading slashes
+     *     }
+     * }
      */
     private function getImportedConstants(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
     {
@@ -190,7 +198,12 @@ trait Namespaces
     }
 
     /**
-     * @return string[][]
+     * @return array Array of imported functions {
+     *     @var array $_ Key is lowercase function name {
+     *         @var string $name Original function name
+     *         @var string $fqn Fully qualified function name without leading slashes
+     *     }
+     * }
      */
     private function getImportedFunctions(File $phpcsFile, int $stackPtr, ?int &$lastUse) : array
     {
