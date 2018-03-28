@@ -248,7 +248,7 @@ class ScopeIndentSniff implements Sniff
             if ($tokens[$i]['code'] === T_OPEN_TAG) {
                 // $error = 'This sniff does not support files with multiple PHP open tags.';
                 // $phpcsFile->addError($error, $i, 'UnsupportedFile');
-                // return $phpcsFile->numTokens;
+                // return $phpcsFile->numTokens + 1;
                 // if ($depth ===  0) {
                 $extraIndent = max($tokens[$i]['column'] - 1 - ($depth * $this->indent), 0);
                 $extraIndent = (int) (ceil($extraIndent / $this->indent) * $this->indent);
@@ -763,7 +763,7 @@ class ScopeIndentSniff implements Sniff
             }
         }
 
-        return $phpcsFile->numTokens;
+        return $phpcsFile->numTokens + 1;
     }
 
     /**

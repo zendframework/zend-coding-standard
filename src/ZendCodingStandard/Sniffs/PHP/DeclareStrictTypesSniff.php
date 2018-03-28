@@ -92,7 +92,7 @@ class DeclareStrictTypesSniff implements Sniff
 
             $this->checkOtherDeclarations($phpcsFile);
 
-            return $phpcsFile->numTokens;
+            return $phpcsFile->numTokens + 1;
         }
 
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
@@ -309,7 +309,7 @@ class DeclareStrictTypesSniff implements Sniff
 
                 $this->checkOtherDeclarations($phpcsFile, $next);
 
-                return $phpcsFile->numTokens;
+                return $phpcsFile->numTokens + 1;
             }
         }
 
@@ -322,7 +322,7 @@ class DeclareStrictTypesSniff implements Sniff
             $phpcsFile->fixer->addContent($stackPtr, $this->format . $phpcsFile->eolChar);
         }
 
-        return $phpcsFile->numTokens;
+        return $phpcsFile->numTokens + 1;
     }
 
     /**
