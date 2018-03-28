@@ -43,6 +43,9 @@
         </properties>
     </rule>
 
+    <!-- PEAR Rules -->
+    <rule ref="PEAR.Commenting.InlineComment"/>
+
     <!-- Squiz Rules -->
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
