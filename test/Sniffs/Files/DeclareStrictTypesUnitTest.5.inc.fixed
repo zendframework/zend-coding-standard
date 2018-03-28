@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @license BSD-3-Clause
+ * @copyright ZF
+ */
+
+
+
+/**
+ * @see Something
+ * @license BSD-3-Clause
+ * @copyright ZF
+ */

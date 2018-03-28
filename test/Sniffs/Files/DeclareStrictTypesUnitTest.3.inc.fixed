@@ -1,0 +1,15 @@
+<?php
+
+declare ( strict_types = 1 ) ;
+
+// Some comment here
+// Multiline
+# different style
+
+// after
+
+/**
+ * @see Something
+ * @license BSD-3-Clause
+ * @copyright ZF
+ */

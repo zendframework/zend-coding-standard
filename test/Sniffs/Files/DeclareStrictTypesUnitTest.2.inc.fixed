@@ -1,0 +1,14 @@
+<?php
+
+
+
+/**
+ * @see Something
+ * @license BSD-3-Clause
+ * @copyright ZF
+ */
+declare(
+    // hey
+    strict_types = 1 # hey
+) /* comment */ ;
+

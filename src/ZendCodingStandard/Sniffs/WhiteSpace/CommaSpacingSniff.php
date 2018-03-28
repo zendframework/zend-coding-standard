@@ -1,17 +1,4 @@
 <?php
-/**
- * Check spaces before and after comma.
- * Before comma space is not allowed.
- * After comma should be exactly one comma.
- * There is allowed more than one space after comma only in when this is multidimensional array.
- *
- * @todo: maybe we need fix part for multidimensional array, now it's checking for something like:
- *     [
- *         [1,    3423, 342, 4324],
- *         [4432, 43,   4,   32],
- *         [22,   3432, 23,  4],
- *     ]
- */
 
 declare(strict_types=1);
 
@@ -30,6 +17,19 @@ use const T_DOUBLE_ARROW;
 use const T_OPEN_SHORT_ARRAY;
 use const T_WHITESPACE;
 
+/**
+ * Check spaces before and after comma.
+ * Before comma space is not allowed.
+ * After comma should be exactly one comma.
+ * There is allowed more than one space after comma only in when this is multidimensional array.
+ *
+ * @todo: maybe we need fix part for multidimensional array, now it's checking for something like:
+ *     [
+ *         [1,    3423, 342, 4324],
+ *         [4432, 43,   4,   32],
+ *         [22,   3432, 23,  4],
+ *     ]
+ */
 class CommaSpacingSniff implements Sniff
 {
     /**

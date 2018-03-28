@@ -1,14 +1,4 @@
 <?php
-/**
- * Below class is mixture of:
- *
- * @see http://jdon.at/1h0wb
- * @see https://github.com/squizlabs/PHP_CodeSniffer/pull/1106
- *     - added checks in annotations
- *     - added checks in return type (PHP 7.0+)
- *
- * @todo remove once merged to squizlabs/PHP_CodeSniffer (?)
- */
 
 declare(strict_types=1);
 
@@ -39,6 +29,14 @@ use const T_STRING;
 use const T_USE;
 use const T_WHITESPACE;
 
+/**
+ * Below class is mixture of:
+ *
+ * @see http://jdon.at/1h0wb
+ * @see https://github.com/squizlabs/PHP_CodeSniffer/pull/1106
+ *     - added checks in annotations
+ *     - added checks in return type (PHP 7.0+)
+ */
 class UnusedUseStatementSniff implements Sniff
 {
     /**

@@ -1,0 +1,15 @@
+<?php
+
+declare /* hello */ (strict_types=1) /** world */;
+
+/*
+ * Another comment here
+ */
+
+
+
+/**
+ * @see Something
+ * @license BSD-3-Clause
+ * @copyright ZF
+ */

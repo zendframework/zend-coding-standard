@@ -1,8 +1,4 @@
 <?php
-/**
- * Copied from SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff
- * with fix: comma shouldn't be added after "[" for empty arrays "[]".
- */
 
 declare(strict_types=1);
 
@@ -23,6 +19,10 @@ use const T_DOC_COMMENT_WHITESPACE;
 use const T_OPEN_SHORT_ARRAY;
 use const T_WHITESPACE;
 
+/**
+ * Copied from SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff
+ * with fix: comma shouldn't be added after "[" for empty arrays "[]".
+ */
 class TrailingArrayCommaSniff implements Sniff
 {
     /**
