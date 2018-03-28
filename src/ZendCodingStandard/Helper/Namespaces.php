@@ -7,6 +7,7 @@ namespace ZendCodingStandard\Helper;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use ZendCodingStandard\CodingStandard;
+use ZendCodingStandard\Sniffs\Namespaces\UnusedUseStatementSniff;
 
 use function in_array;
 use function ltrim;
@@ -62,6 +63,10 @@ trait Namespaces
         $use = $first;
         while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
             if (! empty($tokens[$use]['conditions'])) {
+                continue;
+            }
+
+            if (isset($phpcsFile->getMetrics()[UnusedUseStatementSniff::class]['values'][$use])) {
                 continue;
             }
 
@@ -158,6 +163,10 @@ trait Namespaces
                 continue;
             }
 
+            if (isset($phpcsFile->getMetrics()[UnusedUseStatementSniff::class]['values'][$use])) {
+                continue;
+            }
+
             if ($next = $this->isConstUse($phpcsFile, $use)) {
                 $start = $phpcsFile->findNext([T_STRING, T_NS_SEPARATOR], $next + 1);
                 $end = $phpcsFile->findPrevious(
@@ -202,6 +211,10 @@ trait Namespaces
         $use = $first;
         while ($use = $phpcsFile->findNext(T_USE, $use + 1, $last)) {
             if (! CodingStandard::isGlobalUse($phpcsFile, $use)) {
+                continue;
+            }
+
+            if (isset($phpcsFile->getMetrics()[UnusedUseStatementSniff::class]['values'][$use])) {
                 continue;
             }
 
