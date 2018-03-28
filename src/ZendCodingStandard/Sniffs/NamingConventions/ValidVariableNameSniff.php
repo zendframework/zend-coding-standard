@@ -19,15 +19,15 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      * @var array
      */
     protected $phpReservedVars = [
-        '_SERVER'  => true,
-        '_GET'     => true,
-        '_POST'    => true,
+        '_SERVER' => true,
+        '_GET' => true,
+        '_POST' => true,
         '_REQUEST' => true,
         '_SESSION' => true,
-        '_ENV'     => true,
-        '_COOKIE'  => true,
-        '_FILES'   => true,
-        'GLOBALS'  => true,
+        '_ENV' => true,
+        '_COOKIE' => true,
+        '_FILES' => true,
+        'GLOBALS' => true,
     ];
 
     /**

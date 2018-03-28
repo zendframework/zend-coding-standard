@@ -194,7 +194,7 @@ class ImportInternalFunctionSniff implements Sniff
 
         $this->importedFunctions[$functionName] = [
             'name' => $functionName,
-            'fqn'  => $functionName,
+            'fqn' => $functionName,
         ];
     }
 }

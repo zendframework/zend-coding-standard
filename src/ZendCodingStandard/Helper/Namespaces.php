@@ -187,7 +187,7 @@ trait Namespaces
 
                 $constants[strtoupper($tokens[$name]['content'])] = [
                     'name' => $tokens[$name]['content'],
-                    'fqn'  => ltrim($fullName, '\\'),
+                    'fqn' => ltrim($fullName, '\\'),
                 ];
             }
 
@@ -243,7 +243,7 @@ trait Namespaces
 
                 $functions[strtolower($tokens[$name]['content'])] = [
                     'name' => $tokens[$name]['content'],
-                    'fqn'  => ltrim($fullName, '\\'),
+                    'fqn' => ltrim($fullName, '\\'),
                 ];
             }
 

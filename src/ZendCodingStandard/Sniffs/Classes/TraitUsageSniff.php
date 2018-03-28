@@ -196,8 +196,8 @@ class TraitUsageSniff implements Sniff
             $begin = $phpcsFile->findNext(Tokens::$emptyTokens, $scopeOpener + 1, null, true);
             while ($end = $phpcsFile->findNext([T_SEMICOLON], $begin + 1, $scopeCloser)) {
                 $statements[] = [
-                    'begin'   => $begin,
-                    'end'     => $end,
+                    'begin' => $begin,
+                    'end' => $end,
                     'content' => $phpcsFile->getTokensAsString($begin, $end - $begin + 1),
                 ];
                 $begin = $phpcsFile->findNext(Tokens::$emptyTokens, $end + 1, null, true);

@@ -23,8 +23,8 @@ class TypeCastingSniff implements Sniff
     private $castMap = [
         '(boolean)' => '(bool)',
         '(integer)' => '(int)',
-        '(real)'    => '(float)',
-        '(double)'  => '(float)',
+        '(real)' => '(float)',
+        '(double)' => '(float)',
     ];
 
     /**

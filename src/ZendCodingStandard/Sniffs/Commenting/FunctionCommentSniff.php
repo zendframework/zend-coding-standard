@@ -178,10 +178,10 @@ class FunctionCommentSniff implements Sniff
             }
 
             $data[] = [
-                'tag'   => strtolower($tokens[$tag]['content']),
+                'tag' => strtolower($tokens[$tag]['content']),
                 'token' => $tag,
                 'first' => $phpcsFile->findFirstOnLine([], $tag, true),
-                'last'  => $last,
+                'last' => $last,
             ];
 
             next($tags);

@@ -99,7 +99,7 @@ class AlphabeticallySortedTraitsSniff implements Sniff
 
             $uses[] = [
                 'ptrUse' => $use,
-                'name'   => trim($phpcsFile->getTokensAsString($use + 1, $endOfName - $use - 1)),
+                'name' => trim($phpcsFile->getTokensAsString($use + 1, $endOfName - $use - 1)),
                 'ptrEnd' => $endOfScope,
                 'string' => trim($phpcsFile->getTokensAsString($use, $endOfScope - $use + 1)),
             ];

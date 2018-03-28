@@ -206,7 +206,7 @@ class ImportInternalConstantSniff implements Sniff
 
         $this->importedConstants[$constantName] = [
             'name' => $constantName,
-            'fqn'  => $constantName,
+            'fqn' => $constantName,
         ];
     }
 }

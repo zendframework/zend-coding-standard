@@ -177,10 +177,10 @@ class AlphabeticallySortedUsesSniff implements Sniff
 
             $uses[] = [
                 'ptrUse' => $use,
-                'name'   => trim($phpcsFile->getTokensAsString($startOfName, $endOfScope - $startOfName)),
+                'name' => trim($phpcsFile->getTokensAsString($startOfName, $endOfScope - $startOfName)),
                 'ptrEnd' => $endOfScope,
                 'string' => trim($phpcsFile->getTokensAsString($use, $endOfScope - $use + 1)),
-                'type'   => $type,
+                'type' => $type,
             ];
 
             $start = $endOfScope;

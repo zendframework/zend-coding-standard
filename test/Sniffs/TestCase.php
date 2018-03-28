@@ -209,10 +209,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             foreach ($lineErrors as $column => $errors) {
                 if (! isset($allProblems[$line])) {
                     $allProblems[$line] = [
-                        'expected_errors'   => 0,
+                        'expected_errors' => 0,
                         'expected_warnings' => 0,
-                        'found_errors'      => [],
-                        'found_warnings'    => [],
+                        'found_errors' => [],
+                        'found_warnings' => [],
                     ];
                 }
 
@@ -241,10 +241,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         foreach ($expectedErrors as $line => $numErrors) {
             if (! isset($allProblems[$line])) {
                 $allProblems[$line] = [
-                    'expected_errors'   => 0,
+                    'expected_errors' => 0,
                     'expected_warnings' => 0,
-                    'found_errors'      => [],
-                    'found_warnings'    => [],
+                    'found_errors' => [],
+                    'found_warnings' => [],
                 ];
             }
 
@@ -255,10 +255,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             foreach ($lineWarnings as $column => $warnings) {
                 if (! isset($allProblems[$line])) {
                     $allProblems[$line] = [
-                        'expected_errors'   => 0,
+                        'expected_errors' => 0,
                         'expected_warnings' => 0,
-                        'found_errors'      => [],
-                        'found_warnings'    => [],
+                        'found_errors' => [],
+                        'found_warnings' => [],
                     ];
                 }
 
@@ -287,10 +287,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         foreach ($expectedWarnings as $line => $numWarnings) {
             if (! isset($allProblems[$line])) {
                 $allProblems[$line] = [
-                    'expected_errors'   => 0,
+                    'expected_errors' => 0,
                     'expected_warnings' => 0,
-                    'found_errors'      => [],
-                    'found_warnings'    => [],
+                    'found_errors' => [],
+                    'found_warnings' => [],
                 ];
             }
 
