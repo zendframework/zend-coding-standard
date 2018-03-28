@@ -27,7 +27,9 @@ Repository with all coding standard ruleset for Zend Framework repositories.
 
    ```xml
    <?xml version="1.0"?>
-   <ruleset name="Zend Framework Coding Standard">
+   <ruleset name="Zend Framework Coding Standard"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
        <rule ref="./vendor/zendframework/zend-coding-standard/ruleset.xml"/>
 
        <!-- Paths to check -->
