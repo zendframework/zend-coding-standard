@@ -19,6 +19,8 @@ class DeclareStrictTypesUnitTest extends TestCase
                 return [7 => 1];
             case 'DeclareStrictTypesUnitTest.5.inc':
                 return [8 => 1];
+            case 'DeclareStrictTypesUnitTest.6.inc':
+                return [12 => 1];
         }
 
         return [];

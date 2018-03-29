@@ -6,7 +6,6 @@ namespace ZendCodingStandard\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
 
 use function array_map;
 use function array_search;
@@ -74,7 +73,7 @@ class DeclareStrictTypesSniff implements Sniff
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'BelowComment');
 
             if ($fix) {
-                $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, $prev - 1, null, true);
+                $prev = $phpcsFile->findPrevious([T_OPEN_TAG, T_DOC_COMMENT_CLOSE_TAG], $prev - 1);
                 $this->fix($phpcsFile, $stackPtr, $eos, $prev);
             }
 
