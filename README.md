@@ -52,7 +52,7 @@ For a reference please see: https://github.com/squizlabs/PHP_CodeSniffer/wiki/An
   ```
 
 * To automatically fix many CS issues:
- 
+
   ```bash
   $ composer cs-fix
   ```
