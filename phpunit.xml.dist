@@ -10,7 +10,7 @@
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
+        <whitelist>
             <directory>./src</directory>
         </whitelist>
     </filter>
