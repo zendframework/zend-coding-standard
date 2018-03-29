@@ -201,7 +201,7 @@ class ThrowsSniff implements Sniff
         if (! $foundThrows) {
             // It should be disabled if we want to declare implicit throws
             foreach ($this->throwTags as $ptr => $class) {
-                $error = 'Function does not throw any exception but has @throw tag';
+                $error = 'Function does not throw any exception but has @throws tag';
                 $phpcsFile->addError($error, $ptr, 'AdditionalThrowTag');
             }
 
