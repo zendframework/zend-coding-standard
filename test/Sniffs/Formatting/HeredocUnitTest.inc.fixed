@@ -1,0 +1,31 @@
+<?php
+
+const AB = <<<EOL
+EOL;
+
+const CD = <<<'TAB'
+TAB;
+
+const EF = <<<'SPACE'
+SPACE;
+
+const GH = <<<'SPS'
+SPS;
+
+const IJ = <<<OK
+OK;
+
+const KL = <<<'OK'
+OK;
+
+const MN = <<<LOWECASE
+LOWECASE;
+
+const OP = <<<'LOWERCASE'
+LOWERCASE;
+
+const QR = <<<'LOWERCASE_WITH_SPACE'
+LOWERCASE_WITH_SPACE;
+
+const ST = <<<CamelCase
+CamelCase;
