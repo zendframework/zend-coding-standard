@@ -9,16 +9,17 @@ declare(strict_types=1);
 
 namespace ZendCodingStandard\Sniffs\Files;
 
+use DateTime;
+use DateTimeZone;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
 use function array_merge;
 use function basename;
+use function exec;
 use function file_get_contents;
 use function filter_var;
-use function gmdate;
-use function preg_match;
 use function rtrim;
 use function strpos;
 use function strstr;
@@ -59,6 +60,16 @@ class MdSniff implements Sniff
      * @var string[]
      */
     public $variables = [];
+
+    /**
+     * @var string
+     */
+    public $yearTimezone = 'GMT';
+
+    /**
+     * @var null|string
+     */
+    private $yearRange;
 
     /**
      * @return int[]
@@ -113,17 +124,7 @@ class MdSniff implements Sniff
 
         $content = $phpcsFile->getTokensAsString(0, $phpcsFile->numTokens);
 
-        $variables = $this->variables;
-        if (preg_match('/\s(\d{4})(-\d{4})?/', $content, $match)) {
-            $year = $match[1];
-            $currentYear = gmdate('Y');
-            if ($year < $currentYear) {
-                $year .= '-' . $currentYear;
-            }
-            $variables['{year}'] = $year;
-        }
-
-        $newContent = strtr($template, array_merge($this->getDefaultVariables(), $variables));
+        $newContent = strtr($template, array_merge($this->getDefaultVariables(), $this->variables));
 
         if ($content !== $newContent) {
             $error = 'Content is outdated; found %s; expected %s';
@@ -165,7 +166,26 @@ class MdSniff implements Sniff
             '{category}' => Config::getConfigData('zfcs:category') ?: 'components',
             '{org}' => Config::getConfigData('zfcs:org') ?: 'zendframework',
             '{repo}' => Config::getConfigData('zfcs:repo'),
-            '{year}' => gmdate('Y'),
+            '{year}' => $this->getYearRange(),
         ];
+    }
+
+    private function getYearRange() : string
+    {
+        if (! $this->yearRange) {
+            $timezone = new DateTimeZone($this->yearTimezone);
+
+            exec('git tag -l --format=\'%(taggerdate)\' | head -n 1', $output, $return);
+            $date = new DateTime($return === 0 && isset($output[0]) ? $output[0] : 'now');
+            $date->setTimezone($timezone);
+            $this->yearRange = $date->format('Y');
+
+            $currentYear = (new DateTime('now', $timezone))->format('Y');
+            if ($this->yearRange < $currentYear) {
+                $this->yearRange .= '-' . $currentYear;
+            }
+        }
+
+        return $this->yearRange;
     }
 }
