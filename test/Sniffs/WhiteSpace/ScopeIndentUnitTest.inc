@@ -531,3 +531,28 @@ yield 'key' => (new DateTime(
     })()
 ))
 ->format('Y');
+
+$abc = [
+    $test
+        ->abc()
+        ->def(),
+];
+
+$def = function ($a) {
+    $a
+        ->a()
+        ->b();
+};
+
+$ghi = [
+    [
+        function () {
+        },
+        $hey
+            ->a()
+            ->b(),
+    ],
+    $hola
+        ->c()
+        ->d(),
+];

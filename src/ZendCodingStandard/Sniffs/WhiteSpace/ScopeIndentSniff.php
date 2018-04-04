@@ -25,6 +25,7 @@ use const T_CLASS;
 use const T_CLOSE_CURLY_BRACKET;
 use const T_CLOSE_PARENTHESIS;
 use const T_CLOSE_SHORT_ARRAY;
+use const T_CLOSE_SQUARE_BRACKET;
 use const T_CLOSURE;
 use const T_COLON;
 use const T_COMMA;
@@ -48,6 +49,7 @@ use const T_OBJECT_OPERATOR;
 use const T_OPEN_CURLY_BRACKET;
 use const T_OPEN_PARENTHESIS;
 use const T_OPEN_SHORT_ARRAY;
+use const T_OPEN_SQUARE_BRACKET;
 use const T_OPEN_TAG;
 use const T_RETURN;
 use const T_SELF;
@@ -777,13 +779,16 @@ class ScopeIndentSniff implements Sniff
             while (--$ptr) {
                 if ($tokens[$ptr]['code'] === T_CLOSE_PARENTHESIS) {
                     $ptr = $tokens[$ptr]['parenthesis_opener'];
-                } elseif ($tokens[$ptr]['code'] === T_CLOSE_CURLY_BRACKET) {
+                } elseif ($tokens[$ptr]['code'] === T_CLOSE_CURLY_BRACKET
+                    || $tokens[$ptr]['code'] === T_CLOSE_SHORT_ARRAY
+                    || $tokens[$ptr]['code'] === T_CLOSE_SQUARE_BRACKET
+                ) {
                     $ptr = $tokens[$ptr]['bracket_opener'];
                 } elseif ($tokens[$ptr]['code'] === T_OBJECT_OPERATOR) {
                     return $tokens[$ptr]['column'];
                 } elseif (in_array(
                     $tokens[$ptr]['code'],
-                    [T_SEMICOLON, T_OPEN_PARENTHESIS],
+                    [T_SEMICOLON, T_OPEN_CURLY_BRACKET, T_OPEN_PARENTHESIS, T_OPEN_SHORT_ARRAY, T_OPEN_SQUARE_BRACKET],
                     true
                 )) {
                     break;
