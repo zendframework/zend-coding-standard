@@ -4,6 +4,9 @@
          xsi:noNamespaceSchemaLocation="../../vendor/squizlabs/php_codesniffer/phpcs.xsd">
     <description>Zend Framework Coding Standard</description>
 
+    <!-- include md extensions for license checking -->
+    <arg name="extensions" value="php,md/MD"/>
+
     <!-- display progress -->
     <arg value="p"/>
     <arg name="colors"/>

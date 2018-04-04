@@ -4,8 +4,11 @@
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
     <rule ref="src/ZendCodingStandard/ruleset.xml"/>
 
-    <file>src</file>
-    <file>test</file>
-
+    <file>.</file>
     <exclude-pattern>test/*.inc</exclude-pattern>
+    <exclude-pattern>vendor/</exclude-pattern>
+
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>src/ZendCodingStandard/helper.php</exclude-pattern>
+    </rule>
 </ruleset>
