@@ -283,4 +283,31 @@ class ThrowUnitTest
     {
         throw new Ex\Exception;
     }
+
+    public function closure()
+    {
+        return function () {
+            throw new Exception();
+        };
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function calledClosure()
+    {
+        (function () {
+            throw new Exception();
+        })();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function callback(array $arr)
+    {
+        return array_filter([] + array_filter($arr), function () {
+            throw new Exception();
+        });
+    }
 }

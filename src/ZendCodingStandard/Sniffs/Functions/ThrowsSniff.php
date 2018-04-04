@@ -19,11 +19,20 @@ use function trim;
 
 use const T_BITWISE_OR;
 use const T_CATCH;
+use const T_CLOSE_CURLY_BRACKET;
+use const T_CLOSE_PARENTHESIS;
+use const T_CLOSE_SHORT_ARRAY;
+use const T_CLOSE_SQUARE_BRACKET;
 use const T_CLOSURE;
 use const T_DOC_COMMENT_STRING;
 use const T_FUNCTION;
 use const T_NEW;
 use const T_NS_SEPARATOR;
+use const T_OPEN_CURLY_BRACKET;
+use const T_OPEN_PARENTHESIS;
+use const T_OPEN_SHORT_ARRAY;
+use const T_OPEN_SQUARE_BRACKET;
+use const T_SEMICOLON;
 use const T_STRING;
 use const T_THROW;
 use const T_TRY;
@@ -132,7 +141,7 @@ class ThrowsSniff implements Sniff
             }
 
             // The throw statement is in another scope.
-            if (! $this->isLastScope($tokens[$throw]['conditions'], $stackPtr)) {
+            if (! $this->isLastScope($phpcsFile, $tokens[$throw]['conditions'], $stackPtr)) {
                 continue;
             }
 
@@ -305,16 +314,67 @@ class ThrowsSniff implements Sniff
      * @param string[] $conditions
      * @param int $scope Scope to check in conditions.
      */
-    private function isLastScope(array $conditions, int $scope) : bool
+    private function isLastScope(File $phpcsFile, array $conditions, int $scope) : bool
     {
+        $tokens = $phpcsFile->getTokens();
+
         foreach (array_reverse($conditions, true) as $ptr => $code) {
             if ($code !== T_FUNCTION && $code !== T_CLOSURE && $code !== T_TRY) {
                 continue;
+            }
+
+            if ($code === T_CLOSURE && $ptr !== $scope) {
+                // Check if closure is called.
+                $afterClosure = $phpcsFile->findNext(
+                    Tokens::$emptyTokens,
+                    $tokens[$ptr]['scope_closer'] + 1,
+                    null,
+                    true
+                );
+                if ($afterClosure && $tokens[$afterClosure]['code'] === T_CLOSE_PARENTHESIS) {
+                    $next = $phpcsFile->findNext(Tokens::$emptyTokens, $afterClosure + 1, null, true);
+                    if ($next && $tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
+                        return true;
+                    }
+                }
+
+                // Check if closure is passed to function/class.
+                if (($token = $this->findPrevious($phpcsFile, $ptr))
+                    && in_array($tokens[$token]['code'], [T_STRING, T_VARIABLE], true)
+                ) {
+                    return true;
+                }
             }
 
             return $ptr === $scope;
         }
 
         return false;
+    }
+
+    private function findPrevious(File $phpcsFile, int $ptr) : ?int
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        while (--$ptr) {
+            if ($tokens[$ptr]['code'] === T_CLOSE_PARENTHESIS) {
+                $ptr = $tokens[$ptr]['parenthesis_opener'];
+            } elseif ($tokens[$ptr]['code'] === T_CLOSE_CURLY_BRACKET
+                || $tokens[$ptr]['code'] === T_CLOSE_SHORT_ARRAY
+                || $tokens[$ptr]['code'] === T_CLOSE_SQUARE_BRACKET
+            ) {
+                $ptr = $tokens[$ptr]['bracket_opener'];
+            } elseif ($tokens[$ptr]['code'] === T_OPEN_PARENTHESIS) {
+                return $phpcsFile->findPrevious(Tokens::$emptyTokens, $ptr - 1, null, true);
+            } elseif (in_array(
+                $tokens[$ptr]['code'],
+                [T_SEMICOLON, T_OPEN_CURLY_BRACKET, T_OPEN_SHORT_ARRAY, T_OPEN_SQUARE_BRACKET],
+                true
+            )) {
+                break;
+            }
+        }
+
+        return null;
     }
 }
