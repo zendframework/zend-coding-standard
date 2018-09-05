@@ -327,8 +327,6 @@
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
     <!-- Forbid `global` -->
     <rule ref="Squiz.PHP.GlobalKeyword"/>
-    <!-- Forbid functions inside functions -->
-    <rule ref="Squiz.PHP.InnerFunctions"/>
     <!-- Require PHP function calls in lowercase -->
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
     <!-- Forbid dead code -->
