@@ -125,7 +125,6 @@
                     @category,
                     @created,
                     @package,
-                    @since,
                     @subpackage,
                     @version
                 "
