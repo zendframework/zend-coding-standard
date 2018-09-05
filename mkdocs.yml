@@ -14,4 +14,3 @@ pages:
 site_name: Zend Coding Standard
 site_description: 'The coding standard ruleset for Zend Framework components.'
 repo_url: 'https://github.com/zendframework/zend-coding-standard'
-copyright: 'Copyright (c) 2016-2018 <a href="https://www.zend.com/">Zend Technologies USA Inc.</a>'
