@@ -2,11 +2,20 @@
     "name": "zendframework/zend-coding-standard",
     "type": "phpcodesniffer-standard",
     "description": "Zend Framework Coding Standard",
+    "license": "BSD-3-Clause",
     "keywords": [
         "zf",
+        "zendframework",
         "coding standard"
     ],
-    "license": "BSD-3-Clause",
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-coding-standard/",
+        "issues": "https://github.com/zendframework/zend-coding-standard/issues",
+        "source": "https://github.com/zendframework/zend-coding-standard",
+        "rss": "https://github.com/zendframework/zend-coding-standard/releases.atom",
+        "chat": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/components"
+    },
     "require": {
         "php": "^7.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",

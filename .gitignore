@@ -1,4 +1,10 @@
-vendor/
-phpcs.xml
-composer.lock
-phpcs.log
+/clover.xml
+/composer.lock
+/coveralls-upload.json
+/docs/html/
+/phpcs.log
+/phpcs.xml
+/phpunit.xml
+/vendor/
+/zf-mkdoc-theme.tgz
+/zf-mkdoc-theme/

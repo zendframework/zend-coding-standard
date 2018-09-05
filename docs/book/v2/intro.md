@@ -1,8 +1,6 @@
 # zend-coding-standard
 
-[![Build Status](https://secure.travis-ci.org/zendframework/zend-coding-standard.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-coding-standard)
-
-The coding standard ruleset for Zend Framework components.
+This component provides the coding standard ruleset for Zend Framework components.
 
 ## Installation
 
