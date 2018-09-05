@@ -11,6 +11,8 @@
     <rule ref="Generic.Arrays.ArrayIndent"/>
     <!-- Forbid `array(...)` -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <!-- Forbid backtick operator -->
+    <rule ref="Generic.PHP.BacktickOperator"/>
     <!-- Forbid duplicate classes -->
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <!-- Forbid empty statements -->
@@ -22,6 +24,11 @@
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
     <!-- Forbid useless empty method overrides -->
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    <!-- Forbid short open tag -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag">
+        <!-- But allow short echo tags -->
+        <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound"/>
+    </rule>
     <!-- Forbid inline HTML in PHP code -->
     <rule ref="Generic.Files.InlineHTML"/>
     <!-- Align corresponding assignment statement tokens -->
@@ -71,6 +78,11 @@
                 "/>
         </properties>
     </rule>
+    <!-- Force PHP 7 param and return types to be lowercased -->
+    <rule ref="Generic.PHP.LowerCaseType"/>
+    <!-- Forbid `php_sapi_name()` function, use PHP_SAPI -->
+    <rule ref="Generic.PHP.SAPIUsage"/>
+    <!-- Forbid comments starting with # -->
     <!-- Forbid useless inline string concatenation -->
     <rule ref="Generic.Strings.UnnecessaryStringConcat">
         <!-- But multiline is useful for readability -->
@@ -78,15 +90,6 @@
             <property name="allowMultiline" value="true"/>
         </properties>
     </rule>
-    <!-- Forbid backtick operator -->
-    <rule ref="Generic.PHP.BacktickOperator"/>
-    <!-- Forbid short open tag -->
-    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
-    <!-- Forbid `php_sapi_name()` function, use PHP_SAPI -->
-    <rule ref="Generic.PHP.SAPIUsage"/>
-    <!-- Force PHP 7 param and return types to be lowercased -->
-    <rule ref="Generic.PHP.LowerCaseType"/>
-    <!-- Forbid comments starting with # -->
     <rule ref="PEAR.Commenting.InlineComment"/>
     <!-- Disallow else if in favor of elseif -->
     <rule ref="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed">
@@ -143,7 +146,7 @@
                     ~^(?:(?!private|protected|static)\S+ )?(?:con|de)structor\.\z~i,
                     ~^Created by \S+\.\z~i,
                     ~^\S+ [gs]etter\.\z~i,
-                " />
+                "/>
         </properties>
     </rule>
     <!-- report invalid format of inline phpDocs with @var -->
