@@ -50,7 +50,7 @@ Usage
   ```
 
 * To automatically fix many CS issues:
- 
+
   ```bash
   $ composer cs-fix
   ```

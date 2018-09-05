@@ -1,0 +1,4 @@
+vendor/
+phpcs.xml
+composer.lock
+phpcs.log
