@@ -150,8 +150,6 @@
     <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
     <!-- Require comments with single line written as one-liners -->
     <rule ref="SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment"/>
-    <!-- Forbid fancy yoda conditions -->
-    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
     <!-- Forbid weak comparisons -->
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowEqualOperators"/>
     <!-- Require usage of early exit -->
