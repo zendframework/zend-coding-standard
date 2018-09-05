@@ -19,7 +19,6 @@ install: travis_retry composer update --prefer-dist
 
 stages:
 - Validate against schema
-- Test
 
 jobs:
   allow_failures:
