@@ -38,7 +38,7 @@ jobs:
 
     - stage: Validate fixes
       before_script:
-      - cp -R test/fixable/ tests/fix/
+      - cp -R test/fixable/ test/fix/
       script: vendor/bin/phpcbf test/fix; diff test/fix test/fixed
 
 notifications:
