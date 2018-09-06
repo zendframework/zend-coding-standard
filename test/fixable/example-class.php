@@ -38,7 +38,6 @@ class Example implements \IteratorAggregate
 
     /**
      * Description
-     * @return int|null
      */
     public function getFoo(): ? int
     {

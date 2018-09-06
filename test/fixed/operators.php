@@ -2,6 +2,20 @@
 
 declare(strict_types=1);
 
+$foo .= '';
+
+$bar += Something::count();
+
+$baz **= 2;
+
+$quux |= Something::FOO;
+
+if ($a === $b) {
+    $foo = $bar ?? $a ?? $b;
+} elseif ($a > $b) {
+    $variable = $foo ? 'foo' : 'bar';
+}
+
 $foo = $_GET['foo'] ?? 'foo';
 
 $bar = $bar ?? 'bar';

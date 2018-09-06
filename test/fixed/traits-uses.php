@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace TraitUses;
+namespace TraitsUses;
 
 class Foo
 {
-    use T1;
+    use FirstTrait;
 }
 
 class Bar
 {
-    use T2;
-    use T3;
-    use T4 {
+    use FirstTrait;
+    use SecondTrait;
+    use ThirdTrait {
         x as public;
     }
-    use T5;
+    use FourthTrait;
 
     public function __construct()
     {

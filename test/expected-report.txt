@@ -3,29 +3,34 @@ PHP CODE SNIFFER REPORT SUMMARY
 ----------------------------------------------------------------------
 FILE                                                  ERRORS  WARNINGS
 ----------------------------------------------------------------------
-test/fixable/array_indentation.php                    11      0
-test/fixable/assignment-operators.php                 4       0
+test/fixable/anonymous-classes.php                    9       0
+test/fixable/array-indentation.php                    11      0
+test/fixable/closures.php                             19      0
 test/fixable/concatenation_spacing.php                24      0
 test/fixable/EarlyReturn.php                          5       0
 test/fixable/example-class.php                        22      0
+test/fixable/extends-and-implements-multiline.php     10      0
+test/fixable/extends-and-implements.php               5       1
 test/fixable/forbidden-comments.php                   4       0
 test/fixable/forbidden-functions.php                  6       0
 test/fixable/LowCaseTypes.php                         2       0
+test/fixable/method-and-function-arguments.php        11      0
+test/fixable/method-and-function-calls.php            14      0
 test/fixable/namespaces-spacing.php                   3       0
-test/fixable/new_with_parentheses.php                 18      0
-test/fixable/not_spacing.php                          7       0
-test/fixable/null_coalesce_operator.php               3       0
-test/fixable/return_type_on_closures.php              21      0
-test/fixable/return_type_on_methods.php               17      0
-test/fixable/semicolon_spacing.php                    3       0
+test/fixable/new-with-parentheses.php                 18      0
+test/fixable/not-spacing.php                          7       0
+test/fixable/operators.php                            7       0
+test/fixable/return-type-on-methods.php               17      0
+test/fixable/semicolon-spacing.php                    3       0
 test/fixable/test-case.php                            4       0
 test/fixable/traits-uses.php                          10      0
 test/fixable/UnusedVariables.php                      1       0
 test/fixable/useless-semicolon.php                    2       0
+test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 167 ERRORS AND 0 WARNINGS WERE FOUND IN 19 FILES
+A TOTAL OF 215 ERRORS AND 1 WARNING WERE FOUND IN 24 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 149 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 192 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
