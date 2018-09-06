@@ -79,16 +79,16 @@ Alias functions should not be used. This can't be fixed automatically and need t
 ## Force PHP 7 param and return types to be lowercased
 *Generic.PHP.LowerCaseType*
 
-## Forbid `php_sapi_name()` function, use PHP_SAPI
+## Forbid `php_sapi_name()` function, use `PHP_SAPI`
 *Generic.PHP.SAPIUsage*
 
 ## Forbid inline string concatenation, unless used in multiline for readability
 *Generic.Strings.UnnecessaryStringConcat*
 
-## Forbid comments starting with #
+## Forbid comments starting with `#`
 *PEAR.Commenting.InlineComment*
 
-## Disallow else if in favor of elseif
+## Disallow `else if` in favor of `elseif`
 *PSR2.ControlStructures.ElseIfDeclaration.NotAllowed*
 
 ## Require comma after last element in multi-line array
@@ -118,7 +118,7 @@ Git commits provide accurate information for these forbidden annotations: @api, 
 
 Forbidden comments words: private, protected, static, constructor, deconstructor, Created by, getter, setter.
 
-## report invalid format of inline phpDocs with @var
+## Report invalid format of inline phpDocs with `@var`
 *SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration*
 
 ## Require comments with single line written as one-liners
@@ -197,13 +197,13 @@ Use `$foo = $bar['id'] ?? '1';` where possbile.
 ## Require the usage of assignment operators, eg `+=`, `.=` when possible
 *SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator*
 
-## Forbid `list(...)` syntax, use [...] instead
+## Forbid `list(...)` syntax, use `[...]` instead
 *SlevomatCodingStandard.PHP.ShortList*
 
 ## Forbid use of longhand cast operators
 *SlevomatCodingStandard.PHP.TypeCast*
 
-## Require presence of declare(strict_types=1)
+## Require presence of `declare(strict_types=1)`
 *SlevomatCodingStandard.TypeHints.DeclareStrictTypes*
 
 ## Forbid useless parentheses
@@ -215,7 +215,7 @@ Use `$foo = $bar['id'] ?? '1';` where possbile.
 ## Require use of short versions of scalar types (i.e. int instead of integer)
 *SlevomatCodingStandard.TypeHints.LongTypeHints*
 
-## Require ? when default value is null
+## Require `?` when default value is `null`
 *SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue*
 
 Checks whether the nullablity ? symbol is present before each nullable and optional parameter 
@@ -281,40 +281,6 @@ $foo = self::fromPayload($payload);
 
 ## Force rules for function phpDoc
 *Squiz.Commenting.FunctionComment*
-
-    ## Allow `@throws` without description
-    <exclude name="Squiz.Commenting.FunctionComment.EmptyThrows*
-    ## Does not work properly with PHP 7 / short-named types
-    <exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName*
-    ## Does not support collections, i.e. `string[]`
-    <exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint*
-    ## Forces incorrect types
-    <exclude name="Squiz.Commenting.FunctionComment.InvalidReturn*
-    ## Breaks with compound return types, i.e. `string|null`
-    <exclude name="Squiz.Commenting.FunctionComment.InvalidReturnNotVoid*
-    ## Breaks when all params are not documented
-    <exclude name="Squiz.Commenting.FunctionComment.InvalidTypeHint*
-    ## Doc comment is not required for every method
-    <exclude name="Squiz.Commenting.FunctionComment.Missing*
-    ## Do not require comments for `@param`
-    <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment*
-    ## Do not require `@param` for all parameters
-    <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag*
-    ## Do not require `@return` for void methods
-    <exclude name="Squiz.Commenting.FunctionComment.MissingReturn*
-    ## Comments don't have to be sentences
-    <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop*
-    ## Comments don't have to be sentences
-    <exclude name="Squiz.Commenting.FunctionComment.ParamCommentNotCapital*
-    ## Breaks when all params are not documented
-    <exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch*
-    ## Doesn't respect inheritance
-    <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing*
-    ## Throws comments can start without a capital and doesn't need a full stop
-    <exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop*
-    <exclude name="Squiz.Commenting.FunctionComment.ThrowsNotCapital*
-    ## Doesn't work with self as typehint
-    <exclude name="Squiz.Commenting.FunctionComment.TypeHintMissing*
 
 ## Forbid global functions
 *Squiz.Functions.GlobalFunction*
