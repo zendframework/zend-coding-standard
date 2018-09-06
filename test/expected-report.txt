@@ -6,7 +6,7 @@ FILE                                                  ERRORS  WARNINGS
 test/fixable/anonymous-classes.php                    9       0
 test/fixable/array-indentation.php                    11      0
 test/fixable/closures.php                             19      0
-test/fixable/concatenation_spacing.php                24      0
+test/fixable/concatenation-spacing.php                28      0
 test/fixable/EarlyReturn.php                          5       0
 test/fixable/example-class.php                        22      0
 test/fixable/extends-and-implements-multiline.php     10      0
@@ -28,9 +28,9 @@ test/fixable/UnusedVariables.php                      1       0
 test/fixable/useless-semicolon.php                    2       0
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 215 ERRORS AND 1 WARNING WERE FOUND IN 24 FILES
+A TOTAL OF 219 ERRORS AND 1 WARNING WERE FOUND IN 24 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 192 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 196 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
