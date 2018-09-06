@@ -215,6 +215,20 @@ Use `$foo = $bar['id'] ?? '1';` where possbile.
 ## Require use of short versions of scalar types (i.e. int instead of integer)
 *SlevomatCodingStandard.TypeHints.LongTypeHints*
 
+## Require ? when default value is null
+*SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue*
+
+Checks whether the nullablity ? symbol is present before each nullable and optional parameter 
+(which are marked as = null):
+```php
+function foo(
+	int $foo = null, // ? missing
+	?int $bar = null // correct
+) {
+
+}
+```
+
 ## Require one space between typehint and variable, require no space between nullability sign and typehint
 *SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing*
 

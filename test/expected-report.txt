@@ -7,7 +7,7 @@ test/fixable/array_indentation.php                    11      0
 test/fixable/assignment-operators.php                 4       0
 test/fixable/concatenation_spacing.php                24      0
 test/fixable/EarlyReturn.php                          5       0
-test/fixable/example-class.php                        21      0
+test/fixable/example-class.php                        22      0
 test/fixable/forbidden-comments.php                   4       0
 test/fixable/forbidden-functions.php                  6       0
 test/fixable/LowCaseTypes.php                         2       0
@@ -23,9 +23,9 @@ test/fixable/traits-uses.php                          10      0
 test/fixable/UnusedVariables.php                      1       0
 test/fixable/useless-semicolon.php                    2       0
 ----------------------------------------------------------------------
-A TOTAL OF 166 ERRORS AND 0 WARNINGS WERE FOUND IN 19 FILES
+A TOTAL OF 167 ERRORS AND 0 WARNINGS WERE FOUND IN 19 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 148 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 149 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
