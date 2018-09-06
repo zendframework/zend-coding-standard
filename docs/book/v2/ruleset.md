@@ -51,34 +51,30 @@
 ## Forbid alias functions, i.e. `sizeof()`, `delete()`
 *Generic.PHP.ForbiddenFunctions*
 
-    <properties>
-        <property
-            name="forbiddenFunctions"
-            type="array"
-            value="
-                chop => rtrim,
-                close => closedir,
-                compact => null,
-                delete => unset,
-                doubleval => floatval,
-                extract => null,
-                fputs => fwrite,
-                ini_alter => ini_set,
-                is_double => is_float,
-                is_integer => is_int,
-                is_long => is_int,
-                is_null => null,
-                is_real => is_float,
-                is_writeable => is_writable,
-                join => implode,
-                key_exists => array_key_exists,
-                pos => current,
-                settype => null,
-                show_source => highlight_file,
-                sizeof => count,
-                strchr => strstr
-            *
-    </properties>
+Alias functions should not be used. This can't be fixed automatically and need to be done by hand.
+
+| Alias        | Replace with     |
+| ------------ | ---------------- |
+| chop         | rtrim            |
+| close        | closedir         |
+| compact      |                  |
+| delete       | unset            |
+| doubleval    | floatval         |
+| extract      |                  |
+| fputs        | fwrite           |
+| ini_alter    | ini_set          |
+| is_integer   | is_int           |
+| is_long      | is_int           |
+| is_null      | null ===         |
+| is_real      | is_float         |
+| is_writeable | is_writable      |
+| join         | implode          |
+| key_exists   | array_key_exists |
+| pos          | current          |
+| settype      |                  |
+| show_source  | highlight_file   |
+| sizeof       | count            |
+| strchr       | strstr           |
 
 ## Force PHP 7 param and return types to be lowercased
 *Generic.PHP.LowerCaseType*
