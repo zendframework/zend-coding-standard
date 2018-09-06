@@ -82,7 +82,6 @@
     <rule ref="Generic.PHP.LowerCaseType"/>
     <!-- Forbid `php_sapi_name()` function, use PHP_SAPI -->
     <rule ref="Generic.PHP.SAPIUsage"/>
-    <!-- Forbid comments starting with # -->
     <!-- Forbid useless inline string concatenation -->
     <rule ref="Generic.Strings.UnnecessaryStringConcat">
         <!-- But multiline is useful for readability -->
@@ -90,6 +89,7 @@
             <property name="allowMultiline" value="true"/>
         </properties>
     </rule>
+    <!-- Forbid comments starting with # -->
     <rule ref="PEAR.Commenting.InlineComment"/>
     <!-- Disallow else if in favor of elseif -->
     <rule ref="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed">
@@ -170,7 +170,11 @@
     <!-- Forbid unused variables passed to closures via `use` -->
     <rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
     <!-- Require use statements to be alphabetically sorted -->
-    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
+        <properties>
+            <property name="psr12Compatible" value="true"/>
+        </properties>
+    </rule>
     <!-- Forbid fancy group uses -->
     <rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
     <!-- Forbid multiple use statements on same line -->
@@ -206,7 +210,7 @@
         <properties>
             <property name="linesCountAfterLastUse" value="1"/>
             <property name="linesCountBeforeFirstUse" value="1"/>
-            <property name="linesCountBetweenUseTypes" value="0"/>
+            <property name="linesCountBetweenUseTypes" value="1"/>
         </properties>
     </rule>
     <!-- Forbid useless alias for classes, constants and functions -->
