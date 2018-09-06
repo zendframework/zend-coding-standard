@@ -1,4 +1,3 @@
-dist: trusty
 sudo: false
 language: php
 
@@ -9,28 +8,32 @@ php:
 
 cache:
   directories:
-  - $HOME/.composer/cache
+    - $HOME/.composer/cache
 
 before_install:
-- phpenv config-rm xdebug.ini
-- composer self-update
+  - phpenv config-rm xdebug.ini
+  - composer self-update
 
 install: travis_retry composer update --prefer-dist
 
+script:
+  - vendor/bin/phpcs
+
 stages:
-- Validate against schema
+  - Validate against schema
+  - Test
 
 jobs:
   allow_failures:
-  - php: nightly
+    - php: nightly
 
   include:
-  - stage: Validate against schema
-    addons:
-      apt:
-        packages:
-        - libxml2-utils
-    script: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd src/ZendCodingStandard/ruleset.xml
+    - stage: Validate against schema
+      addons:
+        apt:
+          packages:
+          - libxml2-utils
+      script: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd src/ZendCodingStandard/ruleset.xml
 
 notifications:
   email: false

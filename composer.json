@@ -29,7 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ZendCodingStandard\\Sniffs\\": "src/ZendCodingStandard/Sniffs"
+            "ZendCodingStandard\\": "src/ZendCodingStandard"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ZendCodingStandardTest\\": "test/"
         }
     }
 }

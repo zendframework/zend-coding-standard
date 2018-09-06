@@ -50,6 +50,7 @@
 
 ## Forbid alias functions, i.e. `sizeof()`, `delete()`
 *Generic.PHP.ForbiddenFunctions*
+
     <properties>
         <property
             name="forbiddenFunctions"
@@ -78,7 +79,6 @@
                 strchr => strstr
             *
     </properties>
-</rule>
 
 ## Force PHP 7 param and return types to be lowercased
 *Generic.PHP.LowerCaseType*
