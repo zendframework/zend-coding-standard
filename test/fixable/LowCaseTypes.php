@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace ZendCodingStandardTest;
+namespace Types;
 
 class LowCaseTypes
 {
-    public function stringToInt(string $string) : int
+    public function stringToInt(String $string) : int
     {
         return (int) $string;
     }
 
-    public function returnString() : string
+    public function returnString() : String
     {
         return 'foo';
     }

@@ -36,5 +36,15 @@
         "psr-4": {
             "ZendCodingStandardTest\\": "test/"
         }
+    },
+    "scripts": {
+        "check": [
+            "@test-prepare",
+            "@test-fix",
+            "@test-diff"
+        ],
+        "test-prepare": "rm -rf test/fix/; cp -R test/fixable/ test/fix/;",
+        "test-fix": "phpcbf test/fix > /dev/null || true",
+        "test-diff": "diff test/fix test/fixed"
     }
 }

@@ -22,6 +22,7 @@ script:
 stages:
   - Validate against schema
   - Test
+  - Validate fixes
 
 jobs:
   allow_failures:
@@ -34,6 +35,11 @@ jobs:
           packages:
           - libxml2-utils
       script: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd src/ZendCodingStandard/ruleset.xml
+
+    - stage: Validate fixes
+      before_script:
+      - cp -R test/fixable/ tests/fix/
+      script: vendor/bin/phpcbf test/fix; diff test/fix test/fixed
 
 notifications:
   email: false
