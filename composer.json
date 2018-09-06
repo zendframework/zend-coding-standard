@@ -43,6 +43,7 @@
             "@test-fix",
             "@test-diff"
         ],
+        "create-report": "phpcs $(find test/fixable/* | sort) --report=summary --report-file=test/expected-report.txt",
         "test-prepare": "rm -rf test/fix/; cp -R test/fixable/ test/fix/;",
         "test-fix": "phpcbf test/fix > /dev/null || true",
         "test-diff": "diff test/fix test/fixed"
