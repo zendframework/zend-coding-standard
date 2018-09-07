@@ -41,7 +41,7 @@ try {
 Methods may not have the final declaration classes declared as final.
 
 ### Generic.CodeAnalysis.UselessOverridingMethod
-Methods should not be defined that only call the parent method.
+Methods that only call the parent method should not be defined.
 
 ```php
 // Valid: A method that extends functionality on a parent method.
@@ -82,7 +82,7 @@ echo $foo . 'baz';
 ```
 
 ### Generic.Formatting.MultipleStatementAlignment
-There should be one space on either side of an equals sign used to assign a value to a variable. In the case of a 
+There should be one space on either side of an equals sign used to assign a value to a variable. In case of a 
 block of related assignments, more space may be inserted before the equal sign to promote readability.
 ```php
 <?php
@@ -93,7 +93,7 @@ $var             = foo($bar, $baz, $quux);
 ```
 
 ### Generic.Formatting.SpaceAfterCast
-There must be exactly one space after a cast.
+There must be exactly one space after a type cast.
 
 ```php
 // Valid: A cast operator is followed by one space.
@@ -113,7 +113,7 @@ Constructors should be named `__construct`, not after the class.
 // Valid: The constructor is named __construct.
 class Foo
 {
-    function <em>__construct</em>()
+    function __construct()
     {
     }
 }
@@ -121,7 +121,7 @@ class Foo
 // Invalid: The old style class name constructor is used.
 class Foo
 {
-    function <em>Foo</em>()
+    function Foo()
     {
     }
 }
@@ -201,7 +201,7 @@ Comments may not start with `#`.
 ## SlevomatCodingStandard
 
 ### SlevomatCodingStandard.Arrays.TrailingArrayComma
-All array values must be followed by a comma, including the final value. Commas after last element in an array make 
+All array values must be followed by a comma, including the last value. Commas after last element in an array make 
 adding a new element easier and result in a cleaner versioning diff.
 
 ### SlevomatCodingStandard.Classes.ClassConstantVisibility
@@ -215,29 +215,47 @@ _PSR-12:_ Each individual Trait that is imported into a class MUST be included o
 A class should not have unused private constants, (or write-only) properties and methods.
 
 ### SlevomatCodingStandard.Commenting.ForbiddenAnnotations
-Comments may not contain useless annotations: `@api`, `@author`, `@category`, `@created`, `@package`, `@subpackage`,
-`@version`. Git commits provide accurate information.
+The annotations `@api`, `@author`, `@category`, `@created`, `@package`, `@subpackage` and `@version` may not
+be used in comments. Git commits provide accurate information. 
 
 ### SlevomatCodingStandard.Commenting.EmptyComment
 Comments may not be empty.
 
 ### SlevomatCodingStandard.Commenting.ForbiddenComments
-To keep comments clean, specific words in comments may not be used: _private_, _protected_, _static_, _constructor_, 
-_deconstructor_, _Created by_, _getter_, _setter_.
+To keep comments clean, the words _private_, _protected_, _static_, _constructor_, _deconstructor_, _Created by_, 
+_getter_ and _setter_ may not be used in comments
 
 ### SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration
-Use valid format of inline phpDocs with `@var`.
+The `@var` tag may be used in inline comments to document the _Type_ of properties, sometimes called class variables.
+```php
+class Foo
+{
+	/** @var string */
+	private $foo;
+	
+	public function __construct()
+	{
+        /** @var string $f */
+        foreach ($e as $f) {
+            // ...
+        }
+        
+        /** @var string[] $a */
+        $a = $this->get();
+    }
+}
+```
 
 ### SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment
 Comments with single-line content should be written as one-liners.
-```
+```php
 /**
  * @var array
  */
 private $foo;
 ```
 Should be written as
-```
+```php
 /** @var array */
 private $foo;
 ```
@@ -308,7 +326,7 @@ $foo = $bar['id'] ?? '1';
 ```
 
 ### SlevomatCodingStandard.Exceptions.DeadCatch
-Catch blocks should be reachable.
+Catch blocks must be reachable.
 ```php
 try {
 	doStuff();
@@ -409,8 +427,7 @@ declare(strict_types=1);
 ```
 
 ### SlevomatCodingStandard.PHP.UselessParentheses
-Unneeded parentheses should not be used.
-
+Parentheses should not be used if they can be omitted.
 ```php
 // Valid: No parentheses used.
 $x = $y !== null ? true : false;
@@ -430,7 +447,7 @@ $x = (self::$a::$b);
 ```
 
 ### SlevomatCodingStandard.PHP.UselessSemicolon
-Semicolons `;` should not be used if they are not needed.
+Semicolons `;` should not be used if they can be omitted.
 ```php
 // Valid: Semicolon used where needed.
 foo();
@@ -549,7 +566,7 @@ The asterisks in a doc comment should align, and there should be one space betwe
 ```
 
 ### Squiz.Commenting.FunctionComment
-If a function throws any exceptions, they should be documented in a `@throws` tag.
+If a function throws any exceptions, they should be documented in `@throws` tags.
 ```php
 /** @throws Exception all the time */
 function foo() : void
@@ -573,7 +590,7 @@ PHP function calls must be in lowercase.
 The code may not contain unreachable code.
 
 ### Squiz.Scope.StaticThisUsage
-Static methods should not use $this.
+Static methods should not use `$this`.
 ```php
 // Valid: Using self:: to access static variables.
 class Foo
@@ -599,7 +616,7 @@ Force whitespace before and after concatenation
 
 ### Squiz.Strings.DoubleQuoteUsage
 #### Squiz.Strings.DoubleQuoteUsage.ContainsVar
-Double quote strings may only be used if it contains variables.
+Double quote strings may only be used if they contain variables.
 ```php
 // Valid: Double quote strings are only used when it contains a variable.
 $string = "Hello There\r\n";
@@ -615,7 +632,7 @@ $string = "\$var";
 ```
 
 ### Squiz.Strings.EchoedStrings
-Simple strings should not be enclosed in parentheses when being echoed.
+Strings should not be enclosed in parentheses when being echoed.
 ```php
 // "Valid: Using echo without parentheses.
 echo 'Hello';
@@ -625,7 +642,7 @@ echo('Hello');
 ```
 
 ### Squiz.WhiteSpace.CastSpacing
-Casts should not have whitespace inside the parentheses.
+Type casts should not have whitespace inside the parentheses.
 ```php
 // Valid: No spaces.
 $foo = (int) '42';
@@ -666,7 +683,7 @@ echo'hi';
 _PSR-12:_ There must be one space around logical operators.
 
 ### Squiz.WhiteSpace.ObjectOperatorSpacing
-The object operator (`->`) should not have any space around it.
+The object operator `->` should not have any spaces around it.
 ```php
 // Valid: No spaces around the object operator.
 $foo->bar();
@@ -687,4 +704,4 @@ echo 'hi' ;
 
 ### Squiz.WhiteSpace.SuperfluousWhitespace
 #### Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines
-The code should not superfluous whitespaces. e.g. multiple empty lines, trailing spaces, etc.
+The code should not contain superfluous whitespaces. e.g. multiple empty lines, trailing spaces, etc.
