@@ -1,57 +1,156 @@
 # Ruleset
 
-## Use PSR-2 coding standard as a base
-*PSR2*
+## PSR2
+Use PSR-2 coding standard as a base
 
-## Force array element indentation with 4 spaces
-*Generic.Arrays.ArrayIndent*
+### PSR2.ControlStructures.ElseIfDeclaration.NotAllowed
+_PSR-12:_ The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.
 
-## Forbid `array(...)`
-*Generic.Arrays.DisallowLongArraySyntax*
 
-## Forbid backtick operator
-*Generic.PHP.BacktickOperator*
 
-## Forbid duplicate classes
-*Generic.Classes.DuplicateClassName*
+## Generic
 
-## Forbid empty statements, but allow empty catch
-*Generic.CodeAnalysis.EmptyStatement, Generic.CodeAnalysis.EmptyStatement.DetectedCatch*
+### Generic.Arrays.ArrayIndent
+All values in multiline arrays must be indented with 4 spaces.
 
-## Forbid final methods in final classes
-*Generic.CodeAnalysis.UnnecessaryFinalModifier*
+### Generic.Arrays.DisallowLongArraySyntax
+Short array syntax must be used to define arrays.
+```php
+$foo = [...];
+```
 
-## Forbid useless empty method overrides
-*Generic.CodeAnalysis.UselessOverridingMethod*
+### Generic.PHP.BacktickOperator
+The backtick operator may not be used for execution of shell commands.
 
-## Forbid short open tag, but allow short echo tags
-*Generic.PHP.DisallowShortOpenTag*
+### Generic.Classes.DuplicateClassName
+Class and Interface names should be unique in a project. They should never be duplicated.
 
-## Forbid inline HTML in PHP code
-*Generic.Files.InlineHTML*
+### Generic.CodeAnalysis.EmptyStatement
+Control Structures must have at least one statement inside of the body.
 
-## Align corresponding assignment statement tokens
-*Generic.Formatting.MultipleStatementAlignment*
+#### Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+Catch blocks may be empty.
+```php
+try {
+    // Try block
+} catch (SomeThrowableType $e) {
+}
+```
 
-## Force whitespace after a type cast
-*Generic.Formatting.SpaceAfterCast*
+### Generic.CodeAnalysis.UnnecessaryFinalModifier
+Methods may not have the final declaration classes declared as final.
 
-## Force whitespace after `!`
-*Generic.Formatting.SpaceAfterNot*
+### Generic.CodeAnalysis.UselessOverridingMethod
+Methods should not be defined that only call the parent method.
 
-## Forbid PHP 4 constructors
-*Generic.NamingConventions.ConstructorName*
+```php
+// Valid: A method that extends functionality on a parent method.
+final class Foo
+{
+    public function bar() : void
+    {
+        parent::bar();
+        $this->doSomethingElse();
+    }
+}
 
-## Forbid any content before opening tag
-*Generic.PHP.CharacterBeforePHPOpeningTag*
+// Invalid: An overriding method that only calls the parent.
+final class Foo
+{
+    public function bar() : void
+    {
+       parent::bar();
+    }
+}
+```
 
-## Forbid deprecated functions
-*Generic.PHP.DeprecatedFunctions*
+### Generic.Files.InlineHTML
+Files that contain php code should only have php code and should not have any _"inline html"_.
+```php
+<?php
+// Valid: A php file with only php code in it.
+$foo = 'bar';
+echo $foo . 'baz';
+```
 
-## Forbid alias functions, i.e. `sizeof()`, `delete()`
-*Generic.PHP.ForbiddenFunctions*
+```php
+<!-- Invalid: A php file with html in it outside of the php tags. -->
+<em>some string here</em>
+<?php
+$foo = 'bar';
+echo $foo . 'baz';
+```
 
-Alias functions should not be used. This can't be fixed automatically and need to be done by hand.
+### Generic.Formatting.MultipleStatementAlignment
+There should be one space on either side of an equals sign used to assign a value to a variable. In the case of a 
+block of related assignments, more space may be inserted before the equal sign to promote readability.
+```php
+<?php
+
+$shortVar        = (1 + 2);
+$veryLongVarName = 'string';
+$var             = foo($bar, $baz, $quux);
+```
+
+### Generic.Formatting.SpaceAfterCast
+There must be exactly one space after a cast.
+
+```php
+// Valid: A cast operator is followed by one space.
+$foo = (string) 1;
+
+// Invalid: A cast operator is not followed by whitespace.
+$foo = (string)1;
+```
+
+### Generic.Formatting.SpaceAfterNot
+The not (`!`) operator must be followed by exactly one space.
+
+### Generic.NamingConventions.ConstructorName
+Constructors should be named `__construct`, not after the class.
+
+```php
+// Valid: The constructor is named __construct.
+class Foo
+{
+    function <em>__construct</em>()
+    {
+    }
+}
+
+// Invalid: The old style class name constructor is used.
+class Foo
+{
+    function <em>Foo</em>()
+    {
+    }
+}
+```
+
+### Generic.PHP.CharacterBeforePHPOpeningTag
+The opening php tag should be the first item in the file.
+```php
+<?php // Valid: A file starting with an opening php tag.
+echo 'Foo';
+```
+
+```php
+// Invalid: A file with content before the opening php tag.
+<em>Beginning content</em>
+<?php
+echo 'Foo';
+```
+
+### Generic.PHP.DeprecatedFunctions
+Deprecated functions should not be used.
+
+### Generic.PHP.DisallowShortOpenTag
+#### Generic.PHP.DisallowShortOpenTag.EchoFound
+_PSR-1:_ PHP code must use the long `<?php ?>` tags or the short-echo `<?= ?>` tags; it must not use the other tag 
+variations.
+
+### Generic.PHP.ForbiddenFunctions
+PHP functions which are an alias may not be used. _This can't be fixed automatically and need to be done manually._
 
 | Alias        | Replace with     |
 | ------------ | ---------------- |
@@ -76,181 +175,334 @@ Alias functions should not be used. This can't be fixed automatically and need t
 | sizeof       | count            |
 | strchr       | strstr           |
 
-## Force PHP 7 param and return types to be lowercased
-*Generic.PHP.LowerCaseType*
+### Generic.PHP.LowerCaseType
+_PSR-12:_ Any new types and keywords added to future PHP versions must be in lower case.
 
-## Forbid `php_sapi_name()` function, use `PHP_SAPI`
-*Generic.PHP.SAPIUsage*
+### Generic.PHP.SAPIUsage
+The `PHP_SAPI` constant must be used instead of the `php_sapi_name()` function.
 
-## Forbid inline string concatenation, unless used in multiline for readability
-*Generic.Strings.UnnecessaryStringConcat*
+### Generic.Strings.UnnecessaryStringConcat
+Strings should not be concatenated together, unless used in multiline for readability.
+```php
+// Valid: A string can be concatenated with an expression.
+echo '5 + 2 = ' . (5 + 2);
 
-## Forbid comments starting with `#`
-*PEAR.Commenting.InlineComment*
+// Invalid: Strings should not be concatenated together.
+echo 'Hello' . ' ' . 'World';
+```
 
-## Disallow `else if` in favor of `elseif`
-*PSR2.ControlStructures.ElseIfDeclaration.NotAllowed*
+## PEAR
 
-## Require comma after last element in multi-line array
-*SlevomatCodingStandard.Arrays.TrailingArrayComma*
+### PEAR.Commenting.InlineComment
+Comments may not start with `#`.
 
-## Require presence of constant visibility
-*SlevomatCodingStandard.Classes.ClassConstantVisibility*
 
-## Forbid uses of multiple traits separated by comma
-*SlevomatCodingStandard.Classes.TraitUseDeclaration*
 
-## Require no spaces before trait use, between trait uses and one space after trait uses
+## SlevomatCodingStandard
 
-## Forbid dead code
-*SlevomatCodingStandard.Classes.UnusedPrivateElements*
+### SlevomatCodingStandard.Arrays.TrailingArrayComma
+All array values must be followed by a comma, including the final value. Commas after last element in an array make 
+adding a new element easier and result in a cleaner versioning diff.
 
-## Forbid useless annotations
-*SlevomatCodingStandard.Commenting.ForbiddenAnnotations*
+### SlevomatCodingStandard.Classes.ClassConstantVisibility
+_PSR-12:_ Visibility MUST be declared on all constants if your project PHP minimum version supports constant visibilities 
+(PHP 7.1 or later).
 
-Git commits provide accurate information for these forbidden annotations: @api, @author, @category, @created, @package, @subpackage, @version.
+### SlevomatCodingStandard.Classes.TraitUseDeclaration
+_PSR-12:_ Each individual Trait that is imported into a class MUST be included one-per-line.
 
-## Forbid empty comments
-*SlevomatCodingStandard.Commenting.EmptyComment*
+### SlevomatCodingStandard.Classes.UnusedPrivateElements
+A class should not have unused private constants, (or write-only) properties and methods.
 
-## Forbid useless comments
-*SlevomatCodingStandard.Commenting.ForbiddenComments*
+### SlevomatCodingStandard.Commenting.ForbiddenAnnotations
+Comments may not contain useless annotations: `@api`, `@author`, `@category`, `@created`, `@package`, `@subpackage`,
+`@version`. Git commits provide accurate information.
 
-Forbidden comments words: private, protected, static, constructor, deconstructor, Created by, getter, setter.
+### SlevomatCodingStandard.Commenting.EmptyComment
+Comments may not be empty.
 
-## Report invalid format of inline phpDocs with `@var`
-*SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration*
+### SlevomatCodingStandard.Commenting.ForbiddenComments
+To keep comments clean, specific words in comments may not be used: _private_, _protected_, _static_, _constructor_, 
+_deconstructor_, _Created by_, _getter_, _setter_.
 
-## Require comments with single line written as one-liners
-*SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment*
+### SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration
+Use valid format of inline phpDocs with `@var`.
 
+### SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment
+Comments with single-line content should be written as one-liners.
 ```
 /**
  * @var array
  */
 private $foo;
 ```
-
 Should be written as
-
 ```
 /** @var array */
 private $foo;
 ```
 
-## Forbid weak comparisons
-*SlevomatCodingStandard.ControlStructures.DisallowEqualOperators*
+### SlevomatCodingStandard.ControlStructures.DisallowEqualOperators
+Loose `==` and `!=` comparison operators should not be used. Use `===` and `!==` instead, they are much more secure 
+and predictable.
 
-## Require usage of early exit
-*SlevomatCodingStandard.ControlStructures.EarlyExit*
+### SlevomatCodingStandard.ControlStructures.EarlyExit
+An early exit strategy should be used where possible to reduce the level of control structures.
+```php
+// Valid: Exit early.
+function () : bool {
+	if (! true) {
+		return false;
+	}
+	// Do something
+};
 
-## Require language constructs without parentheses
-*SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses*
+// Invalid: unneeded control structure
+function () : bool {
+	if (true) {
+		// Do something
+	} else {
+		return false;
+	}
+};
+```
 
-## Require new instances with parentheses
-*SlevomatCodingStandard.ControlStructures.NewWithParentheses*
+### SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses
+Language constructs must be used without parentheses where possible.
 
-## Require usage of null coalesce operator when possible
-*SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator*
+```php
+// Valid: Use language constructs without parentheses.
+continue 1;
+break 1;
+echo 'a';
+print 'b';
+include 'file.php';
+return 'foo';
+yield [];
+throw new Exception();
+exit;
 
-Use `$foo = $bar['id'] ?? '1';` where possbile.
+// Invalid: Language constructs with parentheses.
+continue(1);
+break(1);
+echo('a');
+print('b');
+include('file.php');
+return('foo');
+yield([]);
+throw(new Exception());
+exit();
+```
 
-## Forbid useless unreachable catch blocks
-*SlevomatCodingStandard.Exceptions.DeadCatch*
+### SlevomatCodingStandard.ControlStructures.NewWithParentheses
+_PSR-12:_ When instantiating a new class, parenthesis MUST always be present even when there are no arguments passed to 
+the constructor.
+```php
+new Foo();
+```
 
-## Require using Throwable instead of Exception
-*SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly*
+### SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator
+The null coalesce operator should be used when possible.
+```php
+$foo = $bar['id'] ?? '1';
+```
 
-## Forbid unused variables passed to closures via `use`
-*SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure*
+### SlevomatCodingStandard.Exceptions.DeadCatch
+Catch blocks should be reachable.
+```php
+try {
+	doStuff();
+} catch (Throwable $e) {
+	log($e);
+} catch (InvalidArgumentException $e) {
+	// Unreachable because `Throwable` catches everything!
+}
+```
 
-## Require use statements to be alphabetically sorted
-*SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses*
+### SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
+Catch blocks must use `Throwable` instead of `Exception`.
+```php
+try {
+	// ...
+} catch (Throwable $e) {
 
-## Forbid fancy group uses
-*SlevomatCodingStandard.Namespaces.DisallowGroupUse*
+}
+```
 
-## Forbid multiple use statements on same line
-*SlevomatCodingStandard.Namespaces.MultipleUsesPerLine*
+### SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure
+Unused variables should not be passed to closures via `use`.
 
-## Require newlines around namespace declaration
-*SlevomatCodingStandard.Namespaces.NamespaceSpacing*
+### SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
+Import statements should be alphabetically sorted.
 
-## Forbid using absolute class name references (except global ones)
-*SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly*
+### SlevomatCodingStandard.Namespaces.DisallowGroupUse
+Import statements should not be grouped.
 
-## Forbid unused use statements
-*SlevomatCodingStandard.Namespaces.UnusedUses*
+### SlevomatCodingStandard.Namespaces.MultipleUsesPerLine
+Each import statement should be on its own line.
 
-## Forbid superfluous leading backslash in use statements
-*SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash*
+### SlevomatCodingStandard.Namespaces.NamespaceSpacing
+Require newlines around namespace declaration
 
-## Forbid useless uses of the same namespace
-*SlevomatCodingStandard.Namespaces.UseFromSameNamespace*
+### SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly
+Absolute class name references, functions and constants should be imported.
 
-## Require empty newlines before and after uses
-*SlevomatCodingStandard.Namespaces.UseSpacing*
+### SlevomatCodingStandard.Namespaces.UnusedUses
+Unused import statements are not allowed.
 
-## Forbid useless alias for classes, constants and functions
-*SlevomatCodingStandard.Namespaces.UselessAlias*
+### SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
+_PSR-12:_ Import statements MUST never begin with a leading backslash as they must always be fully qualified.
 
-## Require the usage of assignment operators, eg `+=`, `.=` when possible
-*SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator*
+### SlevomatCodingStandard.Namespaces.UseFromSameNamespace
+Classes and function within the same namespace should not be imported.
+```php
+use Foo\Bar as Bar; // Same name as imported class
+use Foo\Bar;        // Correct
+```
 
-## Forbid `list(...)` syntax, use `[...]` instead
-*SlevomatCodingStandard.PHP.ShortList*
+### SlevomatCodingStandard.Namespaces.UseSpacing
+_PSR-12:_ Require empty newlines before and after uses
 
-## Forbid use of longhand cast operators
-*SlevomatCodingStandard.PHP.TypeCast*
+### SlevomatCodingStandard.Namespaces.UselessAlias
+Imports should not have an alias with the same name.
 
-## Require presence of `declare(strict_types=1)`
-*SlevomatCodingStandard.TypeHints.DeclareStrictTypes*
+### SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator
+Assignment operators (eg `+=`, `.=`) should be used when possible.
 
-## Forbid useless parentheses
-*SlevomatCodingStandard.PHP.UselessParentheses*
+```php
+self::$a &= 2;
+static::$a |= 4;
+self::$$parameter .= '';
+parent::${'a'} /= 10;
+self::${'a'}[0] -= 100;
+Anything::$a **= 2;
+Something\Anything::$a %= 2;
+\Something\Anything::$a *= 1000;
+self::$a::$b += 4;
+$this::$a <<= 2;
+$this->a >>= 2;
+$this->$$parameter ^= 10;
+$this->{'a'} += 10;
+```
 
-## Forbid useless semicolon `;`
-*SlevomatCodingStandard.PHP.UselessSemicolon*
+### SlevomatCodingStandard.PHP.ShortList
+Short list syntax `[...]` should be used instead of `list(...)`.
 
-## Require use of short versions of scalar types (i.e. int instead of integer)
-*SlevomatCodingStandard.TypeHints.LongTypeHints*
+### SlevomatCodingStandard.PHP.TypeCast
+Short form of type keywords must be used. i.e. `bool` instead of `boolean`, `int` instead of `integer`, etc.
+The `binary` and `unset` cast operators are not allowed.
 
-## Require `?` when default value is `null`
-*SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue*
+### SlevomatCodingStandard.TypeHints.DeclareStrictTypes
+_PSR-12:_ Declare statements MUST contain no spaces and MUST be exactly `declare(strict_types=1)`.
+Each PHP file should have a strict type declaration at the top after the page level docblock.
+```php
+<?php
+/**
+ * @see       https://github.com/zendframework/zend-coding-standard for the canonical source repository
+ * @copyright Copyright (c) 2016-2018 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/zend-coding-standard/blob/master/LICENSE.md New BSD License
+ */
 
-Checks whether the nullablity ? symbol is present before each nullable and optional parameter 
-(which are marked as = null):
+declare(strict_types=1);
+
+// ...
+```
+
+### SlevomatCodingStandard.PHP.UselessParentheses
+Unneeded parentheses should not be used.
+
+```php
+// Valid: No parentheses used.
+$x = $y !== null ? true : false;
+$a = $b ? 1 : 0;
+$c = $d ? 1 : 0;
+$x = self::$a;
+$x = Something\Anything::$a;
+$x = self::$a::$b;
+
+// Invalid: Unneeded parentheses.
+$x = ($y !== null) ? true : false;
+$a = ($b) ? 1 : 0;
+$c = (   $d    ) ? 1 : 0;
+$x = (self::$a);
+$x = (Something\Anything::$a);
+$x = (self::$a::$b);
+```
+
+### SlevomatCodingStandard.PHP.UselessSemicolon
+Semicolons `;` should not be used if they are not needed.
+```php
+// Valid: Semicolon used where needed.
+foo();
+class Whatever {
+}
+
+// Invalid: Unneeded semicolons used.
+foo();;
+class Whatever {
+};
+```
+
+
+### SlevomatCodingStandard.TypeHints.LongTypeHints
+Shorthand scalar typehint variants must be used in docblocks: `bool` instead of `boolean`, `int` instead of `integer`, 
+etc. This is for consistency with native scalar typehints which also allow shorthand variants only.
+
+### SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
+Nullable and optional arguments, which are marked as `= null`, must have the nullablity `?` symbol present.
 ```php
 function foo(
 	int $foo = null, // ? missing
 	?int $bar = null // correct
 ) {
-
 }
 ```
 
-## Require one space between typehint and variable, require no space between nullability sign and typehint
-*SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing*
+### SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing
+_PSR-12:_ Method and function arguments must have one space between typehint and variable. Between the nullability sign 
+and typehint may not be a space. 
 
-## Require space around colon in return types
-*SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing*
-
+### SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
+The colon used with return type declarations MUST be surrounded with 1 space. This is different with the draft PSR-12 
+proposal and will be adjusted if needed when PSR-12 is accepted.
 ```php
 public function foo($bar) : array;
 ```
 
-## Forbid empty lines around type declarations
-*SlevomatCodingStandard.Types.EmptyLinesAroundTypeBraces*
+### SlevomatCodingStandard.Types.EmptyLinesAroundTypeBraces
+- _PSR-12:_ The opening brace for the class MUST go on its own line; the closing brace for the class MUST go on the 
+  next line after the body.
+- _PSR-12:_ Any closing brace MUST NOT be followed by any comment or statement on the same line.
+- _PSR-12:_ Opening braces MUST be on their own line and MUST NOT be preceded or followed by a blank line.
+- _PSR-12:_ Closing braces MUST be on their own line and MUST NOT be preceded by a blank line.
 
-## Forbid useless variables
-*SlevomatCodingStandard.Variables.UselessVariable*
+### SlevomatCodingStandard.Variables.UselessVariable
+Variables should be returned directly instead of assigned to a variable which is not used.
+```php
+// Valid: The value is returned directly.
+function () {
+	return true;
+};
 
-## Forbid spaces around square brackets
-*Squiz.Arrays.ArrayBracketSpacing*
+// Invalid: An extra variable is used where its value could be returned directly.
+function () {
+	$a = true;
+	return $a;
+};
+```
 
-## Force array declaration structure
-*Squiz.Arrays.ArrayDeclaration*
 
+
+## Squiz
+
+### Squiz.Arrays.ArrayBracketSpacing
+Whitespace is not allowed around the opening bracket or before the closing bracket when referencing an array.
+```php
+$foo['bar'];
+```
+
+### Squiz.Arrays.ArrayDeclaration
+All double arrow symbols must be aligned to one space after the longest array key.
 ```php
 return [
     ConfigAggregator::ENABLE_CACHE => true,
@@ -266,66 +518,173 @@ return [
 ];
 ```
 
-## Forbid class being in a file with different name
-*Squiz.Classes.ClassFileName*
+### Squiz.Classes.ClassFileName
+_PSR-4:_ The class name must correspond to a file name ending in .php. The file name MUST match the case of the 
+terminating class name.
 
-## Force `self::` for self-reference, force lower-case self, forbid spaces around `::`
-*Squiz.Classes.SelfMemberReference*
-
+### Squiz.Classes.SelfMemberReference
+The self keyword should be used instead of the current class name, and should not have spaces around `::`.
 ```php
-$foo = self::fromPayload($payload);
+class Foo
+{
+    public static function bar()
+    {
+    }
+
+    public static function baz()
+    {
+        self::bar();
+    }
+}
 ```
 
-## Force phpDoc alignment
-*Squiz.Commenting.DocCommentAlignment*
+### Squiz.Commenting.DocCommentAlignment
+The asterisks in a doc comment should align, and there should be one space between the asterisk and tag.
+```php
+/**
+ * These lines are aligned.
+ * 
+ * @var array
+ */
+```
 
-## Force rules for function phpDoc
-*Squiz.Commenting.FunctionComment*
+### Squiz.Commenting.FunctionComment
+If a function throws any exceptions, they should be documented in a `@throws` tag.
+```php
+/** @throws Exception all the time */
+function foo() : void
+{
+    throw new Exception('Danger!');
+}
+```
+### Squiz.Functions.GlobalFunction
+Global functions should not be used.
 
-## Forbid global functions
-*Squiz.Functions.GlobalFunction*
+### Squiz.Operators.ValidLogicalOperators
+The `&&` and `||` operators must be used instead of `&&` and `||`.
 
-## Forbid `AND` and `OR`, require `&&` and `||`
-*Squiz.Operators.ValidLogicalOperators*
+### Squiz.PHP.GlobalKeyword
+The `global` keyword may not be used.
 
-## Forbid `global`
-*Squiz.PHP.GlobalKeyword*
+### Squiz.PHP.LowercasePHPFunctions
+PHP function calls must be in lowercase.
 
-## Require PHP function calls in lowercase
-*Squiz.PHP.LowercasePHPFunctions*
+### Squiz.PHP.NonExecutableCode
+The code may not contain unreachable code.
 
-## Forbid dead code
-*Squiz.PHP.NonExecutableCode*
+### Squiz.Scope.StaticThisUsage
+Static methods should not use $this.
+```php
+// Valid: Using self:: to access static variables.
+class Foo
+{
+    public static function bar()
+    {
+        return self::$staticMember;
+    }
+}
 
-## Forbid `$this` inside static function
-*Squiz.Scope.StaticThisUsage*
+// Invalid: Using $this-> to access static variables.
+class Foo
+{
+    public static function bar()
+    {
+        return $this->$staticMember;
+    }
+}
+```
 
-## Force whitespace before and after concatenation
-*Squiz.Strings.ConcatenationSpacing*
+### Squiz.Strings.ConcatenationSpacing
+Force whitespace before and after concatenation
 
-## Forbid strings in `"` unless necessary
-*Squiz.Strings.DoubleQuoteUsage, Squiz.Strings.DoubleQuoteUsage.ContainsVar*
+### Squiz.Strings.DoubleQuoteUsage
+#### Squiz.Strings.DoubleQuoteUsage.ContainsVar
+Double quote strings may only be used if it contains variables.
+```php
+// Valid: Double quote strings are only used when it contains a variable.
+$string = "Hello There\r\n";
+$string = "Hello $there";
+$string = 'Hello There';
+$string = 'Hello'.' There'."\n";
+$string = '\$var';
 
-## Forbid braces around string in `echo`
-*Squiz.Strings.EchoedStrings*
+// Invalid: There are no variables inside double quote strings.
+$string = "Hello There";
+$string = "Hello"." There"."\n";
+$string = "\$var";
+```
 
-## Forbid spaces in type casts
-*Squiz.WhiteSpace.CastSpacing*
+### Squiz.Strings.EchoedStrings
+Simple strings should not be enclosed in parentheses when being echoed.
+```php
+// "Valid: Using echo without parentheses.
+echo 'Hello';
 
-## Forbid blank line after function opening brace
-*Squiz.WhiteSpace.FunctionOpeningBraceSpace*
+// Invalid: Using echo with parentheses.
+echo('Hello');
+```
 
-## Require space after language constructs
-*Squiz.WhiteSpace.LanguageConstructSpacing*
+### Squiz.WhiteSpace.CastSpacing
+Casts should not have whitespace inside the parentheses.
+```php
+// Valid: No spaces.
+$foo = (int) '42';
 
-## Require space around logical operators
-*Squiz.WhiteSpace.LogicalOperatorSpacing*
+// Invalid: Whitespace used inside parentheses.
+$foo = ( int ) '42';
+```
 
-## Forbid spaces around `->` operator
-*Squiz.WhiteSpace.ObjectOperatorSpacing*
+### Squiz.WhiteSpace.FunctionOpeningBraceSpace
+The opening brace for functions should be on a new line with no blank lines surrounding it.
+```php
+// Valid: Opening brace is on a new line.
+function foo() : int
+{
+    return 42;
+}
 
-## Forbid spaces before semicolon `;`
-*Squiz.WhiteSpace.SemicolonSpacing*
+// Invalid: Opening brace is on the same line as the function declaration and a blank line after the opening brace.
+function foo() {
 
-## Forbid superfluous whitespaces
-*Squiz.WhiteSpace.SuperfluousWhitespace, Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines*
+    return 42;
+}
+```
+
+### Squiz.WhiteSpace.LanguageConstructSpacing
+The php constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new` should 
+have one space after them.
+
+```php
+// Valid: echo statement with a single space after it.
+echo 'hi';
+
+// Invalid: echo statement with no space after it.
+echo'hi';
+```
+
+### Squiz.WhiteSpace.LogicalOperatorSpacing
+_PSR-12:_ There must be one space around logical operators.
+
+### Squiz.WhiteSpace.ObjectOperatorSpacing
+The object operator (`->`) should not have any space around it.
+```php
+// Valid: No spaces around the object operator.
+$foo->bar();
+
+// Invalid: Whitespace surrounding the object operator.
+$foo -> bar();
+```
+
+### Squiz.WhiteSpace.SemicolonSpacing
+Semicolons should not have spaces before them.
+```php
+// Valid: No space before the semicolon.
+echo 'hi';
+
+// Valid: Invalid: Space before the semicolon.
+echo 'hi' ;
+```
+
+### Squiz.WhiteSpace.SuperfluousWhitespace
+#### Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines
+The code should not superfluous whitespaces. e.g. multiple empty lines, trailing spaces, etc.
