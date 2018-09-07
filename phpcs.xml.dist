@@ -5,11 +5,12 @@
     <description>The coding standard for ZendCodingStandard itself.</description>
 
     <arg name="basepath" value="."/>
-    <arg name="extensions" value="php"/>
+    <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors"/>
-    <arg value="p"/>
-
-    <rule ref="ZendCodingStandard"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
 
     <file>src</file>
+
+    <rule ref="ZendCodingStandard"/>
 </ruleset>
