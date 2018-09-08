@@ -65,7 +65,7 @@ final class Foo
 ```
 
 ### Generic.Files.InlineHTML
-Files that contain php code should only have php code and should not have any _"inline html"_.
+Files that contain PHP code should only have PHP code and should not have any _"inline HTML"_.
 ```php
 <?php
 // Valid: A php file with only php code in it.
@@ -128,7 +128,7 @@ class Foo
 ```
 
 ### Generic.PHP.CharacterBeforePHPOpeningTag
-The opening php tag should be the first item in the file.
+The opening PHP tag should be the first item in the file.
 ```php
 <?php // Valid: A file starting with an opening php tag.
 echo 'Foo';
@@ -182,7 +182,7 @@ _PSR-12:_ Any new types and keywords added to future PHP versions must be in low
 The `PHP_SAPI` constant must be used instead of the `php_sapi_name()` function.
 
 ### Generic.Strings.UnnecessaryStringConcat
-Strings should not be concatenated together, unless used in multiline for readability.
+Strings should not be concatenated together unless used in multiline for readability.
 ```php
 // Valid: A string can be concatenated with an expression.
 echo '5 + 2 = ' . (5 + 2);
@@ -320,7 +320,7 @@ new Foo();
 ```
 
 ### SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator
-The null coalesce operator should be used when possible.
+The null  coalescing operator `??` should be used when possible.
 ```php
 $foo = $bar['id'] ?? '1';
 ```
@@ -466,7 +466,7 @@ Shorthand scalar typehint variants must be used in docblocks: `bool` instead of 
 etc. This is for consistency with native scalar typehints which also allow shorthand variants only.
 
 ### SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
-Nullable and optional arguments, which are marked as `= null`, must have the nullablity `?` symbol present.
+Nullable and optional arguments, which are marked as `= null`, must have the `?` symbol present.
 ```php
 function foo(
 	int $foo = null, // ? missing
@@ -540,7 +540,7 @@ _PSR-4:_ The class name must correspond to a file name ending in .php. The file 
 terminating class name.
 
 ### Squiz.Classes.SelfMemberReference
-The self keyword should be used instead of the current class name, and should not have spaces around `::`.
+The `self` keyword should be used instead of the current class name, and should not have spaces around `::`.
 ```php
 class Foo
 {
@@ -668,7 +668,7 @@ function foo() {
 ```
 
 ### Squiz.WhiteSpace.LanguageConstructSpacing
-The php constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new` should 
+The PHP constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new` should 
 have one space after them.
 
 ```php

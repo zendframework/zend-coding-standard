@@ -4,7 +4,7 @@ This specification extends and expands [PSR-12](https://github.com/php-fig/fig-s
 the extended coding style guide and requires adherence to [PSR-1](https://www.php-fig.org/psr/psr-1), 
 the basic coding standard.
 
-> Note: PSR-12 is not finalized. e.g. The `!` operator and `:` placement for return values are still under  discussion. 
+> Note: PSR-12 is not finalized. e.g. The `!` operator and `:` placement for return values are still under discussion. 
 We will change these rules, and, when PSR-12 is finalized, adapt them.
 
 ## General
@@ -88,7 +88,7 @@ $var = [
 
 In addition to [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md#3-declare-statements-namespace-and-import-statements):
 
-- Each php file should have a page level docblock with `@see`, `@copyright` and `@license`. The copyright date should
+- Each PHP file should have a page level docblock with `@see`, `@copyright` and `@license`. The copyright date should
   only be adjusted if the file has changed.
 - Each PHP file should have a strict type declaration at the top after the page level docblock. [*](ruleset.md#slevomatcodingstandardtypehintsdeclarestricttypes)
 - Import statements should be alphabetically sorted. [*](ruleset.md#slevomatcodingstandardnamespacesalphabeticallysorteduses)
@@ -137,7 +137,7 @@ In addition to [PSR-12](https://github.com/php-fig/fig-standards/blob/master/pro
 
 - Methods may not have the final declaration in classes declared as final. [*](ruleset.md#genericcodeanalysisunnecessaryfinalmodifier)
 - The colon used with return type declarations MUST be surrounded with 1 space. [*](ruleset.md#slevomatcodingstandardtypehintsreturntypehintspacing)
-- Nullable and optional arguments, which are marked as `= null`, must have the nullablity `?` symbol present. [*](ruleset.md#slevomatcodingstandardtypehintsnullabletypefornulldefaultvalue)
+- Nullable and optional arguments, which are marked as `= null`, must have the `?` symbol present. [*](ruleset.md#slevomatcodingstandardtypehintsnullabletypefornulldefaultvalue)
 
 ```php
 <?php
@@ -276,7 +276,7 @@ In addition to [PSR-12](https://github.com/php-fig/fig-standards/blob/master/pro
 
 - The not (`!`) operator must be followed by exactly one space. [*](ruleset.md#genericformattingspaceafternot)
 - The `&&` and `||` operators must be used instead of `AND` and `OR`. [*](ruleset.md#squizoperatorsvalidlogicaloperators)
-- The null coalesce operator should be used when possible. [*](ruleset.md#slevomatcodingstandardcontrolstructuresrequirenullcoalesceoperator)
+- The null  coalescing operator `??` should be used when possible. [*](ruleset.md#slevomatcodingstandardcontrolstructuresrequirenullcoalesceoperator)
 - Assignment operators (eg `+=`, `.=`) should be used when possible. [*](ruleset.md#slevomatcodingstandardoperatorsrequirecombinedassignmentoperator)
 
 ```php
@@ -353,11 +353,11 @@ $instance = new class extends Foo implements
 - The backtick operator may not be used for execution of shell commands. [*](ruleset.md#genericphpbacktickoperator)
 - Class and Interface names should be unique in a project. They should never be duplicated. [*](ruleset.md#genericclassesduplicateclassname)
 - Methods that only call the parent method should not be defined. [*](ruleset.md#genericcodeanalysisuselessoverridingmethod)
-- Files that contain php code should only have php code and should not have any _"inline html"_. [*](ruleset.md#genericfilesinlinehtml)
+- Files that contain PHP code should only have PHP code and should not have any _"inline HTML"_. [*](ruleset.md#genericfilesinlinehtml)
 - There must be exactly one space after a type cast. [*](ruleset.md#genericformattingspaceaftercast)
 - Constructors should be named `__construct`, not after the class. [*](ruleset.md#genericnamingconventionsconstructorname)
-- The opening php tag should be the first item in the file. [*](ruleset.md#genericphpcharacterbeforephpopeningtag)
-- Strings should not be concatenated together, unless used in multiline for readability. [*](ruleset.md#genericstringsunnecessarystringconcat)
+- The opening PHP tag should be the first item in the file. [*](ruleset.md#genericphpcharacterbeforephpopeningtag)
+- Strings should not be concatenated together unless used in multiline for readability. [*](ruleset.md#genericstringsunnecessarystringconcat)
 - Loose `==` and `!=` comparison operators should not be used. Use `===` and `!==` instead. [*](ruleset.md#slevomatcodingstandardcontrolstructuresdisallowequaloperators)
 - An early exit strategy should be used where possible to reduce the level of control structures.
   [*](ruleset.md#slevomatcodingstandardcontrolstructuresearlyexit)
@@ -368,7 +368,7 @@ $instance = new class extends Foo implements
 - Parentheses should not be used if they can be omitted. [*](ruleset.md#slevomatcodingstandardphpuselessparentheses)
 - Semicolons `;` should not be used if they can be omitted. [*](ruleset.md#slevomatcodingstandardphpuselesssemicolon)
 - Variables should be returned directly instead of assigned to a variable which is not used. [*](ruleset.md#slevomatcodingstandardvariablesuselessvariable)
-- The self keyword should be used instead of the current class name, and should not have spaces around `::`.
+- The `self` keyword should be used instead of the current class name, and should not have spaces around `::`.
   [*](ruleset.md#squizclassesselfmemberreference)
 - Global functions should not be used. [*](ruleset.md#squizfunctionsglobalfunction)
 - Static methods should not use `$this`. [*](ruleset.md#squizscopestaticthisusage)
@@ -376,7 +376,7 @@ $instance = new class extends Foo implements
 - Strings should not be enclosed in parentheses when being echoed. [*](ruleset.md#squizstringsechoedstrings)
 - Type casts should not have whitespace inside the parentheses. [*](ruleset.md#squizwhitespacecastspacing)
 - The opening brace for functions should be on a new line with no blank lines surrounding it. [*](ruleset.md#squizwhitespacefunctionopeningbracespace)
-- The php constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new`, should 
+- The PHP constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new`, should 
   have one space after them. [*](ruleset.md#squizwhitespacelanguageconstructspacing)
 - The object operator `->` should not have any spaces around it. [*](ruleset.md#squizwhitespaceobjectoperatorspacing)
 - Semicolons should not have spaces before them. [*](ruleset.md#squizwhitespacesemicolonspacing)
