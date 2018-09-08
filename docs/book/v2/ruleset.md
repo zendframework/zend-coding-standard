@@ -15,18 +15,28 @@ All values in multiline arrays must be indented with 4 spaces.
 
 ### Generic.Arrays.DisallowLongArraySyntax
 Short array syntax must be used to define arrays.
+
 ```php
-$foo = [...];
+<?php
+$foo = ['foo' => 'bar'];
 ```
 
 ### Generic.PHP.BacktickOperator
 The backtick operator may not be used for execution of shell commands.
 
+*Invalid: Using the backtick operator.*
+```php
+<?php
+$output = `ls -al`;
+```
+
 ### Generic.Classes.DuplicateClassName
 Class and Interface names should be unique in a project and must have a unique fully qualified name. They should never 
 be duplicated.
+
+*Valid: Unique class names.*
 ```php
-<?php // Valid: Unique class names.
+<?php
 // src/Vendor/Package/Foo.php
 namespace Vendor\Package {
     class Foo
@@ -42,8 +52,9 @@ namespace Vendor\AnotherPackage {
 }
 ```
 
+*Invalid: A class duplicated across multiple files.*
 ```php
-<?php // Invalid: A class duplicated across multiple files.
+<?php
 // src/Vendor/Package/Foo.php
 namespace Vendor\Package {
     class Foo
@@ -62,11 +73,26 @@ namespace Vendor\Package {
 ### Generic.CodeAnalysis.EmptyStatement
 Control Structures must have at least one statement inside of the body.
 
+*Valid:*
+```php
+<?php
+for ($i; $i > 0; $i--) { 
+    echo 'hello';
+}
+```
+
+*Invalid:*
+```php
+<?php
+if ($something) echo 'hello';
+```
 #### Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 Catch blocks may be empty.
+
 ```php
+<?php
 try {
-    // Try block
+    // Do something
 } catch (SomeThrowableType $e) {
 }
 ```
@@ -74,11 +100,34 @@ try {
 ### Generic.CodeAnalysis.UnnecessaryFinalModifier
 Methods may not have the final declaration classes declared as final.
 
+*Valid: Only the class is marked as final.*
+```php
+<?php
+final class Foo
+{
+    public function bar()
+    {
+    }
+}
+```
+
+*Invalid: A method in a final class is also marked final.*
+```php
+<?php
+final class Foo
+{
+    final public function bar()
+    {
+    }
+}
+```
+
 ### Generic.CodeAnalysis.UselessOverridingMethod
 Methods that only call the parent method should not be defined.
 
+*Valid: A method that extends functionality on a parent method.*
 ```php
-// Valid: A method that extends functionality on a parent method.
+<?php
 final class Foo
 {
     public function bar() : void
@@ -87,8 +136,11 @@ final class Foo
         $this->doSomethingElse();
     }
 }
+```
 
-// Invalid: An overriding method that only calls the parent.
+*Invalid: An overriding method that only calls the parent.*
+```php
+<?php
 final class Foo
 {
     public function bar() : void
@@ -100,16 +152,17 @@ final class Foo
 
 ### Generic.Files.InlineHTML
 Files that contain PHP code should only have PHP code and should not have any _"inline HTML"_.
+
+*Valid: A php file with only php code in it.*
 ```php
 <?php
-// Valid: A php file with only php code in it.
 $foo = 'bar';
 echo $foo . 'baz';
 ```
 
+*Invalid: A php file with html in it outside of the php tags.*
 ```php
-<!-- Invalid: A php file with html in it outside of the php tags. -->
-<em>some string here</em>
+<strong>some string here</strong>
 <?php
 $foo = 'bar';
 echo $foo . 'baz';
@@ -118,41 +171,76 @@ echo $foo . 'baz';
 ### Generic.Formatting.MultipleStatementAlignment
 There should be one space on either side of an equals sign used to assign a value to a variable. In case of a 
 block of related assignments, more space may be inserted before the equal sign to promote readability.
+
+*Valid: Equal signs are aligned in related blocks.*
 ```php
 <?php
-
 $shortVar        = (1 + 2);
 $veryLongVarName = 'string';
-$var             = foo($bar, $baz, $quux);
+
+$foo    = $bar;
+$result = foo($bar, $baz, $quux);
+```
+
+*Invalid: Equal signs are not aligned.*
+```php
+<?php
+$shortVar = (1 + 2);
+$veryLongVarName = 'string';
+
+$foo = $bar;
+$result = foo($bar, $baz, $quux);
 ```
 
 ### Generic.Formatting.SpaceAfterCast
 There must be exactly one space after a type cast.
 
+*Valid: A cast operator is followed by one space.*
 ```php
-// Valid: A cast operator is followed by one space.
+<?php
 $foo = (string) 1;
+```
 
-// Invalid: A cast operator is not followed by whitespace.
+*Invalid: A cast operator is not followed by whitespace.*
+```php
+<?php
 $foo = (string)1;
 ```
 
 ### Generic.Formatting.SpaceAfterNot
-The not (`!`) operator must be followed by exactly one space.
+The not `!` operator must be followed by exactly one space.
+
+*Valid: One space after `!`.*
+```php
+<?php
+if (! foo() && (! $x || true)) {}
+$var = ! ($x || $y);
+```
+
+*Invalid: No space after `!` or a space before.*
+```php
+<?php
+if (!foo() && ( ! $x || true)) {}
+$var = !($x || $y);
+```
 
 ### Generic.NamingConventions.ConstructorName
 Constructors should be named `__construct`, not after the class.
 
+*Valid: The constructor is named __construct.*
 ```php
-// Valid: The constructor is named __construct.
+<?php
 class Foo
 {
     function __construct()
     {
     }
 }
+```
 
-// Invalid: The old style class name constructor is used.
+*Invalid: The PHP4 style class name constructor is used.*
+```php
+<?php
 class Foo
 {
     function Foo()
@@ -163,20 +251,34 @@ class Foo
 
 ### Generic.PHP.CharacterBeforePHPOpeningTag
 The opening PHP tag should be the first item in the file.
+
+*Valid: A file starting with an opening php tag.*
 ```php
-<?php // Valid: A file starting with an opening php tag.
+<?php
 echo 'Foo';
 ```
 
+*Invalid: A file with content before the opening php tag.*
 ```php
-// Invalid: A file with content before the opening php tag.
-<em>Beginning content</em>
+<strong>Beginning content</em>
 <?php
 echo 'Foo';
 ```
 
 ### Generic.PHP.DeprecatedFunctions
 Deprecated functions should not be used.
+
+*Valid: A non-deprecated function is used.*
+```php
+<?php
+$foo = explode('a', $bar);
+```
+
+*Invalid: A deprecated function is used.*
+```php
+<?php
+$foo = split('a', $bar);
+```
 
 ### Generic.PHP.DisallowShortOpenTag
 #### Generic.PHP.DisallowShortOpenTag.EchoFound
@@ -215,22 +317,53 @@ _PSR-12:_ Any new types and keywords added to future PHP versions must be in low
 ### Generic.PHP.SAPIUsage
 The `PHP_SAPI` constant must be used instead of the `php_sapi_name()` function.
 
+*Valid: PHP_SAPI is used.*
+```php
+<?php
+if (PHP_SAPI === 'cli') {
+    echo 'Hello, CLI user.';
+}
+```
+
+*Invalid: php_sapi_name() is used.*
+```php
+<?php
+if (php_sapi_name() === 'cli') {
+    echo 'Hello, CLI user.';
+}
+```
+
 ### Generic.Strings.UnnecessaryStringConcat
 Strings should not be concatenated together unless used in multiline for readability.
-```php
-// Valid: A string can be concatenated with an expression.
-echo '5 + 2 = ' . (5 + 2);
 
-// Invalid: Strings should not be concatenated together.
+*Valid: A string can be concatenated with an expression.*
+```php
+<?php
+echo '5 + 2 = ' . (5 + 2);
+```
+
+*Invalid: Strings should not be concatenated together.*
+```php
+<?php
 echo 'Hello' . ' ' . 'World';
 ```
 
 ## PEAR
 
 ### PEAR.Commenting.InlineComment
-Comments may not start with `#`.
+Perl-style `#` comments are not allowed.
 
+*Valid: A `//` style comment.*
+```php
+<?php
+// A comment.
+```
 
+*Invalid: A `#` style comment.*
+```php
+<?php
+# An invalid comment.
+```
 
 ## SlevomatCodingStandard
 
@@ -265,7 +398,9 @@ _getter_ and _setter_ may not be used in comments
 
 ### SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration
 The `@var` tag may be used in inline comments to document the _Type_ of properties, sometimes called class variables.
+
 ```php
+<?php
 class Foo
 {
 	/** @var string */
@@ -286,34 +421,60 @@ class Foo
 
 ### SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment
 Comments with single-line content should be written as one-liners.
+
+*Valid: One-line comment*
 ```php
+<?php
+/** @var array */
+private $foo;
+```
+
+*Invalid: Multiple lines for a single comment*
+```php
+<?php
 /**
  * @var array
  */
 private $foo;
 ```
-Should be written as
-```php
-/** @var array */
-private $foo;
-```
 
 ### SlevomatCodingStandard.ControlStructures.DisallowEqualOperators
-Loose `==` and `!=` comparison operators should not be used. Use `===` and `!==` instead, they are much more secure 
-and predictable.
+Loose `==` and `!=` comparison operators should not be used. Use strict comparison `===` and `!==` instead, they are 
+much more secure and predictable.
+
+*Valid: Strict comparison is used.*
+```php
+<?php
+if ($a === $b || $c !== $d) {
+    // ...
+}
+```
+
+*Invalid: Loose comparison used.*
+```php
+<?php
+if ($a == $b || $c != $d) {
+    // ...
+}
+```
 
 ### SlevomatCodingStandard.ControlStructures.EarlyExit
 An early exit strategy should be used where possible to reduce the level of control structures.
+
+*Valid: Exit early.*
 ```php
-// Valid: Exit early.
+<?php
 function () : bool {
 	if (! true) {
 		return false;
 	}
 	// Do something
 };
+```
 
-// Invalid: unneeded control structure
+*Invalid: unneeded control structure*
+```php
+<?php
 function () : bool {
 	if (true) {
 		// Do something
@@ -326,8 +487,9 @@ function () : bool {
 ### SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses
 Language constructs must be used without parentheses where possible.
 
+*Valid: Use language constructs without parentheses.*
 ```php
-// Valid: Use language constructs without parentheses.
+<?php
 continue 1;
 break 1;
 echo 'a';
@@ -337,8 +499,11 @@ return 'foo';
 yield [];
 throw new Exception();
 exit;
+```
 
-// Invalid: Language constructs with parentheses.
+*Invalid: Language constructs with parentheses.*
+```php
+<?php
 continue(1);
 break(1);
 echo('a');
@@ -353,19 +518,52 @@ exit();
 ### SlevomatCodingStandard.ControlStructures.NewWithParentheses
 _PSR-12:_ When instantiating a new class, parenthesis MUST always be present even when there are no arguments passed to 
 the constructor.
+
+*Valid: Parenthesis are used for instantiating a new class.*
 ```php
+<?php
 new Foo();
 ```
 
-### SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator
-The null  coalescing operator `??` should be used when possible.
+*Invalid: Missing parenthesis.*
 ```php
-$foo = $bar['id'] ?? '1';
+<?php
+new Foo;
+```
+
+### SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator
+The null coalescing operator `??` should be used when possible.
+
+*Valid: Used the null coalescing operator.*
+```php
+<?php
+$username = $user['name'] ?? 'nobody';
+```
+
+*Invalid: Using isset to check if a variable is set and return it.*
+```php
+<?php
+$username = isset($user['name']) ? $user['name'] : 'nobody';
 ```
 
 ### SlevomatCodingStandard.Exceptions.DeadCatch
 Catch blocks must be reachable.
+
+*Valid: All catch blocks are reachable.*
 ```php
+<?php
+try {
+	doStuff();
+} catch (InvalidArgumentException $e) {
+	log($e);
+} catch (Throwable $e) {
+	// Reachable
+}
+```
+
+*Invalid: Last catch block is unreachable.*
+```php
+<?php
 try {
 	doStuff();
 } catch (Throwable $e) {
@@ -377,25 +575,98 @@ try {
 
 ### SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
 Catch blocks must use `Throwable` instead of `Exception`.
+
+*Valid: Throwable is used to catch all errors and exceptions.*
 ```php
+<?php
 try {
 	// ...
 } catch (Throwable $e) {
+    // ...
+}
+```
 
+*Invalid: Exception is used and will not catch other Throwables. e.g. internal PHP errors*
+```php
+<?php
+try {
+	// ...
+} catch (Exception $e) {
+    // ...
 }
 ```
 
 ### SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure
 Unused variables should not be passed to closures via `use`.
 
+*Valid: All variables passed via `use` are used.*
+```php
+<?php
+$closure = function (string $arg1, string $arg2) use ($var1) : string {
+    return $arg1 . $arg2 . $var1;
+};
+```
+
+*Invalid: Un unused variable `$var2` is passed via `use`.*
+```php
+<?php
+$closure = function (string $arg1, string $arg2) use ($var1, $var2) : string {
+    return $arg1 . $arg2 . $var1;
+};
+```
+
 ### SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 Import statements should be alphabetically sorted.
+
+*Valid: The import statements are sorted alphabetically.*
+```php
+<?php
+use Example\A;
+use Example\B;
+use Vendor\Package\C;
+```
+
+*Invalid: The import statements are in a random order.*
+```php
+<?php
+use Example\A;
+use Vendor\Package\C;
+use Example\B;
+```
 
 ### SlevomatCodingStandard.Namespaces.DisallowGroupUse
 Import statements should not be grouped.
 
+*Valid: Each import statement on its own line.*
+```php
+<?php
+use Example\A;
+use Example\B;
+use Vendor\Package\C;
+```
+
+*Invalid: Using import groups.*
+```php
+<?php
+use Example\{A, B};
+use Vendor\Package\C;
+```
+
 ### SlevomatCodingStandard.Namespaces.MultipleUsesPerLine
 Each import statement should be on its own line.
+
+*Valid: Each import statement on its own line.*
+```php
+<?php
+use Bar;
+use Foo;
+```
+
+*Invalid: Multiple imports on one line.*
+```php
+<?php
+use Foo, Bar;
+```
 
 ### SlevomatCodingStandard.Namespaces.NamespaceSpacing
 Require newlines around namespace declaration
@@ -411,9 +682,30 @@ _PSR-12:_ Import statements MUST never begin with a leading backslash as they mu
 
 ### SlevomatCodingStandard.Namespaces.UseFromSameNamespace
 Classes and function within the same namespace should not be imported.
+
+*Valid: `Bar` is not imported.*
 ```php
-use Foo\Bar as Bar; // Same name as imported class
-use Foo\Bar;        // Correct
+<?php
+namespace Example;
+
+use Example\More\Baz;
+
+class Foo extends Bar
+{
+}
+```
+
+*Invalid: `Bar` is in the same namespace as `Foo`.*
+```php
+<?php
+namespace Example;
+
+use Example\Bar;
+use Example\More\Baz;
+
+class Foo extends Bar
+{
+}
 ```
 
 ### SlevomatCodingStandard.Namespaces.UseSpacing
@@ -422,10 +714,23 @@ _PSR-12:_ Require empty newlines before and after uses
 ### SlevomatCodingStandard.Namespaces.UselessAlias
 Imports should not have an alias with the same name.
 
+*Valid: The alias and imported class name are different.*
+```php
+<?php
+use Foo\Bar as MyBar; 
+```
+
+*Invalid: Alias has same name as imported class.*
+```php
+<?php
+use Foo\Bar as Bar;
+```
+
 ### SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator
 Assignment operators (eg `+=`, `.=`) should be used when possible.
 
 ```php
+<?php
 self::$a &= 2;
 static::$a |= 4;
 self::$$parameter .= '';
@@ -444,13 +749,30 @@ $this->{'a'} += 10;
 ### SlevomatCodingStandard.PHP.ShortList
 Short list syntax `[...]` should be used instead of `list(...)`.
 
+*Valid: The short list syntax is used for array destructuring assignment.*
+```php
+<?php
+[$a, $b, $c] = $array;
+['a' => $a, 'b' => $b, 'c' => $c] = $array;
+```
+
+*Invalid: Usage of `list`.*
+```php
+<?php
+list($a, $b, $c) = $array;
+list('a' => $a, 'b' => $b, 'c' => $c) = $array;
+```
+
 ### SlevomatCodingStandard.PHP.TypeCast
-Short form of type keywords must be used. i.e. `bool` instead of `boolean`, `int` instead of `integer`, etc.
+_PSR-12:_ Short form of type keywords must be used. i.e. `bool` instead of `boolean`, `int` instead of `integer`, etc.
+
 The `binary` and `unset` cast operators are not allowed.
 
 ### SlevomatCodingStandard.TypeHints.DeclareStrictTypes
-_PSR-12:_ Declare statements MUST contain no spaces and MUST be exactly `declare(strict_types=1)`.
 Each PHP file should have a strict type declaration at the top after the page level docblock.
+
+_PSR-12:_ Declare statements MUST contain no spaces and MUST be exactly `declare(strict_types=1)`.
+
 ```php
 <?php
 /**
@@ -466,16 +788,21 @@ declare(strict_types=1);
 
 ### SlevomatCodingStandard.PHP.UselessParentheses
 Parentheses should not be used if they can be omitted.
+
+*Valid: No parentheses used.*
 ```php
-// Valid: No parentheses used.
+<?php
 $x = $y !== null ? true : false;
 $a = $b ? 1 : 0;
 $c = $d ? 1 : 0;
 $x = self::$a;
 $x = Something\Anything::$a;
 $x = self::$a::$b;
+```
 
-// Invalid: Unneeded parentheses.
+*Invalid: Unneeded parentheses.*
+```php
+<?php
 $x = ($y !== null) ? true : false;
 $a = ($b) ? 1 : 0;
 $c = (   $d    ) ? 1 : 0;
@@ -486,30 +813,43 @@ $x = (self::$a::$b);
 
 ### SlevomatCodingStandard.PHP.UselessSemicolon
 Semicolons `;` should not be used if they can be omitted.
+
+*Valid: Semicolon used where needed.*
 ```php
-// Valid: Semicolon used where needed.
+<?php
 foo();
+
 class Whatever {
 }
+```
 
-// Invalid: Unneeded semicolons used.
+*Invalid: Unneeded semicolons used.*
+```php
+<?php
 foo();;
+
 class Whatever {
 };
 ```
 
-
 ### SlevomatCodingStandard.TypeHints.LongTypeHints
 Shorthand scalar typehint variants must be used in docblocks: `bool` instead of `boolean`, `int` instead of `integer`, 
-etc. This is for consistency with native scalar typehints which also allow shorthand variants only.
+etc. This is for consistency with _PSR-12_ native scalar typehints which also allow shorthand variants only.
 
 ### SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
 Nullable and optional arguments, which are marked as `= null`, must have the `?` symbol present.
+
+*Valid: Nullable argument has the `?` symbol.*
 ```php
-function foo(
-	int $foo = null, // ? missing
-	?int $bar = null // correct
-) {
+<?php
+function foo(?int $bar = null) {
+}
+```
+
+*Invalid: Missing `?` before `int`*
+```php
+<?php
+function foo(int $foo = null) {
 }
 ```
 
@@ -533,13 +873,18 @@ public function foo($bar) : array;
 
 ### SlevomatCodingStandard.Variables.UselessVariable
 Variables should be returned directly instead of assigned to a variable which is not used.
+
+*Valid: The value is returned directly.*
 ```php
-// Valid: The value is returned directly.
+<?php
 function () {
 	return true;
 };
+```
 
-// Invalid: An extra variable is used where its value could be returned directly.
+*Invalid: An extra variable is used where its value could be returned directly.*
+```php
+<?php
 function () {
 	$a = true;
 	return $a;
@@ -552,13 +897,25 @@ function () {
 
 ### Squiz.Arrays.ArrayBracketSpacing
 Whitespace is not allowed around the opening bracket or before the closing bracket when referencing an array.
+
+*Valid: No extra spaces used.*
 ```php
+<?php
 $foo['bar'];
+```
+
+*Invalid: Extra spaces.*
+```php
+<?php
+$foo [ 'bar' ] ;
 ```
 
 ### Squiz.Arrays.ArrayDeclaration
 All double arrow symbols must be aligned to one space after the longest array key.
+
+*Valid: Array is aligned.*
 ```php
+<?php
 return [
     ConfigAggregator::ENABLE_CACHE => true,
     'debug'                        => false,
@@ -573,13 +930,33 @@ return [
 ];
 ```
 
+*Invalid: Double arrow symbols are not aligned.*
+```php
+<?php
+return [
+    ConfigAggregator::ENABLE_CACHE => true,
+    'debug' => false,
+    'zend-expressive' => [
+        'raise_throwables' => true,
+        'programmatic_pipeline' => true,
+        'error_handler' => [
+            'template_404' => 'error::404',
+            'template_error' => 'error::error',
+        ],
+    ],
+];
+```
+
 ### Squiz.Classes.ClassFileName
 _PSR-4:_ The class name must correspond to a file name ending in .php. The file name MUST match the case of the 
 terminating class name.
 
 ### Squiz.Classes.SelfMemberReference
 The `self` keyword should be used instead of the current class name, and should not have spaces around `::`.
+
+*Valid:*
 ```php
+<?php
 class Foo
 {
     public static function bar()
@@ -595,7 +972,10 @@ class Foo
 
 ### Squiz.Commenting.DocCommentAlignment
 The asterisks in a doc comment should align, and there should be one space between the asterisk and tag.
+
+*Valid:*
 ```php
+<?php
 /**
  * These lines are aligned.
  * 
@@ -605,18 +985,22 @@ The asterisks in a doc comment should align, and there should be one space betwe
 
 ### Squiz.Commenting.FunctionComment
 If a function throws any exceptions, they should be documented in `@throws` tags.
+
+*Valid:*
 ```php
+<?php
 /** @throws Exception all the time */
 function foo() : void
 {
     throw new Exception('Danger!');
 }
 ```
+
 ### Squiz.Functions.GlobalFunction
 Global functions should not be used.
 
 ### Squiz.Operators.ValidLogicalOperators
-The `&&` and `||` operators must be used instead of `&&` and `||`.
+The `&&` and `||` operators must be used instead of `AND` and `OR`.
 
 ### Squiz.PHP.GlobalKeyword
 The `global` keyword may not be used.
@@ -629,8 +1013,10 @@ The code may not contain unreachable code.
 
 ### Squiz.Scope.StaticThisUsage
 Static methods should not use `$this`.
+
+*Valid: Using `self::` to access static variables.*
 ```php
-// Valid: Using self:: to access static variables.
+<?php
 class Foo
 {
     public static function bar()
@@ -638,8 +1024,11 @@ class Foo
         return self::$staticMember;
     }
 }
+```
 
-// Invalid: Using $this-> to access static variables.
+*Invalid: Using `$this->` to access static variables.*
+```php
+<?php
 class Foo
 {
     public static function bar()
@@ -654,16 +1043,23 @@ Force whitespace before and after concatenation
 
 ### Squiz.Strings.DoubleQuoteUsage
 #### Squiz.Strings.DoubleQuoteUsage.ContainsVar
-Double quote strings may only be used if they contain variables.
+Double quote strings may only be used if they contain variables. SQL queries containing single quotes are an exception 
+to the rule.
+
+*Valid: Double quote strings are only used when it contains a variable.*
 ```php
-// Valid: Double quote strings are only used when it contains a variable.
+<?php
 $string = "Hello There\r\n";
 $string = "Hello $there";
 $string = 'Hello There';
 $string = 'Hello'.' There'."\n";
 $string = '\$var';
+$query = "SELECT * FROM table WHERE name =''";
+```
 
-// Invalid: There are no variables inside double quote strings.
+*Invalid: There are no variables inside double quote strings.*
+```php
+<?php
 $string = "Hello There";
 $string = "Hello"." There"."\n";
 $string = "\$var";
@@ -671,34 +1067,49 @@ $string = "\$var";
 
 ### Squiz.Strings.EchoedStrings
 Strings should not be enclosed in parentheses when being echoed.
-```php
-// "Valid: Using echo without parentheses.
-echo 'Hello';
 
-// Invalid: Using echo with parentheses.
+*Valid: Using echo without parentheses.*
+```php
+<?php
+echo 'Hello';
+```
+
+*Invalid: Using echo with parentheses.*
+```php
+<?php
 echo('Hello');
 ```
 
 ### Squiz.WhiteSpace.CastSpacing
 Type casts should not have whitespace inside the parentheses.
-```php
-// Valid: No spaces.
-$foo = (int) '42';
 
-// Invalid: Whitespace used inside parentheses.
+*Valid: No spaces.*
+```php
+<?php
+$foo = (int) '42';
+```
+
+*Invalid: Whitespace used inside parentheses.*
+```php
+<?php
 $foo = ( int ) '42';
 ```
 
 ### Squiz.WhiteSpace.FunctionOpeningBraceSpace
 The opening brace for functions should be on a new line with no blank lines surrounding it.
+
+*Valid: Opening brace is on a new line.*
 ```php
-// Valid: Opening brace is on a new line.
+<?php
 function foo() : int
 {
     return 42;
 }
+```
 
-// Invalid: Opening brace is on the same line as the function declaration and a blank line after the opening brace.
+*Invalid: Opening brace is on the same line as the function declaration and a blank line after the opening brace.*
+```php
+<?php
 function foo() {
 
     return 42;
@@ -709,11 +1120,15 @@ function foo() {
 The PHP constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new` should 
 have one space after them.
 
+*Valid: echo statement with a single space after it.*
 ```php
-// Valid: echo statement with a single space after it.
+<?php
 echo 'hi';
+```
 
-// Invalid: echo statement with no space after it.
+*Invalid: echo statement with no space after it.*
+```php
+<?php
 echo'hi';
 ```
 
@@ -722,21 +1137,31 @@ _PSR-12:_ There must be one space around logical operators.
 
 ### Squiz.WhiteSpace.ObjectOperatorSpacing
 The object operator `->` should not have any spaces around it.
-```php
-// Valid: No spaces around the object operator.
-$foo->bar();
 
-// Invalid: Whitespace surrounding the object operator.
+*Valid: No spaces around the object operator.*
+```php
+<?php
+$foo->bar();
+```
+
+*Invalid: Whitespace surrounding the object operator.*
+```php
+<?php
 $foo -> bar();
 ```
 
 ### Squiz.WhiteSpace.SemicolonSpacing
 Semicolons should not have spaces before them.
-```php
-// Valid: No space before the semicolon.
-echo 'hi';
 
-// Valid: Invalid: Space before the semicolon.
+*Valid: No space before the semicolon.*
+```php
+<?php
+echo 'hi';
+```
+
+*Valid: Invalid: Space before the semicolon.*
+```php
+<?php
 echo 'hi' ;
 ```
 
