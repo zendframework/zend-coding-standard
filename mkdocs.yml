@@ -3,12 +3,13 @@ site_dir: docs/html
 pages:
     - index.md
     - 'Introduction': v2/intro.md
-    - Reference:
+    - 'Coding Style Guide': v2/coding-style-guide.md
+    - 'Reference':
         - 'Ruleset': v2/ruleset.md
     - v1:
         - v1/index.md
         - 'Introduction': v1/intro.md
-        - Reference:
+        - 'Reference':
             - 'Ruleset': v1/ruleset.md
 
 site_name: Zend Coding Standard
