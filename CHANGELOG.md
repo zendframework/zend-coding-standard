@@ -85,8 +85,8 @@ All notable changes to this project will be documented in this file, in reverse 
   - Unused variables should not be passed to closures via `use`.    
   - The code may not contain unreachable code.
   - The backtick operator may not be used for execution of shell commands.
-  - Class and Interface names should be unique in a project. They should 
-    never be duplicated.
+  - Class and Interface names should be unique in a project and must have a 
+    unique fully qualified name.
   - Methods that only call the parent method should not be defined.
   - Files that contain PHP code should only have PHP code and should not have
     any _"inline HTML"_.

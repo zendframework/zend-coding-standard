@@ -23,7 +23,41 @@ $foo = [...];
 The backtick operator may not be used for execution of shell commands.
 
 ### Generic.Classes.DuplicateClassName
-Class and Interface names should be unique in a project. They should never be duplicated.
+Class and Interface names should be unique in a project and must have a unique fully qualified name. They should never 
+be duplicated.
+```php
+<?php // Valid: Unique class names.
+// src/Vendor/Package/Foo.php
+namespace Vendor\Package {
+    class Foo
+    {
+    }
+}
+
+// src/Vendor/AnotherPackage/Foo.php
+namespace Vendor\AnotherPackage {
+    class Foo
+    {
+    }
+}
+```
+
+```php
+<?php // Invalid: A class duplicated across multiple files.
+// src/Vendor/Package/Foo.php
+namespace Vendor\Package {
+    class Foo
+    {
+    }
+}
+
+// app/Vendor/Package/Foo.php
+namespace Vendor\Package {
+    class Foo
+    {
+    }
+}
+```
 
 ### Generic.CodeAnalysis.EmptyStatement
 Control Structures must have at least one statement inside of the body.

@@ -353,7 +353,7 @@ $instance = new class extends Foo implements
 
 - The code may not contain unreachable code. [*](ruleset.md#squizphpnonexecutablecode)
 - The backtick operator may not be used for execution of shell commands. [*](ruleset.md#genericphpbacktickoperator)
-- Class and Interface names should be unique in a project. They should never be duplicated. [*](ruleset.md#genericclassesduplicateclassname)
+- Class and Interface names should be unique in a project and must have a unique fully qualified name. [*](ruleset.md#genericclassesduplicateclassname)
 - Methods that only call the parent method should not be defined. [*](ruleset.md#genericcodeanalysisuselessoverridingmethod)
 - Files that contain PHP code should only have PHP code and should not have any _"inline HTML"_. [*](ruleset.md#genericfilesinlinehtml)
 - There must be exactly one space after a type cast. [*](ruleset.md#genericformattingspaceaftercast)
