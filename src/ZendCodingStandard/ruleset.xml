@@ -5,14 +5,17 @@
     <description>The ZendFramework coding standard.</description>
 
     <!-- Import PSR-2 coding standard (base) -->
-    <rule ref="PSR2"/>
+    <rule ref="PSR2">
+        <!-- checked by SlevomatCodingStandard.Namespaces.UseSpacing -->
+        <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/>
+        <!-- checked by SlevomatCodingStandard.Namespaces.NamespaceSpacing -->
+        <exclude name="PSR2.Namespaces.NamespaceDeclaration.BlankLineAfter"/>
+    </rule>
 
     <!-- Force array element indentation with 4 spaces -->
     <rule ref="Generic.Arrays.ArrayIndent"/>
     <!-- Forbid `array(...)` -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-    <!-- Forbid backtick operator -->
-    <rule ref="Generic.PHP.BacktickOperator"/>
     <!-- Forbid duplicate classes -->
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <!-- Forbid empty statements -->
@@ -24,11 +27,6 @@
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
     <!-- Forbid useless empty method overrides -->
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
-    <!-- Forbid short open tag -->
-    <rule ref="Generic.PHP.DisallowShortOpenTag">
-        <!-- But allow short echo tags -->
-        <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound"/>
-    </rule>
     <!-- Forbid inline HTML in PHP code -->
     <rule ref="Generic.Files.InlineHTML"/>
     <!-- Align corresponding assignment statement tokens -->
@@ -43,10 +41,17 @@
     <rule ref="Generic.Formatting.SpaceAfterNot"/>
     <!-- Forbid PHP 4 constructors -->
     <rule ref="Generic.NamingConventions.ConstructorName"/>
+    <!-- Forbid backtick operator -->
+    <rule ref="Generic.PHP.BacktickOperator"/>
     <!-- Forbid any content before opening tag -->
     <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag"/>
     <!-- Forbid deprecated functions -->
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <!-- Forbid short open tag -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag">
+        <!-- But allow short echo tags -->
+        <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound"/>
+    </rule>
     <!-- Forbid alias functions, i.e. `sizeof()`, `delete()` -->
     <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
@@ -172,6 +177,7 @@
     <!-- Require use statements to be alphabetically sorted -->
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
         <properties>
+            <!-- Force PSR-12 order: classes, functions, constants with 1 emty line in between -->
             <property name="psr12Compatible" value="true"/>
         </properties>
     </rule>
