@@ -208,6 +208,10 @@ adding a new element easier and result in a cleaner versioning diff.
 _PSR-12:_ Visibility MUST be declared on all constants if your project PHP minimum version supports constant visibilities 
 (PHP 7.1 or later).
 
+### SlevomatCodingStandard.Classes.ModernClassNameReference
+Class name resolution via `::class` should be used instead of `__CLASS__`, `get_class()`, `get_class($this)`, 
+`get_called_class()` and `get_parent_class()`.
+
 ### SlevomatCodingStandard.Classes.TraitUseDeclaration
 _PSR-12:_ Each individual Trait that is imported into a class MUST be included one-per-line.
 

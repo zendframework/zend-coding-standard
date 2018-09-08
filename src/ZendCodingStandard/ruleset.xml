@@ -6,9 +6,9 @@
 
     <!-- Import PSR-2 coding standard (base) -->
     <rule ref="PSR2">
-        <!-- checked by SlevomatCodingStandard.Namespaces.UseSpacing -->
+        <!-- Checked by SlevomatCodingStandard.Namespaces.UseSpacing -->
         <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/>
-        <!-- checked by SlevomatCodingStandard.Namespaces.NamespaceSpacing -->
+        <!-- Checked by SlevomatCodingStandard.Namespaces.NamespaceSpacing -->
         <exclude name="PSR2.Namespaces.NamespaceDeclaration.BlankLineAfter"/>
     </rule>
 
@@ -108,6 +108,8 @@
             <property name="fixable" value="true"/>
         </properties>
     </rule>
+    <!-- Require usage of ::class instead of __CLASS__, get_class(), get_class($this), get_called_class() and get_parent_class() -->
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
     <!-- Forbid uses of multiple traits separated by comma -->
     <rule ref="SlevomatCodingStandard.Classes.TraitUseDeclaration"/>
     <!-- Require no spaces before trait use, between trait uses and one space after trait uses -->

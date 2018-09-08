@@ -135,6 +135,8 @@ class FooBar
 
 In addition to [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md#4-classes-properties-and-methods):
 
+- Class name resolution via `::class` should be used instead of `__CLASS__`, `get_class()`, `get_class($this)`, 
+  `get_called_class()` and `get_parent_class()`. [*](ruleset.md#slevomatcodingstandardclassesmodernclassnamereference)
 - Methods may not have the final declaration in classes declared as final. [*](ruleset.md#genericcodeanalysisunnecessaryfinalmodifier)
 - The colon used with return type declarations MUST be surrounded with 1 space. [*](ruleset.md#slevomatcodingstandardtypehintsreturntypehintspacing)
 - Nullable and optional arguments, which are marked as `= null`, must have the `?` symbol present. [*](ruleset.md#slevomatcodingstandardtypehintsnullabletypefornulldefaultvalue)
