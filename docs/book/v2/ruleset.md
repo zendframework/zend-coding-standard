@@ -983,9 +983,6 @@ There should be no multiple spaces between the tag, type and description.
  */
 ```
 
-### Squiz.Functions.GlobalFunction
-Global functions should not be used.
-
 ### Squiz.Operators.ValidLogicalOperators
 The `&&` and `||` operators must be used instead of `AND` and `OR`.
 

@@ -351,8 +351,6 @@
         <!-- Doesn't work with self as typehint -->
         <exclude name="Squiz.Commenting.FunctionComment.TypeHintMissing"/>
     </rule>
-    <!-- Forbid global functions -->
-    <rule ref="Squiz.Functions.GlobalFunction"/>
     <!-- Forbid `AND` and `OR`, require `&&` and `||` -->
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
     <!-- Forbid `global` -->

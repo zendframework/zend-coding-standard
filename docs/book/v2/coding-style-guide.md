@@ -372,7 +372,6 @@ $instance = new class extends Foo implements
 - Variables should be returned directly instead of assigned to a variable which is not used. [*](ruleset.md#slevomatcodingstandardvariablesuselessvariable)
 - The `self` keyword should be used instead of the current class name, and should not have spaces around `::`.
   [*](ruleset.md#squizclassesselfmemberreference)
-- Global functions should not be used. [*](ruleset.md#squizfunctionsglobalfunction)
 - Static methods should not use `$this`. [*](ruleset.md#squizscopestaticthisusage)
 - Double quote strings may only be used if they contain variables. [*](ruleset.md#squizstringsdoublequoteusage)
 - Strings should not be enclosed in parentheses when being echoed. [*](ruleset.md#squizstringsechoedstrings)

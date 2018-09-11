@@ -108,7 +108,6 @@ All notable changes to this project will be documented in this file, in reverse 
     which is not used.
   - The `self` keyword should be used instead of the current class name, and 
     should not have spaces around `::`.
-  - Global functions should not be used.
   - Static methods should not use `$this`. 
   - Double quote strings may only be used if they contain variables. 
   - Strings should not be enclosed in parentheses when being echoed.
