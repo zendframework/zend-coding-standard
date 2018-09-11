@@ -1,8 +1,10 @@
 # zend-coding-standard
 
-This component provides the coding standard ruleset for Zend Framework components.
+The coding standard ruleset for Zend Framework components.
 
-PSR-1, PSR-2 and PSR-12 are _minimal_ sets and don't address a lot of factors, including things like:
+This specification extends and expands [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md), 
+the extended coding style guide and requires adherence to [PSR-1](https://www.php-fig.org/psr/psr-1), 
+the basic coding standard. These are minimal specifications and don't address all factors, including things like:
 
 - whitespace around operators
 - alignment of array keys and operators
@@ -35,7 +37,7 @@ We will change these rules, and, when PSR-12 is finalized, adapt them.
    }
    ```
 
-3. Create file `phpcs.xml.dist` on base path of your repository with content:
+3. Create file `phpcs.xml` on base path of your repository with this content:
 
    ```xml
    <?xml version="1.0"?>
@@ -61,8 +63,8 @@ We will change these rules, and, when PSR-12 is finalized, adapt them.
    </ruleset>
    ```
 
-You can add your own rules or exclude rules. For a reference please see: 
-[PHP_CodeSniffer Annotated Ruleset](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset)
+You can add or exclude some locations in that file.
+For a reference please see: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
 
 ## Usage
 
@@ -92,7 +94,7 @@ $xmlPackage->send();
 // phpcs:enable
 ```
 
-Disable a specific rule 
+Disable a specific rule:
 ```php
 // phpcs:disable Generic.Commenting.Todo.Found
 $xmlPackage = new XMLPackage;
@@ -101,3 +103,34 @@ $xmlPackage['error_code'] = get_default_error_code_value();
 $xmlPackage->send();
 // phpcs:enable
 ```
+
+## Development
+
+> **New rules or Sniffs may not be introduced in minor or bugfix releases and should always be based on the develop 
+branch and queued for the next major release, unless considered a bugfix for existing rules.**
+
+If you want to test changes against ZendFramework components or your own projects, install your forked 
+zend-coding-standard globally with composer: 
+```bash
+$ composer global config repositories.zend-coding-standard vcs git@github.com:<FORK_NAMESPACE>/zend-coding-standard.git
+$ composer global require --dev zendframework/zend-coding-standard:dev-<FORKED_BRANCH>
+
+# For this to work, add this to your path: ~/.composer/vendor/bin
+# Using `-s` prints the rules that triggered the errors so they can be reviewed easily. `-p` is for progress display.
+$ phpcs -sp --standard=ZendCodingStandard src test
+```
+Make sure you remove the global installation after testing from your global composer.json file!!!
+
+Documentation can be previewed locally by installing [MkDocs](https://www.mkdocs.org/#installation) and run 
+`mkdocs serve`. This will start a server where you can read the docs.
+
+## Reference
+
+Rules can be added, excluded or tweaked locally, depending on your preferences. More information on how to do this can
+be found here:
+
+- [Coding Standard Tutorial](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Coding-Standard-Tutorial)
+- [Configuration Options](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options)
+- [Selectively Applying Rules](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset#selectively-applying-rules)
+- [Customisable Sniff Properties](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties)
+- [Slevomat Coding Standard](https://github.com/slevomat/coding-standard)
