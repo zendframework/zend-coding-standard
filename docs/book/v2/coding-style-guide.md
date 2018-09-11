@@ -363,8 +363,6 @@ $instance = new class extends Foo implements
 - The opening PHP tag should be the first item in the file. [*](ruleset.md#genericphpcharacterbeforephpopeningtag)
 - Strings should not be concatenated together unless used in multiline for readability. [*](ruleset.md#genericstringsunnecessarystringconcat)
 - Loose `==` and `!=` comparison operators should not be used. Use `===` and `!==` instead. [*](ruleset.md#slevomatcodingstandardcontrolstructuresdisallowequaloperators)
-- An early exit strategy should be used where possible to reduce the level of control structures.
-  [*](ruleset.md#slevomatcodingstandardcontrolstructuresearlyexit)
 - Language constructs must be used without parentheses where possible. [*](ruleset.md#slevomatcodingstandardcontrolstructureslanguageconstructwithparentheses)
 - Short list syntax `[...]` should be used instead of `list(...)`. [*](ruleset.md#slevomatcodingstandardphpshortlist)
 - Short form of type keywords must be used. i.e. `bool` instead of `boolean`, `int` instead of `integer`, etc.

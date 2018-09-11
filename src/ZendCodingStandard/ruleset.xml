@@ -163,8 +163,6 @@
     <rule ref="SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment"/>
     <!-- Forbid weak comparisons -->
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowEqualOperators"/>
-    <!-- Require usage of early exit -->
-    <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
     <!-- Require language constructs without parentheses -->
     <rule ref="SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses"/>
     <!-- Require new instances with parentheses -->

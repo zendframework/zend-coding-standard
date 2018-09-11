@@ -457,32 +457,6 @@ if ($a == $b || $c != $d) {
 }
 ```
 
-### SlevomatCodingStandard.ControlStructures.EarlyExit
-An early exit strategy should be used where possible to reduce the level of control structures.
-
-*Valid: Exit early.*
-```php
-<?php
-function () : bool {
-	if (! true) {
-		return false;
-	}
-	// Do something
-};
-```
-
-*Invalid: unneeded control structure*
-```php
-<?php
-function () : bool {
-	if (true) {
-		// Do something
-	} else {
-		return false;
-	}
-};
-```
-
 ### SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses
 Language constructs must be used without parentheses where possible.
 
