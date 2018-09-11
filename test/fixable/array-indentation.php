@@ -31,3 +31,12 @@ $serializedRequest = [
     ],
     'body' => '{"test":"value"}',
 ];
+
+// https://github.com/zendframework/zend-diactoros/blob/69dc20275fb8b9f7f8e05d556f6c0da5f36cac64/test/ServerRequestFactoryTest.php#L392-L398
+$files              = [ 'files' => [
+    'tmp_name' => 'php://temp',
+    'size'     => 0,
+    'error'    => 0,
+    'name'     => 'foo.bar',
+    'type'     => 'text/plain',
+]];
