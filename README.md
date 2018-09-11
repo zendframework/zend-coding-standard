@@ -63,3 +63,10 @@ For a reference please see: https://github.com/squizlabs/PHP_CodeSniffer/wiki/An
   ```bash
   $ composer cs-fix
   ```
+
+## Reference
+
+- [Coding Standard Tutorial](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Coding-Standard-Tutorial)
+- [Configuration Options](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options)
+- [Customisable Sniff Properties](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties)
+- [Slevomat Coding Standard](https://github.com/slevomat/coding-standard)
