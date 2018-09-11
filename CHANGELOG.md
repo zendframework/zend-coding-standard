@@ -28,8 +28,6 @@ All notable changes to this project will be documented in this file, in reverse 
   - All array values must be followed by a comma, including the last value. 
   - Whitespace is not allowed around the opening bracket or before the 
     closing bracket when referencing an array.
-  - All double arrow symbols must be aligned to one space after the longest 
-    array key.
   - The `global` keyword may not be used.
   - The `PHP_SAPI` constant must be used instead of the `php_sapi_name()` 
     function.
@@ -46,11 +44,13 @@ All notable changes to this project will be documented in this file, in reverse 
     provide accurate information.
   - The asterisks in a doc comment should align, and there should be one space 
     between the asterisk and tag.
+  - Comment tags `@param`, `@throws` and `@return` should not be aligned or 
+    contain multiple spaces between the tag, type and description.
   - If a function throws any exceptions, they should be documented in `@throws` 
     tags.
   - The `@var` tag may be used in inline comments to document the _Type_ of 
     properties.
-  - Comments with single-line content should be written as one-liners.
+  - Single-line comments with a `@var` tag should be written as one-liners.
   - Shorthand scalar typehint variants must be used in docblocks.
   - Each PHP file should have a page level docblock with `@see`, `@copyright` 
     and `@license`. The copyright date should only be adjusted if the file has 
@@ -97,8 +97,6 @@ All notable changes to this project will be documented in this file, in reverse 
     readability. 
   - Loose `==` and `!=` comparison operators should not be used. Use `===` 
     and `!==` instead.
-  - An early exit strategy should be used where possible to reduce the level 
-    of control structures.
   - Language constructs must be used without parentheses where possible.
   - Short list syntax `[...]` should be used instead of `list(...)`.
   - Short form of type keywords must be used. i.e. `bool` instead of 
