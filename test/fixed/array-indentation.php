@@ -11,8 +11,8 @@ $array = [
     5,
 ];
 
-$singleLine  = [1 => 2];
-$singleLine2 =  [ 'foo' => 'bar' ];
+$singleLine = [1 => 2];
+$singleLine2 = [ 'foo' => 'bar' ];
 
 $serializedRequest = [
     'method' => 'POST',

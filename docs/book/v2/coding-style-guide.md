@@ -78,10 +78,12 @@ $var = [
   be used in comments. Git commits provide accurate information. [*](ruleset.md#slevomatcodingstandardcommentingforbiddenannotations)
 - The asterisks in a doc comment should align, and there should be one space between the asterisk and tag.
   [*](ruleset.md#squizcommentingdoccommentalignment)
+- Comment tags `@param`, `@throws` and `@return` should not be aligned or contain multiple spaces between the tag, 
+  type and description. [*](ruleset.md#squizcommentingfunctioncomment)
 - If a function throws any exceptions, they should be documented in `@throws` tags.
   [*](ruleset.md#squizcommentingfunctioncomment)
 - The `@var` tag may be used in inline comments to document the _Type_ of properties. [*](ruleset.md#slevomatcodingstandardcommentinginlinedoccommentdeclaration)
-- Comments with single-line content should be written as one-liners. [*](ruleset.md#slevomatcodingstandardcommentingrequireonelinepropertydoccomment)
+- Single-line comments with a `@var` tag should be written as one-liners. [*](ruleset.md#slevomatcodingstandardcommentingrequireonelinepropertydoccomment)
 - Shorthand scalar typehint variants must be used in docblocks. [*](ruleset.md#slevomatcodingstandardtypehintslongtypehints)
 
 ## Declare Statements, Namespace, and Import Statements

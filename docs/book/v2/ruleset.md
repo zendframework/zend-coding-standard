@@ -169,26 +169,25 @@ echo $foo . 'baz';
 ```
 
 ### Generic.Formatting.MultipleStatementAlignment
-There should be one space on either side of an equals sign used to assign a value to a variable. In case of a 
-block of related assignments, more space may be inserted before the equal sign to promote readability.
+There should be one space on either side of an equals sign used to assign a value to a variable.
 
-*Valid: Equal signs are aligned in related blocks.*
-```php
-<?php
-$shortVar        = (1 + 2);
-$veryLongVarName = 'string';
-
-$foo    = $bar;
-$result = foo($bar, $baz, $quux);
-```
-
-*Invalid: Equal signs are not aligned.*
+*Valid: Equal signs are surrounded by one space.*
 ```php
 <?php
 $shortVar = (1 + 2);
 $veryLongVarName = 'string';
 
 $foo = $bar;
+$result = foo($bar, $baz, $quux);
+```
+
+*Invalid: Equal signs are aligned.*
+```php
+<?php
+$shortVar        = (1 + 2);
+$veryLongVarName = 'string';
+
+$foo    = $bar;
 $result = foo($bar, $baz, $quux);
 ```
 
@@ -420,7 +419,7 @@ class Foo
 ```
 
 ### SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment
-Comments with single-line content should be written as one-liners.
+Single-line comments with a `@var` tag should be written as one-liners.
 
 *Valid: One-line comment*
 ```php
@@ -984,16 +983,27 @@ The asterisks in a doc comment should align, and there should be one space betwe
 ```
 
 ### Squiz.Commenting.FunctionComment
-If a function throws any exceptions, they should be documented in `@throws` tags.
+A function comment should be kept to a bare minimum. If the function and its arguments are self describing and have
+proper typehinting, tags like `@param`, `@throws`, and `@return` can be omitted.
+
+There should be no multiple spaces between the tag, type and description.
 
 *Valid:*
 ```php
 <?php
-/** @throws Exception all the time */
-function foo() : void
-{
-    throw new Exception('Danger!');
-}
+/**
+ * This is a summary
+ *
+ * This is a description.
+ * 
+ * @see http://example.com/my/bar URL to documentation.
+ * 
+ * @param array $argument1 This is the description.
+ * @param string $arg2 This is the description.
+ * @param null|string $longerArgument3 This is the description.
+ * @throws InvalidArgumentException on any invalid element.
+ * @return null|int Indicates the number of items.
+ */
 ```
 
 ### Squiz.Functions.GlobalFunction
@@ -1148,6 +1158,22 @@ $foo->bar();
 ```php
 <?php
 $foo -> bar();
+```
+
+### Squiz.WhiteSpace.ObjectOperatorSpacing
+There should be one space before and after an operators.
+
+*Valid: One space around the operator.*
+```php
+<?php
+$foo = 'bar';
+```
+
+*Invalid: Multiple or none spaces around the operator.*
+```php
+<?php
+$foo  =  'bar';
+$bar='foo';
 ```
 
 ### Squiz.WhiteSpace.SemicolonSpacing

@@ -16,16 +16,24 @@ class Example implements \IteratorAggregate
 {
     private const VERSION = \PHP_VERSION - (PHP_MINOR_VERSION * 100) - PHP_PATCH_VERSION;
 
-    /** @var null|int */
+    /**
+     * @var null|int
+     */
     private $foo;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $bar;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     private $baz;
 
-    /** @var int|string|null */
+    /**
+     * @var int|string|null
+     */
     private $baxBax;
 
     public function __construct(int $foo = null, array $bar = [], bool $baz = false, $baxBax = 'unused')

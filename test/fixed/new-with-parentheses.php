@@ -5,14 +5,14 @@ declare(strict_types=1);
 $foo = new DateTimeImmutable();
 
 $barClassName = 'Bar';
-$bar          = new $barClassName();
+$bar = new $barClassName();
 
 $classNamesInArray = ['Baz'];
-$foo               = new $classNamesInArray[0]();
+$foo = new $classNamesInArray[0]();
 
-$classNamesInObject      = new stdClass();
+$classNamesInObject = new stdClass();
 $classNamesInObject->foo = 'Foo';
-$foo                     = new $classNamesInObject->foo();
+$foo = new $classNamesInObject->foo();
 
 $whitespaceBetweenClassNameAndParentheses = new stdClass();
 

@@ -29,10 +29,11 @@
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
     <!-- Forbid inline HTML in PHP code -->
     <rule ref="Generic.Files.InlineHTML"/>
-    <!-- Align corresponding assignment statement tokens -->
+    <!-- Allow 1 space around operators -->
     <rule ref="Generic.Formatting.MultipleStatementAlignment">
         <properties>
             <property name="error" value="true"/>
+            <property name="maxPadding" value="1" />
         </properties>
     </rule>
     <!-- Force whitespace after a type cast -->
@@ -158,7 +159,7 @@
     </rule>
     <!-- report invalid format of inline phpDocs with @var -->
     <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
-    <!-- Require comments with single line written as one-liners -->
+    <!-- Require comments with single line @var written as one-liners -->
     <rule ref="SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment"/>
     <!-- Forbid weak comparisons -->
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowEqualOperators"/>
@@ -327,6 +328,10 @@
         <exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch"/>
         <!-- Doesn't respect inheritance -->
         <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing"/>
+        <!-- No spacing after @param name -->
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
+        <!-- No spacing after @param type -->
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
         <!-- Throws comments can start without a capital and doesn't need a full stop -->
         <exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop"/>
         <exclude name="Squiz.Commenting.FunctionComment.ThrowsNotCapital"/>
@@ -371,6 +376,12 @@
     <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
         <properties>
             <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <!-- Forbid multiple spaces before and after operators -->
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+        <properties>
+            <property name="ignoreNewlines" value="true" />
         </properties>
     </rule>
     <!-- Forbid spaces before semicolon `;` -->
