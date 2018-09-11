@@ -32,6 +32,12 @@
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
     <!-- Forbid inline HTML in PHP code -->
     <rule ref="Generic.Files.InlineHTML"/>
+    <!-- Force Unix LF (linefeed) line ending -->
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
     <!-- Allow 1 space around operators -->
     <rule ref="Generic.Formatting.MultipleStatementAlignment">
         <properties>

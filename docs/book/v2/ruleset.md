@@ -168,6 +168,9 @@ $foo = 'bar';
 echo $foo . 'baz';
 ```
 
+### Generic.Files.LineEndings
+_PSR-12:_ All PHP files MUST use the Unix LF (linefeed) line ending only.
+
 ### Generic.Formatting.MultipleStatementAlignment
 There should be one space on either side of an equals sign used to assign a value to a variable.
 
