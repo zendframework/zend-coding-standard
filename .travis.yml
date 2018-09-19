@@ -21,8 +21,8 @@ script:
 
 stages:
   - Validate against schema
-  - Test
   - Validate fixes
+  - Test
 
 jobs:
   allow_failures:
