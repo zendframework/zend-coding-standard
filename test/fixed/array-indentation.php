@@ -12,7 +12,7 @@ $array = [
 ];
 
 $singleLine  = [1 => 2];
-$singleLine2 = ['foo' => 'bar'];
+$singleLine2 = [ 'foo' => 'bar' ];
 
 $serializedRequest = [
     'method'           => 'POST',
