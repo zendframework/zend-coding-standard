@@ -4,21 +4,21 @@ PHP CODE SNIFFER REPORT SUMMARY
 FILE                                                  ERRORS  WARNINGS
 ----------------------------------------------------------------------
 test/fixable/anonymous-classes.php                    9       0
-test/fixable/array-indentation.php                    12      0
+test/fixable/array-indentation.php                    27      0
 test/fixable/class-name-resolution.php                12      0
 test/fixable/closures.php                             19      0
-test/fixable/commenting.php                           9       0
-test/fixable/concatenation-spacing.php                16      0
-test/fixable/example-class.php                        29      0
+test/fixable/commenting.php                           17      0
+test/fixable/concatenation-spacing.php                15      0
+test/fixable/example-class.php                        26      0
 test/fixable/extends-and-implements-multiline.php     10      0
 test/fixable/extends-and-implements.php               5       0
 test/fixable/forbidden-comments.php                   4       0
-test/fixable/forbidden-functions.php                  6       0
+test/fixable/forbidden-functions.php                  9       0
 test/fixable/LowCaseTypes.php                         2       0
 test/fixable/method-and-function-arguments.php        11      0
 test/fixable/method-and-function-calls.php            14      0
 test/fixable/namespaces-spacing.php                   3       0
-test/fixable/new-with-parentheses.php                 14      0
+test/fixable/new-with-parentheses.php                 18      0
 test/fixable/not-spacing.php                          7       0
 test/fixable/operators.php                            7       0
 test/fixable/return-type-on-methods.php               17      0
@@ -30,9 +30,9 @@ test/fixable/UnusedVariables.php                      1       0
 test/fixable/useless-semicolon.php                    2       0
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 245 ERRORS AND 0 WARNINGS WERE FOUND IN 26 FILES
+A TOTAL OF 271 ERRORS AND 0 WARNINGS WERE FOUND IN 26 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 212 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 238 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 

@@ -38,9 +38,9 @@ class Example implements IteratorAggregate
 
     public function __construct(?int $foo = null, array $bar = [], bool $baz = false, $baxBax = 'unused')
     {
-        $this->foo = $foo;
-        $this->bar = $bar;
-        $this->baz = $baz;
+        $this->foo    = $foo;
+        $this->bar    = $bar;
+        $this->baz    = $baz;
         $this->baxBax = $baxBax;
     }
 
@@ -58,6 +58,7 @@ class Example implements IteratorAggregate
     public function getIterator() : array
     {
         assert($this->bar !== null);
+
         return new ArrayIterator($this->bar);
     }
 

@@ -11,7 +11,7 @@ $string = 'Hello' . $there;
 $foo = 'foo';
 $bar = 'bar';
 
-$string = $foo . $bar . 'baz' . 'quux' . $string;
+$string  = $foo . $bar . 'baz' . 'quux' . $string;
 $string .= $foo;
 $string .= $foo;
 $string .= $foo;

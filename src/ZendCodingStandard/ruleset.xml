@@ -42,7 +42,7 @@
     <rule ref="Generic.Formatting.MultipleStatementAlignment">
         <properties>
             <property name="error" value="true"/>
-            <property name="maxPadding" value="1" />
+            <property name="maxPadding" value="50" />
         </properties>
     </rule>
     <!-- Force whitespace after a type cast -->
@@ -290,8 +290,6 @@
         <exclude name="Squiz.Arrays.ArrayDeclaration.CloseBraceNotAligned"/>
         <!-- Disable arrow alignment -->
         <exclude name="Squiz.Arrays.ArrayDeclaration.DoubleArrowNotAligned"/>
-        <!-- Uses indentation of only single space -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.KeyNotAligned"/>
         <!-- Allow multiple values on a single line -->
         <exclude name="Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed"/>
         <!-- Disable alignment of values with opening brace -->
@@ -341,10 +339,6 @@
         <exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch"/>
         <!-- Doesn't respect inheritance -->
         <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing"/>
-        <!-- No spacing after @param name -->
-        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
-        <!-- No spacing after @param type -->
-        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
         <!-- Throws comments can start without a capital and doesn't need a full stop -->
         <exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop"/>
         <exclude name="Squiz.Commenting.FunctionComment.ThrowsNotCapital"/>

@@ -32,9 +32,9 @@ class Commenting
     private $uriString;
 
     /**
-     * @param string|resource|StreamInterface $body Stream identifier and/or actual stream resource
-     * @param int $status Status code for the response, if any.
-     * @param array $headers Headers for the response, if any.
+     * @param string|resource|StreamInterface $body    Stream identifier and/or actual stream resource
+     * @param int                             $status  Status code for the response, if any.
+     * @param array                           $headers Headers for the response, if any.
      * @throws Exception\InvalidArgumentException on any invalid element.
      */
     public function __construct($body = 'php://memory', int $status = 200, array $headers = [])
@@ -52,11 +52,11 @@ class Commenting
      * order to marshal the request URI and headers.
      *
      * @see fromServer()
-     * @param array $server $_SERVER superglobal
-     * @param array $query $_GET superglobal
-     * @param array $body $_POST superglobal
+     * @param array $server  $_SERVER superglobal
+     * @param array $query   $_GET superglobal
+     * @param array $body    $_POST superglobal
      * @param array $cookies $_COOKIE superglobal
-     * @param array $files $_FILES superglobal
+     * @param array $files   $_FILES superglobal
      * @return ServerRequest
      */
     public static function fromGlobals(
