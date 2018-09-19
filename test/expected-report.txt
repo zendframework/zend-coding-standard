@@ -4,7 +4,7 @@ PHP CODE SNIFFER REPORT SUMMARY
 FILE                                                  ERRORS  WARNINGS
 ----------------------------------------------------------------------
 test/fixable/anonymous-classes.php                    9       0
-test/fixable/array-indentation.php                    27      0
+test/fixable/array-indentation.php                    34      0
 test/fixable/class-name-resolution.php                12      0
 test/fixable/closures.php                             19      0
 test/fixable/commenting.php                           17      0
@@ -30,9 +30,9 @@ test/fixable/UnusedVariables.php                      1       0
 test/fixable/useless-semicolon.php                    2       0
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 271 ERRORS AND 0 WARNINGS WERE FOUND IN 26 FILES
+A TOTAL OF 278 ERRORS AND 0 WARNINGS WERE FOUND IN 26 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 238 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 245 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 

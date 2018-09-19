@@ -288,8 +288,6 @@
     <rule ref="Squiz.Arrays.ArrayDeclaration">
         <!-- Disable alignment of braces -->
         <exclude name="Squiz.Arrays.ArrayDeclaration.CloseBraceNotAligned"/>
-        <!-- Disable arrow alignment -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.DoubleArrowNotAligned"/>
         <!-- Allow multiple values on a single line -->
         <exclude name="Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed"/>
         <!-- Disable alignment of values with opening brace -->
