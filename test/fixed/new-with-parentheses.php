@@ -26,3 +26,9 @@ $z = new stdClass() ? new stdClass() : new stdClass();
 
 $q = $q ?: new stdClass();
 $e = $e ?? new stdClass();
+
+// The parentheses around `(new Response())` should not be removed
+// https://github.com/slevomat/coding-standard/issues/478
+$response = (new Response())
+    ->withStatus(200)
+    ->withAddedHeader('Content-Type', 'text/plain');
