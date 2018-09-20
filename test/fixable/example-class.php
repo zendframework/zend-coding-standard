@@ -15,6 +15,8 @@ use const PHP_RELEASE_VERSION as PHP_PATCH_VERSION;
 class Example implements \IteratorAggregate
 {
     private const VERSION = \PHP_VERSION - (PHP_MINOR_VERSION * 100) - PHP_PATCH_VERSION;
+    public const ID     = 'id';
+    public const SKU = 'sku';
 
     /**
      * @var null|int
