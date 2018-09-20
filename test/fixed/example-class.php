@@ -58,7 +58,6 @@ class Example implements IteratorAggregate
     public function getIterator() : array
     {
         assert($this->bar !== null);
-
         return new ArrayIterator($this->bar);
     }
 

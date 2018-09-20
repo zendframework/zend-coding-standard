@@ -11,6 +11,12 @@ $array = [
      5,
 ];
 
+$bar = [
+'foo' => 1,
+    'bar' => 2,
+        'baz' => 3,
+];
+
 $singleLine = [
     1 => 2,
 ];
@@ -22,21 +28,22 @@ $serializedRequest = [
     'uri' => 'http://example.com/foo/bar?baz=bat',
     'protocol_version' => '1.1',
     'headers' => [
-        'Host' => ['example.com'],
-        'Accept' => ['application/json'],
-        'X-Foo-Bar' => [
+        'Host'         => ['example.com'],
+        'Accept'       => ['application/json'],
+        'X-Foo-Bar'    => [
             'Baz',
             'Bat',
         ],
     ],
+
     'body' => '{"test":"value"}',
 ];
 
 // https://github.com/zendframework/zend-diactoros/blob/69dc20275fb8b9f7f8e05d556f6c0da5f36cac64/test/ServerRequestFactoryTest.php#L392-L398
 $files              = [ 'files' => [
-    'tmp_name' => 'php://temp',
-    'size'     => 0,
-    'error'    => 0,
-    'name'     => 'foo.bar',
-    'type'     => 'text/plain',
+    'tmp_name'   => 'php://temp',
+    'size'     =>     0,
+    'error'   =>   0,
+    'name'   =>  'foo.bar',
+    'type'  => 'text/plain',
 ]];

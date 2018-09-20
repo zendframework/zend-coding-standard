@@ -11,8 +11,14 @@ $array = [
     5,
 ];
 
+$bar = [
+    'foo' => 1,
+    'bar' => 2,
+    'baz' => 3,
+];
+
 $singleLine  = [1 => 2];
-$singleLine2 = [ 'foo' => 'bar' ];
+$singleLine2 = ['foo' => 'bar'];
 
 $serializedRequest = [
     'method'           => 'POST',
@@ -27,7 +33,8 @@ $serializedRequest = [
             'Bat',
         ],
     ],
-    'body'             => '{"test":"value"}',
+
+    'body' => '{"test":"value"}',
 ];
 
 // https://github.com/zendframework/zend-diactoros/blob/69dc20275fb8b9f7f8e05d556f6c0da5f36cac64/test/ServerRequestFactoryTest.php#L392-L398

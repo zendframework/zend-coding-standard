@@ -136,4 +136,3 @@ be found here:
 - [Selectively Applying Rules](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset#selectively-applying-rules)
 - [Customisable Sniff Properties](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties)
 - [Slevomat Coding Standard](https://github.com/slevomat/coding-standard)
-

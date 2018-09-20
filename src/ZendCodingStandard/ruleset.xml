@@ -13,12 +13,14 @@
     </rule>
 
     <!-- Force array element indentation with 4 spaces -->
-    <rule ref="Generic.Arrays.ArrayIndent">
-        <!-- multiline items causes evaluation as multiline array https://github.com/squizlabs/PHP_CodeSniffer/issues/1791 -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.SpaceBeforeDoubleArrow"/>
-    </rule>
+    <rule ref="Generic.Arrays.ArrayIndent"/>
     <!-- Forbid `array(...)` -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <!-- Format arrays -->
+    <rule ref="WebimpressCodingStandard.Arrays.Format"/>
+    <!-- Add trailing commas to all array elements -->
+    <rule ref="WebimpressCodingStandard.Arrays.TrailingArrayComma"/>
+
     <!-- Forbid duplicate classes -->
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <!-- Forbid empty statements -->
@@ -110,8 +112,6 @@
     <rule ref="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed">
         <type>error</type>
     </rule>
-    <!-- Require comma after last element in multi-line array -->
-    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
     <!-- Require presence of constant visibility -->
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
         <properties>
@@ -279,25 +279,6 @@
     </rule>
     <!-- Forbid useless variables -->
     <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
-    <!-- Forbid spaces around square brackets -->
-    <rule ref="Squiz.Arrays.ArrayBracketSpacing">
-        <!-- does not handle nested array access across multiple lines -->
-        <exclude name="Squiz.Arrays.ArrayBracketSpacing.SpaceBeforeBracket"/>
-    </rule>
-    <!-- Force array declaration structure -->
-    <rule ref="Squiz.Arrays.ArrayDeclaration">
-        <!-- Disable alignment of braces -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.CloseBraceNotAligned"/>
-        <!-- Allow multiple values on a single line -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed"/>
-        <!-- Disable alignment of values with opening brace -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.ValueNotAligned"/>
-        <!-- Checked by SlevomatCodingStandard.Arrays.TrailingArrayComma.MissingTrailingComma -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.NoCommaAfterLast"/>
-        <!-- Does not handle nested array access with complex keys on multiple lines and creates double commas !!! -->
-        <!-- Checked by SlevomatCodingStandard.Arrays.TrailingArrayComma -->
-        <exclude name="Squiz.Arrays.ArrayDeclaration.NoComma"/>
-    </rule>
     <!-- Forbid class being in a file with different name -->
     <rule ref="Squiz.Classes.ClassFileName"/>
     <!-- Force `self::` for self-reference, force lower-case self, forbid spaces around `::` -->
