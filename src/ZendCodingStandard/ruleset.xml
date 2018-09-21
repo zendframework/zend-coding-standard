@@ -16,6 +16,12 @@
     <rule ref="Generic.Arrays.ArrayIndent"/>
     <!-- Forbid `array(...)` -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <!-- Align double arrows -->
+    <rule ref="WebimpressCodingStandard.Arrays.DoubleArrow">
+        <properties>
+            <property name="maxPadding" value="50"/>
+        </properties>
+    </rule>
     <!-- Format arrays -->
     <rule ref="WebimpressCodingStandard.Arrays.Format"/>
     <!-- Add trailing commas to all array elements -->

@@ -17,7 +17,9 @@ $bar = [
     'baz' => 3,
 ];
 
-$singleLine  = [1 => 2];
+$singleLine  = [
+    1 => 2,
+];
 $singleLine2 = ['foo' => 'bar'];
 
 $serializedRequest = [
@@ -45,5 +47,22 @@ $files = [
         'error'    => 0,
         'name'     => 'foo.bar',
         'type'     => 'text/plain',
+    ],
+];
+
+
+// Long lines test
+$config = [
+    'dependencies' => [
+        'factories' => [
+            App\Domain\User\UserRepository::class                     => App\Domain\User\Persistence\DoctrineUserRepositoryFactory::class,
+            App\Http\Auth\LoginHandler::class                         => App\Http\Auth\LoginHandlerFactory::class,
+            App\Http\Auth\LogoutHandler::class                        => App\Http\Auth\LogoutHandlerFactory::class,
+
+            App\Infrastructure\View\TemplateDefaultsMiddleware::class
+                => App\Infrastructure\View\TemplateDefaultsMiddlewareFactory::class,
+            App\Http\HomePageHandler::class                           => App\Http\HomePageHandlerFactory::class,
+            App\Http\StaticPageHandler::class                         => App\Http\StaticPageHandlerFactory::class,
+        ],
     ],
 ];
