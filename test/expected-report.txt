@@ -1,0 +1,38 @@
+
+PHP CODE SNIFFER REPORT SUMMARY
+----------------------------------------------------------------------
+FILE                                                  ERRORS  WARNINGS
+----------------------------------------------------------------------
+test/fixable/anonymous-classes.php                    9       0
+test/fixable/array-indentation.php                    39      1
+test/fixable/class-name-resolution.php                12      0
+test/fixable/closures.php                             19      0
+test/fixable/commenting.php                           17      0
+test/fixable/concatenation-spacing.php                15      0
+test/fixable/example-class.php                        28      0
+test/fixable/extends-and-implements-multiline.php     10      0
+test/fixable/extends-and-implements.php               5       0
+test/fixable/forbidden-comments.php                   4       0
+test/fixable/forbidden-functions.php                  6       0
+test/fixable/LowCaseTypes.php                         2       0
+test/fixable/method-and-function-arguments.php        11      0
+test/fixable/method-and-function-calls.php            13      0
+test/fixable/namespaces-spacing.php                   3       0
+test/fixable/new-with-parentheses.php                 18      0
+test/fixable/not-spacing.php                          7       0
+test/fixable/operators.php                            7       0
+test/fixable/return-type-on-methods.php               17      0
+test/fixable/semicolon-spacing.php                    3       0
+test/fixable/statement-alignment.php                  18      0
+test/fixable/test-case.php                            4       0
+test/fixable/traits-uses.php                          10      0
+test/fixable/UnusedVariables.php                      1       0
+test/fixable/useless-semicolon.php                    2       0
+test/fixable/visibility-declaration.php               1       0
+----------------------------------------------------------------------
+A TOTAL OF 281 ERRORS AND 1 WARNING WERE FOUND IN 26 FILES
+----------------------------------------------------------------------
+PHPCBF CAN FIX 249 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+----------------------------------------------------------------------
+
+

@@ -1,0 +1,17 @@
+docs_dir: docs/book
+site_dir: docs/html
+pages:
+    - index.md
+    - 'Introduction': v2/intro.md
+    - 'Coding Style Guide': v2/coding-style-guide.md
+    - 'Reference':
+        - 'Ruleset': v2/ruleset.md
+    - v1:
+        - v1/index.md
+        - 'Introduction': v1/intro.md
+        - 'Reference':
+            - 'Ruleset': v1/ruleset.md
+
+site_name: Zend Coding Standard
+site_description: 'The coding standard ruleset for Zend Framework components.'
+repo_url: 'https://github.com/zendframework/zend-coding-standard'

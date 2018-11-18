@@ -1,0 +1,13 @@
+/.phpcs-cache
+/clover.xml
+/composer.lock
+/coveralls-upload.json
+/docs/html/
+/mkdocs.site.yml
+/phpcs.log
+/phpcs.xml
+/phpunit.xml
+/test/fix/
+/vendor/
+/zf-mkdoc-theme.tgz
+/zf-mkdoc-theme/

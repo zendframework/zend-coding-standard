@@ -1,0 +1,45 @@
+sudo: false
+language: php
+
+php:
+- 7.1
+- 7.2
+- nightly
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - composer self-update
+
+install: travis_retry composer update --prefer-dist
+
+script:
+  - vendor/bin/phpcs
+  - vendor/bin/phpcs $(find test/fixable/* | sort) --report=summary --report-file=phpcs.log; diff test/expected-report.txt phpcs.log
+
+stages:
+  - Validate against schema
+  - Validate fixes
+  - Test
+
+jobs:
+  allow_failures:
+    - php: nightly
+
+  include:
+    - stage: Validate against schema
+      addons:
+        apt:
+          packages:
+          - libxml2-utils
+      script: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd src/ZendCodingStandard/ruleset.xml
+
+    - stage: Validate fixes
+      before_script:
+      - cp -R test/fixable/ test/fix/
+      script: vendor/bin/phpcbf test/fix; diff test/fix test/fixed
+
+notifications:
+  email: false

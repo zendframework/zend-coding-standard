@@ -1,7 +1,5 @@
 # zend-coding-standard
 
-[![Build Status](https://secure.travis-ci.org/zendframework/zend-coding-standard.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-coding-standard)
-
 The coding standard ruleset for Zend Framework components.
 
 This specification extends and expands [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md), 
