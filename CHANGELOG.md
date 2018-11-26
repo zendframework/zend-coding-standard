@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.0.0-alpha.2 - 2018-11-26
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#7](https://github.com/zendframework/zend-coding-standard/pull/7) updates to composer-installer 0.5 which fixes a 'Class not found' error during installation.
+
 ## 2.0.0-alpha.1 - 2018-11-18
 
 ### Added
