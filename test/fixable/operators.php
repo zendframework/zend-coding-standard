@@ -31,3 +31,7 @@ if (isset($foo)) {
 $fooBar = isset($foo, $bar) ? 'foo' : 'bar';
 
 $baz = ! isset($foo) ? 'foo' : 'baz';
+
+echo Something
+    ::
+    BAR;

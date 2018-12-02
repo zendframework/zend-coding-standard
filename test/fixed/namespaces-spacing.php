@@ -18,3 +18,5 @@ strrev(
         ->sub(new DateInterval('P1D'))
         ->format(DATE_RFC3339)
 );
+
+// new \ Bar \ Baz();

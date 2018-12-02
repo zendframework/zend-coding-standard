@@ -12,11 +12,11 @@ class Foo
 class Bar
 {
     use FirstTrait;
+    use FourthTrait;
     use SecondTrait;
     use ThirdTrait {
         x as public;
     }
-    use FourthTrait;
 
     public function __construct()
     {
