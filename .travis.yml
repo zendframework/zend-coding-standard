@@ -4,7 +4,7 @@ language: php
 php:
 - 7.1
 - 7.2
-- nightly
+- 7.3
 
 cache:
   directories:
@@ -25,9 +25,6 @@ stages:
   - Test
 
 jobs:
-  allow_failures:
-    - php: nightly
-
   include:
     - stage: Validate against schema
       addons:
