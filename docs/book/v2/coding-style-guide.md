@@ -1,10 +1,10 @@
 # Zend Framework Coding Style Guide
 
-This specification extends and expands [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md), 
-the extended coding style guide and requires adherence to [PSR-1](https://www.php-fig.org/psr/psr-1), 
+This specification extends and expands [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md),
+the extended coding style guide and requires adherence to [PSR-1](https://www.php-fig.org/psr/psr-1),
 the basic coding standard.
 
-> Note: PSR-12 is not finalized. e.g. The `!` operator and `:` placement for return values are still under discussion. 
+> Note: PSR-12 is not finalized. e.g. The `!` operator and `:` placement for return values are still under discussion.
 We will change these rules, and, when PSR-12 is finalized, adapt them.
 
 ## General
@@ -12,12 +12,12 @@ We will change these rules, and, when PSR-12 is finalized, adapt them.
 ### Basic Coding Standard
 
 Code MUST follow all rules outlined in [PSR-1](https://www.php-fig.org/psr/psr-1) and
-[PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md), except in 
+[PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md), except in
 specific cases outlined in this specification, until PSR-12 is accepted as a standard.
 
 ### Indenting and Alignment
 
-- There should be one space on either side of an equals sign used to assign a value to a variable. In case of a 
+- There should be one space on either side of an equals sign used to assign a value to a variable. In case of a
   block of related assignments, more space may be inserted before the equal sign to promote readability.
   [*](ruleset.md#genericformattingmultiplestatementalignment)
 
@@ -43,7 +43,7 @@ $array = [
     'key1'      => 'value1',
     'key2'      => 'value2',
     'keyTwenty' => 'value3',
-]; 
+];
 
 $var = [
     'one'   => function() {
@@ -72,13 +72,13 @@ $var = [
 - Comments may be omitted and should not be used for typehinted arguments.
 - Comments may not start with `#`. [*](ruleset.md#pearcommentinginlinecomment)
 - Comments may not be empty. [*](ruleset.md#slevomatcodingstandardcommentingemptycomment)
-- The words _private_, _protected_, _static_, _constructor_, _deconstructor_, _Created by_, _getter_ and _setter_, 
+- The words _private_, _protected_, _static_, _constructor_, _deconstructor_, _Created by_, _getter_ and _setter_,
   may not be used in comments. [*](ruleset.md#slevomatcodingstandardcommentingforbiddencomments)
 - The annotations `@api`, `@author`, `@category`, `@created`, `@package`, `@subpackage` and `@version` may not
   be used in comments. Git commits provide accurate information. [*](ruleset.md#slevomatcodingstandardcommentingforbiddenannotations)
 - The asterisks in a doc comment should align, and there should be one space between the asterisk and tag.
   [*](ruleset.md#squizcommentingdoccommentalignment)
-- Comment tags `@param`, `@throws` and `@return` should not be aligned or contain multiple spaces between the tag, 
+- Comment tags `@param`, `@throws` and `@return` should not be aligned or contain multiple spaces between the tag,
   type and description. [*](ruleset.md#squizcommentingfunctioncomment)
 - If a function throws any exceptions, they should be documented in `@throws` tags.
   [*](ruleset.md#squizcommentingfunctioncomment)
@@ -93,12 +93,12 @@ In addition to [PSR-12](https://github.com/php-fig/fig-standards/blob/master/pro
 - Each PHP file should have a page level docblock with `@see`, `@copyright` and `@license`. The copyright date should
   only be adjusted if the file has changed.
 - Each PHP file should have a strict type declaration at the top after the page level docblock. [*](ruleset.md#slevomatcodingstandardtypehintsdeclarestricttypes)
-- Import statements should be alphabetically sorted. [*](ruleset.md#slevomatcodingstandardnamespacesalphabeticallysorteduses)
+- Import statements should be alphabetically sorted. [*](ruleset.md#webimpresscodingstandardphpinstantiatingparenthesis)
 - Import statements should not be grouped. [*](ruleset.md#slevomatcodingstandardnamespacesdisallowgroupuse)
 - Each import statement should be on its own line. [*](ruleset.md#slevomatcodingstandardnamespacesmultipleusesperline)
 - Absolute class name references, functions and constants should be imported. [*](ruleset.md#slevomatcodingstandardnamespacesreferenceusednamesonly)
-- Unused import statements are not allowed. [*](ruleset.md#slevomatcodingstandardnamespacesunuseduses)
-- Classes and function within the same namespace should not be imported. [*](ruleset.md#slevomatcodingstandardnamespacesusefromsamenamespace)
+- Unused import statements are not allowed. [*](ruleset.md#webimpresscodingstandardnamespacesunusedusestatement)
+- Classes and function within the same namespace should not be imported. [*](ruleset.md#webimpresscodingstandardnamespacesunusedusestatement)
 - Imports should not have an alias with the same name. [*](ruleset.md#slevomatcodingstandardnamespacesuselessalias)
 - A class should not have unused private constants, (or write-only) properties and methods. [*](ruleset.md#slevomatcodingstandardclassesunusedprivateelements)
 
@@ -137,10 +137,10 @@ class FooBar
 
 In addition to [PSR-12](https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md#4-classes-properties-and-methods):
 
-- Class name resolution via `::class` should be used instead of `__CLASS__`, `get_class()`, `get_class($this)`, 
+- Class name resolution via `::class` should be used instead of `__CLASS__`, `get_class()`, `get_class($this)`,
   `get_called_class()` and `get_parent_class()`. [*](ruleset.md#slevomatcodingstandardclassesmodernclassnamereference)
 - Methods may not have the final declaration in classes declared as final. [*](ruleset.md#genericcodeanalysisunnecessaryfinalmodifier)
-- The colon used with return type declarations MUST be surrounded with 1 space. [*](ruleset.md#slevomatcodingstandardtypehintsreturntypehintspacing)
+- The colon used with return type declarations MUST be surrounded with 1 space. [*](ruleset.md#webimpresscodingstandardformattingreturntype)
 - Nullable and optional arguments, which are marked as `= null`, must have the `?` symbol present. [*](ruleset.md#slevomatcodingstandardtypehintsnullabletypefornulldefaultvalue)
 
 ```php
@@ -158,16 +158,16 @@ class ClassName extends ParentClass implements ArrayAccess, Countable
     use FirstTrait;
     use SecondTrait;
     use ThirdTrait;
-    
+
     public const CONSTANT = 'constant';
-    
+
     private $property;
-    
+
     public function fooBarBaz(int $arg1, &$arg2, array $arg3 = [], ?$arg4 = null) : void
     {
         return;
     }
-    
+
     public function aVeryLongMethodName(
         FirstInterface $arg1,
         &$arg2,
@@ -367,7 +367,7 @@ $instance = new class extends Foo implements
 - Short list syntax `[...]` should be used instead of `list(...)`. [*](ruleset.md#slevomatcodingstandardphpshortlist)
 - Short form of type keywords must be used. i.e. `bool` instead of `boolean`, `int` instead of `integer`, etc.
   The `binary` and `unset` cast operators are not allowed. [*](ruleset.md#slevomatcodingstandardphptypecast)
-- Parentheses should not be used if they can be omitted. [*](ruleset.md#slevomatcodingstandardphpuselessparentheses)
+- Parentheses should not be used if they can be omitted. [*](ruleset.md#webimpresscodingstandardformattingunnecessaryparentheses)
 - Semicolons `;` should not be used if they can be omitted. [*](ruleset.md#slevomatcodingstandardphpuselesssemicolon)
 - Variables should be returned directly instead of assigned to a variable which is not used. [*](ruleset.md#slevomatcodingstandardvariablesuselessvariable)
 - The `self` keyword should be used instead of the current class name, and should not have spaces around `::`.
@@ -376,8 +376,8 @@ $instance = new class extends Foo implements
 - Double quote strings may only be used if they contain variables. [*](ruleset.md#squizstringsdoublequoteusage)
 - Strings should not be enclosed in parentheses when being echoed. [*](ruleset.md#squizstringsechoedstrings)
 - Type casts should not have whitespace inside the parentheses. [*](ruleset.md#squizwhitespacecastspacing)
-- The opening brace for functions should be on a new line with no blank lines surrounding it. [*](ruleset.md#squizwhitespacefunctionopeningbracespace)
-- The PHP constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new`, should 
+- The opening brace for functions should be on a new line with no blank lines surrounding it. [*](ruleset.md#webimpresscodingstandardwhitespacebraceblankline)
+- The PHP constructs `echo`, `print`, `return`, `include`, `include_once`, `require`, `require_once`, and `new`, should
   have one space after them. [*](ruleset.md#squizwhitespacelanguageconstructspacing)
 - The object operator `->` should not have any spaces around it. [*](ruleset.md#squizwhitespaceobjectoperatorspacing)
 - Semicolons should not have spaces before them. [*](ruleset.md#squizwhitespacesemicolonspacing)

@@ -32,3 +32,6 @@ $e = $e ?? new stdClass;
 $response = (new Response())
     ->withStatus(200)
     ->withAddedHeader('Content-Type', 'text/plain');
+
+$anonymousClass = new class extends DateTime {
+};
