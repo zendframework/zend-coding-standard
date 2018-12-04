@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.0.0-alpha.3 - TBD
+
+### Added
+
+- [#8](https://github.com/zendframework/zend-coding-standard/pull/8) adds some sniffs from webimpress/coding-standard.
+
+  - Forbid null values for class properties
+  - Comments at the end of the line, with at least single space
+  - Requires one space after namespace keyword
+  - One space after break/continue with argument, remove redundant 1
+  - Forbid continue in switch; use break instead
+  - Require camelCase variable names
+  - Detects for-loops that can be simplified to a while-loop
+  - Detects unconditional if- and elseif-statements
+  - Forbid goto instruction
+  - Forbid multiple traits by declaration
+  - Require lowercase function and const keywords in imports with one space after
+  - Forbid superfluous leading backslash in use statements
+  - Forbid whitespace around double colon operator
+  - Forbid whitespace around double colon operator
+
+### Changed
+
+- [#8](https://github.com/zendframework/zend-coding-standard/pull/8) replaces sniffs in favor of webimpress/coding-standard as these are more reliable or fixes more cases.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.0.0-alpha.2 - 2018-11-26
 
 ### Added
