@@ -23,3 +23,18 @@ do {
 
 new DateTime();
 new DateTime();
+
+class SingleLineBetweenMethods
+{
+    public function __construct()
+    {
+    }
+
+    public function method()
+    {
+    }
+
+    public function twoLines()
+    {
+    }
+}

@@ -7,12 +7,12 @@ class Foo
     public $bar;
 }
 
-trait Bar
+trait BarTrait
 {
     public $var;
 }
 
-interface Baz
+interface BazInterface
 {
     public function big() : int;
 }

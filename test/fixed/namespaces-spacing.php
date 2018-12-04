@@ -19,4 +19,4 @@ strrev(
         ->format(DATE_RFC3339)
 );
 
-// new \ Bar \ Baz();
+new \Bar\Baz();

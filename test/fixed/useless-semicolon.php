@@ -13,3 +13,12 @@ do {
 for (;;) {
     echo 'To infity and beyond';
 }
+
+echo 1;
+
+$closure = function () {
+};
+
+$anonym = new class()
+{
+};

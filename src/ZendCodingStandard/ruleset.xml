@@ -15,6 +15,9 @@
         <exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose"/>
         <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen"/>
         <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingBeforeClose"/>
+        <!-- Replaced by WebimpressCodingStandard.WhiteSpace.CommaSpacing -->
+        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeComma"/>
+        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.NoSpaceBeforeArg"/>
     </rule>
 
     <!-- Force array element indentation with 4 spaces -->
@@ -46,21 +49,59 @@
     <!-- Requires one space after namespace keyword -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.Namespace"/>
     <!-- Forbid spaces around namespace separator -->
-    <!-- TODO: Cannot be included because of error in SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly -->
-    <!--<rule ref="WebimpressCodingStandard.WhiteSpace.NamespaceSeparator"/>-->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.NamespaceSeparator"/>
 
     <!-- One space after break/continue with argument, remove redundant 1 -->
     <rule ref="WebimpressCodingStandard.ControlStructures.BreakAndContinue"/>
     <!-- Forbid continue in switch; use break instead -->
     <rule ref="WebimpressCodingStandard.ControlStructures.ContinueInSwitch"/>
 
+    <!-- Forbid boolean operator at the end of the line -->
+    <rule ref="WebimpressCodingStandard.Operators.BooleanOperator"/>
+    <!-- Formatting of ternary operator - content must be after ?/:, not in new line -->
+    <rule ref="WebimpressCodingStandard.Operators.TernaryOperator"/>
+
+    <!-- Abstract class must have Abstract* prefix -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.AbstractClass"/>
+    <!-- Exception must have *Exception suffix -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.Exception"/>
+    <!-- Interface must have *Interface suffix -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.Interface"/>
+    <!-- Trait must have *Traif suffix -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.Trait"/>
     <!-- Require camelCase variable names -->
     <rule ref="WebimpressCodingStandard.NamingConventions.ValidVariableName"/>
+
+    <!-- Use the correct class name, i.e. DateTime not Datetime, etc @todo: test -->
+    <rule ref="WebimpressCodingStandard.PHP.CorrectClassNameCase"/>
+
+    <!-- Only one blank line allowed -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.BlankLine"/>
 
     <!-- Detects for-loops that can be simplified to a while-loop -->
     <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
     <!-- Detects unconditional if- and elseif-statements -->
     <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+
+    <!-- Forbid inline comments after closing curly bracket, like // end if etc -->
+    <rule ref="WebimpressCodingStandard.Commenting.NoInlineCommentAfterCurlyClose"/>
+    <!-- Use correct case of default PHPDocs and PHPUnit tags @var not @VAR etc -->
+    <rule ref="WebimpressCodingStandard.Commenting.TagCase"/>
+    <!-- Heredoc/nowdoc tag uppercase without spaces -->
+    <rule ref="WebimpressCodingStandard.Formatting.Heredoc"/>
+
+    <!-- Forbid space after splat operator -->
+    <rule ref="WebimpressCodingStandard.Formatting.NoSpaceAfterSplat"/>
+    <!-- Forbid reference operator before new, and formatting of the reference operator -->
+    <rule ref="WebimpressCodingStandard.Formatting.Reference"/>
+    <!-- Single line between methods in class -->
+    <rule ref="WebimpressCodingStandard.Methods.LineAfter"/>
+
+    <!-- Forbid space before comma, require single space after comma @todo: add more tests, like echo 1,2; -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.CommaSpacing"/>
+
+    <!-- Forbid concatenation character at the end of the line @todo: add tests -->
+    <rule ref="WebimpressCodingStandard.Strings.NoConcatenationAtTheEnd"/>
 
     <!-- Forbid duplicate classes -->
     <rule ref="Generic.Classes.DuplicateClassName"/>
@@ -177,6 +218,10 @@
                 <element value="@package"/>
                 <element value="@subpackage"/>
                 <element value="@version"/>
+                <element value="@expectedException"/>
+                <element value="@expectedExceptionCode"/>
+                <element value="@expectedExceptionMessage"/>
+                <element value="@expectedExceptionMessageRegExp"/>
             </property>
         </properties>
     </rule>
@@ -247,17 +292,13 @@
     <!-- Forbid use of longhand cast operators -->
     <rule ref="SlevomatCodingStandard.PHP.TypeCast"/>
     <!-- Require presence of declare(strict_types=1) -->
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
-        <properties>
-            <property name="newlinesCountBetweenOpenTagAndDeclare" value="2"/>
-            <property name="spacesCountAroundEqualsSign" value="0"/>
-            <property name="newlinesCountAfterDeclare" value="2"/>
-        </properties>
-    </rule>
+    <rule ref="WebimpressCodingStandard.Files.DeclareStrictTypes"/>
+    <!-- Format of strict type declaration -->
+    <rule ref="WebimpressCodingStandard.PHP.DeclareStrictTypes"/>
     <!-- Forbid useless parentheses -->
     <rule ref="WebimpressCodingStandard.Formatting.UnnecessaryParentheses"/>
-    <!-- Forbid useless semicolon `;` -->
-    <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
+    <!-- Forbid redundant semicolons -->
+    <rule ref="WebimpressCodingStandard.PHP.RedundantSemicolon"/>
     <!-- Require use of short versions of scalar types (i.e. int instead of integer) -->
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
     <!-- Require ? when default value is null -->

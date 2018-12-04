@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VisibilityDeclaration;
 
-abstract class ClassName
+abstract class AbstractClassName
 {
     protected static $foo;
 
