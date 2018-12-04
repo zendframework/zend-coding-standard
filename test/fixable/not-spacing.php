@@ -13,9 +13,17 @@ if (!$test > 0) {
 }
 
 while (    !    true) {
+
     echo 1;
+    // comment
+
 }
 
 do {
+
     echo 1;
+
 } while (    !    true);
+
+new  DateTime();
+new\DateTime();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$shortVar        = (1 + 2);
+$shortVar        = 1 + 2;
 $veryLongVarName = 'string';
 
 $value  = (string) $value;

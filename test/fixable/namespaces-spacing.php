@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Foo;
+namespace   Foo;
 
 use DateInterval;
 use DateTimeImmutable;
@@ -16,3 +16,5 @@ strrev(
         ->sub(new DateInterval('P1D'))
         ->format(DATE_RFC3339)
 );
+
+// new \ Bar \ Baz();

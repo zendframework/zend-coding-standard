@@ -9,7 +9,7 @@ use Countable;
 use ParentClass;
 use Serializable;
 
-class ClassName extends ParentClass implements
+class ClassNameMultiline extends ParentClass implements
     ArrayAccess,
     Countable,
     Serializable

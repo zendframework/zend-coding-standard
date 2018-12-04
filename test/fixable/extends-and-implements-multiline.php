@@ -11,7 +11,7 @@ use ArrayAccess;
 use Countable;
 use Serializable;
 
-class ClassName extends ParentClass implements
+class ClassNameMultiline extends ParentClass implements
     \ArrayAccess,
     \Countable,
     \Serializable
