@@ -37,6 +37,8 @@
     <!-- Forbid blank line after opening braces and before closing braces -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.BraceBlankLine"/>
 
+    <!-- Forbid FQN for classes/traits/interfaces/constants/functions -->
+    <rule ref="WebimpressCodingStandard.PHP.DisallowFqn"/>
     <!-- Import internal constants -->
     <rule ref="WebimpressCodingStandard.PHP.ImportInternalConstant"/>
     <!-- Import internal functions -->
@@ -94,6 +96,8 @@
     <rule ref="WebimpressCodingStandard.Formatting.NoSpaceAfterSplat"/>
     <!-- Forbid reference operator before new, and formatting of the reference operator -->
     <rule ref="WebimpressCodingStandard.Formatting.Reference"/>
+    <!-- Use ::class instead of class string reference @todo: add tests -->
+    <rule ref="WebimpressCodingStandard.Formatting.StringClassReference"/>
     <!-- Single line between methods in class -->
     <rule ref="WebimpressCodingStandard.Methods.LineAfter"/>
 
@@ -269,20 +273,6 @@
     <rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
     <!-- Require newlines around namespace declaration -->
     <rule ref="SlevomatCodingStandard.Namespaces.NamespaceSpacing"/>
-    <!-- Forbid using absolute class name references (except global ones) -->
-    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
-        <properties>
-            <property name="allowFallbackGlobalConstants" value="false"/>
-            <property name="allowFallbackGlobalFunctions" value="false"/>
-            <property name="allowFullyQualifiedGlobalClasses" value="false"/>
-            <property name="allowFullyQualifiedGlobalConstants" value="false"/>
-            <property name="allowFullyQualifiedGlobalFunctions" value="false"/>
-            <property name="allowFullyQualifiedNameForCollidingClasses" value="true"/>
-            <property name="allowFullyQualifiedNameForCollidingConstants" value="true"/>
-            <property name="allowFullyQualifiedNameForCollidingFunctions" value="true"/>
-            <property name="searchAnnotations" value="true"/>
-        </properties>
-    </rule>
     <!-- Forbid useless alias for classes, constants and functions -->
     <rule ref="SlevomatCodingStandard.Namespaces.UselessAlias"/>
     <!-- Require the usage of assignment operators, eg `+=`, `.=` when possible -->
