@@ -101,7 +101,7 @@
     <!-- Single line between methods in class -->
     <rule ref="WebimpressCodingStandard.Methods.LineAfter"/>
 
-    <!-- Forbid space before comma, require single space after comma @todo: add more tests, like echo 1,2; -->
+    <!-- Forbid space before comma, require single space after comma -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.CommaSpacing"/>
 
     <!-- Forbid concatenation character at the end of the line -->

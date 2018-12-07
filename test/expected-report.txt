@@ -28,6 +28,7 @@ test/fixable/not-spacing.php                          20      1
 test/fixable/operators.php                            12      0
 test/fixable/return-type-on-methods.php               17      0
 test/fixable/semicolon-spacing.php                    3       0
+test/fixable/spacing.php                              18      1
 test/fixable/statement-alignment.php                  19      0
 test/fixable/test-case.php                            4       0
 test/fixable/traits-uses.php                          9       0
@@ -36,9 +37,9 @@ test/fixable/useless-semicolon.php                    7       0
 test/fixable/variable-names.php                       5       2
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 371 ERRORS AND 5 WARNINGS WERE FOUND IN 32 FILES
+A TOTAL OF 389 ERRORS AND 6 WARNINGS WERE FOUND IN 33 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 311 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 326 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
