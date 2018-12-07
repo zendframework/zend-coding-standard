@@ -96,7 +96,7 @@
     <rule ref="WebimpressCodingStandard.Formatting.NoSpaceAfterSplat"/>
     <!-- Forbid reference operator before new, and formatting of the reference operator -->
     <rule ref="WebimpressCodingStandard.Formatting.Reference"/>
-    <!-- Use ::class instead of class string reference @todo: add tests -->
+    <!-- Use ::class instead of class string reference -->
     <rule ref="WebimpressCodingStandard.Formatting.StringClassReference"/>
     <!-- Single line between methods in class -->
     <rule ref="WebimpressCodingStandard.Methods.LineAfter"/>
