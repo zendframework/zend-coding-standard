@@ -22,6 +22,12 @@ use const PHP_VERSION;
  */
 class Example implements IteratorAggregate
 {
+    use ATrait;
+    use BTrait;
+    use CTrait {
+        world as protected world;
+    }
+
     private const VERSION = PHP_VERSION - (PHP_MINOR_VERSION * 100) - PHP_PATCH_VERSION;
     public const ID       = 'id';
     public const SKU      = 'sku';

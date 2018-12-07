@@ -273,8 +273,8 @@
     <rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
     <!-- Require newlines around namespace declaration -->
     <rule ref="SlevomatCodingStandard.Namespaces.NamespaceSpacing"/>
-    <!-- Forbid useless alias for classes, constants and functions -->
-    <rule ref="SlevomatCodingStandard.Namespaces.UselessAlias"/>
+    <!-- Forbid useless alias for classes, constants, functions and traits functions -->
+    <rule ref="WebimpressCodingStandard.Namespaces.RedundantAlias"/>
     <!-- Require the usage of assignment operators, eg `+=`, `.=` when possible -->
     <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
     <!-- Forbid `list(...)` syntax, use [...] instead -->
