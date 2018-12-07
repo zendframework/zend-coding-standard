@@ -21,5 +21,5 @@ some content here
 now_doc;
 
 $nowDoc2 = <<< 'now'
-now content (question mark here is a problem on PHP 7.3)
+content
 now;
