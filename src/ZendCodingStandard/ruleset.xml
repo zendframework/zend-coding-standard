@@ -74,7 +74,7 @@
     <!-- Require camelCase variable names -->
     <rule ref="WebimpressCodingStandard.NamingConventions.ValidVariableName"/>
 
-    <!-- Use the correct class name, i.e. DateTime not Datetime, etc @todo: test -->
+    <!-- Use the correct class name, i.e. DateTime not Datetime, etc -->
     <rule ref="WebimpressCodingStandard.PHP.CorrectClassNameCase"/>
 
     <!-- Only one blank line allowed -->

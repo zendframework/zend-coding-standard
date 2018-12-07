@@ -7,7 +7,7 @@ test/fixable/anonymous-classes.php                    9       0
 test/fixable/array-indentation.php                    39      1
 test/fixable/class-name-resolution.php                13      0
 test/fixable/class-properties.php                     6       0
-test/fixable/classes-traits-interfaces.php            13      0
+test/fixable/classes-traits-interfaces.php            16      1
 test/fixable/closures.php                             19      0
 test/fixable/commenting.php                           17      0
 test/fixable/concatenation-spacing.php                17      0
@@ -36,9 +36,9 @@ test/fixable/useless-semicolon.php                    7       0
 test/fixable/variable-names.php                       5       2
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 365 ERRORS AND 4 WARNINGS WERE FOUND IN 32 FILES
+A TOTAL OF 368 ERRORS AND 5 WARNINGS WERE FOUND IN 32 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 302 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 308 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 

@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace FooBar;
+
+use Arrayobject as AO;
+
 class Foo
 {
 
@@ -22,3 +26,7 @@ interface BazInterface
     public function big() : int;
 
 }
+
+new \Datetime();
+new \arrayobject();
+new Ao();
