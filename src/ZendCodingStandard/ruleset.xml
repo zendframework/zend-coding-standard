@@ -104,7 +104,7 @@
     <!-- Forbid space before comma, require single space after comma @todo: add more tests, like echo 1,2; -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.CommaSpacing"/>
 
-    <!-- Forbid concatenation character at the end of the line @todo: add tests -->
+    <!-- Forbid concatenation character at the end of the line -->
     <rule ref="WebimpressCodingStandard.Strings.NoConcatenationAtTheEnd"/>
 
     <!-- Forbid duplicate classes -->
