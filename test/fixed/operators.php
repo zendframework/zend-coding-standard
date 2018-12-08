@@ -35,7 +35,8 @@ $baz = ! isset($foo) ? 'foo' : 'baz';
 echo Something::BAR;
 
 if ($a
-    && $b) {
+    && $b
+) {
     echo 1;
 }
 

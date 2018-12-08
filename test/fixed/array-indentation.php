@@ -59,7 +59,7 @@ $config = [
             App\Http\Auth\LogoutHandler::class    => App\Http\Auth\LogoutHandlerFactory::class,
 
             App\Infrastructure\View\TemplateDefaultsMiddleware::class
-            => App\Infrastructure\View\TemplateDefaultsMiddlewareFactory::class,
+                => App\Infrastructure\View\TemplateDefaultsMiddlewareFactory::class,
             App\Http\HomePageHandler::class   => App\Http\HomePageHandlerFactory::class,
             App\Http\StaticPageHandler::class => App\Http\StaticPageHandlerFactory::class,
         ],

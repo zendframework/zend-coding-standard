@@ -82,6 +82,12 @@
     <!-- Only one blank line allowed -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.BlankLine"/>
 
+    <rule ref="WebimpressCodingStandard.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="alignObjectOperators" value="false"></property>
+        </properties>
+    </rule>
+
     <!-- Detects for-loops that can be simplified to a while-loop -->
     <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
     <!-- Detects unconditional if- and elseif-statements -->
