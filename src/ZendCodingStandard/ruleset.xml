@@ -286,7 +286,7 @@
     <!-- Format of strict type declaration -->
     <rule ref="WebimpressCodingStandard.PHP.DeclareStrictTypes"/>
     <!-- Forbid useless parentheses -->
-    <rule ref="WebimpressCodingStandard.Formatting.UnnecessaryParentheses"/>
+    <rule ref="WebimpressCodingStandard.Formatting.RedundantParentheses"/>
     <!-- Forbid redundant semicolons -->
     <rule ref="WebimpressCodingStandard.PHP.RedundantSemicolon"/>
     <!-- Require use of short versions of scalar types (i.e. int instead of integer) -->
