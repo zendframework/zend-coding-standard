@@ -250,7 +250,7 @@
     <!-- Require language constructs without parentheses -->
     <rule ref="SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses"/>
     <!-- Require new instances with parentheses -->
-    <rule ref="WebimpressCodingStandard.PHP.InstantiatingParenthesis"/>
+    <rule ref="PSR12.Classes.ClassInstantiation"/>
     <!-- Require usage of null coalesce operator when possible -->
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
     <!-- Forbid useless unreachable catch blocks -->
