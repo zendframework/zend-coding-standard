@@ -43,6 +43,8 @@
     <rule ref="WebimpressCodingStandard.PHP.ImportInternalConstant"/>
     <!-- Import internal functions -->
     <rule ref="WebimpressCodingStandard.PHP.ImportInternalFunction"/>
+    <!-- Format anonymous class declaration -->
+    <rule ref="WebimpressCodingStandard.Classes.AnonymousClassDeclaration"/>
     <!-- Forbid null values for class properties -->
     <rule ref="WebimpressCodingStandard.Classes.NoNullValues"/>
     <!-- Comments at the end of the line, with at least single space -->

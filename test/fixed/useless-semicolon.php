@@ -19,6 +19,5 @@ echo 1;
 $closure = function () {
 };
 
-$anonym = new class()
-{
+$anonym = new class() {
 };

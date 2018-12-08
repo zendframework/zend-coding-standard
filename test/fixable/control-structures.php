@@ -21,3 +21,7 @@ while ($a > 1) {
         break   2;
     }
 }
+
+if ($a === ($b + 1)) {
+    echo 1;
+}
