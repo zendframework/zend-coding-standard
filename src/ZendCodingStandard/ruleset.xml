@@ -18,6 +18,12 @@
         <!-- Replaced by WebimpressCodingStandard.WhiteSpace.CommaSpacing -->
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeComma"/>
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.NoSpaceBeforeArg"/>
+        <!-- Replaced by WebimpressCodingStandard.WhiteSpace.ScopeIndent -->
+        <exclude name="Generic.WhiteSpace.ScopeIndent"/>
+        <exclude name="PSR2.Methods.FunctionCallSignature.Indent"/>
+        <exclude name="PSR2.Methods.FunctionCallSignature.OpeningIndent"/>
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.Indent"/>
+        <exclude name="Squiz.WhiteSpace.ScopeClosingBrace.Indent"/>
     </rule>
 
     <!-- Force array element indentation with 4 spaces -->
@@ -82,6 +88,7 @@
     <!-- Only one blank line allowed -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.BlankLine"/>
 
+    <!-- Indents formatting -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.ScopeIndent">
         <properties>
             <property name="alignObjectOperators" value="false"></property>

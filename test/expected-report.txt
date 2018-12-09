@@ -33,13 +33,13 @@ test/fixable/statement-alignment.php                  19      0
 test/fixable/test-case.php                            4       0
 test/fixable/traits-uses.php                          9       0
 test/fixable/UnusedVariables.php                      1       0
-test/fixable/useless-semicolon.php                    9       0
+test/fixable/useless-semicolon.php                    8       0
 test/fixable/variable-names.php                       5       2
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 427 ERRORS AND 6 WARNINGS WERE FOUND IN 33 FILES
+A TOTAL OF 426 ERRORS AND 6 WARNINGS WERE FOUND IN 33 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 365 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 364 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
