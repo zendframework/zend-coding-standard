@@ -38,3 +38,15 @@ class SingleLineBetweenMethods
     {
     }
 }
+
+$a++;
+$b--;
+--$c;
+++$d;
+
+function nullableTypes(?int $int, ?Complex\Type $ct) : ?string
+{
+    return function (?bool $b) : ?float {
+        return 0.0;
+    };
+}

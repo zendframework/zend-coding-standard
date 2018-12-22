@@ -99,6 +99,8 @@
     <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
     <!-- Detects unconditional if- and elseif-statements -->
     <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+    <!-- Disallow spaces before/after incrementation/decrementation operators -->
+    <rule ref="Generic.WhiteSpace.IncrementDecrementSpacing"/>
 
     <!-- Forbid inline comments after closing curly bracket, like // end if etc -->
     <rule ref="WebimpressCodingStandard.Commenting.NoInlineCommentAfterCurlyClose"/>
@@ -308,6 +310,8 @@
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
     <!-- Require ? when default value is null -->
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+    <!-- Disallow space after nullable operator -->
+    <rule ref="PSR12.Functions.NullableTypeDeclaration"/>
     <!-- Require one space between typehint and variable, require no space between nullability sign and typehint -->
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
     <!-- Require space around colon in return types -->

@@ -7,7 +7,7 @@ test/fixable/anonymous-classes.php                    11      0
 test/fixable/array-indentation.php                    47      1
 test/fixable/class-name-resolution.php                15      0
 test/fixable/class-properties.php                     6       0
-test/fixable/classes-traits-interfaces.php            16      1
+test/fixable/classes-traits-interfaces.php            17      1
 test/fixable/closures.php                             19      0
 test/fixable/commenting.php                           26      0
 test/fixable/concatenation-spacing.php                21      0
@@ -22,9 +22,9 @@ test/fixable/LowCaseTypes.php                         2       0
 test/fixable/method-and-function-arguments.php        16      0
 test/fixable/method-and-function-calls.php            15      0
 test/fixable/namespaces-spacing.php                   7       0
-test/fixable/naming.php                               11      0
+test/fixable/naming.php                               12      0
 test/fixable/new-with-parentheses.php                 19      0
-test/fixable/not-spacing.php                          20      1
+test/fixable/not-spacing.php                          33      1
 test/fixable/operators.php                            17      0
 test/fixable/return-type-on-methods.php               17      0
 test/fixable/semicolon-spacing.php                    5       0
@@ -37,9 +37,9 @@ test/fixable/useless-semicolon.php                    8       0
 test/fixable/variable-names.php                       5       2
 test/fixable/visibility-declaration.php               1       0
 ----------------------------------------------------------------------
-A TOTAL OF 426 ERRORS AND 6 WARNINGS WERE FOUND IN 33 FILES
+A TOTAL OF 441 ERRORS AND 6 WARNINGS WERE FOUND IN 33 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 364 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 377 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
