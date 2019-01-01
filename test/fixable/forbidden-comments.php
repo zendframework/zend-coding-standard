@@ -1,12 +1,12 @@
 <?php
 
-/** Created by PhpStorm. */
-
 declare(strict_types=1);
+
+/** Created by PhpStorm. */
 
 namespace Test;
 
-class Foo
+class ForbiddenComments
 {
     /**
      * Constructor.
@@ -30,5 +30,5 @@ class Foo
     public function getBaz() : int
     {
         return 456;
-    }
-}
+    } // end getBaz
+} // end class

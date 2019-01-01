@@ -12,8 +12,8 @@ $instance = new class() extends \Foo implements \HandleableInterface {
 // Brace on the next line
 $instance = new class() extends \Foo implements
     \ArrayAccess,
-    \Countable,
-    \Serializable
+  \Countable,
+   \Serializable
 {
 
     // Class content

@@ -37,4 +37,11 @@ class Whatever extends Anything
     {
         return \get_called_class();
     }
+
+    public function classNotationInsteadOfString() : string
+    {
+        $a = '\PHP_CodeSniffer\Config';
+
+        return '\ArrayObject';
+    }
 }

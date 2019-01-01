@@ -35,4 +35,17 @@ class ClassName
     {
         return $arg1 ?? $arg2;
     }
+
+    public function splat(...$args)
+    {
+        return $args ?? [];
+    }
+
+    public function reference(&$ref, array $arr)
+    {
+        $obj = new Foo();
+        $bar = &$arr;
+
+        return $obj->process($bar);
+    }
 }
