@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace FooBar;
+
+use Arrayobject as AO;
+
 class Foo
 {
 
@@ -9,16 +13,20 @@ class Foo
 
 }
 
-trait Bar
+trait BarTrait
 {
 
     public $var;
 
 }
 
-interface Baz
+interface BazInterface
 {
 
     public function big() : int;
 
 }
+
+new \Datetime();
+new \arrayobject();
+new Ao();

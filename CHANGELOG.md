@@ -23,9 +23,24 @@ All notable changes to this project will be documented in this file, in reverse 
   - Forbid whitespace around double colon operator
   - Forbid whitespace around double colon operator
 
+- [#10](https://github.com/zendframework/zend-coding-standard/pull/10) adds additional sniffs.
+
+  - Added AnonymousClassDeclaration sniff
+  - Added ScopeIndent sniff
+  - Added sniff to disallow spaces before/after incrementation/decrementation operators
+  - Added sniff to disallow space after nullable operator
+
 ### Changed
 
 - [#8](https://github.com/zendframework/zend-coding-standard/pull/8) replaces sniffs in favor of webimpress/coding-standard as these are more reliable or fixes more cases.
+
+- [#10](https://github.com/zendframework/zend-coding-standard/pull/10) adds additional sniffs.
+
+  - Improve absolute class name references sniffs
+  - Improve sniff for useless alias for classes, constants, functions and traits
+  - Use PSR-12 sniff for class instantiation parenthesis
+  - Use PEAR.Commenting.FunctionComment instead of Squiz 
+  - Updated to PHP_CodeSniffer 3.4.0 
 
 ### Deprecated
 

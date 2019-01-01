@@ -37,4 +37,11 @@ class Whatever extends Anything
     {
         return static::class;
     }
+
+    public function classNotationInsteadOfString() : string
+    {
+        $a = PHP_CodeSniffer\Config::class;
+
+        return ArrayObject::class;
+    }
 }

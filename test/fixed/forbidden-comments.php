@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Test;
 
-class Foo
+class ForbiddenComments
 {
     public function __construct()
     {
@@ -22,5 +22,5 @@ class Foo
     public function getBaz() : int
     {
         return 456;
-    }
-}
+    } // end getBaz
+} // end class

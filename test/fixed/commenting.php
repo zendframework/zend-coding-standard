@@ -109,4 +109,36 @@ class Commenting
         // to match and thus prevent double-encoding.
         return 'foo';
     }
+
+    /**
+     * Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+     * tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+     * veniam, quis nostrud exercitation ullamco
+     *
+     * @param ConfigInterface|null                      $config     A custom configuration to utilize. An empty configuration is used
+     *                                                              when null is passed or the parameter is omitted.
+     * @param ContainerInterface|null                   $container  The IoC container to retrieve dependency instances.
+     *                                                              `Zend\Di\DefaultContainer` is used when null is
+     *                                                              passed or the parameter is omitted.
+     * @param Definition\DefinitionInterface            $definition A custom definition instance for creating requested instances.
+     *                                                              The runtime definition is used when null is passed or the
+     *                                                              parameter is omitted.
+     * @param Resolver\DependencyResolverInterface|null $resolver   A custom resolver instance to resolve dependencies.
+     *                                                              The default resolver is used when null is passed or
+     *                                                              the parameter is omitted
+     * @return array|Traversable|iterable|DateTime[] Aliquam ac sem fringilla
+     *     felis efficitur luctus sit amet in eros. Vestibulum magna purus,
+     *     lobortis vitae scelerisque at, feugiat quis nulla
+     * @throws InvalidArgumentException Itaque earum rerum hic tenetur a
+     *     sapiente delectus, ut aut reiciendis voluptatibus maiores alias
+     *     consequatur aut perferendis doloribus asperiores repellat
+     */
+    public function multipleLinesComments(
+        ?ConfigInterface $config = null,
+        ?ContainerInterface $container = null,
+        ?Definition\DefinitionInterface $definition = null,
+        ?Resolver\DependencyResolverInterface $resolver = null
+    ) : iterable {
+        return [];
+    }
 }

@@ -2,17 +2,26 @@
 
 declare(strict_types=1);
 
+namespace FooBar;
+
+use ArrayObject as AO;
+use DateTime;
+
 class Foo
 {
     public $bar;
 }
 
-trait Bar
+trait BarTrait
 {
     public $var;
 }
 
-interface Baz
+interface BazInterface
 {
     public function big() : int;
 }
+
+new DateTime();
+new AO();
+new AO();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Foo;
 
+use Bar\Baz;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -19,4 +20,4 @@ strrev(
         ->format(DATE_RFC3339)
 );
 
-// new \ Bar \ Baz();
+new Baz();

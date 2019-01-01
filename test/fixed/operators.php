@@ -33,3 +33,13 @@ $fooBar = isset($foo, $bar) ? 'foo' : 'bar';
 $baz = ! isset($foo) ? 'foo' : 'baz';
 
 echo Something::BAR;
+
+if ($a
+    && $b
+) {
+    echo 1;
+}
+
+$a
+    ? $b
+    : $c;
