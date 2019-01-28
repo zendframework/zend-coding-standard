@@ -113,34 +113,6 @@ final class Foo
 }
 ```
 
-### Generic.CodeAnalysis.UselessOverridingMethod
-Methods that only call the parent method should not be defined.
-
-*Valid: A method that extends functionality on a parent method.*
-```php
-<?php
-final class Foo
-{
-    public function bar() : void
-    {
-        parent::bar();
-        $this->doSomethingElse();
-    }
-}
-```
-
-*Invalid: An overriding method that only calls the parent.*
-```php
-<?php
-final class Foo
-{
-    public function bar() : void
-    {
-       parent::bar();
-    }
-}
-```
-
 ### Generic.Files.InlineHTML
 Files that contain PHP code should only have PHP code and should not have any _"inline HTML"_.
 
