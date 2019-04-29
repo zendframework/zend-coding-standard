@@ -953,25 +953,26 @@ Force whitespace before and after concatenation
 
 ### Squiz.Strings.DoubleQuoteUsage
 #### Squiz.Strings.DoubleQuoteUsage.ContainsVar
-Double quote strings may only be used if they contain variables. SQL queries containing single quotes are an exception
+Double quote strings may only be used if they contain variables, control characters or if using single quotes would 
+result in more escaped characters than necessary. For instance, SQL queries containing single quotes are an exception
 to the rule.
 
-*Valid: Double quote strings are only used when it contains a variable.*
+*Valid: Double quote strings are only used when it contains a variable, control characters or single quotes.*
 ```php
 <?php
 $string = "Hello There\r\n";
 $string = "Hello $there";
 $string = 'Hello There';
-$string = 'Hello'.' There'."\n";
+$string = 'Hello' . ' There' . "\n";
 $string = '\$var';
 $query = "SELECT * FROM table WHERE name =''";
 ```
 
-*Invalid: There are no variables inside double quote strings.*
+*Invalid: There are no variables, control characters inside double quote strings*
 ```php
 <?php
 $string = "Hello There";
-$string = "Hello"." There"."\n";
+$string = "Hello" . " There" . "\n";
 $string = "\$var";
 ```
 
