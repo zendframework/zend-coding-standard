@@ -963,12 +963,11 @@ to the rule.
 $string = "Hello There\r\n";
 $string = "Hello $there";
 $string = 'Hello There';
-$string = 'Hello' . ' There' . "\n";
 $string = '\$var';
 $query = "SELECT * FROM table WHERE name =''";
 ```
 
-*Invalid: There are no variables, control characters inside double quote strings*
+*Invalid: There are no variables or control characters inside double quote strings.*
 ```php
 <?php
 $string = "Hello There";
