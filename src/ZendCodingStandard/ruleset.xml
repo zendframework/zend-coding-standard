@@ -134,7 +134,13 @@
     <!-- Forbid final methods in final classes -->
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
     <!-- Forbid useless empty method overrides -->
+    <!--
+    The sniff is disabled because it's not working properly in case we change
+    default value of parameters.
+    See: https://github.com/zendframework/zend-coding-standard/issues/12
+         https://github.com/squizlabs/PHP_CodeSniffer/issues/519
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    -->
     <!-- Forbid inline HTML in PHP code -->
     <rule ref="Generic.Files.InlineHTML"/>
     <!-- Force Unix LF (linefeed) line ending -->
