@@ -412,7 +412,7 @@ private $foo;
 private $foo;
 ```
 
-### SlevomatCodingStandard.ControlStructures.DisallowEqualOperators
+### SlevomatCodingStandard.Operators.DisallowEqualOperators
 Loose `==` and `!=` comparison operators should not be used. Use strict comparison `===` and `!==` instead, they are
 much more secure and predictable.
 
