@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\fixed;
 
 class IfElseifElse
@@ -21,7 +23,7 @@ class IfElseifElse
         }
     }
 
-    public function testMultilineIfStructure(?string $expr1, ?string $expr2): ?string
+    public function testMultiLineIfStructure(?string $expr1, ?string $expr2): ?string
     {
         // Expressions in parentheses MAY be split across multiple lines, where
         // each subsequent line is indented at least once. When doing so, the
@@ -43,5 +45,31 @@ class IfElseifElse
         }
 
         return null;
+    }
+
+    public function testMultiLineMultiExpressions(): void
+    {
+        if (
+            ($n > 0 && $n < 10)
+            || ($n > 10 && $n < 20)
+            || ($n > 20 && $n < 30)
+        ) {
+            return $n;
+        }
+
+        if (
+            (
+                $expr1
+                && $expr2
+                && $expr3
+                && $expr4
+                && $expr5
+                && $expr6
+            )
+            || ($n > 100 && $n < 200)
+            || ($n > 200 && $n < 300)
+        ) {
+            return $n;
+        }
     }
 }

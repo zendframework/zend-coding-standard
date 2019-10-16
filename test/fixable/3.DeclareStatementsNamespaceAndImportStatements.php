@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace ZendCodingStandardTest\fixed;
+namespace   ZendCodingStandardTest  \  fixed;
 
 use Bar\Baz;
 use \DateTimeZone;
@@ -35,6 +35,13 @@ class DeclareStatementsNamespaceAndImportStatements
         // One or more function-based use import statements.
         // One or more constant-based use import statements.
         // The remainder of the code in the file.
+    }
+
+    public function testNamespaceSpacing(): void
+    {
+        // There MUST be a single space after the namespace keyword.
+        //
+        // There MAY NOT be a space around a namespace separator.
     }
 
     public function testImportStatements(): void

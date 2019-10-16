@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\fixed;
 
 class MethodsAndFunctions
@@ -24,8 +26,24 @@ class MethodsAndFunctions
         }
     }
 
-    private static function testOneSingleLineBetweenMethods()
+    public function testOneSingleLineBetweenMethods()
     {
         // There MUST be a single empty line between methods in a class.
+    }
+
+    public static function testThisMayNotBeCalledInsideStaticFunction(): void
+    {
+        // The pseudo-variable `$this` MAY not be called inside a static method
+        // or function.
+
+        echo $this->name;
+    }
+
+    public function testReturnedVariablesShouldBeUseful(): bool
+    {
+        // Returned variables SHOULD be useful and not be assign to a value and
+        // returned on the next line.
+
+        return true;
     }
 }

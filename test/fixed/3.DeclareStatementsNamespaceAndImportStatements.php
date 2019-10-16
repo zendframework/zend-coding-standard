@@ -41,6 +41,13 @@ class DeclareStatementsNamespaceAndImportStatements
         // The remainder of the code in the file.
     }
 
+    public function testNamespaceSpacing(): void
+    {
+        // There MUST be a single space after the namespace keyword.
+        //
+        // There MAY NOT be a space around a namespace separator.
+    }
+
     public function testImportStatements(): void
     {
         // Import statements MUST never begin with a leading backslash as they

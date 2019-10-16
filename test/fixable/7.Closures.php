@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\fixed;
 
 class Closures
@@ -35,64 +37,37 @@ class Closures
         // MUST follow the use list closing parentheses with no spaces between
         // the two characters.
 
-        $closureWithArgs = function( $arg1, $arg2){
-            // body
+        $closureWithArgs = function ($arg1, $arg2) {
+            echo "$arg1, $arg2";
         };
 
-        $closureWithArgsAndVars = function ($arg1, $arg2) use ($var1, $var2)
-        {
-            // body
+        $closureWithArgsAndVars = function ($arg1, $arg2) use ($var1, $var2) {
+            echo "$arg1, $arg2, $var1, $var2";
         };
 
         $closureWithArgsVarsAndReturn = function ($arg1, $arg2) use ($var1, $var2): bool {
-            // body
+            return $arg1 === $arg2 && $var1 === $var2;
+        };
+
+        $multiLineCLosre = function (
+            $arg1,
+            $arg2
+        ) use (
+            $var1,
+            $var2
+        ): bool {
+            return $arg1 === $arg2 && $var1 === $var2;
         };
     }
 
-    public function testMultilineClosures(): void
+    public function testInheritedVariablesMustBeUsed(): void
     {
-        $longArgs_noVars = function (
-            $longArgument,
-            $longerArgument,
-            $muchLongerArgument
-        ) {
-            // body
-        };
+        // Inherited variables passed via `use` MUST be used in closures.
 
-        $noArgs_longVars = function () use (
-            $longVar1,
-            $longerVar2,
-            $muchLongerVar3
-        ) {
-            // body
+        $message = 'world';
+        $example = function ($arg) use ($message, $extraVar) {
+            echo "$arg $message";
         };
-
-        $longArgs_longVars = function (
-            $longArgument,
-            $longerArgument,
-            $muchLongerArgument
-        ) use (
-            $longVar1,
-            $longerVar2,
-            $muchLongerVar3
-        ) {
-            // body
-        };
-
-        $longArgs_shortVars = function (
-            $longArgument,
-            $longerArgument,
-            $muchLongerArgument
-        ) use ($var1) {
-            // body
-        };
-
-        $shortArgs_longVars = function ($arg) use (
-            $longVar1,
-            $longerVar2,
-            $muchLongerVar3
-        ) {
-            // body
-        };
+        $example('hello');
     }
 }

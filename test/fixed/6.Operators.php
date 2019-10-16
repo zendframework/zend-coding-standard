@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\fixed;
 
 class Operators
@@ -13,5 +15,106 @@ class Operators
 
         $foo    = 'bar';
         $fooBar = 'bar';
+    }
+
+    public function testOperatorSpacing(): void
+    {
+        // There MUST be one single whitespace around logical operators.
+
+        if ($foo || $bar) {
+            return;
+        }
+        if ($foo || $bar && $baz) {
+            return;
+        }
+        if ($foo || $bar && $baz) {
+            return;
+        }
+        if ($foo || $bar && $baz) {
+            return;
+        }
+
+        $result = 1 + 2;
+        $result = 1 + 2;
+        $result = 1 + 2;
+
+        $result = 1 - 2;
+        $result = 1 - 2;
+        $result = 1 - 2;
+
+        $result = 1 * 2;
+        $result = 1 * 2;
+        $result = 1 * 2;
+
+        $result = 1 / 2;
+        $result = 1 / 2;
+        $result = 1 / 2;
+
+        $result = 1 % 2;
+        $result = 1 % 2;
+        $result = 1 % 2;
+        $result = '100%';
+
+        $result += 4;
+        $result += 4;
+        $result -= 4;
+        $result -= 4;
+        $result /= 4;
+        $result /= 4;
+        $result *= 4;
+        $result *= 4;
+    }
+
+    public function testObjectOperatorSpacing()
+    {
+        // There MAY NOT be any white space around the object operator unless
+        // multilines are used.
+
+        $this->testOperatorSpacing();
+        $this->testOperatorSpacing();
+        $this->testOperatorSpacing();
+        $this
+            ->testOperatorSpacing();
+        $this->
+            testOperatorSpacing();
+    }
+
+    public function testUseStrictComparisonOperators(): void
+    {
+        // Loose comparison operators SHOULD NOT be used, use strict comparison
+        // operators instead.
+
+        $foo === 123;
+        123 === $foo;
+        true !== 0.0;
+        false !== true;
+    }
+
+    public function testUseNullCoalesceOperator(): void
+    {
+        // The null coalesce operator MUST be used when possible.
+
+        $a = $_GET['a'] ?? 'a';
+        $b = $bb ?? 'bb';
+        $c = $cc['c'] ?? 'c';
+    }
+
+    public function testAssignmentOperators(int $var): void
+    {
+        // Assignment operators SHOULD be used when possible.
+
+        $var  &= 2;
+        $var  |= 4;
+        $var  .= '';
+        $var  /= 10;
+        $var  -= 100;
+        $var **= 2;
+        $var  %= 2;
+        $var  *= 1000;
+        $var  += 4;
+        $var <<= 2;
+        $var >>= 2;
+        $var  ^= 10;
+        $var  += 10;
     }
 }

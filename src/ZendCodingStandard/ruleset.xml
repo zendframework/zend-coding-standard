@@ -9,11 +9,79 @@
     <!-- 2.1 Basic Coding Standard -->
 
     <!-- Code MUST follow all rules outlined in PSR-1. -->
-    <rule ref="PSR12"/>
+    <rule ref="PSR12">
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen"/>
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingBeforeClose"/>
+        <!-- checked by WebimpressCodingStandard.WhiteSpace.BraceBlankLine -->
+    </rule>
 
     <!-- The term 'StudlyCaps' in PSR-1 MUST be interpreted as PascalCase where
          the first letter of each word is capitalized including the very first
          letter. -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- There MAY NOT be any content before the opening tag. -->
+    <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag"/>
+
+    <!-- The short open tag MAY NOT be used. -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag">
+        <!-- The short echo tag MAY be used in templates. -->
+        <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound"/>
+    </rule>
+    <!-- There MAY NOT be any inline HTML in PHP code. -->
+    <rule ref="Generic.Files.InlineHTML"/>
+    <!-- Deprecated PHP functions MUST be avoided. -->
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <!-- The backtick operator MAY NOT be used. -->
+    <rule ref="Generic.PHP.BacktickOperator"/>
+    <!-- The PHP `goto` language construct MAY NOT be used. -->
+    <rule ref="Generic.PHP.DiscourageGoto"/>
+    <!-- The `global` keyword MAY NOT be used. -->
+    <rule ref="Squiz.PHP.GlobalKeyword"/>
+    <!-- The constant `PHP_SAPI` SHOULD be used instead of the
+         `php_sapi_name()` function. -->
+    <rule ref="Generic.PHP.SAPIUsage"/>
+    <!-- Alias functions SHOULD NOT be used. -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array">
+                <element key="chop" value="rtrim"/>
+                <element key="close" value="closedir"/>
+                <element key="compact" value="null"/>
+                <element key="delete" value="unset"/>
+                <element key="doubleval" value="floatval"/>
+                <element key="extract" value="null"/>
+                <element key="fputs" value="fwrite"/>
+                <element key="ini_alter" value="ini_set"/>
+                <element key="is_double" value="is_float"/>
+                <element key="is_integer" value="is_int"/>
+                <element key="is_long" value="is_int"/>
+                <element key="is_null" value="null"/>
+                <element key="is_real" value="is_float"/>
+                <element key="is_writeable" value="is_writable"/>
+                <element key="join" value="implode"/>
+                <element key="key_exists" value="array_key_exists"/>
+                <element key="pos" value="current"/>
+                <element key="settype" value="null"/>
+                <element key="show_source" value="highlight_file"/>
+                <element key="sizeof" value="count"/>
+                <element key="strchr" value="strstr"/>
+            </property>
+        </properties>
+    </rule>
+    <!-- There MAY NOT be a space before a semicolon. Redundant semicolons
+         SHOULD be avoided. -->
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+    <rule ref="WebimpressCodingStandard.PHP.RedundantSemicolon"/>
+    <!-- Non executable code MUST be removed. -->
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <!-- There MUST be a single space after language constructs. -->
+    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
+    <!-- Parentheses MUST be omitted where possible. -->
+    <rule ref="WebimpressCodingStandard.Formatting.RedundantParentheses"/>
+    <!-- PHP function calls MUST be in lowercase. -->
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
 
     <!-- 2.2 Files -->
 
@@ -26,6 +94,12 @@
 
     <!-- The closing ?> tag MUST be omitted from files containing only PHP. -->
     <!-- checked by PSR2.Files.ClosingTag -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- The declare(strict_types=1) directive MUST be declared and be the
+         first statement in a file. -->
+    <rule ref="Generic.PHP.RequireStrictTypes"/>
 
     <!-- 2.3 Lines -->
 
@@ -44,6 +118,16 @@
     <!-- There MUST NOT be more than one statement per line. -->
     <!-- checked by Generic.Formatting.DisallowMultipleStatements -->
 
+    <!-- Additional ZendFramework rules -->
+
+    <!-- There MAY be maximum one blank line to improve readability and to
+         indicate related blocks of code except where explicitly forbidden. -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.BlankLine"/>
+
+    <!-- There MAY NOT be any blank line after opening braces and before
+         closing braces. -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.BraceBlankLine"/>
+
     <!-- 2.4 Indenting -->
 
     <!-- Code MUST use an indent of 4 spaces for each indent level, and MUST
@@ -53,7 +137,7 @@
 
     <!-- 2.5 Keywords and Types -->
 
-    <!-- All PHP reserved keywords and types [1][2] MUST be in lower case.
+    <!-- All PHP reserved keywords and types MUST be in lower case.
          Any new types and keywords added to future PHP versions MUST be in
          lower case. -->
     <!-- checked by Generic.PHP.LowerCaseKeyword -->
@@ -63,6 +147,13 @@
     <!-- Short form of type keywords MUST be used i.e. bool instead of boolean,
          int instead of integer etc. -->
     <!-- checked by PSR12.Keywords.ShortFormTypeKeywords -->
+
+    <!-- 2.6 Variables -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- Variable names MUST be declared in camelCase. -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.ValidVariableName"/>
 
     <!-- 3. Declare Statements, Namespace, and Import Statements -->
 
@@ -111,11 +202,15 @@
 
     <!-- TODO: Declare statements must be after the File level docblock if present. -->
 
-    <!-- Import statements must be alphabetically sorted. -->
+    <!-- There MUST be a single space after the namespace keyword. -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.Namespace"/>
+    <!-- There MAY NOT be a space around a namespace separator. -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.NamespaceSeparator"/>
+    <!-- Import statements MUST be alphabetically sorted. -->
     <rule ref="WebimpressCodingStandard.Namespaces.AlphabeticallySortedUses"/>
-    <!-- Functions and const keywords must be lowercase in import statements. -->
+    <!-- Functions and const keywords MUST be lowercase in import statements. -->
     <rule ref="WebimpressCodingStandard.Namespaces.ConstAndFunctionKeywords"/>
-    <!-- Unused import statements are not allowed.-->
+    <!-- Unused import statements MUST be removed.-->
     <rule ref="WebimpressCodingStandard.Namespaces.UnusedUseStatement"/>
     <!-- Superfluous leading backslash in import statements MUST be removed. -->
     <rule ref="WebimpressCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
@@ -145,6 +240,37 @@
     <!-- When instantiating a new class, parentheses MUST always be present
          even when there are no arguments passed to the constructor. -->
     <!-- checked by PSR12.Classes.ClassInstantiation -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- There MAY NOT be duplicate class names. -->
+    <rule ref="Generic.Classes.DuplicateClassName"/>
+    <!-- The file name MUST match the case of the terminating class name. -->
+    <rule ref="Squiz.Classes.ClassFileName"/>
+    <!-- PHP 4 style constructors SHOULD NOT be used. -->
+    <rule ref="Generic.NamingConventions.ConstructorName"/>
+    <!-- Abstract classes MUST have a `Abstract` prefix. -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.AbstractClass"/>
+    <!-- Exception classes MUST have a `Exception` suffix. -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.Exception"/>
+    <!-- Interface classes MUST have a `Interface` suffix. -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.Interface"/>
+    <!-- Trait classes MUST have a `Trait` suffix. -->
+    <rule ref="WebimpressCodingStandard.NamingConventions.Trait"/>
+    <!-- The correct class names MUST be used. -->
+    <rule ref="WebimpressCodingStandard.PHP.CorrectClassNameCase"/>
+    <!-- For self-reference a class lower-case `self::` MUST be used without
+         spaces around the scope resolution operator. -->
+    <rule ref="Squiz.Classes.SelfMemberReference"/>
+    <!-- Class name resolution via `::class` MUST be used instead of
+         `__CLASS__`, `get_class()`, `get_class($this)`,
+         `get_called_class()`, `get_parent_class()` and string reference. -->
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
+    <rule ref="WebimpressCodingStandard.Formatting.StringClassReference"/>
+    <!-- There MAY NOT be any whitespace around the double colon operator. -->
+    <rule ref="WebimpressCodingStandard.Formatting.DoubleColon"/>
+    <!-- All private methods, constants and properties MUST be used. -->
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
 
     <!-- 4.1 Extends and Implements -->
 
@@ -178,8 +304,6 @@
 
     <!-- Additional ZendFramework rules -->
 
-    <!-- Traits MUST have a `Trait` suffix. -->
-    <rule ref="WebimpressCodingStandard.NamingConventions.Trait"/>
     <!-- Traits MUST be sorted alphabetically. -->
     <rule ref="WebimpressCodingStandard.Classes.AlphabeticallySortedTraits"/>
 
@@ -227,6 +351,12 @@
 
     <!-- There MUST be a single empty line between methods in a class. -->
     <rule ref="WebimpressCodingStandard.Methods.LineAfter"/>
+    <!-- The pseudo-variable `$this` MAY not be called inside a static method
+         or function. -->
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+    <!-- Returned variables SHOULD be useful and not be assign to a value and
+         returned on the next line. -->
+    <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
 
     <!-- 4.5 Method and Function Arguments -->
 
@@ -239,6 +369,9 @@
     <!-- When combining both the reference operator and the variadic three dot
          operator, there MUST NOT be any space between the two of them. -->
     <!-- checked by Squiz.Functions.FunctionDeclarationArgumentSpacing -->
+    <rule ref="WebimpressCodingStandard.WhiteSpace.CommaSpacing"/>
+    <rule ref="WebimpressCodingStandard.Formatting.NoSpaceAfterSplat"/>
+    <rule ref="WebimpressCodingStandard.Formatting.Reference"/>
 
     <!-- Method and function arguments with default values MUST go at the end
          of the argument list. -->
@@ -279,6 +412,8 @@
 
     <!-- The final keyword on methods MUST be omitted in final classes. -->
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <!-- All catch blocks MUST be reachable. -->
+    <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <!-- 4.7 Method and Function Calls -->
 
@@ -312,13 +447,23 @@
          standardizes how the structures look and reduces the likelihood of
          introducing errors as new lines get added to the body. -->
     <!-- checked by Squiz.ControlStructures.ControlSignature -->
-    <!-- checked by Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen -->
-    <!-- checked by Squiz.WhiteSpace.ControlStructureSpacing.SpacingBeforeClose -->
     <!-- checked by Squiz.WhiteSpace.ScopeClosingBrace -->
     <!-- checked by Squiz.ControlStructures.ForEachLoopDeclaration -->
     <!-- checked by Squiz.ControlStructures.ForLoopDeclaration -->
     <!-- checked by Squiz.ControlStructures.LowercaseDeclaration -->
     <!-- checked by Generic.ControlStructures.InlineControlStructure -->
+    <!-- checked by WebimpressCodingStandard.WhiteSpace.BraceBlankLine -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- There SHOULD be one single space after `break` and `continue` structures with
+         a numeric argument argument. -->
+    <rule ref="WebimpressCodingStandard.ControlStructures.BreakAndContinue"/>
+    <!-- Statements MAY NOT be empty, except for catch statements. -->
+    <rule ref="Generic.CodeAnalysis.EmptyStatement">
+        <!-- But allow empty catch -->
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
+    </rule>
 
     <!-- 5.1 if, elseif, else -->
 
@@ -357,6 +502,12 @@
     <!-- checked by PSR12.ControlStructures.ControlStructureSpacing -->
     <!-- checked by PSR12.ControlStructures.BooleanOperatorPlacement -->
     <!-- checked by Squiz.ControlStructures.ControlSignature -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- The `continue` control structure MAY NOT be used in switch statements,
+         `break` SHOULD be used instead. -->
+    <rule ref="WebimpressCodingStandard.ControlStructures.ContinueInSwitch"/>
 
     <!-- 5.3.1 while -->
 
@@ -401,6 +552,11 @@
 
     <!-- 5.6 try, catch, finally -->
 
+    <!-- Additional ZendFramework rules -->
+
+    <!-- Catch blocks SHOULD catch `Throwable` instead of `Exception`. -->
+    <rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>
+
     <!-- 6. Operators -->
 
     <!-- When space is permitted around an operator, multiple spaces MAY be
@@ -409,9 +565,9 @@
 
     <!-- Additional ZendFramework rules -->
 
-    <!-- There must be at least one space on either side of an equals sign used
+    <!-- There MUST be at least one space on either side of an equals sign used
          to assign a value to a variable. In case of a block of related
-         assignments, more space MUST be inserted before the equal sign to
+         assignments, more spaces MUST be inserted before the equal sign to
          promote readability. -->
     <rule ref="Generic.Formatting.MultipleStatementAlignment">
         <properties>
@@ -419,7 +575,27 @@
             <property name="maxPadding" value="50"/>
         </properties>
     </rule>
-    <!-- TODO: There may be only one space after an operator. -->
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+        <properties>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <!-- There MAY NOT be any white space around the object operator unless
+         multilines are used. -->
+    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+    <!-- There MAY NOT be spaces around the object operator. -->
+    <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
+        <properties>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <!-- Loose comparison operators SHOULD NOT be used, use strict comparison
+         operators instead. -->
+    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
+    <!-- The null coalesce operator MUST be used when possible. -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+    <!-- Assignment operators SHOULD be used when possible. -->
+    <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
 
     <!-- 6.1. Unary operators -->
 
@@ -433,11 +609,7 @@
     <!-- Additional ZendFramework rules -->
 
     <!-- There MUST be one whitespace after a type casting operator. -->
-    <rule ref="Generic.Formatting.SpaceAfterCast">
-        <properties>
-            <property name="spacing" value="1"/>
-        </properties>
-    </rule>
+    <rule ref="Generic.Formatting.SpaceAfterCast"/>
     <!-- There MUST be one whitespace after unary not. -->
     <rule ref="Generic.Formatting.SpaceAfterNot"/>
 
@@ -485,6 +657,11 @@
          MUST follow the use list closing parentheses with no spaces between
          the two characters. -->
     <!-- checked by PSR12.Functions.ReturnTypeDeclaration -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- Inherited variables passed via `use` MUST be used in closures. -->
+    <rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
 
     <!-- 8. Anonymous Classes -->
 

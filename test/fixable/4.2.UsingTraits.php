@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\fixed;
 
 use Vendor\Package\ThirdTrait;
@@ -28,8 +30,6 @@ class UsingTraits
         // Otherwise, it MUST have a blank line after the use import statement.
         // When using the insteadof and as operators they must be used as follows
         // taking note of indentation, spacing, and new lines.
-        //
-        // Traits MUST have a `Trait` suffix.
         //
         // Traits MUST be sorted alphabetically.
     }

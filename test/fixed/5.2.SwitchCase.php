@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZendCodingStandardTest\fixed;
 
 class SwitchCase
@@ -49,6 +51,37 @@ class SwitchCase
             default:
                 echo 'Default case';
                 break;
+        }
+    }
+
+    public function testContinueInSwitchStatement(): void
+    {
+        // The `continue` control structure MAY NOT be used in switch statements,
+        // `break` SHOULD be used instead.
+
+        while (true) {
+            switch (true) {
+                case true:
+                    if ($x) {
+                        break;
+                    } elseif ($y) {
+                        break;
+                    } else {
+                        break;
+                    }
+                    break;
+                case false:
+                    break;
+                case null:
+                    if ($x) {
+                        continue 2;
+                    } elseif ($y) {
+                        continue 2;
+                    } else {
+                        continue 2;
+                    }
+                    continue 2;
+            }
         }
     }
 }
