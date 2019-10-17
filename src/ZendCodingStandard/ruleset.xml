@@ -455,8 +455,6 @@
 
     <!-- The final keyword on methods MUST be omitted in final classes. -->
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
-    <!-- All catch blocks MUST be reachable. -->
-    <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <!-- 4.7 Method and Function Calls -->
 
@@ -596,6 +594,9 @@
     <!-- 5.6 try, catch, finally -->
 
     <!-- Additional ZendFramework rules -->
+
+    <!-- All catch blocks MUST be reachable. -->
+    <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <!-- Catch blocks SHOULD catch `Throwable` instead of `Exception`. -->
     <rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>

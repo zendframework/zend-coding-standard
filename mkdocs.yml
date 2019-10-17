@@ -4,8 +4,6 @@ pages:
     - index.md
     - 'Introduction': v2/intro.md
     - 'Coding Style Guide': v2/coding-style-guide.md
-    - 'Reference':
-        - 'Ruleset': v2/ruleset.md
     - v1:
         - v1/index.md
         - 'Introduction': v1/intro.md
