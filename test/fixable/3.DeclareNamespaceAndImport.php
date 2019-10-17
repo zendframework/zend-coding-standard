@@ -6,22 +6,18 @@
 
 declare(strict_types=1);
 
-namespace ZendCodingStandardTest\fixed;
+namespace   ZendCodingStandardTest  \  fixed;
 
 use Bar\Baz;
-use DateInterval;
-use DateTimeImmutable;
-use DateTimeZone;
-
+use \DateTimeZone;
 use function strrev;
-use function time;
-
-use const DATE_RFC3339;
+use \DateInterval;
+use DateTimeImmutable;
 
 /**
  * FooBar is an example class.
  */
-class DeclareStatementsNamespaceAndImportStatements
+class DeclareNamespaceAndImport
 {
     public function testFilesFileHeader(): void
     {
@@ -99,7 +95,8 @@ class DeclareStatementsNamespaceAndImportStatements
         //
         // Block declare statements are allowed and MUST be formatted as below.
 
-        declare(ticks=1) {
+        declare(ticks=1)
+        {
             // some code
         }
     }
