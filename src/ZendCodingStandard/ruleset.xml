@@ -639,6 +639,8 @@
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
     <!-- Assignment operators SHOULD be used when possible. -->
     <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
+    <!-- The `&&` and `||` operators SHOULD be used instad of `and` and `or`. -->
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
 
     <!-- 6.1. Unary operators -->
 
