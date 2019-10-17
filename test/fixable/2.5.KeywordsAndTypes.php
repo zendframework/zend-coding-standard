@@ -8,11 +8,11 @@ use function is_int;
 
 class KeywordsAndTypes
 {
-    public function testLowerCaseKeyword(String $string): ARRAY
+    public function testLowerCaseKeyword(String $string): VOID
     {
         // All PHP reserved keywords and types MUST be in lower case.
 
-        return Array();
+        return Exit();
     }
 
     public function testLowerCaseConstant(string $var): bool

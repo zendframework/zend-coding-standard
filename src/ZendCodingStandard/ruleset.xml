@@ -175,6 +175,29 @@
     <!-- Variable names MUST be declared in camelCase. -->
     <rule ref="WebimpressCodingStandard.NamingConventions.ValidVariableName"/>
 
+    <!-- 2.7 Arrays -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- The short array syntax MUST be used to define arrays. -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <!-- All values in multiline arrays must be indented with 4 spaces. -->
+    <rule ref="Generic.Arrays.ArrayIndent"/>
+    <!-- All array values must be followed by a comma, including the last value. -->
+    <rule ref="WebimpressCodingStandard.Arrays.TrailingArrayComma"/>
+    <!-- There MUST be no whitespace around the opening bracket or before the
+         closing bracket when referencing an array. -->
+    <rule ref="WebimpressCodingStandard.Arrays.Format"/>
+    <!-- All double arrow symbols MUST be aligned to one space after the
+         longest array key. -->
+    <rule ref="WebimpressCodingStandard.Arrays.DoubleArrow">
+        <properties>
+            <property name="maxPadding" value="50"/>
+        </properties>
+    </rule>
+    <!-- The short list syntax `[...]` SHOULD be used instead of `list(...)`. -->
+    <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
+
     <!-- 3. Declare Statements, Namespace, and Import Statements -->
 
     <!-- The header of a PHP file may consist of a number of different blocks.
