@@ -39,7 +39,7 @@ class BasicCodingStandard extends Bar implements FooInterface
         }
     }
 
-    final public static function bar()
+    final public static function bar(): void
     {
         // method body
     }
@@ -120,7 +120,7 @@ class BasicCodingStandard extends Bar implements FooInterface
 
         $a = $b{0} ;
         $hello = 1  ;;
-        $world = $hello ;;; /* comment */ ;;;
+        $world = $hello ;;; /* comment */
     }
 
     public function testNonExecutableCodeMMustBeRemoved(int $x): int

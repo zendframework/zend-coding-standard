@@ -33,7 +33,7 @@ class BasicCodingStandard extends Bar implements FooInterface
         }
     }
 
-    final public static function bar()
+    final public static function bar(): void
     {
         // method body
     }

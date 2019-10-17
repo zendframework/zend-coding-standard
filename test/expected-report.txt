@@ -3,23 +3,23 @@ PHP CODE SNIFFER REPORT SUMMARY
 ----------------------------------------------------------------------
 FILE                                                  ERRORS  WARNINGS
 ----------------------------------------------------------------------
-test/fixable/2.1.BasicCodingStandard.php              63      1
+test/fixable/2.1.BasicCodingStandard.php              59      1
 test/fixable/2.2.Files.php                            4       0
 test/fixable/2.3.Lines.php                            35      0
 test/fixable/2.4.IndentingAndSpacing.php              46      0
-test/fixable/2.5.KeywordsAndTypes.php                 8       0
+test/fixable/2.5.KeywordsAndTypes.php                 13      0
 test/fixable/2.6.Variables.php                        3       0
 test/fixable/2.7.Arrays.php                           9       0
 test/fixable/3.DeclareNamespaceAndImport.php          15      0
 test/fixable/4.1.ExtendsAndImplements.php             5       0
 test/fixable/4.2.UsingTraits.php                      6       0
 test/fixable/4.3.PropertiesAndConstants.php           5       0
-test/fixable/4.4.MethodsAndFunctions.php              19      0
-test/fixable/4.5.MethodAndFunctionArguments.php       57      0
+test/fixable/4.4.MethodsAndFunctions.php              26      0
+test/fixable/4.5.MethodAndFunctionArguments.php       66      0
 test/fixable/4.6.AbstractFinalAndStatic.php           4       0
 test/fixable/4.7.MethodAndFunctionCalls.php           11      0
 test/fixable/4.ClassesPropertiesAndMethods.php        32      0
-test/fixable/5.1.IfElseifElse.php                     13      1
+test/fixable/5.1.IfElseifElse.php                     15      1
 test/fixable/5.2.SwitchCase.php                       11      0
 test/fixable/5.3.WhileAndDoWhile.php                  12      0
 test/fixable/5.4.ForStructure.php                     7       0
@@ -32,10 +32,11 @@ test/fixable/6.3.TernaryOperators.php                 13      0
 test/fixable/6.Operators.php                          97      0
 test/fixable/7.Closures.php                           2       0
 test/fixable/8.AnonymousClasses.php                   1       0
+test/fixable/9.CommentingAndDocBlocks.php             22      0
 ----------------------------------------------------------------------
-A TOTAL OF 545 ERRORS AND 2 WARNINGS WERE FOUND IN 29 FILES
+A TOTAL OF 586 ERRORS AND 2 WARNINGS WERE FOUND IN 30 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 483 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 496 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
