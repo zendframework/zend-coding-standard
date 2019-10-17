@@ -128,12 +128,32 @@
          closing braces. -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.BraceBlankLine"/>
 
-    <!-- 2.4 Indenting -->
+    <!-- 2.4 Indenting and Spacing -->
 
     <!-- Code MUST use an indent of 4 spaces for each indent level, and MUST
          NOT use tabs for indenting. -->
     <!-- checked by Generic.WhiteSpace.ScopeIndent -->
     <!-- checked by Generic.WhiteSpace.DisallowTabIndent -->
+
+    <!-- Additional ZendFramework rules -->
+
+    <!-- Encapsed strings MAY be used instead of concatenating strings. When
+         concatenating strings, there MUST be a single whitespace before and
+         after the concatenation operator. The concatenation operator MAY NOT
+         be the at th end of a line. -->
+    <rule ref="Squiz.Strings.ConcatenationSpacing">
+        <properties>
+            <property name="spacing" value="1"/>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="WebimpressCodingStandard.Strings.NoConcatenationAtTheEnd"/>
+    <rule ref="Generic.Strings.UnnecessaryStringConcat">
+        <!-- But multiline is useful for readability -->
+        <properties>
+            <property name="allowMultiline" value="true"/>
+        </properties>
+    </rule>
 
     <!-- 2.5 Keywords and Types -->
 

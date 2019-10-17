@@ -6,7 +6,7 @@ FILE                                                  ERRORS  WARNINGS
 test/fixable/2.1.BasicCodingStandard.php              63      1
 test/fixable/2.2.Files.php                            4       0
 test/fixable/2.3.Lines.php                            35      0
-test/fixable/2.4.Indenting.php                        2       0
+test/fixable/2.4.IndentingAndSpacing.php              46      0
 test/fixable/2.5.KeywordsAndTypes.php                 8       0
 test/fixable/2.6.Variables.php                        3       0
 test/fixable/3.DeclareNamespaceAndImport.php          15      0
@@ -32,9 +32,9 @@ test/fixable/6.Operators.php                          97      0
 test/fixable/7.Closures.php                           2       0
 test/fixable/8.AnonymousClasses.php                   1       0
 ----------------------------------------------------------------------
-A TOTAL OF 492 ERRORS AND 2 WARNINGS WERE FOUND IN 28 FILES
+A TOTAL OF 536 ERRORS AND 2 WARNINGS WERE FOUND IN 28 FILES
 ----------------------------------------------------------------------
-PHPCBF CAN FIX 433 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
+PHPCBF CAN FIX 475 OF THESE SNIFF VIOLATIONS AUTOMATICALLY
 ----------------------------------------------------------------------
 
 
