@@ -1,4 +1,4 @@
-# ZendFramework Coding Style Guide
+# Zend Framework Coding Style Guide
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
@@ -12,7 +12,7 @@ This specification extends [PSR-12][], the coding style guide and
 requires adherence to [PSR-1][], the basic coding standard.
 
 Like [PSR-12][], the intent of this specification is to reduce cognitive friction when
-scanning code from different authors contributing to ZendFramework. It does so by 
+scanning code from different authors contributing to Zend Framework. It does so by 
 enumerating a shared set of rules and expectations about how to format PHP code.
 
 ### Previous language versions
@@ -24,7 +24,7 @@ of PHP supported by your project.
 
 This example encompasses some of the rules below as a quick overview:
 
-~~~php
+```php
 <?php
 
 declare(strict_types=1);
@@ -56,7 +56,7 @@ class Foo extends Bar implements FooInterface
         // method body
     }
 }
-~~~
+```
 
 ## 2. General
 
@@ -67,7 +67,7 @@ Code MUST follow all rules outlined in [PSR-1].
 The term 'StudlyCaps' in PSR-1 MUST be interpreted as PascalCase where the first letter of
 each word is capitalized including the very first letter.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 > 
 > There MAY NOT be any content before the opening tag.
 >
@@ -105,7 +105,7 @@ All PHP files MUST end with a non-blank line, terminated with a single LF.
 
 The closing `?>` tag MUST be omitted from files containing only PHP.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > The `declare(strict_types=1)` directive MUST be declared and be the first 
 > statement in a file.
@@ -126,7 +126,7 @@ blocks of code except where explicitly forbidden.
 
 There MUST NOT be more than one statement per line.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MAY be maximum one blank line to improve readability and to indicate 
 > related blocks of code except where explicitly forbidden.
@@ -138,7 +138,7 @@ There MUST NOT be more than one statement per line.
 Code MUST use an indent of 4 spaces for each indent level, and MUST NOT use
 tabs for indenting.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > Encapsed strings MAY be used instead of concatenating strings. When 
 > concatenating strings, there MUST be a single whitespace before and after the
@@ -156,13 +156,13 @@ Short form of type keywords MUST be used i.e. `bool` instead of `boolean`,
 
 ### 2.6 Variables
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > Variable names MUST be declared in camelCase.
 
 ### 2.7 Arrays
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > The short array syntax MUST be used to define arrays.
 >
@@ -208,7 +208,7 @@ must always be fully qualified.
 
 The following example illustrates a complete list of all blocks:
 
-~~~php
+```php
 <?php
 
 /**
@@ -237,11 +237,11 @@ class FooBar
     // ... additional PHP code ...
 }
 
-~~~
+```
 
 Compound namespaces with a depth of more than two MUST NOT be used. Therefore the
 following is the maximum compounding depth allowed:
-~~~php
+```php
 <?php
 
 use Vendor\Package\SomeNamespace\{
@@ -250,11 +250,11 @@ use Vendor\Package\SomeNamespace\{
     SubnamespaceTwo\ClassY,
     ClassZ,
 };
-~~~
+```
 
 And the following would not be allowed:
 
-~~~php
+```php
 <?php
 
 use Vendor\Package\SomeNamespace\{
@@ -262,14 +262,14 @@ use Vendor\Package\SomeNamespace\{
     SubnamespaceOne\ClassB,
     ClassZ,
 };
-~~~
+```
 
 When wishing to declare strict types in files containing markup outside PHP
 opening and closing tags, the declaration MUST be on the first line of the file
 and include an opening PHP tag, the strict types declaration and closing tag.
 
 For example:
-~~~php
+```php
 <?php declare(strict_types=1) ?>
 <html>
 <body>
@@ -278,20 +278,20 @@ For example:
     ?>
 </body>
 </html>
-~~~
+```
 
 Declare statements MUST contain no spaces and MUST be exactly `declare(strict_types=1)`
 (with an optional semi-colon terminator).
 
 Block declare statements are allowed and MUST be formatted as below. Note position of
 braces and spacing:
-~~~php
+```php
 declare(ticks=1) {
     // some code
 }
-~~~
+```
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MUST be a single space after the namespace keyword.
 >
@@ -327,11 +327,11 @@ same line.
 When instantiating a new class, parentheses MUST always be present even when
 there are no arguments passed to the constructor.
 
-~~~php
+```php
 new Foo();
-~~~
+```
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MAY NOT be duplicate class names.
 >
@@ -374,7 +374,7 @@ by a blank line.
 Closing braces MUST be on their own line and MUST NOT be preceded by a blank
 line.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -387,14 +387,14 @@ class ClassName extends ParentClass implements \ArrayAccess, \Countable
 {
     // constants, properties, methods
 }
-~~~
+```
 
 Lists of `implements` and, in the case of interfaces, `extends` MAY be split
 across multiple lines, where each subsequent line is indented once. When doing
 so, the first item in the list MUST be on the next line, and there MUST be only
 one interface per line.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -410,14 +410,14 @@ class ClassName extends ParentClass implements
 {
     // constants, properties, methods
 }
-~~~
+```
 
 ### 4.2 Using traits
 
 The `use` keyword used inside the classes to implement traits MUST be
 declared on the next line after the opening brace.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -428,16 +428,16 @@ class ClassName
 {
     use FirstTrait;
 }
-~~~
+```
 
 Each individual trait that is imported into a class MUST be included
 one-per-line and each inclusion MUST have its own `use` import statement.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > Traits MUST be sorted alphabetically.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -452,12 +452,12 @@ class ClassName
     use SecondTrait;
     use ThirdTrait;
 }
-~~~
+```
 
 When the class has nothing after the `use` import statement, the class
 closing brace MUST be on the next line after the `use` import statement.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -468,11 +468,11 @@ class ClassName
 {
     use FirstTrait;
 }
-~~~
+```
 
 Otherwise, it MUST have a blank line after the `use` import statement.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -485,12 +485,12 @@ class ClassName
 
     private $property;
 }
-~~~
+```
 
 When using the `insteadof` and `as` operators they must be used as follows taking
 note of indentation, spacing, and new lines.
 
-~~~php
+```php
 <?php
 
 class Talker
@@ -501,7 +501,7 @@ class Talker
         C::mediumTalk as FooBar;
     }
 }
-~~~
+```
 
 ### 4.3 Properties and Constants
 
@@ -520,13 +520,13 @@ no meaning.
 
 There MUST be a space between type declaration and property name.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > Default null values MUST be omitted for class properties.
 
 A property declaration looks like the following:
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -536,7 +536,7 @@ class ClassName
     public $foo;
     public static int $bar = 0;
 }
-~~~
+```
 
 ### 4.4 Methods and Functions
 
@@ -554,7 +554,7 @@ parenthesis, and there MUST NOT be a space before the closing parenthesis.
 A method declaration looks like the following. Note the placement of
 parentheses, commas, spaces, and braces:
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -566,21 +566,21 @@ class ClassName
         // method body
     }
 }
-~~~
+```
 
 A function declaration looks like the following. Note the placement of
 parentheses, commas, spaces, and braces:
 
-~~~php
+```php
 <?php
 
 function fooBarBaz($arg1, &$arg2, $arg3 = [])
 {
     // function body
 }
-~~~
+```
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MUST be a single empty line between methods in a class.
 >
@@ -598,7 +598,7 @@ MUST be one space after each comma.
 Method and function arguments with default values MUST go at the end of the argument
 list.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -610,7 +610,7 @@ class ClassName
         // method body
     }
 }
-~~~
+```
 
 Argument lists MAY be split across multiple lines, where each subsequent line
 is indented once. When doing so, the first item in the list MUST be on the
@@ -620,7 +620,7 @@ When the argument list is split across multiple lines, the closing parenthesis
 and opening brace MUST be placed together on their own line with one space
 between them.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -635,14 +635,14 @@ class ClassName
         // method body
     }
 }
-~~~
+```
 
 When you have a return type declaration present, there MUST be one space after
 the colon followed by the type declaration. The colon and declaration MUST be
 on the same line as the argument list closing parenthesis with no spaces between
 the two characters.
 
-~~~php
+```php
 <?php
 
 declare(strict_types=1);
@@ -664,16 +664,16 @@ class ReturnTypeVariations
         return 'foo';
     }
 }
-~~~
+```
 
 In nullable type declarations, there MUST NOT be a space between the question mark
 and the type.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > The question mark MUST be used when the default argument value is null.
 
-~~~php
+```php
 <?php
 
 declare(strict_types=1);
@@ -687,7 +687,7 @@ class ReturnTypeVariations
         return 'foo';
     }
 }
-~~~
+```
 
 When using the reference operator `&` before an argument, there MUST NOT be
 a space after it, like in the previous example.
@@ -720,7 +720,7 @@ visibility declaration.
 When present, the `static` declaration MUST come after the visibility
 declaration.
 
-~~~php
+```php
 <?php
 
 namespace Vendor\Package;
@@ -736,9 +736,9 @@ abstract class ClassName
         // method body
     }
 }
-~~~
+```
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > The final keyword on methods MUST be omitted in final classes.
 
@@ -750,13 +750,13 @@ after the opening parenthesis, and there MUST NOT be a space before the
 closing parenthesis. In the argument list, there MUST NOT be a space before
 each comma, and there MUST be one space after each comma.
 
-~~~php
+```php
 <?php
 
 bar();
 $foo->bar($arg1);
 Foo::bar($arg2, $arg3);
-~~~
+```
 
 Argument lists MAY be split across multiple lines, where each subsequent line
 is indented once. When doing so, the first item in the list MUST be on the
@@ -764,7 +764,7 @@ next line, and there MUST be only one argument per line. A single argument being
 split across multiple lines (as might be the case with an anonymous function or
 array) does not constitute splitting the argument list itself.
 
-~~~php
+```php
 <?php
 
 $foo->bar(
@@ -772,9 +772,9 @@ $foo->bar(
     $longerArgument,
     $muchLongerArgument
 );
-~~~
+```
 
-~~~php
+```php
 <?php
 
 somefunction($foo, $bar, [
@@ -784,7 +784,7 @@ somefunction($foo, $bar, [
 $app->get('/hello/{name}', function ($name) use ($app) {
     return 'Hello ' . $app->escape($name);
 });
-~~~
+```
 
 ## 5. Control Structures
 
@@ -803,7 +803,7 @@ The body of each structure MUST be enclosed by braces. This standardizes how
 the structures look and reduces the likelihood of introducing errors as new
 lines get added to the body.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MUST be one single space after `break` and `continue` structures with 
 > a numeric argument argument.
@@ -816,7 +816,7 @@ An `if` structure looks like the following. Note the placement of parentheses,
 spaces, and braces; and that `else` and `elseif` are on the same line as the
 closing brace from the earlier body.
 
-~~~php
+```php
 <?php
 
 if ($expr1) {
@@ -826,7 +826,7 @@ if ($expr1) {
 } else {
     // else body;
 }
-~~~
+```
 
 The keyword `elseif` SHOULD be used instead of `else if` so that all control
 keywords look like single words.
@@ -838,7 +838,7 @@ placed together on their own line with one space between them. Boolean
 operators between conditions MUST always be at the beginning or at the end of
 the line, not a mix of both.
 
-~~~php
+```php
 <?php
 
 if (
@@ -852,7 +852,7 @@ if (
 ) {
     // elseif body
 }
-~~~
+```
 
 ### 5.2 `switch`, `case`
 
@@ -862,12 +862,12 @@ from `switch`, and the `break` keyword (or other terminating keywords) MUST be
 indented at the same level as the `case` body. There MUST be a comment such as
 `// no break` when fall-through is intentional in a non-empty `case` body.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > The `continue` control structure MAY NOT be used in switch statements, 
 > `break` SHOULD be used instead.
 
-~~~php
+```php
 <?php
 
 switch ($expr) {
@@ -886,7 +886,7 @@ switch ($expr) {
         echo 'Default case';
         break;
 }
-~~~
+```
 
 Expressions in parentheses MAY be split across multiple lines, where each
 subsequent line is indented at least once. When doing so, the first condition
@@ -895,7 +895,7 @@ placed together on their own line with one space between them. Boolean
 operators between conditions MUST always be at the beginning or at the end of
 the line, not a mix of both.
 
-~~~php
+```php
 <?php
 
 switch (
@@ -904,20 +904,20 @@ switch (
 ) {
     // structure body
 }
-~~~
+```
 
 ### 5.3 `while`, `do while`
 
 A `while` statement looks like the following. Note the placement of
 parentheses, spaces, and braces.
 
-~~~php
+```php
 <?php
 
 while ($expr) {
     // structure body
 }
-~~~
+```
 
 Expressions in parentheses MAY be split across multiple lines, where each
 subsequent line is indented at least once. When doing so, the first condition
@@ -926,7 +926,7 @@ placed together on their own line with one space between them. Boolean
 operators between conditions MUST always be at the beginning or at the end of
 the line, not a mix of both.
 
-~~~php
+```php
 <?php
 
 while (
@@ -935,25 +935,25 @@ while (
 ) {
     // structure body
 }
-~~~
+```
 
 Similarly, a `do while` statement looks like the following. Note the placement
 of parentheses, spaces, and braces.
 
-~~~php
+```php
 <?php
 
 do {
     // structure body;
 } while ($expr);
-~~~
+```
 
 Expressions in parentheses MAY be split across multiple lines, where each
 subsequent line is indented at least once. When doing so, the first condition
 MUST be on the next line. Boolean operators between conditions MUST
 always be at the beginning or at the end of the line, not a mix of both.
 
-~~~php
+```php
 <?php
 
 do {
@@ -962,27 +962,27 @@ do {
     $expr1
     && $expr2
 );
-~~~
+```
 
 ### 5.4 `for`
 
 A `for` statement looks like the following. Note the placement of parentheses,
 spaces, and braces.
 
-~~~php
+```php
 <?php
 
 for ($i = 0; $i < 10; $i++) {
     // for body
 }
-~~~
+```
 
 Expressions in parentheses MAY be split across multiple lines, where each
 subsequent line is indented at least once. When doing so, the first expression
 MUST be on the next line. The closing parenthesis and opening brace MUST be
 placed together on their own line with one space between them.
 
-~~~php
+```php
 <?php
 
 for (
@@ -992,27 +992,27 @@ for (
 ) {
     // for body
 }
-~~~
+```
 
 ### 5.5 `foreach`
 
 A `foreach` statement looks like the following. Note the placement of
 parentheses, spaces, and braces.
 
-~~~php
+```php
 <?php
 
 foreach ($iterable as $key => $value) {
     // foreach body
 }
-~~~
+```
 
 ### 5.6 `try`, `catch`, `finally`
 
 A `try-catch-finally` block looks like the following. Note the placement of
 parentheses, spaces, and braces.
 
-~~~php
+```php
 <?php
 
 try {
@@ -1024,15 +1024,15 @@ try {
 } finally {
     // finally body
 }
-~~~
+```
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > All catch blocks MUST be reachable.
 >
 > Catch blocks SHOULD catch `Throwable` instead of `Exception` unless intended.
 
-~~~php
+```php
 <?php
 
 try {
@@ -1042,7 +1042,7 @@ try {
 } catch (Throwable $e) {
     // catch Throwable
 }
-~~~
+```
 
 ## 6. Operators
 
@@ -1051,7 +1051,7 @@ Style rules for operators are grouped by arity (the number of operands they take
 When space is permitted around an operator, multiple spaces MAY be
 used for readability purposes.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MUST be at least one space on either side of an equals sign used
 > to assign a value to a variable. In case of a block of related
@@ -1078,22 +1078,22 @@ All operators not described here are left undefined.
 
 The increment/decrement operators MUST NOT have any space between
 the operator and operand.
-~~~php
+```php
 $i++;
 ++$j;
-~~~
+```
 
 Type casting operators MUST NOT have any space within the parentheses:
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MUST be one whitespace after a type casting operator.
 
-~~~php
+```php
 $intValue = (int) $input;
-~~~
+```
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > There MUST be one whitespace after unary not.
 
@@ -1102,28 +1102,28 @@ $intValue = (int) $input;
 All binary [arithmetic][], [comparison][], [assignment][], [bitwise][],
 [logical][], [string][], and [type][] operators MUST be preceded and
 followed by at least one space:
-~~~php
+```php
 if ($a === $b) {
     $foo = $bar ?? $a ?? $b;
 } elseif ($a > $b) {
     $foo = $a + $b * $c;
 }
-~~~
+```
 
 ### 6.3. Ternary operators
 
 The conditional operator, also known simply as the ternary operator, MUST be
 preceded and followed by at least one space around both the `?`
 and `:` characters:
-~~~php
+```php
 $variable = $foo ? 'foo' : 'bar';
-~~~
+```
 
 When the middle operand of the conditional operator is omitted, the operator
 MUST follow the same style rules as other binary [comparison][] operators:
-~~~php
+```php
 $variable = $foo ?: 'bar';
-~~~
+```
 
 ## 7. Closures
 
@@ -1147,14 +1147,14 @@ If a return type is present, it MUST follow the same rules as with normal
 functions and methods; if the `use` keyword is present, the colon MUST follow
 the `use` list closing parentheses with no spaces between the two characters.
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > Inherited variables passed via `use` MUST be used in closures.
 
 A closure declaration looks like the following. Note the placement of
 parentheses, commas, spaces, and braces:
 
-~~~php
+```php
 <?php
 
 $closureWithArgs = function ($arg1, $arg2) {
@@ -1168,7 +1168,7 @@ $closureWithArgsAndVars = function ($arg1, $arg2) use ($var1, $var2) {
 $closureWithArgsVarsAndReturn = function ($arg1, $arg2) use ($var1, $var2): bool {
     // body
 };
-~~~
+```
 
 Argument lists and variable lists MAY be split across multiple lines, where
 each subsequent line is indented once. When doing so, the first item in the
@@ -1182,7 +1182,7 @@ together on their own line with one space between them.
 The following are examples of closures with and without argument lists and
 variable lists split across multiple lines.
 
-~~~php
+```php
 <?php
 
 $longArgs_noVars = function (
@@ -1228,12 +1228,12 @@ $shortArgs_longVars = function ($arg) use (
 ) {
    // body
 };
-~~~
+```
 
 Note that the formatting rules also apply when the closure is used directly
 in a function or method call as an argument.
 
-~~~php
+```php
 <?php
 
 $foo->bar(
@@ -1243,25 +1243,25 @@ $foo->bar(
     },
     $arg3
 );
-~~~
+```
 
 ## 8. Anonymous Classes
 
 Anonymous Classes MUST follow the same guidelines and principles as closures
 in the above section.
 
-~~~php
+```php
 <?php
 
 $instance = new class {};
-~~~
+```
 
 The opening brace MAY be on the same line as the `class` keyword so long as
 the list of `implements` interfaces does not wrap. If the list of interfaces
 wraps, the brace MUST be placed on the line immediately following the last
 interface.
 
-~~~php
+```php
 <?php
 
 // Brace on the same line
@@ -1277,11 +1277,11 @@ $instance = new class extends \Foo implements
 {
     // Class content
 };
-~~~
+```
 
 ## 9. Commenting and DocBlocks
 
-> **Additional ZendFramework rules**
+> **Additional Zend Framework rules**
 >
 > DocBlocks and comments SHOULD only be used if necessary. Code SHOULD
 > be written so it explains itself. They MAY NOT start with `#` and MAY 

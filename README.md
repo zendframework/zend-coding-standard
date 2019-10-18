@@ -111,7 +111,7 @@ $xmlPackage->send();
 > **New rules or Sniffs may not be introduced in minor or bugfix releases and should always be based on the develop 
 branch and queued for the next major release, unless considered a bugfix for existing rules.**
 
-If you want to test changes against ZendFramework components or your own projects, install your forked 
+If you want to test changes against Zend Framework components or your own projects, install your forked 
 zend-coding-standard globally with composer: 
 ```bash
 $ composer global config repositories.zend-coding-standard vcs git@github.com:<FORK_NAMESPACE>/zend-coding-standard.git

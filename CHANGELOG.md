@@ -89,7 +89,7 @@ All notable changes to this project will be documented in this file, in reverse 
   return values are still under discussion. We will change these rules, and,
   when PSR-12 is finalized, adapt them.
 - [#5](https://github.com/zendframework/zend-coding-standard/pull/5) extends
-  PSR-12 with ZendFramework specific rules:
+  PSR-12 with Zend Framework specific rules:
 
   *NOTE:* Most of these rules should look familiar as they are already being
   used in components rewritten for PHP 7.1.
