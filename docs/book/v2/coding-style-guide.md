@@ -67,7 +67,7 @@ Code MUST follow all rules outlined in [PSR-1].
 The term 'StudlyCaps' in PSR-1 MUST be interpreted as PascalCase where the first letter of
 each word is capitalized including the very first letter.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 > 
 > There MAY NOT be any content before the opening tag.
 >
@@ -105,7 +105,7 @@ All PHP files MUST end with a non-blank line, terminated with a single LF.
 
 The closing `?>` tag MUST be omitted from files containing only PHP.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > The `declare(strict_types=1)` directive MUST be declared and be the first 
 > statement in a file.
@@ -126,7 +126,7 @@ blocks of code except where explicitly forbidden.
 
 There MUST NOT be more than one statement per line.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MAY be maximum one blank line to improve readability and to indicate 
 > related blocks of code except where explicitly forbidden.
@@ -138,7 +138,7 @@ There MUST NOT be more than one statement per line.
 Code MUST use an indent of 4 spaces for each indent level, and MUST NOT use
 tabs for indenting.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > Encapsed strings MAY be used instead of concatenating strings. When 
 > concatenating strings, there MUST be a single whitespace before and after the
@@ -156,13 +156,13 @@ Short form of type keywords MUST be used i.e. `bool` instead of `boolean`,
 
 ### 2.6 Variables
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > Variable names MUST be declared in camelCase.
 
 ### 2.7 Arrays
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > The short array syntax MUST be used to define arrays.
 >
@@ -291,7 +291,7 @@ declare(ticks=1) {
 }
 ```
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MUST be a single space after the namespace keyword.
 >
@@ -331,7 +331,7 @@ there are no arguments passed to the constructor.
 new Foo();
 ```
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MAY NOT be duplicate class names.
 >
@@ -433,7 +433,7 @@ class ClassName
 Each individual trait that is imported into a class MUST be included
 one-per-line and each inclusion MUST have its own `use` import statement.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > Traits MUST be sorted alphabetically.
 
@@ -520,7 +520,7 @@ no meaning.
 
 There MUST be a space between type declaration and property name.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > Default null values MUST be omitted for class properties.
 
@@ -580,7 +580,7 @@ function fooBarBaz($arg1, &$arg2, $arg3 = [])
 }
 ```
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MUST be a single empty line between methods in a class.
 >
@@ -669,7 +669,7 @@ class ReturnTypeVariations
 In nullable type declarations, there MUST NOT be a space between the question mark
 and the type.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > The question mark MUST be used when the default argument value is null.
 
@@ -738,7 +738,7 @@ abstract class ClassName
 }
 ```
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > The final keyword on methods MUST be omitted in final classes.
 
@@ -803,7 +803,7 @@ The body of each structure MUST be enclosed by braces. This standardizes how
 the structures look and reduces the likelihood of introducing errors as new
 lines get added to the body.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MUST be one single space after `break` and `continue` structures with 
 > a numeric argument argument.
@@ -862,7 +862,7 @@ from `switch`, and the `break` keyword (or other terminating keywords) MUST be
 indented at the same level as the `case` body. There MUST be a comment such as
 `// no break` when fall-through is intentional in a non-empty `case` body.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > The `continue` control structure MAY NOT be used in switch statements, 
 > `break` SHOULD be used instead.
@@ -1026,7 +1026,7 @@ try {
 }
 ```
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > All catch blocks MUST be reachable.
 >
@@ -1051,7 +1051,7 @@ Style rules for operators are grouped by arity (the number of operands they take
 When space is permitted around an operator, multiple spaces MAY be
 used for readability purposes.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MUST be at least one space on either side of an equals sign used
 > to assign a value to a variable. In case of a block of related
@@ -1085,7 +1085,7 @@ $i++;
 
 Type casting operators MUST NOT have any space within the parentheses:
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MUST be one whitespace after a type casting operator.
 
@@ -1093,7 +1093,7 @@ Type casting operators MUST NOT have any space within the parentheses:
 $intValue = (int) $input;
 ```
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > There MUST be one whitespace after unary not.
 
@@ -1147,7 +1147,7 @@ If a return type is present, it MUST follow the same rules as with normal
 functions and methods; if the `use` keyword is present, the colon MUST follow
 the `use` list closing parentheses with no spaces between the two characters.
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > Inherited variables passed via `use` MUST be used in closures.
 
@@ -1281,7 +1281,7 @@ $instance = new class extends \Foo implements
 
 ## 9. Commenting and DocBlocks
 
-> **Additional Zend Framework rules**
+> ### Additional Zend Framework rules
 >
 > DocBlocks and comments SHOULD only be used if necessary. Code SHOULD
 > be written so it explains itself. They MAY NOT start with `#` and MAY 
