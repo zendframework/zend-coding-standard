@@ -26,34 +26,69 @@ This example encompasses some of the rules below as a quick overview:
 
 ```php
 <?php
+/**
+ * @see       https://github.com/zendframework/zend-expressive for the canonical source repository
+ * @copyright Copyright (c) 2015-2018 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive/blob/master/LICENSE.md New BSD License
+ */
 
 declare(strict_types=1);
 
-namespace Vendor\Package;
+namespace Zend\Expressive;
 
-use Vendor\Package\{ClassA as A, ClassB, ClassC as C};
-use Vendor\Package\SomeNamespace\ClassD as D;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Expressive\Router\RouteCollector;
+use Zend\HttpHandlerRunner\RequestHandlerRunner;
+use Zend\Stratigility\MiddlewarePipeInterface;
 
-use function Vendor\Package\{functionA, functionB, functionC};
+use function Zend\Stratigility\path;
 
-use const Vendor\Package\{ConstantA, ConstantB, ConstantC};
-
-class Foo extends Bar implements FooInterface
+class Application implements MiddlewareInterface, RequestHandlerInterface
 {
-    public function sampleFunction(int $a, int $b = null): array
-    {
-        if ($a === $b) {
-            bar();
-        } elseif ($a > $b) {
-            $foo->bar($arg1);
-        } else {
-            BazClass::bar($arg2, $arg3);
-        }
+    /** @var MiddlewareFactory */
+    private $factory;
+    
+    /** @var MiddlewarePipeInterface */
+    private $pipeline;
+
+    /** @var RouteCollector */
+    private $routes;
+
+    /** @var RequestHandlerRunner */
+    private $runner;
+
+    public function __construct(
+        MiddlewareFactory $factory,
+        MiddlewarePipeInterface $pipeline,
+        RouteCollector $routes,
+        RequestHandlerRunner $runner
+    ) {
+        $this->factory = $factory;
+        $this->pipeline = $pipeline;
+        $this->routes = $routes;
+        $this->runner = $runner;
     }
 
-    final public static function bar()
+    /**
+     * Proxies to composed pipeline to handle.
+     * {@inheritDocs}
+     */
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        // method body
+        return $this->pipeline->handle($request);
+    }
+
+    /**
+     * Run the application.
+     *
+     * Proxies to the RequestHandlerRunner::run() method.
+     */
+    public function run() : void
+    {
+        $this->runner->run();
     }
 }
 ```
@@ -68,28 +103,18 @@ The term 'StudlyCaps' in PSR-1 MUST be interpreted as PascalCase where the first
 each word is capitalized including the very first letter.
 
 > ### Additional Zend Framework rules
-> 
-> There MAY NOT be any content before the opening tag.
 >
-> The short open tag MAY NOT be used.
+> For consistency a bunch of older PHP features SHOULD NOT be used:
 >
-> There MAY NOT be any inline HTML in PHP code.
->
-> Deprecated PHP functions MUST be avoided.
->
-> The backtick operator MAY NOT be used.
->
-> The PHP `goto` language construct MAY NOT be used.
->
-> The `global` keyword MAY NOT be used.
->
-> The constant `PHP_SAPI` SHOULD be used instead of the `php_sapi_name()` function.
->
-> Alias functions SHOULD NOT be used. 
->
-> There MAY NOT be a space before a semicolon. Redundant semicolons SHOULD be avoided.
->
-> Non executable code MUST be removed.
+> - The [short open tag][] SHOULD NOT be used.
+> - Deprecated features SHOULD be avoided ([[7.0]][70.deprecated], 
+>   [[7.1]][71.deprecated], [[7.2]][72.deprecated], [[7.3]][73.deprecated],
+>   [[7.4]][74.deprecated])
+> - The [backtick operator][] SHOULD NOT be used.
+> - The [goto][] language construct SHOULD NOT be used.
+> - The [global][] keyword SHOULD NOT be used.
+> - The constant [PHP_SAPI][] SHOULD be used instead of the `php_sapi_name()` function.
+> - [aliases][] SHOULD NOT be used.
 >
 > There MUST be a single space after language constructs.
 >
@@ -99,16 +124,21 @@ each word is capitalized including the very first letter.
 
 ### 2.2 Files
 
+> ### Additional Zend Framework rules
+>
+> There MAY NOT be any content before the opening tag. Inline HTML in PHP code
+> SHOULD be avoided. All code MUST be executable and non executable code SHOULD
+> be removed.
+>
+> The `declare(strict_types=1)` directive MUST be declared and be the first 
+> statement in a file.
+>
+
 All PHP files MUST use the Unix LF (linefeed) line ending only.
 
 All PHP files MUST end with a non-blank line, terminated with a single LF.
 
 The closing `?>` tag MUST be omitted from files containing only PHP.
-
-> ### Additional Zend Framework rules
->
-> The `declare(strict_types=1)` directive MUST be declared and be the first 
-> statement in a file.
 
 ### 2.3 Lines
 
@@ -124,14 +154,18 @@ There MUST NOT be trailing whitespace at the end of lines.
 Blank lines MAY be added to improve readability and to indicate related
 blocks of code except where explicitly forbidden.
 
-There MUST NOT be more than one statement per line.
-
 > ### Additional Zend Framework rules
 >
 > There MAY be maximum one blank line to improve readability and to indicate 
 > related blocks of code except where explicitly forbidden.
 >
 > There MAY NOT be any blank line after opening braces and before closing braces.
+
+There MUST NOT be more than one statement per line.
+
+> ### Additional Zend Framework rules
+>
+> There MAY NOT be a space before a semicolon. Redundant semicolons SHOULD be avoided.
 
 ### 2.4 Indenting and Spacing
 
@@ -144,6 +178,21 @@ tabs for indenting.
 > concatenating strings, there MUST be a single whitespace before and after the
 > concatenation operator. The concatenation operator MAY NOT be the at the end 
 > of a line.
+
+```php
+<?php
+
+// Encapsed strings
+$a = 'foo';
+$b = 'bar';
+
+$c = "I like $a and $b";
+
+// Concatenating
+$a = 'Hello ';
+$b = $a
+   . 'World!';
+```
 
 ### 2.5 Keywords and Types
 
@@ -175,8 +224,31 @@ Short form of type keywords MUST be used i.e. `bool` instead of `boolean`,
 >
 > All double arrow symbols MUST be aligned to one space after the longest array
 > key.
->
+
+```php
+<?php
+
+$array2 = [
+    'one'    => function () {
+        $foo    = [1, 2, 3];
+        $barBar = [
+            1,
+            2,
+            3,
+        ];
+    },
+    'longer' => 2,
+    3        => 'three',
+];
+```
+
 > The short list syntax `[...]` SHOULD be used instead of `list(...)`.
+
+```php
+<?php
+
+[$a, $b, $c] = [1, 2, 3];
+```
 
 ## 3. Declare Statements, Namespace, and Import Statements
 
@@ -206,6 +278,25 @@ opening and closing tags.
 Import statements MUST never begin with a leading backslash as they
 must always be fully qualified.
 
+> ### Additional Zend Framework rules
+>
+> There MUST be a single space after the namespace keyword and there MAY NOT be
+> a space around a namespace separator.
+>
+> Import statements MUST be alphabetically sorted.
+>
+> Unused import statements SHOULD be removed.
+>
+> Fancy group import statements are not allowed.
+>
+> Each import statements MUST be on its own line.
+>
+> Import statement aliases for classes, traits, functions and constants MUST
+> be useful, meaning that aliases SHOULD only be used if a class with the same
+> name is imported.
+>
+> Classes, traits, interfaces, constants and functions MUST be imported.
+
 The following example illustrates a complete list of all blocks:
 
 ```php
@@ -219,15 +310,19 @@ declare(strict_types=1);
 
 namespace Vendor\Package;
 
-use Vendor\Package\{ClassA as A, ClassB, ClassC as C};
+use Vendor\Package\ClassA as A;
+use Vendor\Package\ClassB; 
+use Vendor\Package\ClassC as C;
 use Vendor\Package\SomeNamespace\ClassD as D;
 use Vendor\Package\AnotherNamespace\ClassE as E;
 
-use function Vendor\Package\{functionA, functionB, functionC};
-use function Another\Vendor\functionD;
+use function Vendor\Package\functionA;
+use function Vendor\Package\functionB;
+use function Another\Vendor\functionC;
 
-use const Vendor\Package\{CONSTANT_A, CONSTANT_B, CONSTANT_C};
-use const Another\Vendor\CONSTANT_D;
+use const Vendor\Package\CONSTANT_A;
+use const Vendor\Package\CONSTANT_B;
+use const Another\Vendor\CONSTANT_C;
 
 /**
  * FooBar is an example class.
@@ -241,6 +336,7 @@ class FooBar
 
 Compound namespaces with a depth of more than two MUST NOT be used. Therefore the
 following is the maximum compounding depth allowed:
+
 ```php
 <?php
 
@@ -269,6 +365,7 @@ opening and closing tags, the declaration MUST be on the first line of the file
 and include an opening PHP tag, the strict types declaration and closing tag.
 
 For example:
+
 ```php
 <?php declare(strict_types=1) ?>
 <html>
@@ -285,37 +382,12 @@ Declare statements MUST contain no spaces and MUST be exactly `declare(strict_ty
 
 Block declare statements are allowed and MUST be formatted as below. Note position of
 braces and spacing:
+
 ```php
 declare(ticks=1) {
     // some code
 }
 ```
-
-> ### Additional Zend Framework rules
->
-> There MUST be a single space after the namespace keyword.
->
-> There MAY NOT be a space around a namespace separator.
->
-> Import statements MUST be alphabetically sorted.
->
-> Functions and const keywords MUST be lowercase in import statements.
->
-> Unused import statements MUST be removed.
->
-> Superfluous leading backslash in import statements MUST be removed.
->
-> Fancy group import statements are not allowed.
->
-> Each import statements MUST be on its own line.
->
-> Import statements must be grouped (classes, functions, constants) and
-> MUST be separated by empty lines.
->
-> Import statements aliases for classes, traits, functions and constants
-> MUST be useful.
->
-> Classes, traits, interfaces, constants and functions MUST be imported.
 
 ## 4. Classes, Properties, and Methods
 
@@ -533,7 +605,7 @@ namespace Vendor\Package;
 
 class ClassName
 {
-    public $foo;
+    public $foo; // `= null` should be omitted
     public static int $bar = 0;
 }
 ```
@@ -550,6 +622,16 @@ Method and function names MUST NOT be declared with space after the method name.
 opening brace MUST go on its own line, and the closing brace MUST go on the
 next line following the body. There MUST NOT be a space after the opening
 parenthesis, and there MUST NOT be a space before the closing parenthesis.
+
+> ### Additional Zend Framework rules
+>
+> There MUST be a single empty line between methods in a class.
+>
+> The pseudo-variable `$this` MAY not be called inside a static method or 
+> function.
+>
+> Returned variables SHOULD be useful and not be assign to a value and 
+> returned on the next line.
 
 A method declaration looks like the following. Note the placement of
 parentheses, commas, spaces, and braces:
@@ -579,16 +661,6 @@ function fooBarBaz($arg1, &$arg2, $arg3 = [])
     // function body
 }
 ```
-
-> ### Additional Zend Framework rules
->
-> There MUST be a single empty line between methods in a class.
->
-> The pseudo-variable `$this` MAY not be called inside a static method or 
-> function.
->
-> Returned variables SHOULD be useful and not be assign to a value and 
-> returned on the next line.
 
 ### 4.5 Method and Function Arguments
 
@@ -717,6 +789,10 @@ public function process(string $algorithm, &...$parts)
 When present, the `abstract` and `final` declarations MUST precede the
 visibility declaration.
 
+> ### Additional Zend Framework rules
+>
+> The `final` keyword on methods MUST be omitted in final declared classes.
+
 When present, the `static` declaration MUST come after the visibility
 declaration.
 
@@ -737,10 +813,6 @@ abstract class ClassName
     }
 }
 ```
-
-> ### Additional Zend Framework rules
->
-> The final keyword on methods MUST be omitted in final classes.
 
 ### 4.7 Method and Function Calls
 
@@ -808,7 +880,7 @@ lines get added to the body.
 > There MUST be one single space after `break` and `continue` structures with 
 > a numeric argument argument.
 >
-> Statements MAY NOT be empty, except for catch statements. -->
+> Statements MAY NOT be empty, except for catch statements.
 
 ### 5.1 `if`, `elseif`, `else`
 
@@ -1028,9 +1100,8 @@ try {
 
 > ### Additional Zend Framework rules
 >
-> All catch blocks MUST be reachable.
->
-> Catch blocks SHOULD catch `Throwable` instead of `Exception` unless intended.
+> All catch blocks MUST be reachable and SHOULD catch `Throwable` instead of 
+> `Exception` unless intended.
 
 ```php
 <?php
@@ -1058,19 +1129,17 @@ used for readability purposes.
 > assignments, more spaces MUST be inserted before the equal sign to
 > promote readability.
 >
-> There MAY NOT be any white space around the object operator unless
+> There SHOULD NOT be any white space around the object operator unless
 > multilines are used.
 >
-> There MAY NOT be spaces around the object operator.
->
 > Loose comparison operators SHOULD NOT be used, use strict comparison
-> operators instead.
+> operators instead. e.g. use `===` instead of `==`.
 >
-> The null coalesce operator MUST be used when possible. 
+> The null coalesce operator SHOULD be used when possible. 
 >
 > Assignment operators SHOULD be used when possible.
 >
-> The `&&` and `||` operators SHOULD be used instad of `and` and `or`.
+> The `&&` and `||` operators SHOULD be used instead of `and` and `or`.
 
 All operators not described here are left undefined.
 
@@ -1078,12 +1147,13 @@ All operators not described here are left undefined.
 
 The increment/decrement operators MUST NOT have any space between
 the operator and operand.
+
 ```php
 $i++;
 ++$j;
 ```
 
-Type casting operators MUST NOT have any space within the parentheses:
+Type casting operators MUST NOT have any space within the parentheses.
 
 > ### Additional Zend Framework rules
 >
@@ -1097,11 +1167,20 @@ $intValue = (int) $input;
 >
 > There MUST be one whitespace after unary not.
 
+```php
+<?php
+
+if (! true) {
+    return false;
+}
+```
+
 ### 6.2. Binary operators
 
 All binary [arithmetic][], [comparison][], [assignment][], [bitwise][],
 [logical][], [string][], and [type][] operators MUST be preceded and
 followed by at least one space:
+
 ```php
 if ($a === $b) {
     $foo = $bar ?? $a ?? $b;
@@ -1115,6 +1194,7 @@ if ($a === $b) {
 The conditional operator, also known simply as the ternary operator, MUST be
 preceded and followed by at least one space around both the `?`
 and `:` characters:
+
 ```php
 $variable = $foo ? 'foo' : 'bar';
 ```
@@ -1283,19 +1363,19 @@ $instance = new class extends \Foo implements
 
 > ### Additional Zend Framework rules
 >
-> DocBlocks and comments SHOULD only be used if necessary. Code SHOULD
-> be written so it explains itself. They MAY NOT start with `#` and MAY 
-> NOT be empty. They MAY be omitted and SHOULD NOT be used for already
-> typehinted arguments, except arrays.
+> Code SHOULD be written so it explains itself. DocBlocks and comments 
+> SHOULD only be used if necessary. They MAY NOT start with `#` and MAY 
+> NOT be empty. They SHOULD NOT be used for already typehinted arguments, 
+> except arrays.
 >
-> PHPDoc tags `@param`, `@throws` and `@return` SHOULD not be aligned or
+> The asterisks in a DocBlock should align, and there should be one
+> space between the asterisk and tag.
+>
+> PHPDoc tags `@param`, `@return` and `@throws` SHOULD not be aligned or
 > contain multiple spaces between the tag, type and description.
 >
 > If a function throws any exceptions, it SHOULD be documented with
 > `@throws` tags.
->
-> The asterisks in a DocBlock should align, and there should be one
-> space between the asterisk and tag.
 >
 > DocBlocks MUST follow this specific order of annotations with empty
 > newline between specific groups:
@@ -1353,3 +1433,14 @@ $instance = new class extends \Foo implements
 [logical]: https://www.php.net/manual/en/language.operators.logical.php
 [string]: https://www.php.net/manual/en/language.operators.string.php
 [type]: https://www.php.net/manual/en/language.operators.type.php
+[short open tag]: https://www.php.net/manual/en/language.basic-syntax.phptags.php
+[70.deprecated]: https://www.php.net/manual/en/migration70.deprecated.php
+[71.deprecated]: https://www.php.net/manual/en/migration71.deprecated.php
+[72.deprecated]: https://www.php.net/manual/en/migration72.deprecated.php
+[73.deprecated]: https://www.php.net/manual/en/migration73.deprecated.php
+[74.deprecated]: https://www.php.net/manual/en/migration74.deprecated.php
+[backtick operator]: https://www.php.net/manual/en/language.operators.execution.php 
+[goto]: https://www.php.net/manual/en/control-structures.goto.php 
+[global]: https://www.php.net/manual/en/language.variables.scope.php#language.variables.scope.global 
+[PHP_SAPI]: https://www.php.net/manual/en/function.php-sapi-name.php#refsect1-function.php-sapi-name-notes 
+[aliases]: https://www.php.net/manual/en/aliases.php 
