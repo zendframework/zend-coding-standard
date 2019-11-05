@@ -417,7 +417,7 @@ new Foo();
 >
 > PHP 4 style constructors MUST NOT be used.
 >
-> The correct class names MUST be used.
+> Correct class name casing MUST be used.
 >
 > Abstract classes MUST have a `Abstract` prefix.
 >

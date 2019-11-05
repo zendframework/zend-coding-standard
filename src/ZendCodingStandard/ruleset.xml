@@ -306,7 +306,7 @@
     <rule ref="WebimpressCodingStandard.NamingConventions.Interface"/>
     <!-- Trait classes MUST have a `Trait` suffix. -->
     <rule ref="WebimpressCodingStandard.NamingConventions.Trait"/>
-    <!-- The correct class names MUST be used. -->
+    <!-- Correct class name casing MUST be used. -->
     <rule ref="WebimpressCodingStandard.PHP.CorrectClassNameCase"/>
     <!-- For self-reference a class lower-case `self::` MUST be used without
          spaces around the scope resolution operator. -->

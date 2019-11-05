@@ -66,7 +66,7 @@ All notable changes to this project will be documented in this file, in reverse 
   - There MUST NOT be duplicate class names.
   - The file name MUST match the case of the terminating class name.
   - PHP 4 style constructors MUST NOT be used.
-  - The correct class names MUST be used.
+  - Correct class name casing MUST be used.
   - Abstract classes MUST have a `Abstract` prefix.
   - Exception classes MUST have a `Exception` suffix.
   - Interface classes MUST have a `Interface` suffix.
