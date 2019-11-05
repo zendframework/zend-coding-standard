@@ -19,9 +19,6 @@ Contributors have different coding styles and so do the maintainers. During code
 discussions about spaces and alignments, where and when was said that a function needs to be imported. And 
 that's where this coding standard comes in: To have internal consistency in a component and between components.
 
-> Note: PSR-12 is not finalized. e.g. The `!` operator and `:` placement for return values are still under  discussion. 
-We will change these rules, and, when PSR-12 is finalized, adapt them.
-
 ## Installation
 
 1. Install the module via composer by running:
@@ -135,4 +132,3 @@ be found here:
 - [Configuration Options](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options)
 - [Selectively Applying Rules](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset#selectively-applying-rules)
 - [Customisable Sniff Properties](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties)
-- [Slevomat Coding Standard](https://github.com/slevomat/coding-standard)
