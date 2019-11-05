@@ -110,11 +110,15 @@ each word is capitalized including the very first letter.
 > - Deprecated features SHOULD be avoided ([[7.0]][70.deprecated], 
 >   [[7.1]][71.deprecated], [[7.2]][72.deprecated], [[7.3]][73.deprecated],
 >   [[7.4]][74.deprecated])
-> - The [backtick operator][] SHOULD NOT be used.
+> - The [backtick operator][] MUST NOT be used.
 > - The [goto][] language construct SHOULD NOT be used.
-> - The [global][] keyword SHOULD NOT be used.
+> - The [global][] keyword MUST NOT be used.
 > - The constant [PHP_SAPI][] SHOULD be used instead of the `php_sapi_name()` function.
 > - [aliases][] SHOULD NOT be used.
+>
+> There MUST NOT be a space before a semicolon. Redundant semicolons SHOULD be avoided.
+>
+> Non executable code MUST be removed.
 >
 > There MUST be a single space after language constructs.
 >
@@ -165,7 +169,8 @@ There MUST NOT be more than one statement per line.
 
 > ### Additional Zend Framework rules
 >
-> There MAY NOT be a space before a semicolon. Redundant semicolons SHOULD be avoided.
+> There MUST NOT be a space before a semicolon. Redundant semicolons SHOULD be 
+> avoided.
 
 ### 2.4 Indenting and Spacing
 
@@ -176,8 +181,9 @@ tabs for indenting.
 >
 > Encapsed strings MAY be used instead of concatenating strings. When 
 > concatenating strings, there MUST be a single whitespace before and after the
-> concatenation operator. The concatenation operator MAY NOT be the at the end 
-> of a line.
+> concatenation operator. The concatenation operator MUST NOT be the at the end 
+> of a line. If multi-line concatenation is used there MUST be an indent of 4 
+> spaces.
 
 ```php
 <?php
@@ -219,7 +225,7 @@ Short form of type keywords MUST be used i.e. `bool` instead of `boolean`,
 >
 > All array values must be followed by a comma, including the last value.
 >
-> There MUST be no whitespace around the opening bracket or before the closing 
+> There MUST NOT be whitespace around the opening bracket or before the closing 
 > bracket when referencing an array.
 >
 > All double arrow symbols MUST be aligned to one space after the longest array
@@ -287,9 +293,9 @@ must always be fully qualified.
 >
 > Unused import statements SHOULD be removed.
 >
-> Fancy group import statements are not allowed.
+> Fancy group import statements MUST NOT be used.
 >
-> Each import statements MUST be on its own line.
+> Each import statement MUST be on its own line.
 >
 > Import statement aliases for classes, traits, functions and constants MUST
 > be useful, meaning that aliases SHOULD only be used if a class with the same
@@ -405,11 +411,11 @@ new Foo();
 
 > ### Additional Zend Framework rules
 >
-> There MAY NOT be duplicate class names.
+> There MUST NOT be duplicate class names.
 >
 > The file name MUST match the case of the terminating class name.
 >
-> PHP 4 style constructors SHOULD NOT be used.
+> PHP 4 style constructors MUST NOT be used.
 >
 > The correct class names MUST be used.
 >
@@ -618,8 +624,8 @@ Method names MUST NOT be prefixed with a single underscore to indicate
 protected or private visibility. That is, an underscore prefix explicitly has
 no meaning.
 
-Method and function names MUST NOT be declared with space after the method name. The
-opening brace MUST go on its own line, and the closing brace MUST go on the
+Method and function names MUST NOT be declared with space after the method name. 
+The opening brace MUST go on its own line, and the closing brace MUST go on the
 next line following the body. There MUST NOT be a space after the opening
 parenthesis, and there MUST NOT be a space before the closing parenthesis.
 
@@ -627,10 +633,10 @@ parenthesis, and there MUST NOT be a space before the closing parenthesis.
 >
 > There MUST be a single empty line between methods in a class.
 >
-> The pseudo-variable `$this` MAY not be called inside a static method or 
+> The pseudo-variable `$this` MUST NOT be called inside a static method or 
 > function.
 >
-> Returned variables SHOULD be useful and not be assign to a value and 
+> Returned variables SHOULD be useful and SHOULD NOT be assigned to a value and 
 > returned on the next line.
 
 A method declaration looks like the following. Note the placement of
@@ -880,7 +886,7 @@ lines get added to the body.
 > There MUST be one single space after `break` and `continue` structures with 
 > a numeric argument argument.
 >
-> Statements MAY NOT be empty, except for catch statements.
+> Statements MUST NOT be empty, except for catch statements.
 
 ### 5.1 `if`, `elseif`, `else`
 
@@ -936,7 +942,7 @@ indented at the same level as the `case` body. There MUST be a comment such as
 
 > ### Additional Zend Framework rules
 >
-> The `continue` control structure MAY NOT be used in switch statements, 
+> The `continue` control structure MUST NOT be used in switch statements, 
 > `break` SHOULD be used instead.
 
 ```php
@@ -1100,24 +1106,12 @@ try {
 
 > ### Additional Zend Framework rules
 >
-> All catch blocks MUST be reachable and SHOULD catch `Throwable` instead of 
-> `Exception` unless intended.
-
-```php
-<?php
-
-try {
-    // try body
-} catch (Exception $e) {
-    // catch Exception
-} catch (Throwable $e) {
-    // catch Throwable
-}
-```
+> All catch blocks MUST be reachable.
 
 ## 6. Operators
 
-Style rules for operators are grouped by arity (the number of operands they take).
+Style rules for operators are grouped by arity (the number of operands they 
+take).
 
 When space is permitted around an operator, multiple spaces MAY be
 used for readability purposes.
@@ -1129,7 +1123,7 @@ used for readability purposes.
 > assignments, more spaces MUST be inserted before the equal sign to
 > promote readability.
 >
-> There SHOULD NOT be any white space around the object operator unless
+> There MUST NOT be any white space around the object operator UNLESS
 > multilines are used.
 >
 > Loose comparison operators SHOULD NOT be used, use strict comparison
@@ -1364,7 +1358,7 @@ $instance = new class extends \Foo implements
 > ### Additional Zend Framework rules
 >
 > Code SHOULD be written so it explains itself. DocBlocks and comments 
-> SHOULD only be used if necessary. They MAY NOT start with `#` and MAY 
+> SHOULD only be used if necessary. They MUST NOT start with `#` and MUST 
 > NOT be empty. They SHOULD NOT be used for already typehinted arguments, 
 > except arrays.
 >
@@ -1394,19 +1388,17 @@ $instance = new class extends \Foo implements
 >  * @uses
 >  *
 >  * @param
->  *
 >  * @return
->  *
 >  * @throws
 >  */
 > ```
 >
 > The annotations `@api`, `@author`, `@category`, `@created`, `@package`,
-> `@subpackage` and `@version` may not be used in comments. Git commits
+> `@subpackage` and `@version` MUST NOT be used in comments. Git commits
 > provide accurate information.
 > 
 > The words _private_, _protected_, _static_, _constructor_, _deconstructor_,
-> _Created by_, _getter_ and _setter_, MAY NOT be used in comments.
+> _Created by_, _getter_ and _setter_, MUST NOT be used in comments.
 >
 > The `@var` tag MAY be used in inline comments to document the _Type_
 > of properties. Single-line property comments with a `@var` tag SHOULD
@@ -1415,9 +1407,8 @@ $instance = new class extends \Foo implements
 > The correct tag case of PHPDocs and PHPUnit tags MUST be used.
 >
 > Inline DocComments MAY be used at the end of the line, with at least a
-> single space. Inline DocComments MAY NOT be placed after curly brackets.
->
-> Typed parameters and return types SHOULD be avoided.
+> single space preceding. Inline DocComments MUST NOT be placed after curly 
+> brackets.
 >
 > Heredoc and nowdoc tags MUST be uppercase without spaces.
 

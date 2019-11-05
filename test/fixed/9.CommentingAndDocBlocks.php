@@ -42,9 +42,7 @@ class CommentingAndDocBlocks
      * @see
      *
      * @param
-     *
      * @return
-     *
      * @throws
      */
     public function testDocBlockSpacing(): void

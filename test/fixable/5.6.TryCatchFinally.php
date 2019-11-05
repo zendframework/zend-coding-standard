@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ZendCodingStandardTest\fixed;
 
 use AnotherThrowableType;
-use Exception;
 use FirstThrowableType;
 use InvalidArgumentException;
 use OtherThrowableType;
@@ -39,22 +38,6 @@ class TryCatchFinally
             echo $e;
         } catch (InvalidArgumentException $e) {
             echo $e; // unreachable!
-        }
-    }
-
-    public function testCatchBlocksShouldUseThrowable(): void
-    {
-        try {
-            $x = 1 + 2;
-        } catch (Exception $e) {
-            // Should be Throwable
-        }
-
-        try {
-            $x = 1 + 2;
-        } catch (Exception $e) {
-            // OK -> catching Throwable later
-        } catch (Throwable $e) {
         }
     }
 }

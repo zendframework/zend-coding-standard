@@ -33,11 +33,11 @@
     <rule ref="Generic.Files.InlineHTML"/>
     <!-- Deprecated PHP functions MUST be avoided. -->
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
-    <!-- The backtick operator MAY NOT be used. -->
+    <!-- The backtick operator MUST NOT be used. -->
     <rule ref="Generic.PHP.BacktickOperator"/>
-    <!-- The PHP `goto` language construct MAY NOT be used. -->
+    <!-- The PHP `goto` language construct SHOULD NOT be used. -->
     <rule ref="Generic.PHP.DiscourageGoto"/>
-    <!-- The `global` keyword MAY NOT be used. -->
+    <!-- The `global` keyword MUST NOT be used. -->
     <rule ref="Squiz.PHP.GlobalKeyword"/>
     <!-- The constant `PHP_SAPI` SHOULD be used instead of the
          `php_sapi_name()` function. -->
@@ -70,7 +70,7 @@
             </property>
         </properties>
     </rule>
-    <!-- There MAY NOT be a space before a semicolon. Redundant semicolons
+    <!-- There MUST NOT be a space before a semicolon. Redundant semicolons
          SHOULD be avoided. -->
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="WebimpressCodingStandard.PHP.RedundantSemicolon"/>
@@ -124,7 +124,7 @@
          indicate related blocks of code except where explicitly forbidden. -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.BlankLine"/>
 
-    <!-- There MAY NOT be any blank line after opening braces and before
+    <!-- There MUST NOT be any blank line after opening braces and before
          closing braces. -->
     <rule ref="WebimpressCodingStandard.WhiteSpace.BraceBlankLine"/>
 
@@ -139,8 +139,9 @@
 
     <!-- Encapsed strings MAY be used instead of concatenating strings. When
          concatenating strings, there MUST be a single whitespace before and
-         after the concatenation operator. The concatenation operator MAY NOT
-         be the at th end of a line. -->
+         after the concatenation operator. The concatenation operator MUST NOT
+         be the at the end of a line. If multi-line concatenation is used
+         there MUST be an indent of 4 spaces. -->
     <rule ref="Squiz.Strings.ConcatenationSpacing">
         <properties>
             <property name="spacing" value="1"/>
@@ -185,7 +186,7 @@
     <rule ref="Generic.Arrays.ArrayIndent"/>
     <!-- All array values must be followed by a comma, including the last value. -->
     <rule ref="WebimpressCodingStandard.Arrays.TrailingArrayComma"/>
-    <!-- There MUST be no whitespace around the opening bracket or before the
+    <!-- There MUST NOT be whitespace around the opening bracket or before the
          closing bracket when referencing an array. -->
     <rule ref="WebimpressCodingStandard.Arrays.Format"/>
     <!-- All double arrow symbols MUST be aligned to one space after the
@@ -257,9 +258,9 @@
     <rule ref="WebimpressCodingStandard.Namespaces.UnusedUseStatement"/>
     <!-- Superfluous leading backslash in import statements MUST be removed. -->
     <rule ref="WebimpressCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
-    <!-- Fancy group import statements are not allowed. -->
+    <!-- Fancy group import statements MUST NOT be used. -->
     <rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
-    <!-- Each import statements MUST be on its own line. -->
+    <!-- Each import statement MUST be on its own line. -->
     <rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
     <!-- Import statements must be grouped (classes, functions, constants) and
          MUST be separated by empty lines. -->
@@ -286,11 +287,11 @@
 
     <!-- Additional Zend Framework rules -->
 
-    <!-- There MAY NOT be duplicate class names. -->
+    <!-- There MUST NOT be duplicate class names. -->
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <!-- The file name MUST match the case of the terminating class name. -->
     <rule ref="Squiz.Classes.ClassFileName"/>
-    <!-- PHP 4 style constructors SHOULD NOT be used. -->
+    <!-- PHP 4 style constructors MUST NOT be used. -->
     <rule ref="Generic.NamingConventions.ConstructorName"/>
     <!-- Abstract classes MUST have a `Abstract` prefix. -->
     <rule ref="WebimpressCodingStandard.NamingConventions.AbstractClass"/>
@@ -394,11 +395,11 @@
 
     <!-- There MUST be a single empty line between methods in a class. -->
     <rule ref="WebimpressCodingStandard.Methods.LineAfter"/>
-    <!-- The pseudo-variable `$this` MAY not be called inside a static method
+    <!-- The pseudo-variable `$this` MUST NOT be called inside a static method
          or function. -->
     <rule ref="Squiz.Scope.StaticThisUsage"/>
-    <!-- Returned variables SHOULD be useful and not be assign to a value and
-         returned on the next line. -->
+    <!-- Returned variables SHOULD be useful and SHOULD NOT be assigned to a value
+         and returned on the next line. -->
     <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
 
     <!-- 4.5 Method and Function Arguments -->
@@ -440,7 +441,7 @@
 
     <!-- Additional Zend Framework rules -->
 
-    <!-- The question mark MUST be used when a the default argument value is null. -->
+    <!-- The question mark MUST be used when the default argument value is null. -->
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
 
     <!-- 4.6 abstract, final, and static -->
@@ -500,7 +501,7 @@
     <!-- There SHOULD be one single space after `break` and `continue` structures with
          a numeric argument argument. -->
     <rule ref="WebimpressCodingStandard.ControlStructures.BreakAndContinue"/>
-    <!-- Statements MAY NOT be empty, except for catch statements. -->
+    <!-- Statements MUST NOT be empty, except for catch statements. -->
     <rule ref="Generic.CodeAnalysis.EmptyStatement">
         <!-- But allow empty catch -->
         <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
@@ -546,7 +547,7 @@
 
     <!-- Additional Zend Framework rules -->
 
-    <!-- The `continue` control structure MAY NOT be used in switch statements,
+    <!-- The `continue` control structure MUST NOT be used in switch statements,
          `break` SHOULD be used instead. -->
     <rule ref="WebimpressCodingStandard.ControlStructures.ContinueInSwitch"/>
 
@@ -598,9 +599,6 @@
     <!-- All catch blocks MUST be reachable. -->
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
-    <!-- Catch blocks SHOULD catch `Throwable` instead of `Exception`. -->
-    <rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>
-
     <!-- 6. Operators -->
 
     <!-- When space is permitted around an operator, multiple spaces MAY be
@@ -624,10 +622,9 @@
             <property name="ignoreNewlines" value="true"/>
         </properties>
     </rule>
-    <!-- There MAY NOT be any white space around the object operator unless
+    <!-- There MUST NOT be any white space around the object operator UNLESS
          multilines are used. -->
     <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
-    <!-- There MAY NOT be spaces around the object operator. -->
     <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
         <properties>
             <property name="ignoreNewlines" value="true"/>
@@ -640,7 +637,7 @@
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
     <!-- Assignment operators SHOULD be used when possible. -->
     <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
-    <!-- The `&&` and `||` operators SHOULD be used instad of `and` and `or`. -->
+    <!-- The `&&` and `||` operators SHOULD be used instead of `and` and `or`. -->
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
 
     <!-- 6.1. Unary operators -->
@@ -713,8 +710,8 @@
 
     <!-- Anonymous Classes MUST follow the same guidelines and principles as
          closures in the above section. -->
-    <!-- The opening brace MAY be on the same line as the class keyword so long
-         as the list of implements interfaces does not wrap. If the list of
+    <!-- The opening brace MAY be on the same line as the `class` keyword so long
+         as the list of `implements` interfaces does not wrap. If the list of
          interfaces wraps, the brace MUST be placed on the line immediately
          following the last interface. -->
     <!-- checked by PSR12.Classes.AnonClassDeclaration -->
@@ -724,7 +721,7 @@
     <!-- Additional Zend Framework rules -->
 
     <!-- DocBlocks and comments SHOULD only be used if necessary. Code SHOULD
-         be written so it explains itself. They MAY NOT start with `#` and MAY
+         be written so it explains itself. They MUST NOT start with `#` and MUST
          NOT be empty. They MAY be omitted and SHOULD NOT be used for already
          typehinted arguments, except arrays.
 
@@ -773,6 +770,14 @@
         <exclude name="Squiz.Commenting.FunctionComment.TypeHintMissing"/>
     </rule>
 
+    <!-- DocBlocks and comments SHOULD NOT be used for already typehinted arguments,
+         except arrays. -->
+    <rule ref="WebimpressCodingStandard.Functions.Param"/>
+    <rule ref="WebimpressCodingStandard.Functions.ReturnType"/>
+    <rule ref="WebimpressCodingStandard.Commenting.TagWithType">
+        <exclude name="WebimpressCodingStandard.Commenting.TagWithType.InvalidOrder"/>
+    </rule>
+
     <!-- The asterisks in a DocBlock should align, and there should be one
          space between the asterisk and tag. -->
     <rule ref="Squiz.Commenting.DocCommentAlignment">
@@ -795,9 +800,7 @@
           * @uses
           *
           * @param
-          *
           * @return
-          *
           * @throws
           */
     -->
@@ -824,15 +827,17 @@
                     @ODM\,
                     @PHPCR\,
                 "/>
-                <element value="@param"/>
-                <element value="@return"/>
-                <element value="@throws"/>
+                <element value="
+                    @param\,
+                    @return\,
+                    @throws\,
+                "/>
             </property>
         </properties>
     </rule>
 
     <!-- The annotations `@api`, `@author`, `@category`, `@created`, `@package`,
-         `@subpackage` and `@version` may not be used in comments. Git commits
+         `@subpackage` and `@version` MUST NOT be used in comments. Git commits
          provide accurate information. -->
     <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
         <properties>
@@ -853,7 +858,7 @@
     </rule>
 
     <!-- The words _private_, _protected_, _static_, _constructor_, _deconstructor_,
-         _Created by_, _getter_ and _setter_, MAY NOT be used in comments. -->
+         _Created by_, _getter_ and _setter_, MUST NOT be used in comments. -->
     <rule ref="SlevomatCodingStandard.Commenting.ForbiddenComments">
         <properties>
             <property name="forbiddenCommentPatterns" type="array">
@@ -876,16 +881,10 @@
     <rule ref="WebimpressCodingStandard.Commenting.TagCase"/>
 
     <!-- Inline DocComments MAY be used at the end of the line, with at least a
-         single space. Inline DocComments MAY NOT be placed after curly brackets. -->
+         single space preceding. Inline DocComments MUST NOT be placed after
+         curly brackets. -->
     <rule ref="WebimpressCodingStandard.Commenting.Placement"/>
     <rule ref="WebimpressCodingStandard.Commenting.NoInlineCommentAfterCurlyClose"/>
-
-    <!-- Typed parameters and return types SHOULD be avoided. -->
-    <rule ref="WebimpressCodingStandard.Functions.Param"/>
-    <rule ref="WebimpressCodingStandard.Functions.ReturnType"/>
-    <rule ref="WebimpressCodingStandard.Commenting.TagWithType">
-        <exclude name="WebimpressCodingStandard.Commenting.TagWithType.InvalidOrder"/>
-    </rule>
 
     <!-- Heredoc and nowdoc tags MUST be uppercase without spaces. -->
     <rule ref="WebimpressCodingStandard.Formatting.Heredoc"/>
