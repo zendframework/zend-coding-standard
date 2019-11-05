@@ -4,6 +4,11 @@
          name="ZendCodingStandard">
     <description>The Zend Framework coding standard.</description>
 
+    <!-- 1. Overview -->
+
+    <!-- This specification extends PSR-12, the coding style guide and
+         requires adherence to PSR-1, the basic coding standard. -->
+
     <!-- 2. General -->
 
     <!-- 2.1 Basic Coding Standard -->

@@ -6,7 +6,7 @@ interpreted as described in [RFC 2119][].
 
 [RFC 2119]: http://tools.ietf.org/html/rfc2119
 
-## Overview
+## 1. Overview
 
 This specification extends [PSR-12][], the coding style guide and
 requires adherence to [PSR-1][], the basic coding standard.
@@ -15,12 +15,12 @@ Like [PSR-12][], the intent of this specification is to reduce cognitive frictio
 scanning code from different authors contributing to Zend Framework. It does so by 
 enumerating a shared set of rules and expectations about how to format PHP code.
 
-### Previous language versions
+### 1.1 Previous language versions
 
 Throughout this document, any instructions MAY be ignored if they do not exist in versions
 of PHP supported by your project.
 
-### Example
+### 1.2 Example
 
 This example encompasses some of the rules below as a quick overview:
 
