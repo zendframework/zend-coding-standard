@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.0.0-alpha.4 - 2019-11-05
+## 2.0.0alpha4 - 2019-11-05
 
 ### Added
 
@@ -145,7 +145,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 2.0.0-alpha.3 - 2019-01-01
+## 2.0.0alpha3 - 2019-01-01
 
 ### Added
 
@@ -197,7 +197,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 2.0.0-alpha.2 - 2018-11-26
+## 2.0.0alpha2 - 2018-11-26
 
 ### Added
 
@@ -219,7 +219,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#7](https://github.com/zendframework/zend-coding-standard/pull/7) updates to composer-installer 0.5 which fixes a 'Class not found' error during installation.
 
-## 2.0.0-alpha.1 - 2018-11-18
+## 2.0.0alpha1 - 2018-11-18
 
 ### Added
 
