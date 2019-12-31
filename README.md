@@ -1,6 +1,10 @@
 Zend Framework Coding Standard
 ==============================
 
+> ## Repository abandoned 2019-12-31
+>
+> This repository has moved to laminas/laminas-coding-standard.
+
 Repository with all coding standard ruleset for Zend Framework repositories.
 
 
